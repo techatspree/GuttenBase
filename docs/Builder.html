@@ -1,0 +1,123 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+
+
+
+
+
+
+
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>GuttenBase - The database copying and migration framework - </title>
+    <style type="text/css" media="all">
+      @import url("./css/maven-base.css");
+      @import url("./css/maven-theme.css");
+      @import url("./css/site.css");
+    </style>
+    <link rel="stylesheet" href="./css/print.css" type="text/css" media="print" />
+          </head>
+  <body class="composite">
+    <div id="banner">
+                    <span id="bannerLeft">
+    
+            GuttenBase - The database copying and migration framework
+    
+            </span>
+                    <div class="clear">
+        <hr/>
+      </div>
+    </div>
+    <div id="breadcrumbs">
+          
+  
+
+  
+    
+  
+  
+    
+            <div class="xleft">
+        Last Published: 2012-06-14
+                      </div>
+            <div class="xright">            <a href="${project.url}">GuttenBase - The database copying and migration framework</a>
+            
+  
+
+  
+    
+  
+  
+    
+  </div>
+      <div class="clear">
+        <hr/>
+      </div>
+    </div>
+    <div id="leftColumn">
+      <div id="navcolumn">
+           
+  
+
+  
+    
+  
+  
+    
+                                                          <a href="http://maven.apache.org/" title="Built by Maven" class="poweredBy">
+            <img alt="Built by Maven" src="./images/logos/maven-feather.png"></img>
+          </a>
+                       
+  
+
+  
+    
+  
+  
+    
+        </div>
+    </div>
+    <div id="bodyColumn">
+      <div id="contentBox">
+        <h1>Builder pattern</h1>
+
+<p>GuttenBase supports the <a href="apidocs/de/akquinet/jbosscc/guttenbase/meta/builder/package-summary.html">builder pattern</a> to build your own data base schema definitions.</p>
+
+<h2>Code example</h2>
+
+<pre><code>final TableMetaDataBuilder tableMetaDataBuilder = new TableMetaDataBuilder(_databaseMetaDataBuilder).setTableName(tableMapper
+                .mapTableName(sourceTableMetaData));
+...
+tableMetaDataBuilder.addColumn(nameColumnBuilder).addIndex(new IndexMetaDataBuilder(tableMetaDataBuilder).
+    setAscending(true).setIndexName("NAME_IDX").
+      setUnique(true).addColumn(nameColumnBuilder));
+</code></pre>
+
+      </div>
+    </div>
+    <div class="clear">
+      <hr/>
+    </div>
+    <div id="footer">
+      <div class="xright">&#169;  
+          2012
+    
+          
+  
+
+  
+    
+  
+  
+    
+  </div>
+      <div class="clear">
+        <hr/>
+      </div>
+    </div>
+  </body>
+</html>

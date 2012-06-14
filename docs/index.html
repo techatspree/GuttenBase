@@ -1,0 +1,172 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+
+
+
+
+
+
+
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>GuttenBase - The database copying and migration framework - </title>
+    <style type="text/css" media="all">
+      @import url("./css/maven-base.css");
+      @import url("./css/maven-theme.css");
+      @import url("./css/site.css");
+    </style>
+    <link rel="stylesheet" href="./css/print.css" type="text/css" media="print" />
+          </head>
+  <body class="composite">
+    <div id="banner">
+                    <span id="bannerLeft">
+    
+            GuttenBase - The database copying and migration framework
+    
+            </span>
+                    <div class="clear">
+        <hr/>
+      </div>
+    </div>
+    <div id="breadcrumbs">
+          
+  
+
+  
+    
+  
+  
+    
+            <div class="xleft">
+        Last Published: 2012-06-14
+                      </div>
+            <div class="xright">            <a href="${project.url}">GuttenBase - The database copying and migration framework</a>
+            
+  
+
+  
+    
+  
+  
+    
+  </div>
+      <div class="clear">
+        <hr/>
+      </div>
+    </div>
+    <div id="leftColumn">
+      <div id="navcolumn">
+           
+  
+
+  
+    
+  
+  
+    
+                                                          <a href="http://maven.apache.org/" title="Built by Maven" class="poweredBy">
+            <img alt="Built by Maven" src="./images/logos/maven-feather.png"></img>
+          </a>
+                       
+  
+
+  
+    
+  
+  
+    
+        </div>
+    </div>
+    <div id="bodyColumn">
+      <div id="contentBox">
+        <h1>GuttenBase - Copying done right...</h1>
+
+<p>There are many tools to visualize or analyze databases. You will also find lots of programs programs to copy databases between different systems.
+However, we found that these tools are not flexible enough and do not fulfill all our needs. They fail, e.g., because they can not map the various
+data types between data bases correctly, or because the amount of data becomes to big. Examples for such applications are the
+<a href="http://dbcopyplugin.sourceforge.net/">DBCopy-Plugin</a> of <a href="http://squirrel-sql.sourceforge.net/">SQuirreL</a>. You may also have heard of the database refactoring tool <a href="http://www.liquibase.org/">Liquibase</a>. And of course there is commercial software available
+such as <a href="http://www.dbcopy.com/">dbCOPY</a>. </p>
+
+<p>The solution we suggest is to <em>program</em> data migrations using an extensible framework instead of <em>configuring</em> some (limited) tool.
+We found that this approach gives us much more flexibility when performing data migrations. Migrating a data base almost always
+requires an individual special solution, since every system has its peculiarities.</p>
+
+<p>Another problem we address is the fact that databases are often accessible from within some internal corporate network only. As developers we would like to work independently
+with a local database clone on our computer. And we don't want to install Oracle or DB2 for that, but use Open Source products such as Postgresql or MySQL.</p>
+
+<h2>Quick Example</h2>
+
+<p>The following code example first checks whether the source and destination are compatible.
+Then the values ​​from the source database are written to the target database. 
+Finally, we perform (empirical) checks whether the data has been transmitted correctly.</p>
+
+<p>In many cases, that's it!</p>
+
+<pre><code>final ConnectorRepository connectorRepository = new ConnectorRepositoryImpl();
+connectorRepository.addConnectionInfo("MySql", new AevMySqlConnectionInfo());
+connectorRepository.addConnectionInfo("Postgresql", new AevPostgresqlConnectionInfo());
+
+new CheckSchemaCompatibilityTool(connectorRepository).checkTableConfiguration("MySql", "Postgresql");
+new DefaultTableCopyTool(connectorRepository).copyTables("MySql", "Postgresql");
+new CheckEqualTableDataTool(connectorRepository).checkTableData("MySql", "Postgresql");
+</code></pre>
+
+<h2>Features</h2>
+
+<ul>
+<li>Dump a database into a ZIP/JAR file, transfer the file somewhere else via SSH/FTP/... and extract it locally</li>
+<li>GuttenBase supports many data base systems to automatically map different column types</li>
+<li>Transform columns and tables during the migration
+<ul><li>renaming columns</li>
+<li>changing the column type</li>
+<li>split columns into multiple columns</li></ul></li>
+<li>Transform data during the migration</li>
+<li>Configure the copying process for maximum speed</li>
+<li>Create mass data for testing by copying the source DB multiple times</li>
+<li>Meta model of data base for analysis</li>
+<li>Supports builder pattern to create schema definitions</li>
+</ul>
+
+<h2>Further readings</h2>
+
+<p>Most features are documented by JUnit tests.</p>
+
+<ul>
+<li><a href="Architecture.html">Architecture</a></li>
+<li><a href="Configuration.html">Configuration</a></li>
+<li><a href="Hints.html">Hints</a></li>
+<li><a href="Tools.html">Tools</a></li>
+<li><a href="Export.html">Export/Import</a></li>
+<li><a href="Meta.html">Meta data</a></li>
+<li><a href="Builder.html">Builder pattern support</a></li>
+<li><a href="apidocs/index.html">JavaDoc-API</a></li>
+</ul>
+
+      </div>
+    </div>
+    <div class="clear">
+      <hr/>
+    </div>
+    <div id="footer">
+      <div class="xright">&#169;  
+          2012
+    
+          
+  
+
+  
+    
+  
+  
+    
+  </div>
+      <div class="clear">
+        <hr/>
+      </div>
+    </div>
+  </body>
+</html>
