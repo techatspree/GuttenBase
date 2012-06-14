@@ -1,0 +1,132 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+
+
+
+
+
+
+
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>GuttenBase - The database copying and migration framework - </title>
+    <style type="text/css" media="all">
+      @import url("./css/maven-base.css");
+      @import url("./css/maven-theme.css");
+      @import url("./css/site.css");
+    </style>
+    <link rel="stylesheet" href="./css/print.css" type="text/css" media="print" />
+          </head>
+  <body class="composite">
+    <div id="banner">
+                    <span id="bannerLeft">
+    
+            GuttenBase - The database copying and migration framework
+    
+            </span>
+                    <div class="clear">
+        <hr/>
+      </div>
+    </div>
+    <div id="breadcrumbs">
+          
+  
+
+  
+    
+  
+  
+    
+            <div class="xleft">
+        Last Published: 2012-06-14
+                      </div>
+            <div class="xright">            <a href="${project.url}">GuttenBase - The database copying and migration framework</a>
+            
+  
+
+  
+    
+  
+  
+    
+  </div>
+      <div class="clear">
+        <hr/>
+      </div>
+    </div>
+    <div id="leftColumn">
+      <div id="navcolumn">
+           
+  
+
+  
+    
+  
+  
+    
+                                                          <a href="http://maven.apache.org/" title="Built by Maven" class="poweredBy">
+            <img alt="Built by Maven" src="./images/logos/maven-feather.png"></img>
+          </a>
+                       
+  
+
+  
+    
+  
+  
+    
+        </div>
+    </div>
+    <div id="bodyColumn">
+      <div id="contentBox">
+        <h1>Data base specific configuration</h1>
+
+<ul>
+<li><a href="apidocs/de/akquinet/jbosscc/guttenbase/configuration/impl/package-summary.html">Data base specific implementations</a></li>
+<li>The source DB is usually marked as read only</li>
+<li>Turn off auto-commit for the target DB and disable constraints temporarily so that the copying process can run really fast without checking temporary violations</li>
+<li>Users may add life cycle methods to add their own code</li>
+</ul>
+
+<h2>Code example</h2>
+
+<pre><code>private int _tablesCount;
+...
+_connectorRepository.addSourceDatabaseConfiguration(DatabaseType.DERBY, new DefaultSourceDatabaseConfiguration(_connectorRepository) {
+        @Override
+        public void afterTableCopy(final Connection connection, final String connectorId, final TableMetaData table) throws SQLException {
+            _tablesCount++;
+        }
+    });
+...
+System.out.println(_tablesCount + " tables copied...");
+</code></pre>
+
+      </div>
+    </div>
+    <div class="clear">
+      <hr/>
+    </div>
+    <div id="footer">
+      <div class="xright">&#169;  
+          2012
+    
+          
+  
+
+  
+    
+  
+  
+    
+  </div>
+      <div class="clear">
+        <hr/>
+      </div>
+    </div>
+  </body>
+</html>

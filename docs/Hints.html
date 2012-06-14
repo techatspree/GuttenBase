@@ -1,0 +1,153 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+
+
+
+
+
+
+
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>GuttenBase - The database copying and migration framework - </title>
+    <style type="text/css" media="all">
+      @import url("./css/maven-base.css");
+      @import url("./css/maven-theme.css");
+      @import url("./css/site.css");
+    </style>
+    <link rel="stylesheet" href="./css/print.css" type="text/css" media="print" />
+          </head>
+  <body class="composite">
+    <div id="banner">
+                    <span id="bannerLeft">
+    
+            GuttenBase - The database copying and migration framework
+    
+            </span>
+                    <div class="clear">
+        <hr/>
+      </div>
+    </div>
+    <div id="breadcrumbs">
+          
+  
+
+  
+    
+  
+  
+    
+            <div class="xleft">
+        Last Published: 2012-06-14
+                      </div>
+            <div class="xright">            <a href="${project.url}">GuttenBase - The database copying and migration framework</a>
+            
+  
+
+  
+    
+  
+  
+    
+  </div>
+      <div class="clear">
+        <hr/>
+      </div>
+    </div>
+    <div id="leftColumn">
+      <div id="navcolumn">
+           
+  
+
+  
+    
+  
+  
+    
+                                                          <a href="http://maven.apache.org/" title="Built by Maven" class="poweredBy">
+            <img alt="Built by Maven" src="./images/logos/maven-feather.png"></img>
+          </a>
+                       
+  
+
+  
+    
+  
+  
+    
+        </div>
+    </div>
+    <div id="bodyColumn">
+      <div id="contentBox">
+        <h1>Hints</h1>
+
+<p>The way tools operate is configured by <em>hints</em>. There is <a href="apidocs/de/akquinet/jbosscc/guttenbase/hints/package-summary.html">quite a number of hints</a> you can use:</p>
+
+<ul>
+<li>ColumnDataMapperProviderHint: Used to find mappings for column data. E.g., when converting a number to a String or casting a LONG to a BIGINT.</li>
+<li>ColumnMapperHint: Select target column(s) for given source column. Usually, there will a 1:1 relationship. However, there may be situations where you want to duplicate or transform data into multiple columns.</li>
+<li>ColumnNameMapperHint: Map the way column names of a table are used. Usually you won't need that, but sometimes you want to map the names, e.g. to add <code>name</code> backticks, in order to escape special characters.</li>
+<li>ColumnOrderHint: Determine order of columns in SELECT statement. This will of course also influence the ordering of the resulting INSERT statement.</li>
+<li>ColumnTypeResolverListHint: Determine strategies to use for mapping different column types. It provides a list of column type resolvers which will be asked in turn to resolve a column type conflict.</li>
+<li>DatabaseTableFilterHint: Regard which tables when looking for tables in the given data base.</li>
+<li>EntityTableCheckerHint: Check if the given table is a "main" table in the sense that it represents an entity. In terms of JPA: the corresponding Java class is annotated with @Entity.</li>
+<li>ExporterFactoryHint: Configure Exporter to be used for dumping databases</li>
+<li>ExportDumpExtraInformationHint: When exporting to e JAR/ZIP file we give the user a possibility to add extra informations to the dumped data.</li>
+<li>ImporterFactoryHint: Configure Importer to be used for reading dumped databases</li>
+<li>ImportDumpExtraInformationHint: When exporting to JAR/ZIP file we give the user a possibility to retrieve extra informations from the dumped data.</li>
+<li>MaxNumberOfDataItemsHint: How many data items may an INSERT statement have. I.e., how many data items does the database support in satatement. This hint may in effect limit the number given by the NumberOfRowsPerInsertionHint</li>
+<li>NumberOfCheckedTableDataHint: How many rows of the copied tables shall be regarded when checking that data has been transferred correctly with the CheckEqualTableDataTool</li>
+<li>NumberOfRowsPerInsertionHint: How many rows will be inserted in single transaction</li>
+<li>RepositoryColumnFilterHint:  This filter is applied when requesting meta data from the connector repository</li>
+<li>RepositoryTableFilterHint:This filter is applied when requesting meta data from the connector repository</li>
+<li>SplitColumnHint: Define split column for SplitByRangeTableCopyTool</li>
+<li>TableMapperHint: Map tables between source and target data base</li>
+<li>TableNameMapperHint: Map table names, e.g. prepend schema name schema.table or add backticks (`) to escape special names.</li>
+<li>TableOrderHint: Determine order of tables during copying/comparison</li>
+<li>ZipExporterClassResourcesHint: When exporting to e JAR/ZIP file we allow to add custom classes and resources to the resulting JAR. This allows to create a self-contained executable JAR that will startup with a Main class specified by the framework user.</li>
+</ul>
+
+<h2>Code example</h2>
+
+<p>Regard only tables starting with "tdm_":</p>
+
+<pre><code>public class TdmTableFilterHint extends RepositoryTableFilterHint {
+  public RepositoryTableFilter getValue() {
+        return new RepositoryTableFilter() {
+          public boolean accept(final TableMetaData table) {
+            String lowerCase = table.getTableName().toLowerCase();
+            return lowerCase.startsWith("tdm_");
+        }};
+}}
+...
+_connectorRepository.addConnectorHint(SOURCE, new TdmTableFilterHint());
+</code></pre>
+
+      </div>
+    </div>
+    <div class="clear">
+      <hr/>
+    </div>
+    <div id="footer">
+      <div class="xright">&#169;  
+          2012
+    
+          
+  
+
+  
+    
+  
+  
+    
+  </div>
+      <div class="clear">
+        <hr/>
+      </div>
+    </div>
+  </body>
+</html>
