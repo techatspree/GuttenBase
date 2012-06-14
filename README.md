@@ -19,7 +19,7 @@ Quick Example
 -------------
 
 The following code example first checks whether the source and destination are compatible.
-Then the values ​​from the source database are written to the target database. 
+Then the values from the source database are written to the target database. 
 Finally, we perform (empirical) checks whether the data has been transmitted correctly.
 
 In many cases, that's it!
