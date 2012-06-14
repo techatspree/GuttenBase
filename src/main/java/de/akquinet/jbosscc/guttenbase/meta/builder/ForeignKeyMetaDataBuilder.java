@@ -3,6 +3,15 @@ package de.akquinet.jbosscc.guttenbase.meta.builder;
 import de.akquinet.jbosscc.guttenbase.meta.InternalForeignKeyMetaData;
 import de.akquinet.jbosscc.guttenbase.meta.impl.ForeignKeyMetaDataImpl;
 
+/**
+ * Builder class for ForeignKeyMetaData.
+ * 
+ * <p>
+ * &copy; 2012 akquinet tech@spree
+ * </p>
+ * 
+ * @author M. Dahm
+ */
 public class ForeignKeyMetaDataBuilder {
 	private ColumnMetaDataBuilder _referencingColumn;
 	private ColumnMetaDataBuilder _referencedColumn;

@@ -17,8 +17,6 @@ import de.akquinet.jbosscc.guttenbase.repository.ConnectorRepository;
  * @author M. Dahm
  */
 public abstract class DefaultTargetDatabaseConfiguration extends AbstractDatabaseConfiguration implements TargetDatabaseConfiguration {
-	private static final long serialVersionUID = 1L;
-
 	public DefaultTargetDatabaseConfiguration(final ConnectorRepository connectorRepository) {
 		super(connectorRepository);
 	}

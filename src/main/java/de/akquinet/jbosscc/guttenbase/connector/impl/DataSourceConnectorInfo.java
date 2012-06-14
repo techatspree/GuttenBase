@@ -54,9 +54,6 @@ public class DataSourceConnectorInfo implements ConnectorInfo {
 		return _password;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	public DataSource getDataSource() {
 		return _dataSource;
 	}

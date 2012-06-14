@@ -17,7 +17,7 @@ import de.akquinet.jbosscc.guttenbase.meta.TableMetaData;
 import de.akquinet.jbosscc.guttenbase.repository.ConnectorRepository;
 
 /**
- * Import schema information and data from gzipped {@link ObjectinputStream} file with serialized data.
+ * Import schema information and data from gzipped {@link ObjectInputStream} file with serialized data.
  * 
  * <p>
  * &copy; 2012 akquinet tech@spree

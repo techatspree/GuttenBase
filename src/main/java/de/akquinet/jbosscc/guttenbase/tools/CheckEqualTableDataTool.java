@@ -10,8 +10,8 @@ import java.util.List;
 import org.apache.log4j.Logger;
 
 import de.akquinet.jbosscc.guttenbase.configuration.SourceDatabaseConfiguration;
-import de.akquinet.jbosscc.guttenbase.connector.ConnectorInfo;
 import de.akquinet.jbosscc.guttenbase.connector.Connector;
+import de.akquinet.jbosscc.guttenbase.connector.ConnectorInfo;
 import de.akquinet.jbosscc.guttenbase.connector.DatabaseType;
 import de.akquinet.jbosscc.guttenbase.exceptions.IncompatibleColumnsException;
 import de.akquinet.jbosscc.guttenbase.exceptions.TableConfigurationException;
@@ -35,7 +35,7 @@ import de.akquinet.jbosscc.guttenbase.repository.ConnectorRepository;
 import de.akquinet.jbosscc.guttenbase.statements.SelectStatementCreator;
 
 /**
- * Check to schemas for equal data where it takes a configurable number of test data from each table.
+ * Check two schemas for equal data where the tool takes a configurable number of sample data from each table.
  * 
  * <p>
  * &copy; 2012 akquinet tech@spree
@@ -68,10 +68,8 @@ public class CheckEqualTableDataTool {
 		final TableMapper tableMapper = _connectorRepository.getConnectorHint(targetConnectorId, TableMapper.class).getValue();
 		final DatabaseMetaData targetDatabaseMetaData = _connectorRepository.getDatabaseMetaData(targetConnectorId);
 
-		final SourceDatabaseConfiguration sourceDatabaseConfiguration1 = _connectorRepository
-				.getSourceDatabaseConfiguration(sourceConnectorId);
-		final SourceDatabaseConfiguration sourceDatabaseConfiguration2 = _connectorRepository
-				.getSourceDatabaseConfiguration(targetConnectorId);
+		final SourceDatabaseConfiguration sourceDatabaseConfiguration1 = _connectorRepository.getSourceDatabaseConfiguration(sourceConnectorId);
+		final SourceDatabaseConfiguration sourceDatabaseConfiguration2 = _connectorRepository.getSourceDatabaseConfiguration(targetConnectorId);
 		final Connector connector1 = _connectorRepository.createConnector(sourceConnectorId);
 		final Connector connector2 = _connectorRepository.createConnector(targetConnectorId);
 		final Connection connection1 = connector1.openConnection();
@@ -133,9 +131,10 @@ public class CheckEqualTableDataTool {
 
 		targetConfiguration.beforeSelect(targetConnection, targetConnectorId, targetTableMetaData);
 		final ResultSet resultSet2 = selectStatement2.executeQuery();
-		sourceConfiguration.afterSelect(targetConnection, targetConnectorId, targetTableMetaData);
+		targetConfiguration.afterSelect(targetConnection, targetConnectorId, targetTableMetaData);
 
-		final List<ColumnMetaData> orderedSourceColumns = ColumnOrderHint.getSortedColumns(_connectorRepository, sourceConnectorId, sourceTableMetaData);
+		final List<ColumnMetaData> orderedSourceColumns = ColumnOrderHint.getSortedColumns(_connectorRepository, sourceConnectorId,
+				sourceTableMetaData);
 		final ColumnMapper columnMapper = _connectorRepository.getConnectorHint(targetConnectorId, ColumnMapper.class).getValue();
 
 		int rowIndex = 1;

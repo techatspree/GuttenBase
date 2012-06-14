@@ -12,9 +12,7 @@ import de.akquinet.jbosscc.guttenbase.repository.ConnectorRepository;
  * @author M. Dahm
  */
 public class MySqlSourceDatabaseConfiguration extends DefaultSourceDatabaseConfiguration {
-  private static final long serialVersionUID = 1L;
-
-  public MySqlSourceDatabaseConfiguration(final ConnectorRepository connectorRepository) {
-    super(connectorRepository);
-  }
+	public MySqlSourceDatabaseConfiguration(final ConnectorRepository connectorRepository) {
+		super(connectorRepository);
+	}
 }

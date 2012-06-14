@@ -20,8 +20,6 @@ import de.akquinet.jbosscc.guttenbase.repository.ConnectorRepository;
  * @author M. Dahm
  */
 public abstract class AbstractDatabaseConfiguration implements DatabaseConfiguration {
-	private static final long serialVersionUID = 1L;
-
 	private static final Logger LOG = Logger.getLogger(DatabaseConfiguration.class);
 
 	protected final ConnectorRepository _connectorRepository;
