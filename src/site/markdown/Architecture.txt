@@ -1,0 +1,12 @@
+GuttenBase architecture
+=======================
+
+The following image shows the basic architecture of GuttenBase:
+
+![GuttenBase architecture](images/architecture.png)
+
+Everything is grouped around the _connector repository_ containing all informations about the configured data bases.
+
+- Data base specific informations are contained in [Configurations](Configuration.html)
+- [Hints](Hints.html) may influence the migration process in various ways. E.g., by filtering the list of tables to be copied.
+- [Tools](Tools.html) use the connector repository and the hints to do their work

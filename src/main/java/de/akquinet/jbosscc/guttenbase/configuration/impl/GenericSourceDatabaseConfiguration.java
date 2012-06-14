@@ -12,8 +12,6 @@ import de.akquinet.jbosscc.guttenbase.repository.ConnectorRepository;
  * @author M. Dahm
  */
 public class GenericSourceDatabaseConfiguration extends DefaultSourceDatabaseConfiguration {
-	private static final long serialVersionUID = 1L;
-
 	public GenericSourceDatabaseConfiguration(final ConnectorRepository connectorRepository) {
 		super(connectorRepository);
 	}

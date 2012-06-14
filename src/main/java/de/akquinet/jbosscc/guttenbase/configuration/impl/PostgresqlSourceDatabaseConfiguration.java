@@ -12,9 +12,7 @@ import de.akquinet.jbosscc.guttenbase.repository.ConnectorRepository;
  * @author M. Dahm
  */
 public class PostgresqlSourceDatabaseConfiguration extends DefaultSourceDatabaseConfiguration {
-  private static final long serialVersionUID = 1L;
-
-  public PostgresqlSourceDatabaseConfiguration(final ConnectorRepository connectorRepository) {
-    super(connectorRepository);
-  }
+	public PostgresqlSourceDatabaseConfiguration(final ConnectorRepository connectorRepository) {
+		super(connectorRepository);
+	}
 }

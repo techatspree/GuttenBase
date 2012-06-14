@@ -1,0 +1,22 @@
+Meta data
+=========
+
+The user may request [meta data](apidocs/de/akquinet/jbosscc/guttenbase/meta/package-summary.html) from the connector repository that contains all the information about a data base.
+
+Code example
+------------
+
+Read some data from the data base in a JUnit test.
+
+	final DatabaseMetaData databaseMetaData = _connectorRepository.getDatabaseMetaData(CONNECTOR_ID);
+	assertNotNull(databaseMetaData);
+	assertEquals("Apache Derby", databaseMetaData.getDatabaseName());
+
+	assertEquals(6, databaseMetaData.getTableMetaData().size());
+	final TableMetaData userTableMetaData = databaseMetaData.getTableMetaData("FOO_USER");
+	assertNotNull(userTableMetaData);
+
+	assertEquals(6, userTableMetaData.getColumnCount());
+	final ColumnMetaData idColumn = userTableMetaData.getColumnMetaData("ID");
+	assertNotNull(idColumn);
+	assertEquals("BIGINT", idColumn.getColumnTypeName());

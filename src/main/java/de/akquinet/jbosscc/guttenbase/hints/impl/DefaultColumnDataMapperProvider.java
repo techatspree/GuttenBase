@@ -12,7 +12,7 @@ import de.akquinet.jbosscc.guttenbase.meta.ColumnType;
 /**
  * Default implementation. To add further mapping you should simply extend {@link DefaultColumnDataMapperProviderHint} and call
  * {@link #addMapping(ColumnType, ColumnType, ColumnDataMapper)} in the overridden
- * {@link DefaultColumnDataMapperProviderHint#addMappings(DefaultColumnDataMapperFactory)} method.
+ * {@link DefaultColumnDataMapperProviderHint#addMappings(DefaultColumnDataMapperProvider)} method.
  * 
  * <p>
  * &copy; 2012 akquinet tech@spree
