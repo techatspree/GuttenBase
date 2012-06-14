@@ -1,0 +1,131 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+
+
+
+
+
+
+
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>GuttenBase - The database copying and migration framework - </title>
+    <style type="text/css" media="all">
+      @import url("./css/maven-base.css");
+      @import url("./css/maven-theme.css");
+      @import url("./css/site.css");
+    </style>
+    <link rel="stylesheet" href="./css/print.css" type="text/css" media="print" />
+          </head>
+  <body class="composite">
+    <div id="banner">
+                    <span id="bannerLeft">
+    
+            GuttenBase - The database copying and migration framework
+    
+            </span>
+                    <div class="clear">
+        <hr/>
+      </div>
+    </div>
+    <div id="breadcrumbs">
+          
+  
+
+  
+    
+  
+  
+    
+            <div class="xleft">
+        Last Published: 2012-06-14
+                      </div>
+            <div class="xright">            <a href="${project.url}">GuttenBase - The database copying and migration framework</a>
+            
+  
+
+  
+    
+  
+  
+    
+  </div>
+      <div class="clear">
+        <hr/>
+      </div>
+    </div>
+    <div id="leftColumn">
+      <div id="navcolumn">
+           
+  
+
+  
+    
+  
+  
+    
+                                                          <a href="http://maven.apache.org/" title="Built by Maven" class="poweredBy">
+            <img alt="Built by Maven" src="./images/logos/maven-feather.png"></img>
+          </a>
+                       
+  
+
+  
+    
+  
+  
+    
+        </div>
+    </div>
+    <div id="bodyColumn">
+      <div id="contentBox">
+        <h1>Meta data</h1>
+
+<p>The user may request <a href="apidocs/de/akquinet/jbosscc/guttenbase/meta/package-summary.html">meta data</a> from the connector repository that contains all the information about a data base.</p>
+
+<h2>Code example</h2>
+
+<p>Read some data from the data base in a JUnit test.</p>
+
+<pre><code>final DatabaseMetaData databaseMetaData = _connectorRepository.getDatabaseMetaData(CONNECTOR_ID);
+assertNotNull(databaseMetaData);
+assertEquals("Apache Derby", databaseMetaData.getDatabaseName());
+
+assertEquals(6, databaseMetaData.getTableMetaData().size());
+final TableMetaData userTableMetaData = databaseMetaData.getTableMetaData("FOO_USER");
+assertNotNull(userTableMetaData);
+
+assertEquals(6, userTableMetaData.getColumnCount());
+final ColumnMetaData idColumn = userTableMetaData.getColumnMetaData("ID");
+assertNotNull(idColumn);
+assertEquals("BIGINT", idColumn.getColumnTypeName());
+</code></pre>
+
+      </div>
+    </div>
+    <div class="clear">
+      <hr/>
+    </div>
+    <div id="footer">
+      <div class="xright">&#169;  
+          2012
+    
+          
+  
+
+  
+    
+  
+  
+    
+  </div>
+      <div class="clear">
+        <hr/>
+      </div>
+    </div>
+  </body>
+</html>

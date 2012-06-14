@@ -1,0 +1,123 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+
+
+
+
+
+
+
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>GuttenBase - The database copying and migration framework - </title>
+    <style type="text/css" media="all">
+      @import url("./css/maven-base.css");
+      @import url("./css/maven-theme.css");
+      @import url("./css/site.css");
+    </style>
+    <link rel="stylesheet" href="./css/print.css" type="text/css" media="print" />
+          </head>
+  <body class="composite">
+    <div id="banner">
+                    <span id="bannerLeft">
+    
+            GuttenBase - The database copying and migration framework
+    
+            </span>
+                    <div class="clear">
+        <hr/>
+      </div>
+    </div>
+    <div id="breadcrumbs">
+          
+  
+
+  
+    
+  
+  
+    
+            <div class="xleft">
+        Last Published: 2012-06-14
+                      </div>
+            <div class="xright">            <a href="${project.url}">GuttenBase - The database copying and migration framework</a>
+            
+  
+
+  
+    
+  
+  
+    
+  </div>
+      <div class="clear">
+        <hr/>
+      </div>
+    </div>
+    <div id="leftColumn">
+      <div id="navcolumn">
+           
+  
+
+  
+    
+  
+  
+    
+                                                          <a href="http://maven.apache.org/" title="Built by Maven" class="poweredBy">
+            <img alt="Built by Maven" src="./images/logos/maven-feather.png"></img>
+          </a>
+                       
+  
+
+  
+    
+  
+  
+    
+        </div>
+    </div>
+    <div id="bodyColumn">
+      <div id="contentBox">
+        <h1>Tools</h1>
+
+<p>There is surely a wide range range of possibilities... Currently <a href="apidocs/de/akquinet/jbosscc/guttenbase/tools/package-summary.html">implemented in GuttenBase</a> are the following tools:</p>
+
+<ul>
+<li>CheckSchemaCompatibilityTool: Check for compatibility between source and target data base. I.e., check for tables, columns and if the column types can be mapped.</li>
+<li>DefaultTableCopyTool: Copy tables using the default algorithm. Basically read data in chunks from source, transform them and write batches of INSERT statements to the target data base. The number of rows and data items per batch/commit is configurable.</li>
+<li>SplitByRangeTableCopyTool: Same functionality, but splits the data by some given range, usually the primary key. I.e., the data is read in chunks where those chunks are split using the ID column range of values.</li>
+<li>CheckEqualTableDataTool: Check two schemas for equal data where the tool takes a configurable number of sample data from each table.</li>
+<li>ScriptExecutorTool: Execute SQL statements in various ways</li>
+<li>ReadTableDataTool: Read data from table(s) and return them in a map</li>
+<li>AbstractSequenceUpdateTool: Some data bases support sequences. After migration the sequences must be updated to a new current value</li>
+</ul>
+
+      </div>
+    </div>
+    <div class="clear">
+      <hr/>
+    </div>
+    <div id="footer">
+      <div class="xright">&#169;  
+          2012
+    
+          
+  
+
+  
+    
+  
+  
+    
+  </div>
+      <div class="clear">
+        <hr/>
+      </div>
+    </div>
+  </body>
+</html>
