@@ -1,0 +1,4 @@
+#Wed Sep 03 10:49:04 CEST 2008
+default.configuration=AEV-datamigration
+eclipse.preferences.version=1
+hibernate3.enabled=true
