@@ -52,9 +52,6 @@ public class DatabaseMetaDataInspectorTool {
 		_connectorId = connectorId;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	public DatabaseMetaData getDatabaseMetaData(final Connection connection) throws SQLException {
 		LOG.info("Retrieving meta data for " + _connectorId);
 

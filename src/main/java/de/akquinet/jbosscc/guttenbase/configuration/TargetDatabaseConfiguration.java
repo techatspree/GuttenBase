@@ -43,7 +43,7 @@ public interface TargetDatabaseConfiguration extends DatabaseConfiguration {
 
 	/**
 	 * Called before a new row of data (VALUES clause) is added to the INSERT statement. Note that an INSERT statement may have multiple
-	 * VALUES clauses. This method will be called for every VALUE clause.
+	 * VALUES clauses. This method will be called for every VALUES clause.
 	 */
 	void beforeNewRow(final Connection connection, String connectorId, TableMetaData table) throws SQLException;
 

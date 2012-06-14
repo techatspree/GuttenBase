@@ -1,0 +1,14 @@
+Builder pattern
+===============
+
+GuttenBase supports the [builder pattern](apidocs/de/akquinet/jbosscc/guttenbase/meta/builder/package-summary.html) to build your own data base schema definitions.
+
+Code example
+------------
+
+	final TableMetaDataBuilder tableMetaDataBuilder = new TableMetaDataBuilder(_databaseMetaDataBuilder).setTableName(tableMapper
+					.mapTableName(sourceTableMetaData));
+	...
+	tableMetaDataBuilder.addColumn(nameColumnBuilder).addIndex(new IndexMetaDataBuilder(tableMetaDataBuilder).
+		setAscending(true).setIndexName("NAME_IDX").
+		  setUnique(true).addColumn(nameColumnBuilder));

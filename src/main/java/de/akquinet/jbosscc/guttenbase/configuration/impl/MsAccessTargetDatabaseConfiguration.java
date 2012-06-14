@@ -14,8 +14,6 @@ import de.akquinet.jbosscc.guttenbase.repository.ConnectorRepository;
  * @author M. Dahm
  */
 public class MsAccessTargetDatabaseConfiguration extends DefaultTargetDatabaseConfiguration {
-	private static final long serialVersionUID = 1L;
-
 	public MsAccessTargetDatabaseConfiguration(final ConnectorRepository connectorRepository) {
 		super(connectorRepository);
 	}
