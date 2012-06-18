@@ -35,7 +35,7 @@ public class SelectStatementCreator extends AbstractSelectStatementCreator {
 			final int jdbcType = columnMetaData.getColumnType();
 
 			// No BLOB or the like
-			if (jdbcType < Types.JAVA_OBJECT) {
+			if (jdbcType > 0 && jdbcType < Types.JAVA_OBJECT) {
 				buf.append(columnName + ", ");
 				columnsAdded++;
 			}

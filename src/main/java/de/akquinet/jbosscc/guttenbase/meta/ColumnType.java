@@ -216,10 +216,14 @@ public enum ColumnType {
 	}
 
 	private static Class<?> forName(final String className) throws SQLException {
-		try {
-			return Class.forName(className);
-		} catch (final ClassNotFoundException e) {
-			throw new SQLException("Class not found: ", e);
+		if ("byte[]".equals(className)) { // Oracle-Bug
+			return Util.ByteArrayClass;
+		} else {
+			try {
+				return Class.forName(className);
+			} catch (final ClassNotFoundException e) {
+				throw new SQLException("Class not found: " + className, e);
+			}
 		}
 	}
 }

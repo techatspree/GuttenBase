@@ -61,19 +61,5 @@ public interface Exporter {
 	 */
 	void flush() throws Exception;
 
-	void writeDouble(double val) throws Exception;
-
 	void writeObject(Object obj) throws Exception;
-
-	void writeBoolean(boolean val) throws Exception;
-
-	void writeByte(int val) throws Exception;
-
-	void writeShort(int val) throws Exception;
-
-	void writeInt(int val) throws Exception;
-
-	void writeLong(long val) throws Exception;
-
-	void writeFloat(float val) throws Exception;
 }

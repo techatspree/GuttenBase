@@ -117,7 +117,7 @@ public class ZipExporter implements Exporter {
 	public void initializeWriteTableData(final TableMetaData tableMetaData) throws IOException {
 		newEntry(ZipConstants.PREFIX + tableMetaData.getTableName() + ZipConstants.PATH_SEPARATOR + ZipConstants.TABLE_DATA_NAME);
 
-		_tempFile = File.createTempFile("GB-", null);
+		_tempFile = File.createTempFile("GB-JAR-", null);
 		_tempFile.deleteOnExit();
 
 		_objectOutputStream = new ObjectOutputStream(new FileOutputStream(_tempFile));
@@ -173,41 +173,6 @@ public class ZipExporter implements Exporter {
 	@Override
 	public void writeObject(final Object obj) throws IOException {
 		_objectOutputStream.writeObject(obj);
-	}
-
-	@Override
-	public void writeBoolean(final boolean val) throws IOException {
-		_objectOutputStream.writeBoolean(val);
-	}
-
-	@Override
-	public void writeByte(final int val) throws IOException {
-		_objectOutputStream.writeByte(val);
-	}
-
-	@Override
-	public void writeShort(final int val) throws IOException {
-		_objectOutputStream.writeShort(val);
-	}
-
-	@Override
-	public void writeInt(final int val) throws IOException {
-		_objectOutputStream.writeInt(val);
-	}
-
-	@Override
-	public void writeLong(final long val) throws IOException {
-		_objectOutputStream.writeLong(val);
-	}
-
-	@Override
-	public void writeFloat(final float val) throws IOException {
-		_objectOutputStream.writeFloat(val);
-	}
-
-	@Override
-	public void writeDouble(final double val) throws IOException {
-		_objectOutputStream.writeDouble(val);
 	}
 
 	private void writeIndexEntries(final TableMetaData tableMetaData) throws IOException {
