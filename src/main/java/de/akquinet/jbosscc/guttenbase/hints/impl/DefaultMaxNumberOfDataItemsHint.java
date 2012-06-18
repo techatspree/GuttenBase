@@ -1,6 +1,7 @@
 package de.akquinet.jbosscc.guttenbase.hints.impl;
 
 import de.akquinet.jbosscc.guttenbase.hints.MaxNumberOfDataItemsHint;
+import de.akquinet.jbosscc.guttenbase.meta.TableMetaData;
 import de.akquinet.jbosscc.guttenbase.tools.MaxNumberOfDataItems;
 
 /**
@@ -18,7 +19,7 @@ public class DefaultMaxNumberOfDataItemsHint extends MaxNumberOfDataItemsHint {
 		return new MaxNumberOfDataItems() {
 
 			@Override
-			public int getMaxNumberOfDataItems() {
+			public int getMaxNumberOfDataItems(TableMetaData targetTableMetaData) {
 				return 30000;
 			}
 		};

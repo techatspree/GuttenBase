@@ -50,10 +50,10 @@ public abstract class AbstractTableCopyTool {
 	 */
 	public void copyTables(final String sourceConnectorId, final String targetConnectorId) throws SQLException {
 		final List<TableMetaData> tableSourceMetaDatas = TableOrderHint.getSortedTables(_connectorRepository, sourceConnectorId);
-		final int defaultNumberOfValuesClauses = _connectorRepository.getConnectorHint(targetConnectorId, NumberOfRowsPerInsertion.class)
-				.getValue().getNumberOfRowsPerInsertion();
-		final int maxNumberOfDataItems = _connectorRepository.getConnectorHint(targetConnectorId, MaxNumberOfDataItems.class).getValue()
-				.getMaxNumberOfDataItems();
+		final NumberOfRowsPerInsertion numberOfRowsPerInsertionHint = _connectorRepository.getConnectorHint(targetConnectorId,
+				NumberOfRowsPerInsertion.class).getValue();
+		final MaxNumberOfDataItems maxNumberOfDataItemsHint = _connectorRepository.getConnectorHint(targetConnectorId,
+				MaxNumberOfDataItems.class).getValue();
 		final long start = System.currentTimeMillis();
 
 		final SourceDatabaseConfiguration sourceDatabaseConfiguration = _connectorRepository.getSourceDatabaseConfiguration(sourceConnectorId);
@@ -75,6 +75,8 @@ public abstract class AbstractTableCopyTool {
 		for (final Iterator<TableMetaData> sourceTableIterator = tableSourceMetaDatas.iterator(); sourceTableIterator.hasNext(); tableCounter++) {
 			final TableMetaData sourceTableMetaData = sourceTableIterator.next();
 			final TableMetaData targetTableMetaData = tableMapper.map(sourceTableMetaData, targetDatabaseMetaData);
+			final int defaultNumberOfValuesClauses = numberOfRowsPerInsertionHint.getNumberOfRowsPerInsertion(targetTableMetaData);
+			final int maxNumberOfDataItems = maxNumberOfDataItemsHint.getMaxNumberOfDataItems(targetTableMetaData);
 
 			if (targetTableMetaData == null) {
 				throw new TableConfigurationException("No matching table for " + sourceTableMetaData + " in target data base!!!");

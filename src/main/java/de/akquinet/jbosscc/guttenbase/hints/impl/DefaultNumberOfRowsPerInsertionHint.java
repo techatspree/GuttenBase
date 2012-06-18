@@ -1,6 +1,7 @@
 package de.akquinet.jbosscc.guttenbase.hints.impl;
 
 import de.akquinet.jbosscc.guttenbase.hints.NumberOfRowsPerInsertionHint;
+import de.akquinet.jbosscc.guttenbase.meta.TableMetaData;
 import de.akquinet.jbosscc.guttenbase.tools.NumberOfRowsPerInsertion;
 
 /**
@@ -17,12 +18,12 @@ public class DefaultNumberOfRowsPerInsertionHint extends NumberOfRowsPerInsertio
 	public NumberOfRowsPerInsertion getValue() {
 		return new NumberOfRowsPerInsertion() {
 			@Override
-			public int getNumberOfRowsPerInsertion() {
+			public int getNumberOfRowsPerInsertion(TableMetaData targetTableMetaData) {
 				return 2000;
 			}
 
 			@Override
-			public boolean useValuesClauses() {
+			public boolean useValuesClauses(TableMetaData targetTableMetaData) {
 				return true;
 			}
 		};

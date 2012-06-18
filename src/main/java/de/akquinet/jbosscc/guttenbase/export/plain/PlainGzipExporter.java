@@ -99,41 +99,6 @@ public class PlainGzipExporter implements Exporter {
 		_objectOutputStream.writeObject(obj);
 	}
 
-	@Override
-	public void writeBoolean(final boolean val) throws IOException {
-		_objectOutputStream.writeBoolean(val);
-	}
-
-	@Override
-	public void writeByte(final int val) throws IOException {
-		_objectOutputStream.writeByte(val);
-	}
-
-	@Override
-	public void writeShort(final int val) throws IOException {
-		_objectOutputStream.writeShort(val);
-	}
-
-	@Override
-	public void writeInt(final int val) throws IOException {
-		_objectOutputStream.writeInt(val);
-	}
-
-	@Override
-	public void writeLong(final long val) throws IOException {
-		_objectOutputStream.writeLong(val);
-	}
-
-	@Override
-	public void writeFloat(final float val) throws IOException {
-		_objectOutputStream.writeFloat(val);
-	}
-
-	@Override
-	public void writeDouble(final double val) throws IOException {
-		_objectOutputStream.writeDouble(val);
-	}
-
 	private void writeExtraInformation() throws SQLException, IOException {
 		final ExportDumpExtraInformation exportDumpExtraInformation = _connectorRepository.getConnectorHint(_connectorId,
 				ExportDumpExtraInformation.class).getValue();

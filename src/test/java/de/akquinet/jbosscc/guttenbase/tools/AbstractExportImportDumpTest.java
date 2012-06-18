@@ -74,6 +74,10 @@ public abstract class AbstractExportImportDumpTest extends AbstractGuttenBaseTes
 		new ScriptExecutorTool(_connectorRepository).executeFileScript(CONNECTOR_ID2, "/ddl/tables.sql");
 		new ScriptExecutorTool(_connectorRepository).executeFileScript(CONNECTOR_ID1, false, false, "/data/test-data.sql");
 
+		for (int i = 1; i < 5; i++) {
+			insertBinaryData(CONNECTOR_ID1, i);
+		}
+
 		new CheckSchemaCompatibilityTool(_connectorRepository).checkTableConfiguration(CONNECTOR_ID1, EXPORT);
 		new CheckSchemaCompatibilityTool(_connectorRepository).checkTableConfiguration(CONNECTOR_ID1, CONNECTOR_ID2);
 

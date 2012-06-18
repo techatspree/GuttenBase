@@ -214,7 +214,7 @@ public class CheckEqualTableDataTool {
 
 	private static SQLException createIncompatibleDataException(final String tableName, final int index, final ColumnType columnType,
 			final String columnName, final Object data1, final Object data2) {
-		return new UnequalDataException(tableName + ": Row " + index + ": Data not equal on column " + columnName + ": '" + data1 + "' vs. '"
-				+ data2 + "', column class = " + columnType.getColumnClasses());
+		return new UnequalDataException(tableName + ": Row " + index + ": Data not equal on column " + columnName + ": \n'" + data1
+				+ "'\n vs. \n'" + data2 + "'\n, column class = " + columnType.getColumnClasses());
 	}
 }
