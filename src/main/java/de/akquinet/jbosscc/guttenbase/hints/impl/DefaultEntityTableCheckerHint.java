@@ -21,7 +21,9 @@ public class DefaultEntityTableCheckerHint extends EntityTableCheckerHint {
 			@Override
 			public boolean isEntityTable(final TableMetaData tableMetaData) {
 				for (final ColumnMetaData columnMetaData : tableMetaData.getColumnMetaData()) {
-					if (columnMetaData.isPrimaryKey() && columnMetaData.getColumnName().equalsIgnoreCase("ID")) {
+					final String columnName = columnMetaData.getColumnName().toUpperCase();
+
+					if (columnMetaData.isPrimaryKey() && (columnName.equals("ID") || columnName.equals("IDENT"))) {
 						return true;
 					}
 				}

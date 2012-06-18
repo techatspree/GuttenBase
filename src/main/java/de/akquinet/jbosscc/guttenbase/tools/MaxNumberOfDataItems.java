@@ -1,5 +1,7 @@
 package de.akquinet.jbosscc.guttenbase.tools;
 
+import de.akquinet.jbosscc.guttenbase.meta.TableMetaData;
+
 /**
  * How many data items may the INSERT statement have in total. I.e., how many '?' placeholders does the database support in a single
  * statement.
@@ -11,5 +13,5 @@ package de.akquinet.jbosscc.guttenbase.tools;
  * @author M. Dahm
  */
 public interface MaxNumberOfDataItems {
-  int getMaxNumberOfDataItems();
+	int getMaxNumberOfDataItems(TableMetaData targetTableMetaData);
 }

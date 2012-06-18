@@ -229,7 +229,7 @@ public class DatabaseMetaDataInspectorTool {
 	private void loadTables(final InternalDatabaseMetaData databaseMetaData, final java.sql.DatabaseMetaData metaData,
 			final String schemaPattern) throws SQLException {
 		LOG.debug("Searching tables in schema " + schemaPattern);
-		final ResultSet rs = metaData.getTables(null, schemaPattern, "%", null);
+		final ResultSet rs = metaData.getTables(null, null, "%", null);
 		final DatabaseTableFilter tableNameFilter = _connectorRepository.getConnectorHint(_connectorId, DatabaseTableFilter.class).getValue();
 
 		while (rs.next()) {
@@ -237,10 +237,14 @@ public class DatabaseMetaDataInspectorTool {
 
 			if ("TABLE".equals(tableType)) {
 				final String tableName = rs.getString("TABLE_NAME");
-				final InternalTableMetaData tableMetaData = new TableMetaDataImpl(tableName, databaseMetaData);
+				final String schemaName = rs.getString("TABLE_SCHEM");
 
-				if (tableNameFilter.accept(tableMetaData)) {
-					databaseMetaData.addTableMetaData(tableMetaData);
+				if (schemaPattern == null || schemaPattern.equalsIgnoreCase(schemaName)) {
+					final InternalTableMetaData tableMetaData = new TableMetaDataImpl(tableName, databaseMetaData);
+
+					if (tableNameFilter.accept(tableMetaData)) {
+						databaseMetaData.addTableMetaData(tableMetaData);
+					}
 				}
 			}
 		}

@@ -23,6 +23,8 @@ import de.akquinet.jbosscc.guttenbase.configuration.impl.MsSqlSourceDatabaseConf
 import de.akquinet.jbosscc.guttenbase.configuration.impl.MsSqlTargetDatabaseConfiguration;
 import de.akquinet.jbosscc.guttenbase.configuration.impl.MySqlSourceDatabaseConfiguration;
 import de.akquinet.jbosscc.guttenbase.configuration.impl.MySqlTargetDatabaseConfiguration;
+import de.akquinet.jbosscc.guttenbase.configuration.impl.OracleSourceDatabaseConfiguration;
+import de.akquinet.jbosscc.guttenbase.configuration.impl.OracleTargetDatabaseConfiguration;
 import de.akquinet.jbosscc.guttenbase.configuration.impl.PostgresqlSourceDatabaseConfiguration;
 import de.akquinet.jbosscc.guttenbase.configuration.impl.PostgresqlTargetDatabaseConfiguration;
 import de.akquinet.jbosscc.guttenbase.connector.Connector;
@@ -327,6 +329,7 @@ public class ConnectorRepositoryImpl implements ConnectorRepository {
 		addSourceDatabaseConfiguration(DatabaseType.MSSQL, new MsSqlSourceDatabaseConfiguration(this));
 		addSourceDatabaseConfiguration(DatabaseType.MYSQL, new MySqlSourceDatabaseConfiguration(this));
 		addSourceDatabaseConfiguration(DatabaseType.POSTGRESQL, new PostgresqlSourceDatabaseConfiguration(this));
+		addSourceDatabaseConfiguration(DatabaseType.ORACLE, new OracleSourceDatabaseConfiguration(this));
 		addSourceDatabaseConfiguration(DatabaseType.IMPORT_DUMP, new ImportDumpDatabaseConfiguration(this));
 		addSourceDatabaseConfiguration(DatabaseType.HSQLDB, new HsqldbSourceDatabaseConfiguration(this));
 		addSourceDatabaseConfiguration(DatabaseType.H2DB, new H2DbSourceDatabaseConfiguration(this));
@@ -336,6 +339,7 @@ public class ConnectorRepositoryImpl implements ConnectorRepository {
 		addTargetDatabaseConfiguration(DatabaseType.GENERIC, new GenericTargetDatabaseConfiguration(this));
 		addTargetDatabaseConfiguration(DatabaseType.MSSQL, new MsSqlTargetDatabaseConfiguration(this));
 		addTargetDatabaseConfiguration(DatabaseType.MYSQL, new MySqlTargetDatabaseConfiguration(this));
+		addTargetDatabaseConfiguration(DatabaseType.ORACLE, new OracleTargetDatabaseConfiguration(this));
 		addTargetDatabaseConfiguration(DatabaseType.POSTGRESQL, new PostgresqlTargetDatabaseConfiguration(this));
 		addTargetDatabaseConfiguration(DatabaseType.EXPORT_DUMP, new ExportDumpDatabaseConfiguration(this));
 		addTargetDatabaseConfiguration(DatabaseType.HSQLDB, new HsqldbTargetDatabaseConfiguration(this));

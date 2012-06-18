@@ -2,6 +2,8 @@ package de.akquinet.jbosscc.guttenbase.tools;
 
 import java.sql.PreparedStatement;
 
+import de.akquinet.jbosscc.guttenbase.meta.TableMetaData;
+
 /**
  * How many rows will be inserted in single transaction? This is an important performance issue.
  * 
@@ -9,7 +11,7 @@ import java.sql.PreparedStatement;
  * VALUES() clauses for an INSERT statement. The latter method is much faster in most cases, but not all databases support this, so the
  * value must be 1 then.
  * 
- * The value also must not be too high so data buffers are not exceeded.
+ * The value also must not be too high so data buffers are not exceeded, especially when the table contains BLOBs.
  * 
  * <p>
  * &copy; 2012 akquinet tech@spree
@@ -20,10 +22,10 @@ import java.sql.PreparedStatement;
  */
 
 public interface NumberOfRowsPerInsertion {
-  int getNumberOfRowsPerInsertion();
+	int getNumberOfRowsPerInsertion(TableMetaData targetTableMetaData);
 
-  /**
-   * Use VALUES() clauses or {@link PreparedStatement#addBatch()} as discussed above
-   */
-  boolean useValuesClauses();
+	/**
+	 * Use VALUES() clauses or {@link PreparedStatement#addBatch()} as discussed above
+	 */
+	boolean useValuesClauses(TableMetaData targetTableMetaData);
 }
