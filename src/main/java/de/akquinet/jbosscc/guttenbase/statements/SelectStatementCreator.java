@@ -3,6 +3,7 @@ package de.akquinet.jbosscc.guttenbase.statements;
 import java.sql.SQLException;
 import java.sql.Types;
 
+import de.akquinet.jbosscc.guttenbase.connector.DatabaseType;
 import de.akquinet.jbosscc.guttenbase.meta.ColumnMetaData;
 import de.akquinet.jbosscc.guttenbase.meta.TableMetaData;
 import de.akquinet.jbosscc.guttenbase.repository.ConnectorRepository;
@@ -29,13 +30,17 @@ public class SelectStatementCreator extends AbstractSelectStatementCreator {
 		final StringBuilder buf = new StringBuilder("ORDER BY ");
 		int columnsAdded = 0;
 
+		// No BLOB or the like for ordering
+		final boolean isOracle = DatabaseType.ORACLE.equals(tableMetaData.getDatabaseMetaData().getDatabaseType());
+		final int rangeFrom = isOracle ? Types.NULL : Types.LONGNVARCHAR; // Doesn't like LONG e.g.
+		final int rangeTo = Types.JAVA_OBJECT;
+
 		for (int i = 0; i < tableMetaData.getColumnCount(); i++) {
 			final ColumnMetaData columnMetaData = tableMetaData.getColumnMetaData().get(i);
 			final String columnName = _columnNameMapper.mapColumnName(columnMetaData);
 			final int jdbcType = columnMetaData.getColumnType();
 
-			// No BLOB or the like
-			if (jdbcType > 0 && jdbcType < Types.JAVA_OBJECT) {
+			if (jdbcType > rangeFrom && jdbcType < rangeTo) {
 				buf.append(columnName + ", ");
 				columnsAdded++;
 			}
