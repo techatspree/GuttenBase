@@ -57,8 +57,6 @@ public class ExportDumpBlob implements Externalizable, Blob {
 				output.flush();
 			}
 
-			_blob.free();
-
 			output.writeObject(null);
 		} catch (final SQLException e) {
 			throw new IOException("writeExternal", e);
