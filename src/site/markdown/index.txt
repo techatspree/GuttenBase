@@ -52,13 +52,15 @@ Further readings
 
 Most features are documented by JUnit tests.
 
-- [Architecture](Architecture.html)
-- [Configuration](Configuration.html)
-- [Hints](Hints.html)
-- [Tools](Tools.html)
-- [Export/Import](Export.html)
-- [Meta data](Meta.html)
+- [GuttenBase Architecture](Architecture.html)
+- [Configuration of data bases](Configuration.html)
+- [How to use hints](Hints.html)
+- [Tools included in GuttenBase](Tools.html)
+- [How to Export/Import your data base to or from an archive](Export.html)
+- [The Meta data API](Meta.html)
+- [Examples and use cases](Examples.html)
 - [Builder pattern support](Builder.html)
+- [Frequently Asked Questions (FAQ)](FAQ.html)
 - [JavaDoc-API](apidocs/index.html)
 
 

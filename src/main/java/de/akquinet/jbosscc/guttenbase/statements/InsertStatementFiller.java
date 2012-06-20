@@ -42,18 +42,19 @@ public class InsertStatementFiller {
 	public void fillInsertStatementFromResultSet(final String sourceConnectorId, final TableMetaData sourceTableMetaData,
 			final String targetConnectorId, final TableMetaData targetTableMetaData,
 			final TargetDatabaseConfiguration targetDatabaseConfiguration, final Connection targetConnection, final ResultSet rs,
-			final PreparedStatement insertStatement, final int numberOfValuesClauses) throws SQLException {
-		int currentIndex = 1;
+			final PreparedStatement insertStatement, final int numberOfRowsPerBatch, final boolean useMultipleValuesClauses) throws SQLException {
 		final CommonColumnTypeResolverTool commonColumnTypeResolver = new CommonColumnTypeResolverTool(_connectorRepository);
 		final List<ColumnMetaData> sourceColumns = ColumnOrderHint.getSortedColumns(_connectorRepository, sourceConnectorId,
 				sourceTableMetaData);
 		final ColumnMapper columnMapper = _connectorRepository.getConnectorHint(targetConnectorId, ColumnMapper.class).getValue();
+		int currentIndex = 1;
+		int dataItemsCount = 0;
 
-		for (int currentRow = 0; currentRow < numberOfValuesClauses; currentRow++) {
+		for (int currentRow = 0; currentRow < numberOfRowsPerBatch; currentRow++) {
 			final boolean ok = rs.next();
 
 			if (!ok) {
-				throw new MissingDataException("No more data in row " + currentRow + "/" + numberOfValuesClauses);
+				throw new MissingDataException("No more data in row " + currentRow + "/" + numberOfRowsPerBatch);
 			}
 
 			targetDatabaseConfiguration.beforeNewRow(targetConnection, targetConnectorId, targetTableMetaData);
@@ -70,19 +71,31 @@ public class InsertStatementFiller {
 						Object value = columnTypeMapping.getSourceColumnType().getValue(rs, columnIndex);
 						value = columnTypeMapping.getColumnDataMapper().map(columnMetaData1, columnMetaData2, value);
 						columnTypeMapping.getTargetColumnType().setValue(insertStatement, currentIndex++, value, columnMetaData2.getColumnType());
+						dataItemsCount++;
 					}
 				}
+			}
+
+			// Add another INSERT with one VALUES clause to BATCH
+			if (!useMultipleValuesClauses) {
+				insertStatement.addBatch();
+				currentIndex = 1;
 			}
 
 			targetDatabaseConfiguration.afterNewRow(targetConnection, targetConnectorId, targetTableMetaData);
 		}
 
-		LOG.debug("Number of data items: " + currentIndex);
+		// Add single INSERT with many VALUES clauses to BATCH
+		if (useMultipleValuesClauses) {
+			insertStatement.addBatch();
+		}
+
+		LOG.debug("Number of data items: " + dataItemsCount);
 	}
 
 	private ColumnTypeMapping findMapping(final String sourceConnectorId, final String targetConnectorId,
-			final CommonColumnTypeResolverTool commonColumnTypeResolver, final ColumnMetaData columnMetaData1, final ColumnMetaData columnMetaData2)
-			throws SQLException, IncompatibleColumnsException {
+			final CommonColumnTypeResolverTool commonColumnTypeResolver, final ColumnMetaData columnMetaData1,
+			final ColumnMetaData columnMetaData2) throws SQLException, IncompatibleColumnsException {
 		final ColumnTypeMapping columnTypeMapping = commonColumnTypeResolver.getCommonColumnTypeMapping(sourceConnectorId, columnMetaData1,
 				targetConnectorId, columnMetaData2);
 

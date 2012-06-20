@@ -1,19 +1,19 @@
 package de.akquinet.jbosscc.guttenbase.tools;
 
+import java.sql.SQLException;
+
 import org.junit.Before;
 import org.junit.Test;
 
 import de.akquinet.jbosscc.guttenbase.configuration.TestDerbyConnectionInfo;
 import de.akquinet.jbosscc.guttenbase.configuration.TestHsqlConnectionInfo;
 import de.akquinet.jbosscc.guttenbase.exceptions.TableConfigurationException;
-import de.akquinet.jbosscc.guttenbase.hints.NumberOfRowsPerInsertionHint;
+import de.akquinet.jbosscc.guttenbase.hints.NumberOfRowsPerBatchHint;
 import de.akquinet.jbosscc.guttenbase.meta.TableMetaData;
 
 public abstract class AbstractTableCopyToolTest extends AbstractGuttenBaseTest {
 	public static final String CONNECTOR_ID1 = "hsqldb";
 	public static final String CONNECTOR_ID2 = "derby";
-
-	protected abstract AbstractTableCopyTool getCopyTool();
 
 	@Before
 	public void setup() {
@@ -30,24 +30,47 @@ public abstract class AbstractTableCopyToolTest extends AbstractGuttenBaseTest {
 	}
 
 	@Test
-	public void testCopy() throws Exception {
-		_connectorRepository.addConnectorHint(CONNECTOR_ID1, new NumberOfRowsPerInsertionHint() {
+	public void testCopyWithMultipleValuesClauses() throws Exception {
+		addNumberOfRowsPerBatchHint(2, true);
+
+		setupSourceData();
+
+		getCopyTool().copyTables(CONNECTOR_ID1, CONNECTOR_ID2);
+
+		new CheckEqualTableDataTool(_connectorRepository).checkTableData(CONNECTOR_ID1, CONNECTOR_ID2);
+	}
+
+	@Test
+	public void testCopyWithBatchMode() throws Exception {
+		addNumberOfRowsPerBatchHint(2, false);
+
+		setupSourceData();
+
+		getCopyTool().copyTables(CONNECTOR_ID1, CONNECTOR_ID2);
+
+		new CheckEqualTableDataTool(_connectorRepository).checkTableData(CONNECTOR_ID1, CONNECTOR_ID2);
+	}
+
+	private void addNumberOfRowsPerBatchHint(final int numberOfRowsPerBatch, final boolean useMultipleValuesClauses) {
+		_connectorRepository.addConnectorHint(CONNECTOR_ID1, new NumberOfRowsPerBatchHint() {
 			@Override
-			public NumberOfRowsPerInsertion getValue() {
-				return new NumberOfRowsPerInsertion() {
+			public NumberOfRowsPerBatch getValue() {
+				return new NumberOfRowsPerBatch() {
 					@Override
-					public int getNumberOfRowsPerInsertion(final TableMetaData targetTableMetaData) {
-						return 2;
+					public int getNumberOfRowsPerBatch(final TableMetaData targetTableMetaData) {
+						return numberOfRowsPerBatch;
 					}
 
 					@Override
-					public boolean useValuesClauses(final TableMetaData targetTableMetaData) {
-						return true;
+					public boolean useMultipleValuesClauses(final TableMetaData targetTableMetaData) {
+						return useMultipleValuesClauses;
 					}
 				};
 			}
 		});
+	}
 
+	private void setupSourceData() throws SQLException {
 		new ScriptExecutorTool(_connectorRepository).executeFileScript(CONNECTOR_ID1, "/ddl/tables.sql");
 		new ScriptExecutorTool(_connectorRepository).executeFileScript(CONNECTOR_ID2, "/ddl/tables.sql");
 		new ScriptExecutorTool(_connectorRepository).executeFileScript(CONNECTOR_ID1, false, false, "/data/test-data.sql");
@@ -55,9 +78,7 @@ public abstract class AbstractTableCopyToolTest extends AbstractGuttenBaseTest {
 		for (int i = 1; i < 5; i++) {
 			insertBinaryData(CONNECTOR_ID1, i);
 		}
-
-		getCopyTool().copyTables(CONNECTOR_ID1, CONNECTOR_ID2);
-
-		new CheckEqualTableDataTool(_connectorRepository).checkTableData(CONNECTOR_ID1, CONNECTOR_ID2);
 	}
+
+	protected abstract AbstractTableCopyTool getCopyTool();
 }

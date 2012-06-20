@@ -17,8 +17,6 @@ import de.akquinet.jbosscc.guttenbase.repository.ConnectorRepository;
  * @author M. Dahm
  */
 public class ExportDumpDatabaseConfiguration extends DefaultTargetDatabaseConfiguration {
-	private static final long serialVersionUID = 1L;
-
 	public ExportDumpDatabaseConfiguration(final ConnectorRepository connectorRepository) {
 		super(connectorRepository);
 	}

@@ -23,17 +23,20 @@ import java.sql.SQLException;
  * @author M. Dahm
  */
 public class ExportDumpBlob implements Externalizable, Blob {
+	private static final long serialVersionUID = 1L;
+
 	public static final int DEFAULT_BUFFER_SIZE = 1024 * 1024 * 10;
 
-	private transient final Blob _blob;
 	private transient File _tempFile;
+
+	private transient final InputStream _inputStream;
 
 	public ExportDumpBlob() {
 		this(null);
 	}
 
-	public ExportDumpBlob(final Blob blob) {
-		_blob = blob;
+	public ExportDumpBlob(final InputStream inputStream) {
+		_inputStream = inputStream;
 	}
 
 	/**
@@ -41,26 +44,21 @@ public class ExportDumpBlob implements Externalizable, Blob {
 	 */
 	@Override
 	public void writeExternal(final ObjectOutput output) throws IOException {
-		try {
-			final InputStream inputStream = _blob.getBinaryStream();
-			final byte[] buffer = new byte[DEFAULT_BUFFER_SIZE];
+		final byte[] buffer = new byte[DEFAULT_BUFFER_SIZE];
 
-			for (int n = inputStream.read(buffer); n > 0; n = inputStream.read(buffer)) {
-				byte[] buf = buffer;
+		for (int n = _inputStream.read(buffer); n > 0; n = _inputStream.read(buffer)) {
+			byte[] buf = buffer;
 
-				if (n < DEFAULT_BUFFER_SIZE) {
-					buf = new byte[n];
-					System.arraycopy(buffer, 0, buf, 0, n);
-				}
-
-				output.writeObject(buf);
-				output.flush();
+			if (n < DEFAULT_BUFFER_SIZE) {
+				buf = new byte[n];
+				System.arraycopy(buffer, 0, buf, 0, n);
 			}
 
-			output.writeObject(null);
-		} catch (final SQLException e) {
-			throw new IOException("writeExternal", e);
+			output.writeObject(buf);
+			output.flush();
 		}
+
+		output.writeObject(null);
 	}
 
 	/**

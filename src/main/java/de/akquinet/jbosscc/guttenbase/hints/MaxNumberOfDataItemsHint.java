@@ -5,7 +5,7 @@ import de.akquinet.jbosscc.guttenbase.tools.MaxNumberOfDataItems;
 
 /**
  * How many data items may an INSERT statement have. I.e., how many '?' place holders does the database support. This hint may in effect
- * limit the number given by {@link NumberOfRowsPerInsertionHint}.
+ * limit the number given by {@link NumberOfRowsPerBatchHint}.
  * 
  * <p>
  * &copy; 2012 akquinet tech@spree

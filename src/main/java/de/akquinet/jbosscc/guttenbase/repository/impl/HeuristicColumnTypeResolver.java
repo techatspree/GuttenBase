@@ -30,7 +30,9 @@ public class HeuristicColumnTypeResolver implements ColumnTypeResolver {
 		if (result == null) {
 			if (columnType.endsWith("CHAR") || columnType.endsWith("TEXT") || columnType.startsWith("CHAR")) {
 				return ColumnType.CLASS_STRING;
-			} else if (columnType.startsWith("NUMERIC") || "DECIMAL".equals(columnType) || columnType.startsWith("BIGINT")) {
+			} else if ("BIGINT".equals(columnType)) {
+				return ColumnType.CLASS_LONG;
+			} else if (columnType.startsWith("NUMERIC") || "DECIMAL".equals(columnType)) {
 				return ColumnType.CLASS_BIGDECIMAL;
 			} else if ("INT2".equals(columnType) || "SMALLINT".equals(columnType)) {
 				return ColumnType.CLASS_SHORT;

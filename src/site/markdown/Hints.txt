@@ -16,7 +16,7 @@ The way tools operate is configured by _hints_. There is [quite a number of hint
 - ImportDumpExtraInformationHint: When exporting to JAR/ZIP file we give the user a possibility to retrieve extra informations from the dumped data.
 - MaxNumberOfDataItemsHint: How many data items may an INSERT statement have. I.e., how many data items does the database support in satatement. This hint may in effect limit the number given by the NumberOfRowsPerInsertionHint
 - NumberOfCheckedTableDataHint: How many rows of the copied tables shall be regarded when checking that data has been transferred correctly with the CheckEqualTableDataTool
-- NumberOfRowsPerInsertionHint: How many rows will be inserted in single transaction
+- NumberOfRowsPerBatchHint: How many rows will be inserted in single transaction
 - RepositoryColumnFilterHint:  This filter is applied when requesting meta data from the connector repository
 - RepositoryTableFilterHint:This filter is applied when requesting meta data from the connector repository
 - SplitColumnHint: Define split column for SplitByRangeTableCopyTool

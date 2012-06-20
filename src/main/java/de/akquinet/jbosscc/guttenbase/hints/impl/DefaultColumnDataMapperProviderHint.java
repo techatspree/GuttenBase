@@ -1,8 +1,9 @@
 package de.akquinet.jbosscc.guttenbase.hints.impl;
 
 import de.akquinet.jbosscc.guttenbase.hints.ColumnDataMapperProviderHint;
+import de.akquinet.jbosscc.guttenbase.mapping.BigIntLongToBigDecimalColumnDataMapper;
 import de.akquinet.jbosscc.guttenbase.mapping.ColumnDataMapperProvider;
-import de.akquinet.jbosscc.guttenbase.mapping.TimestampDateColumnDataMapper;
+import de.akquinet.jbosscc.guttenbase.mapping.TimestampToDateColumnDataMapper;
 import de.akquinet.jbosscc.guttenbase.meta.ColumnType;
 
 /**
@@ -29,6 +30,8 @@ public class DefaultColumnDataMapperProviderHint extends ColumnDataMapperProvide
 	 * May be overridden to add further mappings
 	 */
 	protected void addMappings(final DefaultColumnDataMapperProvider columnDataMapperFactory) {
-		columnDataMapperFactory.addMapping(ColumnType.CLASS_TIMESTAMP, ColumnType.CLASS_DATE, new TimestampDateColumnDataMapper());
+		columnDataMapperFactory.addMapping(ColumnType.CLASS_TIMESTAMP, ColumnType.CLASS_DATE, new TimestampToDateColumnDataMapper());
+		columnDataMapperFactory.addMapping(ColumnType.CLASS_LONG, ColumnType.CLASS_BIGDECIMAL, new BigIntLongToBigDecimalColumnDataMapper());
+		columnDataMapperFactory.addMapping(ColumnType.CLASS_INTEGER, ColumnType.CLASS_BIGDECIMAL, new BigIntLongToBigDecimalColumnDataMapper());
 	}
 }
