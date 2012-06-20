@@ -1,0 +1,218 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+
+
+
+
+
+
+
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>GuttenBase - Copying done right - </title>
+    <style type="text/css" media="all">
+      @import url("./css/maven-base.css");
+      @import url("./css/maven-theme.css");
+      @import url("./css/site.css");
+    </style>
+    <link rel="stylesheet" href="./css/print.css" type="text/css" media="print" />
+          </head>
+  <body class="composite">
+    <div id="banner">
+                  <a href="http://guttenbase.spree.de/" id="bannerLeft">
+    
+                                    <img src="http://guttenbase.spree.de/images/guttenbase-logo.png" alt="" />
+    
+            </a>
+                          <span id="bannerRight">
+    
+                                    <img src="http://guttenbase.spree.de/images/guttenbase-logo.png" alt="" />
+    
+            </span>
+            <div class="clear">
+        <hr/>
+      </div>
+    </div>
+    <div id="breadcrumbs">
+          
+  
+
+  
+    
+  
+  
+    
+            <div class="xleft">
+        Last Published: 2012-06-20
+                      </div>
+            <div class="xright">            <a href="http://www.akquinet.de/" class="externalLink">Akquinet</a>
+            |
+                <a href="http://guttenbase.spree.de/" class="externalLink">GuttenBase</a>
+            
+  
+
+  
+    
+  
+  
+    
+  </div>
+      <div class="clear">
+        <hr/>
+      </div>
+    </div>
+    <div id="leftColumn">
+      <div id="navcolumn">
+           
+  
+
+  
+    
+  
+  
+    
+                   <h5>GuttenBase</h5>
+            <ul>
+              
+    <li class="none">
+                    <a href="index.html">Introduction</a>
+          </li>
+              
+    <li class="none">
+                    <a href="Architecture.html">GuttenBase Architecture</a>
+          </li>
+              
+    <li class="none">
+                    <a href="Configuration.html">Configuration of data bases</a>
+          </li>
+              
+    <li class="none">
+                    <a href="Hints.html">How to use hints</a>
+          </li>
+              
+    <li class="none">
+                    <a href="Tools.html">Tools included in GuttenBase</a>
+          </li>
+              
+    <li class="none">
+                    <a href="Export.html">How to Export/Import your data base to or from an archive</a>
+          </li>
+              
+    <li class="none">
+                    <a href="Meta.html">The Meta data API</a>
+          </li>
+              
+    <li class="none">
+                    <a href="Examples.html">Examples and use cases</a>
+          </li>
+              
+    <li class="none">
+                    <a href="Builder.html">Builder pattern support</a>
+          </li>
+              
+    <li class="none">
+              <strong>Frequently Asked Questions (FAQ)</strong>
+        </li>
+              
+    <li class="none">
+                    <a href="apidocs/index.html">JavaDoc-API</a>
+          </li>
+          </ul>
+                                           <a href="http://maven.apache.org/" title="Built by Maven" class="poweredBy">
+            <img alt="Built by Maven" src="./images/logos/maven-feather.png"></img>
+          </a>
+                       
+  
+
+  
+    
+  
+  
+    
+        </div>
+    </div>
+    <div id="bodyColumn">
+      <div id="contentBox">
+        <h1>Frequently Asked Questions (FAQ)</h1>
+
+<h2>Q: Why do I get a "java.sql.SQLIntegrityConstraintViolationException: ORA-01400: cannot insert NULL" when copying to an Oracle DB?</h2>
+
+<p>A: Oracle chose for some reason to treat empty strings as NULL 
+(See discussion in <a href="http://stackoverflow.com/questions/203493/why-does-oracle-9i-treat-an-empty-string-as-null">stackoverflow</a>).</p>
+
+<p>There is a way to get around this using a DefaultColumnDataMapperProviderHint:</p>
+
+<pre><code>connectorRepository.addConnectorHint(TARGET, new DefaultColumnDataMapperProviderHint() {
+            protected void addMappings(final DefaultColumnDataMapperProvider columnDataMapperFactory) {
+                super.addMappings(columnDataMapperFactory);
+
+                columnDataMapperFactory.addMapping(ColumnType.CLASS_STRING, ColumnType.CLASS_STRING, new ColumnDataMapper() {
+                    public boolean isApplicable(final ColumnMetaData sourceColumnMetaData, final ColumnMetaData targetColumnMetaData)
+                            throws SQLException {
+                        return sourceColumnMetaData.getColumnName().equalsIgnoreCase("MY_COLUMN");
+                    }
+
+                    public Object map(final ColumnMetaData sourceColumnMetaData, final ColumnMetaData targetColumnMetaData, final Object value)
+                            throws SQLException {
+                        if ("".equals(value.toString().trim())) {
+                            return " ";
+                        } else {
+                            return value;
+                        }
+                    }
+                });
+            }
+        });
+</code></pre>
+
+<h2>Q: Why do I get a "java.sql.SQLSyntaxErrorException: ORA-00933: SQL command not properly ended" when copying to an Oracle DB?</h2>
+
+<p>A: Well, unfortunately not all DB systems obey the standard and support multiple VALUES clauses in an INSERT statement.
+See discussion in <a href="http://en.wikipedia.org/wiki/Insert_%28SQL%29#Multirow_inserts">Wikipedia</a>.</p>
+
+<p>You'll have to limit the number of VALUES clauses to 1 or use the BATCH mode.</p>
+
+<pre><code>connectorRepository.addConnectorHint(TARGET, new NumberOfRowsPerInsertionHint() {
+            public NumberOfRowsPerInsertion getValue() {
+                return new NumberOfRowsPerInsertion() {
+                    public boolean useMultipleValuesClauses(final TableMetaData targetTableMetaData) {
+                        return false;
+                    }
+
+                    @Override
+                    public int getNumberOfRowsPerInsertion(final TableMetaData targetTableMetaData) {
+                        return 2000;
+                    }
+                };
+            }
+        });
+</code></pre>
+
+      </div>
+    </div>
+    <div class="clear">
+      <hr/>
+    </div>
+    <div id="footer">
+      <div class="xright">&#169;  
+          2012
+    
+          
+  
+
+  
+    
+  
+  
+    
+  </div>
+      <div class="clear">
+        <hr/>
+      </div>
+    </div>
+  </body>
+</html>

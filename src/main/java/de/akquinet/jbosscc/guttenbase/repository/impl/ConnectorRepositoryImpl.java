@@ -47,7 +47,7 @@ import de.akquinet.jbosscc.guttenbase.hints.impl.DefaultImportDumpExtraInformati
 import de.akquinet.jbosscc.guttenbase.hints.impl.DefaultImporterFactoryHint;
 import de.akquinet.jbosscc.guttenbase.hints.impl.DefaultMaxNumberOfDataItemsHint;
 import de.akquinet.jbosscc.guttenbase.hints.impl.DefaultNumberOfCheckedTableDataHint;
-import de.akquinet.jbosscc.guttenbase.hints.impl.DefaultNumberOfRowsPerInsertionHint;
+import de.akquinet.jbosscc.guttenbase.hints.impl.DefaultNumberOfRowsPerBatchHint;
 import de.akquinet.jbosscc.guttenbase.hints.impl.DefaultRepositoryColumnFilterHint;
 import de.akquinet.jbosscc.guttenbase.hints.impl.DefaultRepositoryTableFilterHint;
 import de.akquinet.jbosscc.guttenbase.hints.impl.DefaultSplitColumnHint;
@@ -351,7 +351,7 @@ public class ConnectorRepositoryImpl implements ConnectorRepository {
 	private void initDefaultHints(final String connectorId) {
 		addConnectorHint(connectorId, new DefaultRepositoryTableFilterHint());
 		addConnectorHint(connectorId, new DefaultDatabaseTableFilterHint());
-		addConnectorHint(connectorId, new DefaultNumberOfRowsPerInsertionHint());
+		addConnectorHint(connectorId, new DefaultNumberOfRowsPerBatchHint());
 		addConnectorHint(connectorId, new DefaultNumberOfCheckedTableDataHint());
 		addConnectorHint(connectorId, new DefaultMaxNumberOfDataItemsHint());
 		addConnectorHint(connectorId, new DefaultSplitColumnHint());

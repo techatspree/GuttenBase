@@ -41,7 +41,8 @@ public class SplitByRangeTableCopyTool extends AbstractTableCopyTool {
 	protected void copyTable(final String sourceConnectorId, final Connection sourceConnection,
 			final SourceDatabaseConfiguration sourceDatabaseConfiguration, final TableMetaData sourceTableMetaData, final String sourceTableName,
 			final String targetConnectorId, final Connection targetConnection, final TargetDatabaseConfiguration targetDatabaseConfiguration,
-			final TableMetaData targetTableMetaData, final String targetTableName, final int numberOfValuesClauses) throws SQLException {
+			final TableMetaData targetTableMetaData, final String targetTableName, final int numberOfRowsPerBatch,
+			final boolean useMultipleValuesClauses) throws SQLException {
 		final int sourceRowCount = sourceTableMetaData.getRowCount();
 		final InsertStatementCreator insertStatementCreator = new InsertStatementCreator(_connectorRepository, targetConnectorId);
 		final InsertStatementFiller insertStatementFiller = new InsertStatementFiller(_connectorRepository);
@@ -56,12 +57,12 @@ public class SplitByRangeTableCopyTool extends AbstractTableCopyTool {
 
 		final PreparedStatement selectStatement = new SplitByColumnSelectStatementCreator(_connectorRepository, sourceConnectorId)
 				.createSelectStatement(sourceTableName, sourceTableMetaData, sourceConnection);
-		selectStatement.setFetchSize(Math.min(numberOfValuesClauses, selectStatement.getMaxRows()));
+		selectStatement.setFetchSize(Math.min(numberOfRowsPerBatch, selectStatement.getMaxRows()));
 
 		int totalWritten = 0;
-		for (long splitColumnValue = minValue; splitColumnValue <= maxValue; splitColumnValue += numberOfValuesClauses + 1) {
+		for (long splitColumnValue = minValue; splitColumnValue <= maxValue; splitColumnValue += numberOfRowsPerBatch + 1) {
 			final long start = splitColumnValue;
-			final long end = splitColumnValue + numberOfValuesClauses;
+			final long end = splitColumnValue + numberOfRowsPerBatch;
 
 			sourceDatabaseConfiguration.beforeSelect(sourceConnection, sourceConnectorId, sourceTableMetaData);
 			final long countData = getCurrentCount(countStatement, start, end);
@@ -78,12 +79,13 @@ public class SplitByRangeTableCopyTool extends AbstractTableCopyTool {
 
 				targetDatabaseConfiguration.beforeInsert(targetConnection, targetConnectorId, targetTableMetaData);
 				final PreparedStatement bulkInsert = insertStatementCreator.createInsertStatement(sourceConnectorId, sourceTableMetaData,
-						targetTableName, targetTableMetaData, targetConnection, (int) countData);
+						targetTableName, targetTableMetaData, targetConnection, (int) countData, useMultipleValuesClauses);
 
 				try {
 					insertStatementFiller.fillInsertStatementFromResultSet(sourceConnectorId, sourceTableMetaData, targetConnectorId,
-							targetTableMetaData, targetDatabaseConfiguration, targetConnection, resultSet, bulkInsert, (int) countData);
-					bulkInsert.executeUpdate();
+							targetTableMetaData, targetDatabaseConfiguration, targetConnection, resultSet, bulkInsert, (int) countData,
+							useMultipleValuesClauses);
+					bulkInsert.executeBatch();
 					targetConnection.commit();
 
 					totalWritten += countData;

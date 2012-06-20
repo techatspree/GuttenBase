@@ -50,14 +50,17 @@ public class OracleTargetDatabaseConfiguration extends DefaultTargetDatabaseConf
 	private void setReferentialIntegrity(final Connection connection, final String connectorId, final List<TableMetaData> tableMetaDatas,
 			final boolean enable) throws SQLException {
 		final String tablesList = createTablesList(tableMetaDatas);
-		final List<Map<String, Object>> foreignKeyNames = new ScriptExecutorTool(_connectorRepository).executeQuery(connectorId,
-				"SELECT TABLE_NAME, CONSTRAINT_NAME FROM USER_CONSTRAINTS WHERE CONSTRAINT_TYPE = 'R' AND TABLE_NAME IN (" + tablesList + ")");
 
-		for (final Map<String, Object> fkMap : foreignKeyNames) {
-			final String tableName = fkMap.get("TABLE_NAME").toString();
-			final String constraintName = fkMap.get("CONSTRAINT_NAME").toString();
+		if (!"".equals(tablesList)) {
+			final List<Map<String, Object>> foreignKeyNames = new ScriptExecutorTool(_connectorRepository).executeQuery(connectorId,
+					"SELECT TABLE_NAME, CONSTRAINT_NAME FROM USER_CONSTRAINTS WHERE CONSTRAINT_TYPE = 'R' AND TABLE_NAME IN (" + tablesList + ")");
 
-			executeSQL(connection, "ALTER TABLE " + tableName + (enable ? " ENABLE " : " DISABLE ") + "CONSTRAINT " + constraintName + ";");
+			for (final Map<String, Object> fkMap : foreignKeyNames) {
+				final String tableName = fkMap.get("TABLE_NAME").toString();
+				final String constraintName = fkMap.get("CONSTRAINT_NAME").toString();
+
+				executeSQL(connection, "ALTER TABLE " + tableName + (enable ? " ENABLE " : " DISABLE ") + "CONSTRAINT " + constraintName);
+			}
 		}
 	}
 
@@ -68,7 +71,10 @@ public class OracleTargetDatabaseConfiguration extends DefaultTargetDatabaseConf
 			tablesBuilder.append("'" + tableMetaData.getTableName() + "'" + ", ");
 		}
 
-		tablesBuilder.setLength(tablesBuilder.length() - 2);
+		if (tablesBuilder.length() > 2) {
+			tablesBuilder.setLength(tablesBuilder.length() - 2);
+		}
+
 		return tablesBuilder.toString();
 	}
 }

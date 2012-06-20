@@ -12,7 +12,7 @@ import de.akquinet.jbosscc.guttenbase.configuration.TargetDatabaseConfiguration;
 import de.akquinet.jbosscc.guttenbase.connector.Connector;
 import de.akquinet.jbosscc.guttenbase.exceptions.TableConfigurationException;
 import de.akquinet.jbosscc.guttenbase.hints.MaxNumberOfDataItemsHint;
-import de.akquinet.jbosscc.guttenbase.hints.NumberOfRowsPerInsertionHint;
+import de.akquinet.jbosscc.guttenbase.hints.NumberOfRowsPerBatchHint;
 import de.akquinet.jbosscc.guttenbase.hints.TableNameMapperHint;
 import de.akquinet.jbosscc.guttenbase.hints.TableOrderHint;
 import de.akquinet.jbosscc.guttenbase.mapping.TableMapper;
@@ -30,7 +30,7 @@ import de.akquinet.jbosscc.guttenbase.utils.Util;
  * </p>
  * 
  * @Uses-Hint {@link TableNameMapperHint} to filter tables not to be regarded
- * @Uses-Hint {@link NumberOfRowsPerInsertionHint} to determine number of VALUES clauses in INSERT statement
+ * @Uses-Hint {@link NumberOfRowsPerBatchHint} to determine number of VALUES clauses in INSERT statement
  * @Uses-Hint {@link MaxNumberOfDataItemsHint} to determine maximum number of data items in INSERT statement
  * @Uses-Hint {@link TableOrderHint} to determine order of tables
  * @author M. Dahm
@@ -50,8 +50,8 @@ public abstract class AbstractTableCopyTool {
 	 */
 	public void copyTables(final String sourceConnectorId, final String targetConnectorId) throws SQLException {
 		final List<TableMetaData> tableSourceMetaDatas = TableOrderHint.getSortedTables(_connectorRepository, sourceConnectorId);
-		final NumberOfRowsPerInsertion numberOfRowsPerInsertionHint = _connectorRepository.getConnectorHint(targetConnectorId,
-				NumberOfRowsPerInsertion.class).getValue();
+		final NumberOfRowsPerBatch numberOfRowsPerInsertionHint = _connectorRepository.getConnectorHint(targetConnectorId,
+				NumberOfRowsPerBatch.class).getValue();
 		final MaxNumberOfDataItems maxNumberOfDataItemsHint = _connectorRepository.getConnectorHint(targetConnectorId,
 				MaxNumberOfDataItems.class).getValue();
 		final long start = System.currentTimeMillis();
@@ -75,7 +75,8 @@ public abstract class AbstractTableCopyTool {
 		for (final Iterator<TableMetaData> sourceTableIterator = tableSourceMetaDatas.iterator(); sourceTableIterator.hasNext(); tableCounter++) {
 			final TableMetaData sourceTableMetaData = sourceTableIterator.next();
 			final TableMetaData targetTableMetaData = tableMapper.map(sourceTableMetaData, targetDatabaseMetaData);
-			final int defaultNumberOfValuesClauses = numberOfRowsPerInsertionHint.getNumberOfRowsPerInsertion(targetTableMetaData);
+			final int defaultNumberOfRowsPerBatch = numberOfRowsPerInsertionHint.getNumberOfRowsPerBatch(targetTableMetaData);
+			final boolean useMultipleValuesClauses = numberOfRowsPerInsertionHint.useMultipleValuesClauses(targetTableMetaData);
 			final int maxNumberOfDataItems = maxNumberOfDataItemsHint.getMaxNumberOfDataItems(targetTableMetaData);
 
 			if (targetTableMetaData == null) {
@@ -91,13 +92,13 @@ public abstract class AbstractTableCopyTool {
 				LOG.warn("Target table " + targetTableMetaData.getTableName() + " is not empty!");
 			}
 
-			int numberOfValuesClauses = defaultNumberOfValuesClauses;
+			int numberOfRowsPerBatch = defaultNumberOfRowsPerBatch;
 			final int columnCount = targetTableMetaData.getColumnCount();
 
-			if (columnCount * numberOfValuesClauses > maxNumberOfDataItems) {
-				numberOfValuesClauses = maxNumberOfDataItems / columnCount;
+			if (columnCount * numberOfRowsPerBatch > maxNumberOfDataItems) {
+				numberOfRowsPerBatch = maxNumberOfDataItems / columnCount;
 				LOG.debug("Max number of data items " + maxNumberOfDataItems + "exceeds numberOfValuesClauses * columns="
-						+ defaultNumberOfValuesClauses + " * " + columnCount + ". Cutting down number of VALUES clauses to " + numberOfValuesClauses);
+						+ defaultNumberOfRowsPerBatch + " * " + columnCount + ". Cutting down number of VALUES clauses to " + numberOfRowsPerBatch);
 			}
 
 			sourceDatabaseConfiguration.beforeTableCopy(sourceConnection, sourceConnectorId, sourceTableMetaData);
@@ -106,7 +107,7 @@ public abstract class AbstractTableCopyTool {
 			LOG.info("Copying of " + sourceTableName + "-> " + targetTableName + "(" + tableCounter + "/" + tableSourceMetaDatas.size()
 					+ ") started");
 			copyTable(sourceConnectorId, sourceConnection, sourceDatabaseConfiguration, sourceTableMetaData, sourceTableName, targetConnectorId,
-					targetConnection, targetDatabaseConfiguration, targetTableMetaData, targetTableName, numberOfValuesClauses);
+					targetConnection, targetDatabaseConfiguration, targetTableMetaData, targetTableName, numberOfRowsPerBatch, useMultipleValuesClauses);
 			LOG.info("Copying of " + sourceTableName + "-> " + targetTableName + "(" + tableCounter + "/" + tableSourceMetaDatas.size()
 					+ ") finished");
 
@@ -115,10 +116,10 @@ public abstract class AbstractTableCopyTool {
 
 			final long endTimeCopyTable = System.currentTimeMillis();
 			final long elapsedTime = (endTimeCopyTable - startTimeCopyTable);
-			final long averagePerLine = elapsedTime / numberOfValuesClauses;
+			final long averagePerLine = elapsedTime / numberOfRowsPerBatch;
 
 			LOG.info("Copying of " + sourceTableMetaData.getTableName() + " took " + Util.formatTime(elapsedTime));
-			LOG.info(sourceTableMetaData.getRowCount() + " lines copied, average per batch (" + numberOfValuesClauses + ") = "
+			LOG.info(sourceTableMetaData.getRowCount() + " lines copied, average per batch (" + numberOfRowsPerBatch + ") = "
 					+ Util.formatTime(averagePerLine));
 		}
 
@@ -138,5 +139,5 @@ public abstract class AbstractTableCopyTool {
 	protected abstract void copyTable(final String sourceConnectorId, final Connection sourceConnection,
 			final SourceDatabaseConfiguration sourceDatabaseConfiguration, final TableMetaData sourceTableMetaData, final String sourceTableName,
 			final String targetConnectorId, final Connection targetConnection, final TargetDatabaseConfiguration targetDatabaseConfiguration,
-			final TableMetaData targetTableMetaData, final String targetTableName, final int numberOfValuesClauses) throws SQLException;
+			final TableMetaData targetTableMetaData, final String targetTableName, final int numberOfRowsPerBatch, boolean useMultipleValuesClauses) throws SQLException;
 }

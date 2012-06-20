@@ -14,7 +14,7 @@ import de.akquinet.jbosscc.guttenbase.meta.ColumnMetaData;
  * 
  * @author M. Dahm
  */
-public final class TimestampDateColumnDataMapper implements ColumnDataMapper {
+public final class TimestampToDateColumnDataMapper implements ColumnDataMapper {
   @Override
   public Object map(final ColumnMetaData sourceColumnMetaData, final ColumnMetaData targetColumnMetaData, final Object value) {
     if (value == null) {

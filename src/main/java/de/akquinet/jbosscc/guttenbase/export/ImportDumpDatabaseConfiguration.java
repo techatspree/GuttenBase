@@ -17,8 +17,6 @@ import de.akquinet.jbosscc.guttenbase.repository.ConnectorRepository;
  * @author M. Dahm
  */
 public class ImportDumpDatabaseConfiguration extends DefaultSourceDatabaseConfiguration {
-	private static final long serialVersionUID = 1L;
-
 	public ImportDumpDatabaseConfiguration(final ConnectorRepository connectorRepository) {
 		super(connectorRepository);
 	}

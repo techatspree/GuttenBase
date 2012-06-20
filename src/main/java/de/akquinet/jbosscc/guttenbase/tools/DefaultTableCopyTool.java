@@ -37,40 +37,42 @@ public class DefaultTableCopyTool extends AbstractTableCopyTool {
 	protected void copyTable(final String sourceConnectorId, final Connection sourceConnection,
 			final SourceDatabaseConfiguration sourceDatabaseConfiguration, final TableMetaData sourceTableMetaData, final String sourceTableName,
 			final String targetConnectorId, final Connection targetConnection, final TargetDatabaseConfiguration targetDatabaseConfiguration,
-			final TableMetaData targetTableMetaData, final String targetTableName, final int numberOfValuesClauses) throws SQLException {
+			final TableMetaData targetTableMetaData, final String targetTableName, final int numberOfRowsPerBatch,
+			final boolean useMultipleValuesClauses) throws SQLException {
 		final int sourceRowCount = sourceTableMetaData.getRowCount();
 		final PreparedStatement selectStatement = new SelectStatementCreator(_connectorRepository, sourceConnectorId).createSelectStatement(
 				sourceTableName, sourceTableMetaData, sourceConnection);
-		selectStatement.setFetchSize(Math.min(numberOfValuesClauses, selectStatement.getMaxRows()));
+		selectStatement.setFetchSize(Math.min(numberOfRowsPerBatch, selectStatement.getMaxRows()));
 
 		sourceDatabaseConfiguration.beforeSelect(sourceConnection, sourceConnectorId, sourceTableMetaData);
 		final ResultSet resultSet = selectStatement.executeQuery();
 		sourceDatabaseConfiguration.afterSelect(sourceConnection, sourceConnectorId, sourceTableMetaData);
 
-		final int bulkUpdateCount = sourceRowCount / numberOfValuesClauses;
-		final int remainder = sourceRowCount - (bulkUpdateCount * numberOfValuesClauses);
+		final int bulkUpdateCount = sourceRowCount / numberOfRowsPerBatch;
+		final int remainder = sourceRowCount - (bulkUpdateCount * numberOfRowsPerBatch);
 
 		final InsertStatementCreator insertStatementCreator = new InsertStatementCreator(_connectorRepository, targetConnectorId);
 		final InsertStatementFiller insertStatementFiller = new InsertStatementFiller(_connectorRepository);
 
 		targetDatabaseConfiguration.beforeInsert(targetConnection, targetConnectorId, targetTableMetaData);
 		final PreparedStatement bulkInsert = insertStatementCreator.createInsertStatement(sourceConnectorId, sourceTableMetaData,
-				targetTableName, targetTableMetaData, targetConnection, numberOfValuesClauses);
+				targetTableName, targetTableMetaData, targetConnection, numberOfRowsPerBatch, useMultipleValuesClauses);
 
-		LOG.debug("Table row count = " + sourceRowCount + ", numberOfValuesClauses = " + numberOfValuesClauses + ", bulkUpdateCount = "
+		LOG.debug("Table row count = " + sourceRowCount + ", numberOfRowsPerBatch = " + numberOfRowsPerBatch + ", bulkUpdateCount = "
 				+ bulkUpdateCount);
 
 		for (int i = 0; i < bulkUpdateCount; i++) {
 			final long startBatchTime = System.currentTimeMillis();
 
 			insertStatementFiller.fillInsertStatementFromResultSet(sourceConnectorId, sourceTableMetaData, targetConnectorId,
-					targetTableMetaData, targetDatabaseConfiguration, targetConnection, resultSet, bulkInsert, numberOfValuesClauses);
+					targetTableMetaData, targetDatabaseConfiguration, targetConnection, resultSet, bulkInsert, numberOfRowsPerBatch,
+					useMultipleValuesClauses);
 
-			bulkInsert.executeUpdate();
+			bulkInsert.executeBatch();
 			targetConnection.commit();
 
 			final long endBatchTime = System.currentTimeMillis();
-			LOG.info(sourceTableName + ": " + ((i + 1) * numberOfValuesClauses) + "/" + sourceRowCount + " rows copied: last batch update took "
+			LOG.info(sourceTableName + ": " + ((i + 1) * numberOfRowsPerBatch) + "/" + sourceRowCount + " rows copied: last batch update took "
 					+ Util.formatTime(endBatchTime - startBatchTime));
 		}
 
@@ -80,10 +82,11 @@ public class DefaultTableCopyTool extends AbstractTableCopyTool {
 
 		if (remainder > 0) {
 			final PreparedStatement finalInsert = insertStatementCreator.createInsertStatement(sourceConnectorId, sourceTableMetaData,
-					targetTableName, targetTableMetaData, targetConnection, remainder);
+					targetTableName, targetTableMetaData, targetConnection, remainder, useMultipleValuesClauses);
 			insertStatementFiller.fillInsertStatementFromResultSet(sourceConnectorId, sourceTableMetaData, targetConnectorId,
-					targetTableMetaData, targetDatabaseConfiguration, targetConnection, resultSet, finalInsert, remainder);
-			finalInsert.executeUpdate();
+					targetTableMetaData, targetDatabaseConfiguration, targetConnection, resultSet, finalInsert, remainder, useMultipleValuesClauses);
+			finalInsert.executeBatch();
+
 			targetConnection.commit();
 			finalInsert.close();
 		}
