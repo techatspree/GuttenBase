@@ -131,14 +131,26 @@ public class ExportDumpPreparedStatement implements PreparedStatement {
 	}
 
 	@Override
-	public void setBlob(final int parameterIndex, final Blob x) throws SQLException {
-		setObject(parameterIndex, x == null ? null : new ExportDumpBlob(x));
+	public void setBlob(final int parameterIndex, final InputStream inputStream) throws SQLException {
+		assert inputStream != null : "inputStream != null";
+
+		setObject(parameterIndex, new ExportDumpBlob(inputStream));
 
 		try {
 			_exporter.flush();
 		} catch (final Exception e) {
 			throw new SQLException("setBlob", e);
 		}
+	}
+
+	@Override
+	public void setBlob(final int parameterIndex, final Blob x) throws SQLException {
+		if (x != null) {
+			setBlob(parameterIndex, x.getBinaryStream());
+		} else {
+			setObject(parameterIndex, null);
+		}
+
 	}
 
 	@Override
@@ -273,12 +285,12 @@ public class ExportDumpPreparedStatement implements PreparedStatement {
 
 	@Override
 	public void clearBatch() throws SQLException {
-		throw new UnsupportedOperationException();
+		// Ignored
 	}
 
 	@Override
 	public int[] executeBatch() throws SQLException {
-		throw new UnsupportedOperationException();
+		return new int[0];
 	}
 
 	@Override
@@ -388,7 +400,7 @@ public class ExportDumpPreparedStatement implements PreparedStatement {
 
 	@Override
 	public void addBatch() throws SQLException {
-		throw new UnsupportedOperationException();
+		// Ignored
 	}
 
 	@Override
@@ -528,11 +540,6 @@ public class ExportDumpPreparedStatement implements PreparedStatement {
 
 	@Override
 	public void setClob(final int parameterIndex, final Reader reader) throws SQLException {
-		throw new UnsupportedOperationException();
-	}
-
-	@Override
-	public void setBlob(final int parameterIndex, final InputStream inputStream) throws SQLException {
 		throw new UnsupportedOperationException();
 	}
 

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="GuttenBase - Copying done right">
+<bannerLeft>
+    <name>GuttenBase</name>
+    <src>http://guttenbase.spree.de/images/guttenbase-logo.png</src>
+    <href>http://guttenbase.spree.de/</href>
+  </bannerLeft>
+  <bannerRight>
+    <src>http://guttenbase.spree.de/images/guttenbase-logo.png</src>
+  </bannerRight>
+  
+  <body>
+    <links>
+      <item name="Akquinet" href="http://www.akquinet.de/" />
+      <item name="GuttenBase" href="http://guttenbase.spree.de/" />
+    </links>
+
+    <menu name="GuttenBase">
+	    <item name="Introduction" href="index.html"/>
+		<item name="GuttenBase Architecture" href="Architecture.html"/>
+		<item name="Configuration of data bases" href="Configuration.html"/>
+		<item name="How to use hints" href="Hints.html"/>
+		<item name="Tools included in GuttenBase" href="Tools.html"/>
+		<item name="How to Export/Import your data base to or from an archive" href="Export.html"/>
+		<item name="The Meta data API" href="Meta.html"/>
+		<item name="Examples and use cases" href="Examples.html"/>
+		<item name="Builder pattern support" href="Builder.html"/>
+		<item name="Frequently Asked Questions (FAQ)" href="FAQ.html"/>
+		<item name="JavaDoc-API" href="apidocs/index.html"/>    
+	</menu>
+  </body>
+</project>

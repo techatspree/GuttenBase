@@ -94,8 +94,6 @@ public class MassDataProducerTest extends AbstractGuttenBaseTest {
 			new DefaultTableCopyTool(_connectorRepository).copyTables(SOURCE, TARGET);
 		}
 
-		// System.out.println(new ScriptExecutorTool(_connectorRepository).executeQuery(TARGET, "SELECT * FROM FOO_USER"));
-
 		final List<Map<String, Object>> listUserTable = new ScriptExecutorTool(_connectorRepository).executeQuery(TARGET,
 				"SELECT DISTINCT ID, USERNAME, NAME, PASSWORD FROM FOO_USER ORDER BY ID");
 

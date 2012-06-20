@@ -83,7 +83,8 @@ public class CheckSchemaCompatibilityTool {
 
 				if (columnTypeMapping == null) {
 					throw new IncompatibleColumnsException(tableName + ":" + columnMetaData1 + ": Columns have incompatible types: " + columnName1
-							+ "/" + columnMetaData1.getColumnTypeName() + " vs. " + columnName2 + "/" + columnMetaData2.getColumnTypeName());
+							+ "/" + columnMetaData1.getColumnTypeName() + "/" + columnMetaData1.getColumnClassName() + " vs. " + columnName2 + "/"
+							+ columnMetaData2.getColumnTypeName() + "/" + columnMetaData2.getColumnClassName());
 				}
 			}
 		}

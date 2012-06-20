@@ -21,11 +21,11 @@ import de.akquinet.jbosscc.guttenbase.meta.TableMetaData;
  * @author M. Dahm
  */
 
-public interface NumberOfRowsPerInsertion {
-	int getNumberOfRowsPerInsertion(TableMetaData targetTableMetaData);
+public interface NumberOfRowsPerBatch {
+	int getNumberOfRowsPerBatch(TableMetaData targetTableMetaData);
 
 	/**
 	 * Use VALUES() clauses or {@link PreparedStatement#addBatch()} as discussed above
 	 */
-	boolean useValuesClauses(TableMetaData targetTableMetaData);
+	boolean useMultipleValuesClauses(TableMetaData targetTableMetaData);
 }

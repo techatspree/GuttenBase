@@ -2,6 +2,7 @@ package de.akquinet.jbosscc.guttenbase.meta;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.sql.Blob;
 import java.sql.Clob;
 import java.sql.Date;
@@ -39,7 +40,7 @@ public enum ColumnType {
 	CLASS_TIME(java.sql.Time.class), //
 	CLASS_INTEGER(Integer.class), //
 	CLASS_BOOLEAN(Boolean.class), //
-	CLASS_LONG(Long.class), //
+	CLASS_LONG(Long.class, BigInteger.class), //
 	CLASS_DOUBLE(Double.class), //
 	CLASS_FLOAT(Float.class), //
 	CLASS_SHORT(Short.class);//
@@ -126,7 +127,7 @@ public enum ColumnType {
 			insertStatement.setDouble(columnIndex, (Double) data);
 			break;
 		case CLASS_BLOB:
-			insertStatement.setBlob(columnIndex, (Blob) data);
+			insertStatement.setBlob(columnIndex, ((Blob) data).getBinaryStream());
 			break;
 		case CLASS_BOOLEAN:
 			insertStatement.setBoolean(columnIndex, (Boolean) data);

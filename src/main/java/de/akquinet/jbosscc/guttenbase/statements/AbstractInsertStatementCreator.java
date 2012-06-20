@@ -30,8 +30,10 @@ public abstract class AbstractInsertStatementCreator extends AbstractStatementCr
 	 */
 	public PreparedStatement createInsertStatement(final String sourceConnectorId, final TableMetaData sourceTableMetaData,
 			final String targetTableName, final TableMetaData targetTableMetaData, final Connection destConnection,
-			final int numberOfValuesClauses) throws SQLException {
-		assert numberOfValuesClauses > 0 : "numberOfValueClauses > 0";
+			final int numberOfRowsPerBatch, final boolean useMultipleValuesClauses) throws SQLException {
+		assert numberOfRowsPerBatch > 0 : "numberOfValueClauses > 0";
+
+		final int numberOfValuesClauses = useMultipleValuesClauses ? numberOfRowsPerBatch : 1;
 		final String sql = createSQL(sourceConnectorId, sourceTableMetaData, targetTableName, targetTableMetaData, numberOfValuesClauses);
 
 		LOG.debug("Create INSERT statement " + sql);
