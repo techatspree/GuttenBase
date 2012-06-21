@@ -22,8 +22,6 @@ The following code example first checks whether the source and destination are c
 Then the values from the source database are written to the target database. 
 Finally, we perform (empirical) checks whether the data has been transmitted correctly.
 
-In many cases, that's it!
-
 	final ConnectorRepository connectorRepository = new ConnectorRepositoryImpl();
 	connectorRepository.addConnectionInfo("MySql", new AevMySqlConnectionInfo());
 	connectorRepository.addConnectionInfo("Postgresql", new AevPostgresqlConnectionInfo());
@@ -31,6 +29,8 @@ In many cases, that's it!
 	new CheckSchemaCompatibilityTool(connectorRepository).checkTableConfiguration("MySql", "Postgresql");
 	new DefaultTableCopyTool(connectorRepository).copyTables("MySql", "Postgresql");
 	new CheckEqualTableDataTool(connectorRepository).checkTableData("MySql", "Postgresql");
+
+In many cases, that's all!
 
 Features
 --------
@@ -44,6 +44,7 @@ Features
 - Transform data during the migration
 - Configure the copying process for maximum speed
 - Create mass data for testing by copying the source DB multiple times
+- Heuristic mappings of database specific types
 - Meta model of data base for analysis
 - Supports builder pattern to create schema definitions
 
