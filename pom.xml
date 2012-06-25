@@ -9,6 +9,10 @@
 	<description>Copying done right...</description>
 
 
+
+
+
+
 	<parent>
 		<groupId>org.sonatype.oss</groupId>
 		<artifactId>oss-parent</artifactId>
