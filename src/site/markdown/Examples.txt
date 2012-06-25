@@ -112,3 +112,61 @@ During multiplication we alter some of the data, i.e. we change all user names.
 			}
 		}
 	}
+	
+Changing BIGINT primary keys to UUIDs
+-------------------------------------
+
+The main problem here is that the foreign key columns referencing the alterered IDs need to be updated, too. Another problem is to get a mapping
+between the old number value and the UUID. We chose a pretty simple approach here which simply takes hash code of the names of the table and the ID column
+as the base for generating a UUID. It works well, however.
+
+First we define a column data mapper:
+
+	public class UUIDColumnDataMapper implements ColumnDataMapper {
+		public Object map(final ColumnMetaData sourceColumnMetaData, final ColumnMetaData targetColumnMetaData, final Object value) {
+			final Number number = (Number) value;
+	
+			if (number != null) {
+				final long id = number.longValue();
+				final ColumnMetaData referencedColumn = sourceColumnMetaData.getReferencedColumn();
+				String uuid;
+	
+				if (referencedColumn != null) {
+					uuid = createKey(referencedColumn, id);
+				} else {
+					uuid = createKey(sourceColumnMetaData, id);
+				}
+	
+				return uuid;
+			} else {
+				return null;
+			}
+		}
+	
+		public boolean isApplicable(final ColumnMetaData sourceColumnMetaData, final ColumnMetaData targetColumnMetaData) throws SQLException {
+			final String sourceColumnName = sourceColumnMetaData.getColumnName().toUpperCase();
+			final String targetColumnName = targetColumnMetaData.getColumnName().toUpperCase();
+	
+			return sourceColumnName.equals(targetColumnName) && sourceColumnName.endsWith("ID");
+		}
+	
+		private String createKey(final ColumnMetaData columnMetaData, final long id) {
+			final String key = columnMetaData.getTableMetaData().getTableName() + ":" + columnMetaData.getColumnName();
+			final UUID uuid = new UUID(key.hashCode(), id);
+	
+			return uuid.toString();
+		}
+	}
+	
+Then we only have to register the data mapper. The rest will be done automatically by the usual DefaultTableCopyTool:
+
+		final UUIDColumnDataMapper columnDataMapper = new UUIDColumnDataMapper();
+
+		_connectorRepository.addConnectorHint(TARGET, new DefaultColumnDataMapperProviderHint() {
+			@Override
+			protected void addMappings(final DefaultColumnDataMapperProvider columnDataMapperFactory) {
+				super.addMappings(columnDataMapperFactory);
+				columnDataMapperFactory.addMapping(ColumnType.CLASS_LONG, ColumnType.CLASS_STRING, columnDataMapper);
+				columnDataMapperFactory.addMapping(ColumnType.CLASS_BIGDECIMAL, ColumnType.CLASS_STRING, columnDataMapper);
+			}
+		});
