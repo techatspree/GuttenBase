@@ -9,6 +9,7 @@ import java.util.List;
 import org.apache.log4j.Logger;
 
 import de.akquinet.jbosscc.guttenbase.configuration.TargetDatabaseConfiguration;
+import de.akquinet.jbosscc.guttenbase.connector.DatabaseType;
 import de.akquinet.jbosscc.guttenbase.exceptions.IncompatibleColumnsException;
 import de.akquinet.jbosscc.guttenbase.exceptions.MissingDataException;
 import de.akquinet.jbosscc.guttenbase.hints.ColumnOrderHint;
@@ -47,6 +48,7 @@ public class InsertStatementFiller {
 		final List<ColumnMetaData> sourceColumns = ColumnOrderHint.getSortedColumns(_connectorRepository, sourceConnectorId,
 				sourceTableMetaData);
 		final ColumnMapper columnMapper = _connectorRepository.getConnectorHint(targetConnectorId, ColumnMapper.class).getValue();
+		final DatabaseType targetDatabaseType = targetTableMetaData.getDatabaseMetaData().getDatabaseType();
 		int currentIndex = 1;
 		int dataItemsCount = 0;
 
@@ -70,7 +72,8 @@ public class InsertStatementFiller {
 
 						Object value = columnTypeMapping.getSourceColumnType().getValue(rs, columnIndex);
 						value = columnTypeMapping.getColumnDataMapper().map(columnMetaData1, columnMetaData2, value);
-						columnTypeMapping.getTargetColumnType().setValue(insertStatement, currentIndex++, value, columnMetaData2.getColumnType());
+						columnTypeMapping.getTargetColumnType().setValue(insertStatement, currentIndex++, value, targetDatabaseType,
+								columnMetaData2.getColumnType());
 						dataItemsCount++;
 					}
 				}
