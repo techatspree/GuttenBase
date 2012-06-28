@@ -2,11 +2,11 @@
 <project name="GuttenBase - Copying done right">
 <bannerLeft>
     <name>GuttenBase</name>
-    <src>http://guttenbase.spree.de/images/guttenbase-logo.png</src>
+    <src>http://guttenbase.spree.de/public/images/logo.png</src>
     <href>http://guttenbase.spree.de/</href>
   </bannerLeft>
   <bannerRight>
-    <src>http://guttenbase.spree.de/images/guttenbase-logo.png</src>
+    <src>http://guttenbase.spree.de/public/images/logo.png</src>
   </bannerRight>
   
   <body>
