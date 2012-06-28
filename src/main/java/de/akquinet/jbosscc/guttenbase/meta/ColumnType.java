@@ -16,6 +16,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import de.akquinet.jbosscc.guttenbase.connector.DatabaseType;
 import de.akquinet.jbosscc.guttenbase.exceptions.UnhandledColumnTypeException;
 import de.akquinet.jbosscc.guttenbase.utils.Util;
 
@@ -102,17 +103,17 @@ public enum ColumnType {
 	/**
 	 * Set value in {@link PreparedStatement}
 	 */
-	public void setValue(final PreparedStatement insertStatement, final int columnIndex, final Object data, final int sqlType)
-			throws SQLException {
+	public void setValue(final PreparedStatement insertStatement, final int columnIndex, final Object data, final DatabaseType databaseType,
+			final int sqlType) throws SQLException {
 		if (data == null) {
 			insertStatement.setNull(columnIndex, sqlType);
 		} else {
-			setStatementValue(insertStatement, columnIndex, data);
+			setStatementValue(insertStatement, columnIndex, data, databaseType);
 		}
 	}
 
-	private void setStatementValue(final PreparedStatement insertStatement, final int columnIndex, final Object data) throws SQLException,
-			UnhandledColumnTypeException {
+	private void setStatementValue(final PreparedStatement insertStatement, final int columnIndex, final Object data,
+			final DatabaseType databaseType) throws SQLException, UnhandledColumnTypeException {
 		switch (this) {
 		case CLASS_STRING:
 			insertStatement.setString(columnIndex, (String) data);
@@ -127,7 +128,11 @@ public enum ColumnType {
 			insertStatement.setDouble(columnIndex, (Double) data);
 			break;
 		case CLASS_BLOB:
-			insertStatement.setBlob(columnIndex, ((Blob) data).getBinaryStream());
+			if (DatabaseType.POSTGRESQL.equals(databaseType)) {
+				insertStatement.setBlob(columnIndex, ((Blob) data));
+			} else {
+				insertStatement.setBlob(columnIndex, ((Blob) data).getBinaryStream());
+			}
 			break;
 		case CLASS_BOOLEAN:
 			insertStatement.setBoolean(columnIndex, (Boolean) data);
