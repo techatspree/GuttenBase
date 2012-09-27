@@ -143,14 +143,6 @@ public class ColumnMetaDataImpl implements InternalColumnMetaData {
 		return _columnId;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void setColumnId(final UUID columnId) {
-		_columnId = columnId;
-	}
-
 	@Override
 	public int compareTo(final ColumnMetaData that) {
 		return this.getColumnName().toUpperCase().compareTo(that.getColumnName().toUpperCase());
