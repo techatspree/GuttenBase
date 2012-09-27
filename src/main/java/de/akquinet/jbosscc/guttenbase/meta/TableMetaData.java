@@ -13,28 +13,28 @@ import java.util.List;
  * @author M. Dahm
  */
 public interface TableMetaData extends Comparable<TableMetaData>, Serializable {
-	int getRowCount();
+  int getRowCount();
 
-	List<ColumnMetaData> getColumnMetaData();
+  List<ColumnMetaData> getColumnMetaData();
 
-	ColumnMetaData getColumnMetaData(String columnName);
+  ColumnMetaData getColumnMetaData(String columnName);
 
-	int getColumnCount();
+  int getColumnCount();
 
-	String getTableName();
+  String getTableName();
 
-	/**
-	 * @return containing data base
-	 */
-	DatabaseMetaData getDatabaseMetaData();
+  /**
+   * @return containing data base
+   */
+  DatabaseMetaData getDatabaseMetaData();
 
-	IndexMetaData getIndexMetaData(String indexName);
+  IndexMetaData getIndexMetaData(String indexName);
 
-	List<ColumnMetaData> getPrimaryKeyColumns();
+  List<ColumnMetaData> getPrimaryKeyColumns();
 
-	List<IndexMetaData> getIndexes();
+  List<IndexMetaData> getIndexes();
 
-	List<IndexMetaData> getIndexesForColumn(ColumnMetaData columnMetaData);
+  List<IndexMetaData> getIndexesForColumn(ColumnMetaData columnMetaData);
 
-	List<ForeignKeyMetaData> getForeignKeys();
+  List<ForeignKeyMetaData> getForeignKeys();
 }

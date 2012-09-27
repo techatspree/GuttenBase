@@ -1,7 +1,6 @@
 package de.akquinet.jbosscc.guttenbase.hints.impl;
 
 import de.akquinet.jbosscc.guttenbase.hints.DatabaseTableFilterHint;
-import de.akquinet.jbosscc.guttenbase.meta.TableMetaData;
 import de.akquinet.jbosscc.guttenbase.repository.DatabaseTableFilter;
 
 /**
@@ -14,13 +13,8 @@ import de.akquinet.jbosscc.guttenbase.repository.DatabaseTableFilter;
  * @author M. Dahm
  */
 public class DefaultDatabaseTableFilterHint extends DatabaseTableFilterHint {
-	@Override
-	public DatabaseTableFilter getValue() {
-		return new DatabaseTableFilter() {
-			@Override
-			public boolean accept(final TableMetaData table) {
-				return true;
-			}
-		};
-	}
+  @Override
+  public DatabaseTableFilter getValue() {
+    return new DefaultDatabaseTableFilter();
+  }
 }

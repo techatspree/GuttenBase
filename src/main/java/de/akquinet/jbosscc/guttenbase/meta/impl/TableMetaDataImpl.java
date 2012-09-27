@@ -31,7 +31,8 @@ public class TableMetaDataImpl implements InternalTableMetaData {
 	private final Map<String, ForeignKeyMetaData> _foreignKeys = new LinkedHashMap<String, ForeignKeyMetaData>();
 	private final DatabaseMetaData _databaseMetaData;
 
-	public TableMetaDataImpl(final String tableName, final DatabaseMetaData databaseMetaData) {
+	public TableMetaDataImpl(final String tableName,
+			final DatabaseMetaData databaseMetaData) {
 		assert tableName != null : "tableName != null";
 		assert databaseMetaData != null : "databaseMetaData != null";
 		_tableName = tableName;
@@ -76,7 +77,17 @@ public class TableMetaDataImpl implements InternalTableMetaData {
 	@Override
 	public void addColumn(final ColumnMetaData columnMetaData) {
 		assert columnMetaData != null : "columnMetaData != null";
-		_columns.put(columnMetaData.getColumnName().toUpperCase(), columnMetaData);
+		_columns.put(columnMetaData.getColumnName().toUpperCase(),
+				columnMetaData);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void removeColumn(final ColumnMetaData columnMetaData) {
+		assert columnMetaData != null : "columnMetaData != null";
+		_columns.remove(columnMetaData.getColumnName().toUpperCase());
 	}
 
 	/**
@@ -110,7 +121,8 @@ public class TableMetaDataImpl implements InternalTableMetaData {
 
 	@Override
 	public void addForeignKey(final ForeignKeyMetaData fkMetaData) {
-		_foreignKeys.put(fkMetaData.getForeignKeyName().toUpperCase(), fkMetaData);
+		_foreignKeys.put(fkMetaData.getForeignKeyName().toUpperCase(),
+				fkMetaData);
 	}
 
 	/**
@@ -130,7 +142,8 @@ public class TableMetaDataImpl implements InternalTableMetaData {
 	}
 
 	@Override
-	public List<IndexMetaData> getIndexesForColumn(final ColumnMetaData columnMetaData) {
+	public List<IndexMetaData> getIndexesForColumn(
+			final ColumnMetaData columnMetaData) {
 		final List<IndexMetaData> result = new ArrayList<IndexMetaData>();
 
 		for (final IndexMetaData index : getIndexes()) {
@@ -160,19 +173,10 @@ public class TableMetaDataImpl implements InternalTableMetaData {
 		return _databaseMetaData;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void clearColumns() {
-		_columns.clear();
-		_indexes.clear();
-		_foreignKeys.clear();
-	}
-
 	@Override
 	public int compareTo(final TableMetaData that) {
-		return this.getTableName().toUpperCase().compareTo(that.getTableName().toUpperCase());
+		return this.getTableName().toUpperCase()
+				.compareTo(that.getTableName().toUpperCase());
 	}
 
 	@Override

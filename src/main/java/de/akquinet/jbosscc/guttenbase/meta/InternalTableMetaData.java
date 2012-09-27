@@ -14,9 +14,9 @@ public interface InternalTableMetaData extends TableMetaData {
 
 	void addColumn(final ColumnMetaData column);
 
+	void removeColumn(ColumnMetaData columnMetaData);
+
 	void addIndex(IndexMetaData indexMetaData);
 
 	void addForeignKey(ForeignKeyMetaData fkMetaData);
-
-	void clearColumns();
 }
