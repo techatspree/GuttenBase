@@ -10,7 +10,7 @@ package de.akquinet.jbosscc.guttenbase.meta;
  * @author M. Dahm
  */
 public interface InternalDatabaseMetaData extends DatabaseMetaData {
-	void addTableMetaData(final TableMetaData tableMetaData);
+  void addTableMetaData(final TableMetaData tableMetaData);
 
-	void clearTableData();
+  void removeTableMetaData(TableMetaData tableMetaData);
 }

@@ -17,7 +17,5 @@ public interface InternalColumnMetaData extends ColumnMetaData {
 	 */
 	UUID getColumnId();
 
-	void setColumnId(UUID columnId);
-
 	void setPrimaryKey(final boolean primaryKey);
 }
