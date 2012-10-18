@@ -19,9 +19,11 @@ import org.apache.log4j.Logger;
 import de.akquinet.jbosscc.guttenbase.utils.Util;
 
 /**
- * Copy all classes and data that can be found relative to the given class resource to the generated JAR/ZIP.
+ * Copy all classes and data that can be found relative to the given class
+ * resource to the generated JAR/ZIP.
  * 
- * This allows us to create a self-contained executable JAR with a user defined startup class.
+ * This allows us to create a self-contained executable JAR with a user defined
+ * startup class.
  * 
  * <p>
  * &copy; 2012 akquinet tech@spree
@@ -40,7 +42,8 @@ public class ZipClassesFromClassResourceExporter {
 	}
 
 	/**
-	 * Copy all classes and data that can be found relative to the given class resource to the generated JAR/ZIP.
+	 * Copy all classes and data that can be found relative to the given class
+	 * resource to the generated JAR/ZIP.
 	 * 
 	 * We support classes read from file system or JAR.
 	 */
@@ -66,6 +69,10 @@ public class ZipClassesFromClassResourceExporter {
 			throw new IOException("Cannot handle protocol " + protocol + " while reading classes");
 		}
 
+		if (Util.isWindows() && path.startsWith("/")) {
+			path = path.substring(1);
+		}
+
 		path = URLDecoder.decode(path, "UTF-8");
 
 		if (jarFile) {
@@ -82,9 +89,9 @@ public class ZipClassesFromClassResourceExporter {
 	}
 
 	private void addDirectoryToJar(final File dir, final String path) throws IOException {
-		assert path!= null:"path!= null";
-		assert dir!= null:"dir!= null";
-		
+		assert path != null : "path!= null";
+		assert dir != null : "dir!= null";
+
 		for (final File file : dir.listFiles()) {
 			addFileToJar(file, path);
 		}
