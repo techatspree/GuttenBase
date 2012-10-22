@@ -121,7 +121,10 @@ public class ZipClassesFromClassResourceExporter {
 		zipFile.close();
 	}
 
-	private void addEntry(final String name, final InputStream inputStream) throws IOException {
+	private void addEntry(String name, final InputStream inputStream) throws IOException {
+		// Escape problems with DOS/Windows in ZIP entries
+		name = name.replaceAll("\\", ZipConstants.PATH_SEPARATOR);
+
 		if (!_entries.add(name.toUpperCase()) || name.equalsIgnoreCase(ZipConstants.MANIFEST_NAME)) {
 			LOG.warn("Duplicate entry ignored: " + name);
 		} else {
