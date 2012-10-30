@@ -44,7 +44,7 @@
 
 	<scm>
 		<connection>scm:git:git://github.com/akquinet/GuttenBase.git</connection>
-		<url>https://github.com/akquinet/maven-latex-plugin</url>
+		<url>http://guttenbase.spree.de</url>
 		<developerConnection>scm:git:git@github.com:akquinet/GuttenBase.git</developerConnection>
 	</scm>
 
