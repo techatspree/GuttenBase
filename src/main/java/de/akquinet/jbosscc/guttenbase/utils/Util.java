@@ -248,4 +248,9 @@ public abstract class Util {
 		outputStream.close();
 		return result;
 	}
+
+	public static boolean isWindows() {
+		final String os = System.getProperty("os.name").toLowerCase();
+		return os.indexOf("win") >= 0;
+	}
 }
