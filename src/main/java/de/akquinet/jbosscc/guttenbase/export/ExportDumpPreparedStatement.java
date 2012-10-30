@@ -24,12 +24,16 @@ import java.sql.Timestamp;
 import java.sql.Types;
 import java.util.Calendar;
 
+import org.apache.commons.io.input.ReaderInputStream;
+
 import de.akquinet.jbosscc.guttenbase.exceptions.ExportException;
 
 /**
- * Custom implementation of {@link PreparedStatement} dumping data to the given output stream.
+ * Custom implementation of {@link PreparedStatement} dumping data to the given
+ * output stream.
  * 
- * Only few inherited setter methods have a meaningful implementation, most methods will throw a {@link UnsupportedOperationException}.
+ * Only few inherited setter methods have a meaningful implementation, most
+ * methods will throw a {@link UnsupportedOperationException}.
  * 
  * <p>
  * &copy; 2012 akquinet tech@spree
@@ -131,26 +135,52 @@ public class ExportDumpPreparedStatement implements PreparedStatement {
 	}
 
 	@Override
+	public void setClob(final int parameterIndex, final Clob clob) throws SQLException {
+		if (clob != null) {
+			setObject(parameterIndex, new ExportDumpClob(clob.getAsciiStream()));
+			flush();
+			clob.free();
+		} else {
+			setObject(parameterIndex, null);
+		}
+	}
+
+	@Override
+	public void setClob(final int parameterIndex, final Reader reader) throws SQLException {
+		assert reader != null : "reader != null";
+
+		setObject(parameterIndex, new ExportDumpClob(new ReaderInputStream(reader)));
+		flush();
+	}
+
+	@Override
+	public void setSQLXML(final int parameterIndex, final SQLXML xmlObject) throws SQLException {
+		if (xmlObject != null) {
+			setObject(parameterIndex, new ExportDumpSqlXML(xmlObject.getBinaryStream()));
+			flush();
+			xmlObject.free();
+		} else {
+			setObject(parameterIndex, null);
+		}
+	}
+
+	@Override
 	public void setBlob(final int parameterIndex, final InputStream inputStream) throws SQLException {
 		assert inputStream != null : "inputStream != null";
 
 		setObject(parameterIndex, new ExportDumpBlob(inputStream));
 
-		try {
-			_exporter.flush();
-		} catch (final Exception e) {
-			throw new SQLException("setBlob", e);
-		}
+		flush();
 	}
 
 	@Override
 	public void setBlob(final int parameterIndex, final Blob x) throws SQLException {
 		if (x != null) {
 			setBlob(parameterIndex, x.getBinaryStream());
+			x.free();
 		} else {
 			setObject(parameterIndex, null);
 		}
-
 	}
 
 	@Override
@@ -414,11 +444,6 @@ public class ExportDumpPreparedStatement implements PreparedStatement {
 	}
 
 	@Override
-	public void setClob(final int parameterIndex, final Clob x) throws SQLException {
-		throw new UnsupportedOperationException();
-	}
-
-	@Override
 	public void setArray(final int parameterIndex, final Array x) throws SQLException {
 		throw new UnsupportedOperationException();
 	}
@@ -494,12 +519,8 @@ public class ExportDumpPreparedStatement implements PreparedStatement {
 	}
 
 	@Override
-	public void setSQLXML(final int parameterIndex, final SQLXML xmlObject) throws SQLException {
-		throw new UnsupportedOperationException();
-	}
-
-	@Override
-	public void setObject(final int parameterIndex, final Object x, final int targetSqlType, final int scaleOrLength) throws SQLException {
+	public void setObject(final int parameterIndex, final Object x, final int targetSqlType, final int scaleOrLength)
+	    throws SQLException {
 		throw new UnsupportedOperationException();
 	}
 
@@ -539,12 +560,15 @@ public class ExportDumpPreparedStatement implements PreparedStatement {
 	}
 
 	@Override
-	public void setClob(final int parameterIndex, final Reader reader) throws SQLException {
+	public void setNClob(final int parameterIndex, final Reader reader) throws SQLException {
 		throw new UnsupportedOperationException();
 	}
 
-	@Override
-	public void setNClob(final int parameterIndex, final Reader reader) throws SQLException {
-		throw new UnsupportedOperationException();
+	private void flush() throws SQLException {
+		try {
+			_exporter.flush();
+		} catch (final Exception e) {
+			throw new SQLException("flush", e);
+		}
 	}
 }

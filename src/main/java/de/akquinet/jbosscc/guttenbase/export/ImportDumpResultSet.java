@@ -28,7 +28,8 @@ import de.akquinet.jbosscc.guttenbase.meta.TableMetaData;
 /**
  * Special {@link ResultSet} that reads data from the given stream.
  * 
- * Only few inherited getter methods have a meaningful implementation, most methods will throw a {@link UnsupportedOperationException}.
+ * Only few inherited getter methods have a meaningful implementation, most
+ * methods will throw a {@link UnsupportedOperationException}.
  * 
  * <p>
  * &copy; 2012 akquinet tech@spree
@@ -114,6 +115,16 @@ public class ImportDumpResultSet implements ResultSet {
 	@Override
 	public Blob getBlob(final int columnIndex) throws SQLException {
 		return (Blob) getObject(columnIndex);
+	}
+
+	@Override
+	public Clob getClob(final int columnIndex) throws SQLException {
+		return (Clob) getObject(columnIndex);
+	}
+
+	@Override
+	public SQLXML getSQLXML(final int columnIndex) throws SQLException {
+		return (SQLXML) getObject(columnIndex);
 	}
 
 	@Override
@@ -696,12 +707,6 @@ public class ImportDumpResultSet implements ResultSet {
 	}
 
 	@Override
-	public Clob getClob(final int columnIndex) throws SQLException {
-
-		throw new UnsupportedOperationException();
-	}
-
-	@Override
 	public Array getArray(final int columnIndex) throws SQLException {
 
 		throw new UnsupportedOperationException();
@@ -887,12 +892,6 @@ public class ImportDumpResultSet implements ResultSet {
 
 	@Override
 	public NClob getNClob(final String columnLabel) throws SQLException {
-
-		throw new UnsupportedOperationException();
-	}
-
-	@Override
-	public SQLXML getSQLXML(final int columnIndex) throws SQLException {
 
 		throw new UnsupportedOperationException();
 	}

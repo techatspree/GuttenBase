@@ -9,6 +9,7 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.SQLXML;
 import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.Arrays;
@@ -34,7 +35,9 @@ public enum ColumnType {
 	CLASS_UNKNOWN(Void.class), //
 	CLASS_STRING(String.class), //
 	CLASS_BIGDECIMAL(BigDecimal.class), //
-	CLASS_BLOB(Blob.class, Clob.class), //
+	CLASS_BLOB(Blob.class), //
+	CLASS_CLOB(Clob.class), //
+	CLASS_SQLXML(SQLXML.class), //
 	CLASS_OBJECT(Object.class, Serializable.class, Util.ByteArrayClass), //
 	CLASS_DATE(java.sql.Date.class), //
 	CLASS_TIMESTAMP(java.sql.Timestamp.class), //
@@ -67,7 +70,8 @@ public enum ColumnType {
 		}
 	}
 
-	private Object getValueFromResultset(final ResultSet resultSet, final int columnIndex) throws SQLException, UnhandledColumnTypeException {
+	private Object getValueFromResultset(final ResultSet resultSet, final int columnIndex) throws SQLException,
+	    UnhandledColumnTypeException {
 		switch (this) {
 		case CLASS_STRING:
 			return resultSet.getString(columnIndex);
@@ -79,6 +83,10 @@ public enum ColumnType {
 			return resultSet.getLong(columnIndex);
 		case CLASS_BLOB:
 			return resultSet.getBlob(columnIndex);
+		case CLASS_CLOB:
+			return resultSet.getClob(columnIndex);
+		case CLASS_SQLXML:
+			return resultSet.getSQLXML(columnIndex);
 		case CLASS_FLOAT:
 			return resultSet.getFloat(columnIndex);
 		case CLASS_BOOLEAN:
@@ -103,8 +111,8 @@ public enum ColumnType {
 	/**
 	 * Set value in {@link PreparedStatement}
 	 */
-	public void setValue(final PreparedStatement insertStatement, final int columnIndex, final Object data, final DatabaseType databaseType,
-			final int sqlType) throws SQLException {
+	public void setValue(final PreparedStatement insertStatement, final int columnIndex, final Object data,
+	    final DatabaseType databaseType, final int sqlType) throws SQLException {
 		if (data == null) {
 			insertStatement.setNull(columnIndex, sqlType);
 		} else {
@@ -113,7 +121,7 @@ public enum ColumnType {
 	}
 
 	private void setStatementValue(final PreparedStatement insertStatement, final int columnIndex, final Object data,
-			final DatabaseType databaseType) throws SQLException, UnhandledColumnTypeException {
+	    final DatabaseType databaseType) throws SQLException, UnhandledColumnTypeException {
 		switch (this) {
 		case CLASS_STRING:
 			insertStatement.setString(columnIndex, (String) data);
@@ -133,6 +141,16 @@ public enum ColumnType {
 			} else {
 				insertStatement.setBlob(columnIndex, ((Blob) data).getBinaryStream());
 			}
+			break;
+		case CLASS_CLOB:
+			if (DatabaseType.POSTGRESQL.equals(databaseType)) {
+				insertStatement.setClob(columnIndex, ((Clob) data));
+			} else {
+				insertStatement.setClob(columnIndex, ((Clob) data).getCharacterStream());
+			}
+			break;
+		case CLASS_SQLXML:
+			insertStatement.setSQLXML(columnIndex, (SQLXML) data);
 			break;
 		case CLASS_BOOLEAN:
 			insertStatement.setBoolean(columnIndex, (Boolean) data);

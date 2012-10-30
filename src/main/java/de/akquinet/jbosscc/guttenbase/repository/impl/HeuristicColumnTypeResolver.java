@@ -8,7 +8,8 @@ import de.akquinet.jbosscc.guttenbase.meta.ColumnMetaData;
 import de.akquinet.jbosscc.guttenbase.meta.ColumnType;
 
 /**
- * Will check column type names and determine what Java type is appropriate using some heuristic tests.
+ * Will check column type names and determine what Java type is appropriate
+ * using some heuristic tests.
  * 
  * <p>
  * &copy; 2012 akquinet tech@spree
@@ -70,6 +71,9 @@ public class HeuristicColumnTypeResolver implements ColumnTypeResolver {
 			}
 			if (columnType.equals("TIMESTAMP")) {
 				return ColumnType.CLASS_TIMESTAMP;
+			}
+			if (columnType.equals("XMLTYPE")) {
+				return ColumnType.CLASS_SQLXML;
 			}
 			break;
 		}
