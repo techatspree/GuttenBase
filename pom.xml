@@ -2,7 +2,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>GuttenBase</artifactId>
 	<groupId>de.akquinet.jbosscc.guttenbase</groupId>
-	<version>1.1-SNAPSHOT</version>
+	<version>1.2-SNAPSHOT</version>
 	<name>GuttenBase - The database copying and migration framework</name>
 	<url>http://guttenbase.spree.de</url>
 	<description>Copying done right...</description>
