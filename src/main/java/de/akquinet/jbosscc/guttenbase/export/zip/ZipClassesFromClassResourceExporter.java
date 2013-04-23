@@ -8,13 +8,9 @@ import java.io.InputStream;
 import java.net.URL;
 import java.net.URLDecoder;
 import java.util.Enumeration;
-import java.util.HashSet;
-import java.util.Set;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 import java.util.zip.ZipOutputStream;
-
-import org.apache.log4j.Logger;
 
 import de.akquinet.jbosscc.guttenbase.utils.Util;
 
@@ -29,14 +25,9 @@ import de.akquinet.jbosscc.guttenbase.utils.Util;
  * 
  * @author M. Dahm
  */
-public class ZipClassesFromClassResourceExporter {
-  private static final Logger LOG = Logger.getLogger(ZipClassesFromClassResourceExporter.class);
-
-  private final ZipOutputStream _zipOutputStream;
-  private final Set<String> _entries = new HashSet<String>();
-
+public class ZipClassesFromClassResourceExporter extends ZipResourceExporter {
   public ZipClassesFromClassResourceExporter(final ZipOutputStream zipOutputStream) {
-    _zipOutputStream = zipOutputStream;
+    super(zipOutputStream);
   }
 
   /**
@@ -116,20 +107,5 @@ public class ZipClassesFromClassResourceExporter {
     }
 
     zipFile.close();
-  }
-
-  private void addEntry(String name, final InputStream inputStream) throws IOException {
-    // Escape problems with DOS/Windows in ZIP entries
-    name = name.replace('\\', ZipConstants.PATH_SEPARATOR);
-
-    if (!_entries.add(name.toUpperCase()) || name.equalsIgnoreCase(ZipConstants.MANIFEST_NAME)) {
-      LOG.warn("Duplicate entry ignored: " + name);
-    } else {
-      final ZipEntry zipEntry = new ZipEntry(name);
-      _zipOutputStream.putNextEntry(zipEntry);
-      Util.copy(inputStream, _zipOutputStream);
-      inputStream.close();
-      _zipOutputStream.closeEntry();
-    }
   }
 }
