@@ -46,7 +46,7 @@ public class ScriptExecutorTool {
 	 * Read SQL from file somewhere on class path.
 	 */
 	public void executeFileScript(final String connectorId, final boolean updateSchema, final boolean prepareTargetConnection,
-			final String resourceName) throws SQLException {
+	    final String resourceName) throws SQLException {
 		executeScript(connectorId, updateSchema, prepareTargetConnection, Util.readLinesFromFile(resourceName));
 	}
 
@@ -61,7 +61,7 @@ public class ScriptExecutorTool {
 	 * Execute given lines of SQL. Each statement (not line!) has end with a ';'
 	 */
 	public void executeScript(final String connectorId, final boolean updateSchema, final boolean prepareTargetConnection,
-			final String... lines) throws SQLException {
+	    final String... lines) throws SQLException {
 		executeScript(connectorId, updateSchema, prepareTargetConnection, Arrays.asList(lines));
 	}
 
@@ -85,7 +85,7 @@ public class ScriptExecutorTool {
 	 * @throws SQLException
 	 */
 	public void executeScript(final String connectorId, final boolean scriptUpdatesSchema, final boolean prepareTargetConnection,
-			final List<String> lines) throws SQLException {
+	    final List<String> lines) throws SQLException {
 		if (lines.isEmpty()) {
 			throw new SQLException("DDL script not found or empty");
 		}
@@ -95,7 +95,8 @@ public class ScriptExecutorTool {
 		final Connection connection = connector.openConnection();
 
 		if (prepareTargetConnection) {
-			final TargetDatabaseConfiguration targetDatabaseConfiguration = _connectorRepository.getTargetDatabaseConfiguration(connectorId);
+			final TargetDatabaseConfiguration targetDatabaseConfiguration = _connectorRepository
+			    .getTargetDatabaseConfiguration(connectorId);
 			targetDatabaseConfiguration.initializeTargetConnection(connection, connectorId);
 		}
 
@@ -109,7 +110,8 @@ public class ScriptExecutorTool {
 			statement.close();
 
 			if (prepareTargetConnection) {
-				final TargetDatabaseConfiguration targetDatabaseConfiguration = _connectorRepository.getTargetDatabaseConfiguration(connectorId);
+				final TargetDatabaseConfiguration targetDatabaseConfiguration = _connectorRepository
+				    .getTargetDatabaseConfiguration(connectorId);
 				targetDatabaseConfiguration.finalizeTargetConnection(connection, connectorId);
 			}
 		} finally {
@@ -128,37 +130,56 @@ public class ScriptExecutorTool {
 	 * @throws SQLException
 	 */
 	public List<Map<String, Object>> executeQuery(final String connectorId, final String sql) throws SQLException {
+		final Connector connector = _connectorRepository.createConnector(connectorId);
 		final List<Map<String, Object>> result = new ArrayList<Map<String, Object>>();
 
-		final Connector connector = _connectorRepository.createConnector(connectorId);
 		try {
 			final Connection connection = connector.openConnection();
 			final Statement statement = connection.createStatement();
 			final ResultSet resultSet = statement.executeQuery(sql);
-			final ResultSetMetaData metaData = resultSet.getMetaData();
-
-			while (resultSet.next()) {
-				final int columnCount = metaData.getColumnCount();
-				final Map<String, Object> map = new HashMap<String, Object>();
-
-				for (int i = 1; i <= columnCount; i++) {
-					final String columnName = metaData.getColumnName(i);
-					final Object value = resultSet.getObject(i);
-
-					map.put(columnName, value);
-				}
-
-				result.add(map);
-			}
+			readMapFromResultSet(result, resultSet);
+			resultSet.close();
 		} finally {
 			connector.closeConnection();
 		}
+
 		return result;
+	}
+
+	private void readMapFromResultSet(final List<Map<String, Object>> result, final ResultSet resultSet) throws SQLException {
+		final ResultSetMetaData metaData = resultSet.getMetaData();
+
+		while (resultSet.next()) {
+			final int columnCount = metaData.getColumnCount();
+			final Map<String, Object> map = new HashMap<String, Object>();
+
+			for (int i = 1; i <= columnCount; i++) {
+				final String columnName = metaData.getColumnName(i);
+				final Object value = resultSet.getObject(i);
+
+				map.put(columnName, value);
+			}
+
+			result.add(map);
+		}
 	}
 
 	private void executeSQL(final Statement statement, final String sql) throws SQLException {
 		LOG.info("Executing: " + sql);
 
-		statement.execute(sql);
+		final boolean result = statement.execute(sql);
+
+		if (result) {
+			final List<Map<String, Object>> resultMap = new ArrayList<Map<String, Object>>();
+
+			final ResultSet resultSet = statement.getResultSet();
+			readMapFromResultSet(resultMap, resultSet);
+			resultSet.close();
+
+			LOG.info("Query result: " + resultMap);
+		} else {
+			final int updateCount = statement.getUpdateCount();
+			LOG.info("Update count: " + updateCount);
+		}
 	}
 }
