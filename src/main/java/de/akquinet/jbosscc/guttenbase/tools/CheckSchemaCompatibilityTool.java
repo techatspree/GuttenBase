@@ -56,42 +56,43 @@ public class CheckSchemaCompatibilityTool {
 		}
 	}
 
-	public void checkEqualColumns(final String sourceConnectorId, final String targetConnectorId, final TableMetaData tableMetaData1,
-			final TableMetaData tableMetaData2) throws SQLException, IncompatibleColumnsException {
+	public void checkEqualColumns(final String sourceConnectorId, final String targetConnectorId,
+	    final TableMetaData tableMetaData1, final TableMetaData tableMetaData2) throws SQLException, IncompatibleColumnsException {
 		final ColumnMapper columnMapper = _connectorRepository.getConnectorHint(targetConnectorId, ColumnMapper.class).getValue();
 		final CommonColumnTypeResolverTool commonColumnTypeResolver = new CommonColumnTypeResolverTool(_connectorRepository);
-		final ColumnNameMapper sourceColumnNameMapper = _connectorRepository.getConnectorHint(sourceConnectorId, ColumnNameMapper.class)
-				.getValue();
-		final ColumnNameMapper targetColumnNameMapper = _connectorRepository.getConnectorHint(targetConnectorId, ColumnNameMapper.class)
-				.getValue();
+		final ColumnNameMapper sourceColumnNameMapper = _connectorRepository.getConnectorHint(sourceConnectorId,
+		    ColumnNameMapper.class).getValue();
+		final ColumnNameMapper targetColumnNameMapper = _connectorRepository.getConnectorHint(targetConnectorId,
+		    ColumnNameMapper.class).getValue();
 
 		final String tableName = tableMetaData1.getTableName();
-		final List<ColumnMetaData> sourceColumns = ColumnOrderHint.getSortedColumns(_connectorRepository, sourceConnectorId, tableMetaData1);
+		final List<ColumnMetaData> sourceColumns = ColumnOrderHint.getSortedColumns(_connectorRepository, sourceConnectorId,
+		    tableMetaData1);
 
 		for (final ColumnMetaData columnMetaData1 : sourceColumns) {
 			final List<ColumnMetaData> columnMetaDataTarget = columnMapper.map(columnMetaData1, tableMetaData2);
 			final String columnName1 = sourceColumnNameMapper.mapColumnName(columnMetaData1);
 
 			if (columnMetaDataTarget.isEmpty()) {
-				throw new IncompatibleColumnsException("No mapping column(s) found for: " + columnMetaData1);
+				throw new IncompatibleColumnsException("No mapping column(s) found for: " + tableName + ":" + columnMetaData1);
 			}
 
 			for (final ColumnMetaData columnMetaData2 : columnMetaDataTarget) {
 				final String columnName2 = targetColumnNameMapper.mapColumnName(columnMetaData2);
-				final ColumnTypeMapping columnTypeMapping = commonColumnTypeResolver.getCommonColumnTypeMapping(sourceConnectorId, columnMetaData1,
-						targetConnectorId, columnMetaData2);
+				final ColumnTypeMapping columnTypeMapping = commonColumnTypeResolver.getCommonColumnTypeMapping(sourceConnectorId,
+				    columnMetaData1, targetConnectorId, columnMetaData2);
 
 				if (columnTypeMapping == null) {
-					throw new IncompatibleColumnsException(tableName + ":" + columnMetaData1 + ": Columns have incompatible types: " + columnName1
-							+ "/" + columnMetaData1.getColumnTypeName() + "/" + columnMetaData1.getColumnClassName() + " vs. " + columnName2 + "/"
-							+ columnMetaData2.getColumnTypeName() + "/" + columnMetaData2.getColumnClassName());
+					throw new IncompatibleColumnsException(tableName + ":" + columnMetaData1 + ": Columns have incompatible types: "
+					    + columnName1 + "/" + columnMetaData1.getColumnTypeName() + "/" + columnMetaData1.getColumnClassName() + " vs. "
+					    + columnName2 + "/" + columnMetaData2.getColumnTypeName() + "/" + columnMetaData2.getColumnClassName());
 				}
 			}
 		}
 	}
 
 	private void checkEqualTables(final List<TableMetaData> sourceTableMetaData, final DatabaseMetaData targetDatabaseMetaData,
-			final TableMapper tableMapper) throws SQLException {
+	    final TableMapper tableMapper) throws SQLException {
 		final List<TableMetaData> missingData = new ArrayList<TableMetaData>();
 
 		for (final TableMetaData tableMetaData : sourceTableMetaData) {

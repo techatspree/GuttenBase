@@ -5,6 +5,7 @@ import static org.easymock.EasyMock.expect;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.StringTokenizer;
 
@@ -33,12 +34,15 @@ public class ScriptExecutorTest {
 	@Test
 	public void testExecute() throws Exception {
 		final PreparedStatement statement = _connectionInfo.getPreparedStatement();
+		final ResultSet resultSet = _connectionInfo.getResultSet();
+
 		final String expected1 = "CREATE TABLE FOO_USER ( ID bigint  PRIMARY KEY, COMPANY_NAME VARCHAR(255) )";
 		final String expected2 = "INSERT INTO FOO_USER VALUES(1, 'Un''fug')";
 		final String expected3 = "SELECT * FROM FOO_USER";
 
 		expectConnectionSetup();
 
+		expect(statement.getResultSet()).andReturn(resultSet).anyTimes();
 		expect(statement.execute(equalSql(expected1))).andReturn(true);
 		expect(statement.execute(equalSql(expected2))).andReturn(true);
 		expect(statement.execute(equalSql(expected3))).andReturn(true);
@@ -58,9 +62,11 @@ public class ScriptExecutorTest {
 	@Test
 	public void testFunctionScript() throws Exception {
 		final PreparedStatement statement = _connectionInfo.getPreparedStatement();
+		final ResultSet resultSet = _connectionInfo.getResultSet();
 
 		expectConnectionSetup();
 
+		expect(statement.getResultSet()).andReturn(resultSet).anyTimes();
 		expect(statement.execute((String) anyObject())).andReturn(true); // one line
 
 		statement.close();
@@ -72,9 +78,15 @@ public class ScriptExecutorTest {
 
 	private void readFile(final String fileName) throws SQLException {
 		expectConnectionSetup();
-		expect(_connectionInfo.getPreparedStatement().execute((String) anyObject())).andReturn(true).anyTimes();
 
-		_connectionInfo.getPreparedStatement().close();
+		final PreparedStatement preparedStatement = _connectionInfo.getPreparedStatement();
+		final ResultSet resultSet = _connectionInfo.getResultSet();
+
+		expect(preparedStatement.getResultSet()).andReturn(resultSet).anyTimes();
+
+		expect(preparedStatement.execute((String) anyObject())).andReturn(true).anyTimes();
+
+		preparedStatement.close();
 
 		_connectionInfo.replay();
 		_objectUnderTest.executeFileScript(CONNECTOR_ID, true, false, fileName);
