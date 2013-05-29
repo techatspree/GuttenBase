@@ -10,7 +10,7 @@ import de.akquinet.jbosscc.guttenbase.repository.impl.ClassNameColumnTypeResolve
 import de.akquinet.jbosscc.guttenbase.repository.impl.HeuristicColumnTypeResolver;
 
 /**
- * Default implementation returns {@link ClassNameColumnTypeResolver} and {@link HeuristicColumnTypeResolver}.
+ * Default implementation tries {@link HeuristicColumnTypeResolver} first, then {@link ClassNameColumnTypeResolver}.
  * 
  * <p>
  * &copy; 2012 akquinet tech@spree
@@ -19,13 +19,13 @@ import de.akquinet.jbosscc.guttenbase.repository.impl.HeuristicColumnTypeResolve
  * @author M. Dahm
  */
 public class DefaultColumnTypeResolverListHint extends ColumnTypeResolverListHint {
-	@Override
-	public ColumnTypeResolverList getValue() {
-		return new ColumnTypeResolverList() {
-			@Override
-			public List<ColumnTypeResolver> getColumnTypeResolvers() {
-				return Arrays.asList(new ClassNameColumnTypeResolver(), new HeuristicColumnTypeResolver());
-			}
-		};
-	}
+  @Override
+  public ColumnTypeResolverList getValue() {
+    return new ColumnTypeResolverList() {
+      @Override
+      public List<ColumnTypeResolver> getColumnTypeResolvers() {
+        return Arrays.asList(new HeuristicColumnTypeResolver(), new ClassNameColumnTypeResolver());
+      }
+    };
+  }
 }
