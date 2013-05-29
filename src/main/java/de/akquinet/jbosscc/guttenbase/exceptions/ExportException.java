@@ -21,4 +21,8 @@ public class ExportException extends SQLException {
   public ExportException(final String reason, final Exception e) {
     super(reason, e);
   }
+
+  public ExportException(final String reason) {
+    super(reason);
+  }
 }
