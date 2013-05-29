@@ -10,6 +10,7 @@ import java.util.Map;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
+import de.akquinet.jbosscc.guttenbase.exceptions.ImportException;
 import de.akquinet.jbosscc.guttenbase.export.ImportDumpConnectionInfo;
 import de.akquinet.jbosscc.guttenbase.export.ImportDumpExtraInformation;
 import de.akquinet.jbosscc.guttenbase.export.Importer;
@@ -28,88 +29,93 @@ import de.akquinet.jbosscc.guttenbase.utils.Util;
  * @author M. Dahm
  */
 public class ZipImporter implements Importer {
-	private ZipFile _zipFile;
-	private ObjectInputStream _objectInputStream;
-	private ConnectorRepository _connectorRepository;
-	private String _connectorId;
+  private ZipFile _zipFile;
+  private ObjectInputStream _objectInputStream;
+  private ConnectorRepository _connectorRepository;
+  private String _connectorId;
 
-	@Override
-	public void initializeImport(final ConnectorRepository connectorRepository, final String connectorId,
-			final ImportDumpConnectionInfo importDumpConnectionInfo) throws Exception {
-		assert importDumpConnectionInfo != null : "importDumpConnectionInfo != null";
-		assert connectorId != null : "connectorId != null";
-		assert connectorRepository != null : "connectorRepository != null";
+  @Override
+  public void initializeImport(final ConnectorRepository connectorRepository, final String connectorId,
+      final ImportDumpConnectionInfo importDumpConnectionInfo) throws Exception {
+    assert importDumpConnectionInfo != null : "importDumpConnectionInfo != null";
+    assert connectorId != null : "connectorId != null";
+    assert connectorRepository != null : "connectorRepository != null";
 
-		final File file = new File(importDumpConnectionInfo.getPath());
+    final String zipFile = importDumpConnectionInfo.getPath();
+    final File file = new File(zipFile);
 
-		_connectorRepository = connectorRepository;
-		_connectorId = connectorId;
-		_zipFile = new ZipFile(file);
-	}
+    if (!file.exists()) {
+      throw new ImportException("ZIP file not found: " + zipFile);
+    }
 
-	@Override
-	public void finishImport() throws Exception {
-		readExtraInformation();
+    _connectorRepository = connectorRepository;
+    _connectorId = connectorId;
+    _zipFile = new ZipFile(file);
+  }
 
-		_zipFile.close();
-		_zipFile = null;
-	}
+  @Override
+  public void finishImport() throws Exception {
+    readExtraInformation();
 
-	@Override
-	public DatabaseMetaData readDatabaseMetaData() throws Exception {
-		final ZipEntry zipEntry = _zipFile.getEntry(ZipConstants.META_DATA);
+    _zipFile.close();
+    _zipFile = null;
+  }
 
-		assert zipEntry != null : "zipEntry != null";
+  @Override
+  public DatabaseMetaData readDatabaseMetaData() throws Exception {
+    final ZipEntry zipEntry = _zipFile.getEntry(ZipConstants.META_DATA);
 
-		final InputStream inputStream = _zipFile.getInputStream(zipEntry);
+    assert zipEntry != null : "zipEntry != null";
 
-		final ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);
-		final DatabaseMetaData databaseMetaData = (DatabaseMetaData) objectInputStream.readObject();
-		objectInputStream.close();
+    final InputStream inputStream = _zipFile.getInputStream(zipEntry);
 
-		return databaseMetaData;
-	}
+    final ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);
+    final DatabaseMetaData databaseMetaData = (DatabaseMetaData) objectInputStream.readObject();
+    objectInputStream.close();
 
-	@Override
-	public Object readObject() throws Exception {
-		return _objectInputStream.readObject();
-	}
+    return databaseMetaData;
+  }
 
-	@Override
-	public void seekTableHeader(final TableMetaData tableMetaData) throws Exception {
-		if (_objectInputStream != null) {
-			_objectInputStream.close();
-		}
+  @Override
+  public Object readObject() throws Exception {
+    return _objectInputStream.readObject();
+  }
 
-		final ZipEntry zipEntry = _zipFile.getEntry(ZipConstants.PREFIX + tableMetaData.getTableName() + ZipConstants.PATH_SEPARATOR
-				+ ZipConstants.TABLE_DATA_NAME);
+  @Override
+  public void seekTableHeader(final TableMetaData tableMetaData) throws Exception {
+    if (_objectInputStream != null) {
+      _objectInputStream.close();
+    }
 
-		assert zipEntry != null : "zipEntry != null";
+    final ZipEntry zipEntry = _zipFile.getEntry(ZipConstants.PREFIX + tableMetaData.getTableName() + ZipConstants.PATH_SEPARATOR
+        + ZipConstants.TABLE_DATA_NAME);
 
-		_objectInputStream = new ObjectInputStream(_zipFile.getInputStream(zipEntry));
-	}
+    assert zipEntry != null : "zipEntry != null";
 
-	private void readExtraInformation() throws Exception {
-		final ImportDumpExtraInformation importDumpExtraInformation = _connectorRepository.getConnectorHint(_connectorId,
-				ImportDumpExtraInformation.class).getValue();
-		final Map<String, Serializable> extraInformation = new HashMap<String, Serializable>();
+    _objectInputStream = new ObjectInputStream(_zipFile.getInputStream(zipEntry));
+  }
 
-		final String prefix = ZipConstants.EXTRA_INFO + ZipConstants.PATH_SEPARATOR;
+  private void readExtraInformation() throws Exception {
+    final ImportDumpExtraInformation importDumpExtraInformation = _connectorRepository.getConnectorHint(_connectorId,
+        ImportDumpExtraInformation.class).getValue();
+    final Map<String, Serializable> extraInformation = new HashMap<String, Serializable>();
 
-		for (final Enumeration<? extends ZipEntry> entries = _zipFile.entries(); entries.hasMoreElements();) {
-			final ZipEntry zipEntry = entries.nextElement();
-			final String name = zipEntry.getName();
+    final String prefix = ZipConstants.EXTRA_INFO + ZipConstants.PATH_SEPARATOR;
 
-			if (name.startsWith(prefix)) {
-				final InputStream inputStream = _zipFile.getInputStream(zipEntry);
-				final String key = name.substring(prefix.length());
-				final Serializable value = Util.fromInputStream(Serializable.class, inputStream);
-				inputStream.close();
+    for (final Enumeration<? extends ZipEntry> entries = _zipFile.entries(); entries.hasMoreElements();) {
+      final ZipEntry zipEntry = entries.nextElement();
+      final String name = zipEntry.getName();
 
-				extraInformation.put(key, value);
-			}
-		}
+      if (name.startsWith(prefix)) {
+        final InputStream inputStream = _zipFile.getInputStream(zipEntry);
+        final String key = name.substring(prefix.length());
+        final Serializable value = Util.fromInputStream(Serializable.class, inputStream);
+        inputStream.close();
 
-		importDumpExtraInformation.processExtraInformation(extraInformation);
-	}
+        extraInformation.put(key, value);
+      }
+    }
+
+    importDumpExtraInformation.processExtraInformation(extraInformation);
+  }
 }

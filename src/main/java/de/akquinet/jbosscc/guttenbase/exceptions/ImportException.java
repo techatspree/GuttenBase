@@ -21,4 +21,8 @@ public class ImportException extends SQLException {
   public ImportException(final String reason, final Exception e) {
     super(reason, e);
   }
+
+  public ImportException(final String reason) {
+    super(reason);
+  }
 }
