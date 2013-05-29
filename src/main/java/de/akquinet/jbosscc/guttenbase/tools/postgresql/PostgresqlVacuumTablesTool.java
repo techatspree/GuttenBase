@@ -15,11 +15,11 @@ import de.akquinet.jbosscc.guttenbase.tools.AbstractTablesOperationTool;
  * @author M. Dahm
  */
 public class PostgresqlVacuumTablesTool extends AbstractTablesOperationTool {
-	public PostgresqlVacuumTablesTool(final ConnectorRepository connectorRepository) {
-		super(connectorRepository, "VACUUM ANALYZE " + TABLE_PLACEHOLDER + ";");
-	}
+  public PostgresqlVacuumTablesTool(final ConnectorRepository connectorRepository) {
+    super(connectorRepository, "VACUUM ANALYZE " + TABLE_PLACEHOLDER + ";");
+  }
 
-	public void executeOnAllTables(final String source) throws SQLException {
-		executeOnAllTables(source, false, false);
-	}
+  public void executeOnAllTables(final String connectorId) throws SQLException {
+    executeOnAllTables(connectorId, false, false);
+  }
 }
