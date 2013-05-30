@@ -76,6 +76,12 @@ public class HeuristicColumnTypeResolver implements ColumnTypeResolver {
       }
       break;
 
+    case H2DB:
+      if (columnType.equals("CLOB")) {
+        return ColumnType.CLASS_STRING;
+      }
+      break;
+
     default:
       break;
     }

@@ -1,7 +1,9 @@
 package de.akquinet.jbosscc.guttenbase.export;
 
-import de.akquinet.jbosscc.guttenbase.connector.ConnectorInfo;
+import java.net.URL;
+
 import de.akquinet.jbosscc.guttenbase.connector.Connector;
+import de.akquinet.jbosscc.guttenbase.connector.ConnectorInfo;
 import de.akquinet.jbosscc.guttenbase.connector.DatabaseType;
 import de.akquinet.jbosscc.guttenbase.repository.ConnectorRepository;
 
@@ -17,9 +19,9 @@ import de.akquinet.jbosscc.guttenbase.repository.ConnectorRepository;
 public class ImportDumpConnectionInfo implements ConnectorInfo {
   private static final long serialVersionUID = 1L;
 
-  private final String _path;
+  private final URL _path;
 
-  public ImportDumpConnectionInfo(final String path) {
+  public ImportDumpConnectionInfo(final URL path) {
     assert path != null : "path != null";
     _path = path;
   }
@@ -56,7 +58,7 @@ public class ImportDumpConnectionInfo implements ConnectorInfo {
     return DatabaseType.IMPORT_DUMP;
   }
 
-  public String getPath() {
+  public URL getPath() {
     return _path;
   }
 

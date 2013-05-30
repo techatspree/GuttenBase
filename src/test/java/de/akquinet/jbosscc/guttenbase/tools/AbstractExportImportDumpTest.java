@@ -35,13 +35,13 @@ public abstract class AbstractExportImportDumpTest extends AbstractGuttenBaseTes
   private Map<String, Serializable> _extraInformation;
 
   @Before
-  public final void setupConnectors() {
+  public final void setupConnectors() throws Exception {
     new File(DATA_JAR).delete();
 
     _connectorRepository.addConnectionInfo(CONNECTOR_ID1, new TestDerbyConnectionInfo());
     _connectorRepository.addConnectionInfo(CONNECTOR_ID2, new TestHsqlConnectionInfo());
     _connectorRepository.addConnectionInfo(EXPORT, new ExportDumpConnectorInfo(CONNECTOR_ID1, DATA_JAR));
-    _connectorRepository.addConnectionInfo(IMPORT, new ImportDumpConnectionInfo(DATA_JAR));
+    _connectorRepository.addConnectionInfo(IMPORT, new ImportDumpConnectionInfo(new File(DATA_JAR).toURI().toURL()));
 
     _connectorRepository.addConnectorHint(EXPORT, new ExportDumpExtraInformationHint() {
       @Override

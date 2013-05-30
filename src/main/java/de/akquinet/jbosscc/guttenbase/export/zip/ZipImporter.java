@@ -1,16 +1,19 @@
 package de.akquinet.jbosscc.guttenbase.export.zip;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.Serializable;
+import java.net.URL;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
-import de.akquinet.jbosscc.guttenbase.exceptions.ImportException;
+import org.apache.commons.io.IOUtils;
+
 import de.akquinet.jbosscc.guttenbase.export.ImportDumpConnectionInfo;
 import de.akquinet.jbosscc.guttenbase.export.ImportDumpExtraInformation;
 import de.akquinet.jbosscc.guttenbase.export.Importer;
@@ -41,11 +44,13 @@ public class ZipImporter implements Importer {
     assert connectorId != null : "connectorId != null";
     assert connectorRepository != null : "connectorRepository != null";
 
-    final String zipFile = importDumpConnectionInfo.getPath();
-    final File file = new File(zipFile);
+    final URL url = importDumpConnectionInfo.getPath();
+    File file = new File(url.getPath());
 
     if (!file.exists()) {
-      throw new ImportException("ZIP file not found: " + zipFile);
+      file = File.createTempFile("GuttenBase", ".jar");
+      file.deleteOnExit();
+      IOUtils.copy(url.openStream(), new FileOutputStream(file));
     }
 
     _connectorRepository = connectorRepository;
