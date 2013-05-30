@@ -17,39 +17,44 @@ import de.akquinet.jbosscc.guttenbase.repository.ConnectorRepository;
  * @author M. Dahm
  */
 public class DefaultSourceDatabaseConfiguration extends AbstractDatabaseConfiguration implements SourceDatabaseConfiguration {
-	public DefaultSourceDatabaseConfiguration(final ConnectorRepository connectorRepository) {
-		super(connectorRepository);
-	}
+  public DefaultSourceDatabaseConfiguration(final ConnectorRepository connectorRepository) {
+    super(connectorRepository);
+  }
 
-	/**
-	 * Connection is set read only and autocommit is false.
-	 * 
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void initializeSourceConnection(final Connection connection, final String connectorId) throws SQLException {
-		connection.setAutoCommit(false);
-		connection.setReadOnly(true);
-	}
+  /**
+   * Connection is set read only and autocommit is false.
+   * 
+   * {@inheritDoc}
+   */
+  @Override
+  public void initializeSourceConnection(final Connection connection, final String connectorId) throws SQLException {
+    if (connection.getAutoCommit()) {
+      connection.setAutoCommit(false);
+    }
 
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void finalizeSourceConnection(final Connection connection, final String connectorId) throws SQLException {
-	}
+    if (!connection.isReadOnly()) {
+      connection.setReadOnly(true);
+    }
+  }
 
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void beforeSelect(final Connection connection, final String connectorId, final TableMetaData table) throws SQLException {
-	}
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public void finalizeSourceConnection(final Connection connection, final String connectorId) throws SQLException {
+  }
 
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void afterSelect(final Connection connection, final String connectorId, final TableMetaData table) throws SQLException {
-	}
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public void beforeSelect(final Connection connection, final String connectorId, final TableMetaData table) throws SQLException {
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public void afterSelect(final Connection connection, final String connectorId, final TableMetaData table) throws SQLException {
+  }
 }

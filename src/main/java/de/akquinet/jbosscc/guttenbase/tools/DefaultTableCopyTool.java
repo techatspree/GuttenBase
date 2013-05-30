@@ -24,80 +24,85 @@ import de.akquinet.jbosscc.guttenbase.utils.Util;
  * @author M. Dahm
  */
 public class DefaultTableCopyTool extends AbstractTableCopyTool {
-	public DefaultTableCopyTool(final ConnectorRepository connectorRepository) {
-		super(connectorRepository);
-	}
+  public DefaultTableCopyTool(final ConnectorRepository connectorRepository) {
+    super(connectorRepository);
+  }
 
-	/**
-	 * Copy data with multiple VALUES-tuples per batch statement.
-	 * 
-	 * @throws SQLException
-	 */
-	@Override
-	protected void copyTable(final String sourceConnectorId, final Connection sourceConnection,
-			final SourceDatabaseConfiguration sourceDatabaseConfiguration, final TableMetaData sourceTableMetaData, final String sourceTableName,
-			final String targetConnectorId, final Connection targetConnection, final TargetDatabaseConfiguration targetDatabaseConfiguration,
-			final TableMetaData targetTableMetaData, final String targetTableName, final int numberOfRowsPerBatch,
-			final boolean useMultipleValuesClauses) throws SQLException {
-		final int sourceRowCount = sourceTableMetaData.getRowCount();
-		final PreparedStatement selectStatement = new SelectStatementCreator(_connectorRepository, sourceConnectorId).createSelectStatement(
-				sourceTableName, sourceTableMetaData, sourceConnection);
-		selectStatement.setFetchSize(Math.min(numberOfRowsPerBatch, selectStatement.getMaxRows()));
+  /**
+   * Copy data with multiple VALUES-tuples per batch statement.
+   * 
+   * @throws SQLException
+   */
+  @Override
+  protected void copyTable(final String sourceConnectorId, final Connection sourceConnection,
+      final SourceDatabaseConfiguration sourceDatabaseConfiguration, final TableMetaData sourceTableMetaData, final String sourceTableName,
+      final String targetConnectorId, final Connection targetConnection, final TargetDatabaseConfiguration targetDatabaseConfiguration,
+      final TableMetaData targetTableMetaData, final String targetTableName, final int numberOfRowsPerBatch,
+      final boolean useMultipleValuesClauses) throws SQLException {
+    final int sourceRowCount = sourceTableMetaData.getRowCount();
+    final PreparedStatement selectStatement = new SelectStatementCreator(_connectorRepository, sourceConnectorId).createSelectStatement(
+        sourceTableName, sourceTableMetaData, sourceConnection);
+    selectStatement.setFetchSize(Math.min(numberOfRowsPerBatch, selectStatement.getMaxRows()));
 
-		sourceDatabaseConfiguration.beforeSelect(sourceConnection, sourceConnectorId, sourceTableMetaData);
-		final ResultSet resultSet = selectStatement.executeQuery();
-		sourceDatabaseConfiguration.afterSelect(sourceConnection, sourceConnectorId, sourceTableMetaData);
+    sourceDatabaseConfiguration.beforeSelect(sourceConnection, sourceConnectorId, sourceTableMetaData);
+    final ResultSet resultSet = selectStatement.executeQuery();
+    sourceDatabaseConfiguration.afterSelect(sourceConnection, sourceConnectorId, sourceTableMetaData);
 
-		final int bulkUpdateCount = sourceRowCount / numberOfRowsPerBatch;
-		final int remainder = sourceRowCount - (bulkUpdateCount * numberOfRowsPerBatch);
+    final int bulkUpdateCount = sourceRowCount / numberOfRowsPerBatch;
+    final int remainder = sourceRowCount - (bulkUpdateCount * numberOfRowsPerBatch);
 
-		final InsertStatementCreator insertStatementCreator = new InsertStatementCreator(_connectorRepository, targetConnectorId);
-		final InsertStatementFiller insertStatementFiller = new InsertStatementFiller(_connectorRepository);
+    final InsertStatementCreator insertStatementCreator = new InsertStatementCreator(_connectorRepository, targetConnectorId);
+    final InsertStatementFiller insertStatementFiller = new InsertStatementFiller(_connectorRepository);
 
-		targetDatabaseConfiguration.beforeInsert(targetConnection, targetConnectorId, targetTableMetaData);
-		final PreparedStatement bulkInsert = insertStatementCreator.createInsertStatement(sourceConnectorId, sourceTableMetaData,
-				targetTableName, targetTableMetaData, targetConnection, numberOfRowsPerBatch, useMultipleValuesClauses);
+    targetDatabaseConfiguration.beforeInsert(targetConnection, targetConnectorId, targetTableMetaData);
+    final PreparedStatement bulkInsert = insertStatementCreator.createInsertStatement(sourceConnectorId, sourceTableMetaData,
+        targetTableName, targetTableMetaData, targetConnection, numberOfRowsPerBatch, useMultipleValuesClauses);
 
-		LOG.debug("Table row count = " + sourceRowCount + ", numberOfRowsPerBatch = " + numberOfRowsPerBatch + ", bulkUpdateCount = "
-				+ bulkUpdateCount);
+    LOG.debug("Table row count = " + sourceRowCount + ", numberOfRowsPerBatch = " + numberOfRowsPerBatch + ", bulkUpdateCount = "
+        + bulkUpdateCount);
 
-		for (int i = 0; i < bulkUpdateCount; i++) {
-			final long startBatchTime = System.currentTimeMillis();
+    for (int i = 0; i < bulkUpdateCount; i++) {
+      final long startBatchTime = System.currentTimeMillis();
 
-			insertStatementFiller.fillInsertStatementFromResultSet(sourceConnectorId, sourceTableMetaData, targetConnectorId,
-					targetTableMetaData, targetDatabaseConfiguration, targetConnection, resultSet, bulkInsert, numberOfRowsPerBatch,
-					useMultipleValuesClauses);
+      insertStatementFiller.fillInsertStatementFromResultSet(sourceConnectorId, sourceTableMetaData, targetConnectorId,
+          targetTableMetaData, targetDatabaseConfiguration, targetConnection, resultSet, bulkInsert, numberOfRowsPerBatch,
+          useMultipleValuesClauses);
 
-			bulkInsert.executeBatch();
-			targetConnection.commit();
+      bulkInsert.executeBatch();
+      if (targetDatabaseConfiguration.mayCommit()) {
+        targetConnection.commit();
+      }
 
-			final long endBatchTime = System.currentTimeMillis();
-			LOG.info(sourceTableName + ": " + ((i + 1) * numberOfRowsPerBatch) + "/" + sourceRowCount + " rows copied: last batch update took "
-					+ Util.formatTime(endBatchTime - startBatchTime));
-		}
+      final long endBatchTime = System.currentTimeMillis();
+      LOG.info(sourceTableName + ": " + ((i + 1) * numberOfRowsPerBatch) + "/" + sourceRowCount + " rows copied: last batch update took "
+          + Util.formatTime(endBatchTime - startBatchTime));
+    }
 
-		if (bulkUpdateCount > 0) {
-			bulkInsert.close();
-		}
+    if (bulkUpdateCount > 0) {
+      bulkInsert.close();
+    }
 
-		if (remainder > 0) {
-			final PreparedStatement finalInsert = insertStatementCreator.createInsertStatement(sourceConnectorId, sourceTableMetaData,
-					targetTableName, targetTableMetaData, targetConnection, remainder, useMultipleValuesClauses);
-			insertStatementFiller.fillInsertStatementFromResultSet(sourceConnectorId, sourceTableMetaData, targetConnectorId,
-					targetTableMetaData, targetDatabaseConfiguration, targetConnection, resultSet, finalInsert, remainder, useMultipleValuesClauses);
-			finalInsert.executeBatch();
+    if (remainder > 0) {
+      final PreparedStatement finalInsert = insertStatementCreator.createInsertStatement(sourceConnectorId, sourceTableMetaData,
+          targetTableName, targetTableMetaData, targetConnection, remainder, useMultipleValuesClauses);
+      insertStatementFiller.fillInsertStatementFromResultSet(sourceConnectorId, sourceTableMetaData, targetConnectorId,
+          targetTableMetaData, targetDatabaseConfiguration, targetConnection, resultSet, finalInsert, remainder, useMultipleValuesClauses);
+      finalInsert.executeBatch();
 
-			targetConnection.commit();
-			finalInsert.close();
-		}
+      if (targetDatabaseConfiguration.mayCommit()) {
+        targetConnection.commit();
+      }
 
-		targetDatabaseConfiguration.afterInsert(targetConnection, targetConnectorId, targetTableMetaData);
+      finalInsert.close();
+    }
 
-		if (resultSet.next()) {
-			LOG.warn("Uncopied data!!!");
-		}
+    targetDatabaseConfiguration.afterInsert(targetConnection, targetConnectorId, targetTableMetaData);
 
-		resultSet.close();
-		selectStatement.close();
-	}
+    if (resultSet.next()) {
+      LOG.warn("Uncopied data!!!");
+    }
+
+    resultSet.close();
+    selectStatement.close();
+  }
 }
