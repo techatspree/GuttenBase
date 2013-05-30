@@ -22,6 +22,16 @@ public abstract class DefaultTargetDatabaseConfiguration extends AbstractDatabas
   }
 
   /**
+   * {@inheritDoc}
+   * 
+   * true by default
+   */
+  @Override
+  public boolean mayCommit() {
+    return true;
+  }
+
+  /**
    * Connection is set autocommit false.
    * 
    * {@inheritDoc}
