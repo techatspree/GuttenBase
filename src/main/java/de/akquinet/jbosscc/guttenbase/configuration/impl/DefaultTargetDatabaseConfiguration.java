@@ -17,52 +17,54 @@ import de.akquinet.jbosscc.guttenbase.repository.ConnectorRepository;
  * @author M. Dahm
  */
 public abstract class DefaultTargetDatabaseConfiguration extends AbstractDatabaseConfiguration implements TargetDatabaseConfiguration {
-	public DefaultTargetDatabaseConfiguration(final ConnectorRepository connectorRepository) {
-		super(connectorRepository);
-	}
+  public DefaultTargetDatabaseConfiguration(final ConnectorRepository connectorRepository) {
+    super(connectorRepository);
+  }
 
-	/**
-	 * Connection is set autocommit false.
-	 * 
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void initializeTargetConnection(final Connection connection, final String connectorId) throws SQLException {
-		connection.setAutoCommit(false);
-	}
+  /**
+   * Connection is set autocommit false.
+   * 
+   * {@inheritDoc}
+   */
+  @Override
+  public void initializeTargetConnection(final Connection connection, final String connectorId) throws SQLException {
+    if (connection.getAutoCommit()) {
+      connection.setAutoCommit(false);
+    }
+  }
 
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void finalizeTargetConnection(final Connection connection, final String connectorId) throws SQLException {
-	}
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public void finalizeTargetConnection(final Connection connection, final String connectorId) throws SQLException {
+  }
 
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void beforeInsert(final Connection connection, final String connectorId, final TableMetaData table) throws SQLException {
-	}
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public void beforeInsert(final Connection connection, final String connectorId, final TableMetaData table) throws SQLException {
+  }
 
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void afterInsert(final Connection connection, final String connectorId, final TableMetaData table) throws SQLException {
-	}
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public void afterInsert(final Connection connection, final String connectorId, final TableMetaData table) throws SQLException {
+  }
 
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void beforeNewRow(final Connection connection, final String connectorId, final TableMetaData table) throws SQLException {
-	}
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public void beforeNewRow(final Connection connection, final String connectorId, final TableMetaData table) throws SQLException {
+  }
 
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void afterNewRow(final Connection connection, final String connectorId, final TableMetaData table) throws SQLException {
-	}
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public void afterNewRow(final Connection connection, final String connectorId, final TableMetaData table) throws SQLException {
+  }
 }
