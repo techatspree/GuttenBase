@@ -6,8 +6,9 @@ import java.sql.SQLException;
 import org.apache.log4j.Logger;
 
 import de.akquinet.jbosscc.guttenbase.configuration.SourceDatabaseConfiguration;
-import de.akquinet.jbosscc.guttenbase.connector.ConnectorInfo;
+import de.akquinet.jbosscc.guttenbase.configuration.TargetDatabaseConfiguration;
 import de.akquinet.jbosscc.guttenbase.connector.Connector;
+import de.akquinet.jbosscc.guttenbase.connector.ConnectorInfo;
 import de.akquinet.jbosscc.guttenbase.meta.DatabaseMetaData;
 import de.akquinet.jbosscc.guttenbase.repository.ConnectorRepository;
 import de.akquinet.jbosscc.guttenbase.repository.impl.DatabaseMetaDataInspectorTool;
@@ -48,7 +49,9 @@ public abstract class AbstractConnector implements Connector {
     try {
       if (_connection != null) {
         if (!_connection.isClosed()) {
-          if (!_connection.getAutoCommit()) {
+          final TargetDatabaseConfiguration targetDatabaseConfiguration = _connectorRepository.getTargetDatabaseConfiguration(_connectorId);
+
+          if (!_connection.getAutoCommit() && targetDatabaseConfiguration.mayCommit()) {
             _connection.commit();
           }
 

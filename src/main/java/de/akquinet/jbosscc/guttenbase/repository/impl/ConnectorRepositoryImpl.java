@@ -316,10 +316,12 @@ public class ConnectorRepositoryImpl implements ConnectorRepository {
 
   private void initDefaultConfiguration() {
     addSourceDatabaseConfiguration(DatabaseType.GENERIC, new GenericSourceDatabaseConfiguration(this));
+    addSourceDatabaseConfiguration(DatabaseType.MOCK, new GenericSourceDatabaseConfiguration(this));
     addSourceDatabaseConfiguration(DatabaseType.MSSQL, new MsSqlSourceDatabaseConfiguration(this));
     addSourceDatabaseConfiguration(DatabaseType.MYSQL, new MySqlSourceDatabaseConfiguration(this));
     addSourceDatabaseConfiguration(DatabaseType.POSTGRESQL, new PostgresqlSourceDatabaseConfiguration(this));
     addSourceDatabaseConfiguration(DatabaseType.ORACLE, new OracleSourceDatabaseConfiguration(this));
+    addSourceDatabaseConfiguration(DatabaseType.EXPORT_DUMP, new ImportDumpDatabaseConfiguration(this));
     addSourceDatabaseConfiguration(DatabaseType.IMPORT_DUMP, new ImportDumpDatabaseConfiguration(this));
     addSourceDatabaseConfiguration(DatabaseType.HSQLDB, new HsqldbSourceDatabaseConfiguration(this));
     addSourceDatabaseConfiguration(DatabaseType.H2DB, new H2DbSourceDatabaseConfiguration(this));
@@ -327,11 +329,13 @@ public class ConnectorRepositoryImpl implements ConnectorRepository {
     addSourceDatabaseConfiguration(DatabaseType.MS_ACCESS, new MsAccessSourceDatabaseConfiguration(this));
 
     addTargetDatabaseConfiguration(DatabaseType.GENERIC, new GenericTargetDatabaseConfiguration(this));
+    addTargetDatabaseConfiguration(DatabaseType.MOCK, new GenericTargetDatabaseConfiguration(this));
     addTargetDatabaseConfiguration(DatabaseType.MSSQL, new MsSqlTargetDatabaseConfiguration(this));
     addTargetDatabaseConfiguration(DatabaseType.MYSQL, new MySqlTargetDatabaseConfiguration(this));
     addTargetDatabaseConfiguration(DatabaseType.ORACLE, new OracleTargetDatabaseConfiguration(this));
     addTargetDatabaseConfiguration(DatabaseType.POSTGRESQL, new PostgresqlTargetDatabaseConfiguration(this));
     addTargetDatabaseConfiguration(DatabaseType.EXPORT_DUMP, new ExportDumpDatabaseConfiguration(this));
+    addTargetDatabaseConfiguration(DatabaseType.IMPORT_DUMP, new ExportDumpDatabaseConfiguration(this));
     addTargetDatabaseConfiguration(DatabaseType.HSQLDB, new HsqldbTargetDatabaseConfiguration(this));
     addTargetDatabaseConfiguration(DatabaseType.H2DB, new H2DbTargetDatabaseConfiguration(this));
     addTargetDatabaseConfiguration(DatabaseType.DERBY, new DerbyTargetDatabaseConfiguration(this));
