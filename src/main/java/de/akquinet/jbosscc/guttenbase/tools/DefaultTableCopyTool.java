@@ -69,7 +69,7 @@ public class DefaultTableCopyTool extends AbstractTableCopyTool {
           useMultipleValuesClauses);
 
       bulkInsert.executeBatch();
-      if (targetDatabaseConfiguration.mayCommit()) {
+      if (targetDatabaseConfiguration.isMayCommit()) {
         targetConnection.commit();
       }
 
@@ -89,7 +89,7 @@ public class DefaultTableCopyTool extends AbstractTableCopyTool {
           targetTableMetaData, targetDatabaseConfiguration, targetConnection, resultSet, finalInsert, remainder, useMultipleValuesClauses);
       finalInsert.executeBatch();
 
-      if (targetDatabaseConfiguration.mayCommit()) {
+      if (targetDatabaseConfiguration.isMayCommit()) {
         targetConnection.commit();
       }
 
