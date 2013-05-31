@@ -51,7 +51,7 @@ public abstract class AbstractConnector implements Connector {
         if (!_connection.isClosed()) {
           final TargetDatabaseConfiguration targetDatabaseConfiguration = _connectorRepository.getTargetDatabaseConfiguration(_connectorId);
 
-          if (!_connection.getAutoCommit() && targetDatabaseConfiguration.mayCommit()) {
+          if (!_connection.getAutoCommit() && targetDatabaseConfiguration.isMayCommit()) {
             _connection.commit();
           }
 
