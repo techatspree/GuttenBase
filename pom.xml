@@ -47,20 +47,6 @@
 		<developerConnection>scm:git:git@github.com:akquinet/GuttenBase.git</developerConnection>
 	</scm>
 
-	<distributionManagement>
-		<repository>
-			<id>atsrepo</id>
-			<name>repo.spree.de.guttenbaseReleases</name>
-			<url>https://repo.spree.de/nexus/content/repositories/requestRepo</url>
-		</repository>
-
-		<snapshotRepository>
-			<id>atsrepo</id>
-			<name>repo.spree.de.guttenbaseSnapshots</name>
-			<url>https://repo.spree.de/nexus/content/groups/snapshots</url>
-		</snapshotRepository>
-	</distributionManagement>
-
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
