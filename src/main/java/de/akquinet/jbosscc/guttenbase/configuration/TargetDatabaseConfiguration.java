@@ -20,7 +20,7 @@ public interface TargetDatabaseConfiguration extends DatabaseConfiguration {
    * If running within a container managed transaction such as within an EJB we cannot call commit() on the connection. This method should
    * return false then.
    */
-  boolean mayCommit();
+  boolean isMayCommit();
 
   /**
    * Called before any action is performed which may alter the state of the target data base.

@@ -17,6 +17,8 @@ import de.akquinet.jbosscc.guttenbase.repository.ConnectorRepository;
  * @author M. Dahm
  */
 public abstract class DefaultTargetDatabaseConfiguration extends AbstractDatabaseConfiguration implements TargetDatabaseConfiguration {
+  private boolean _mayCommit = true;
+
   public DefaultTargetDatabaseConfiguration(final ConnectorRepository connectorRepository) {
     super(connectorRepository);
   }
@@ -27,8 +29,12 @@ public abstract class DefaultTargetDatabaseConfiguration extends AbstractDatabas
    * true by default
    */
   @Override
-  public boolean mayCommit() {
-    return true;
+  public boolean isMayCommit() {
+    return _mayCommit;
+  }
+
+  public void setMayCommit(final boolean mayCommit) {
+    _mayCommit = mayCommit;
   }
 
   /**

@@ -87,7 +87,7 @@ public class SplitByRangeTableCopyTool extends AbstractTableCopyTool {
               useMultipleValuesClauses);
           bulkInsert.executeBatch();
 
-          if (targetDatabaseConfiguration.mayCommit()) {
+          if (targetDatabaseConfiguration.isMayCommit()) {
             targetConnection.commit();
           }
 
