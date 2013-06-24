@@ -9,6 +9,8 @@ import java.util.TreeMap;
 
 import de.akquinet.jbosscc.guttenbase.configuration.SourceDatabaseConfiguration;
 import de.akquinet.jbosscc.guttenbase.configuration.TargetDatabaseConfiguration;
+import de.akquinet.jbosscc.guttenbase.configuration.impl.Db2SourceDatabaseConfiguration;
+import de.akquinet.jbosscc.guttenbase.configuration.impl.Db2TargetDatabaseConfiguration;
 import de.akquinet.jbosscc.guttenbase.configuration.impl.DerbySourceDatabaseConfiguration;
 import de.akquinet.jbosscc.guttenbase.configuration.impl.DerbyTargetDatabaseConfiguration;
 import de.akquinet.jbosscc.guttenbase.configuration.impl.GenericSourceDatabaseConfiguration;
@@ -67,7 +69,6 @@ import de.akquinet.jbosscc.guttenbase.utils.Util;
 
 /**
  * The main repository containing all configured connectors.
- * 
  * <p>
  * &copy; 2012 akquinet tech@spree
  * </p>
@@ -75,7 +76,8 @@ import de.akquinet.jbosscc.guttenbase.utils.Util;
  * @Uses-Hint {@link RepositoryTableFilterHint} when returning table meta data
  * @author M. Dahm
  */
-public class ConnectorRepositoryImpl implements ConnectorRepository {
+public class ConnectorRepositoryImpl implements ConnectorRepository
+{
   private static final long serialVersionUID = 1L;
 
   private final Map<String, ConnectorInfo> _connectionInfoMap = new TreeMap<String, ConnectorInfo>();
@@ -88,7 +90,8 @@ public class ConnectorRepositoryImpl implements ConnectorRepository {
   private final Map<String, DatabaseMetaData> _databaseMetaDataMap = new HashMap<String, DatabaseMetaData>();
   private final Map<String, Map<Class<?>, ConnectorHint<?>>> _connectionHintMap = new HashMap<String, Map<Class<?>, ConnectorHint<?>>>();
 
-  public ConnectorRepositoryImpl() {
+  public ConnectorRepositoryImpl()
+  {
     initDefaultConfiguration();
   }
 
@@ -96,7 +99,8 @@ public class ConnectorRepositoryImpl implements ConnectorRepository {
    * {@inheritDoc}
    */
   @Override
-  public void addConnectionInfo(final String connectorId, final ConnectorInfo connectionInfo) {
+  public void addConnectionInfo(final String connectorId, final ConnectorInfo connectionInfo)
+  {
     assert connectorId != null : "connectorId != null";
     assert connectionInfo != null : "connectionInfo != null";
     _connectionInfoMap.put(connectorId, connectionInfo);
@@ -108,7 +112,8 @@ public class ConnectorRepositoryImpl implements ConnectorRepository {
    * {@inheritDoc}
    */
   @Override
-  public void removeConnectionInfo(final String connectorId) {
+  public void removeConnectionInfo(final String connectorId)
+  {
     assert connectorId != null : "connectorId != null";
 
     _connectionInfoMap.remove(connectorId);
@@ -120,7 +125,8 @@ public class ConnectorRepositoryImpl implements ConnectorRepository {
    * {@inheritDoc}
    */
   @Override
-  public <T> void addConnectorHint(final String connectorId, final ConnectorHint<T> hint) {
+  public <T> void addConnectorHint(final String connectorId, final ConnectorHint<T> hint)
+  {
     assert connectorId != null : "connectorId != null";
     assert hint != null : "hint != null";
 
@@ -129,7 +135,8 @@ public class ConnectorRepositoryImpl implements ConnectorRepository {
 
     Map<Class<?>, ConnectorHint<?>> hintMap = _connectionHintMap.get(connectorId);
 
-    if (hintMap == null) {
+    if (hintMap == null)
+    {
       hintMap = new HashMap<Class<?>, ConnectorHint<?>>();
       _connectionHintMap.put(connectorId, hintMap);
     }
@@ -141,13 +148,15 @@ public class ConnectorRepositoryImpl implements ConnectorRepository {
    * {@inheritDoc}
    */
   @Override
-  public <T> void removeConnectorHint(final String connectorId, final Class<T> connectionInfoHintType) {
+  public <T> void removeConnectorHint(final String connectorId, final Class<T> connectionInfoHintType)
+  {
     assert connectorId != null : "connectorId != null";
     assert connectionInfoHintType != null : "connectionInfoHintType != null";
 
     final Map<Class<?>, ConnectorHint<?>> hintMap = _connectionHintMap.get(connectorId);
 
-    if (hintMap != null) {
+    if (hintMap != null)
+    {
       hintMap.remove(connectionInfoHintType);
     }
   }
@@ -157,13 +166,15 @@ public class ConnectorRepositoryImpl implements ConnectorRepository {
    */
   @Override
   @SuppressWarnings("unchecked")
-  public <T> ConnectorHint<T> getConnectorHint(final String connectorId, final Class<T> connectionInfoHintType) {
+  public <T> ConnectorHint<T> getConnectorHint(final String connectorId, final Class<T> connectionInfoHintType)
+  {
     assert connectorId != null : "connectorId != null";
     assert connectionInfoHintType != null : "connectionInfoHintType != null";
 
     final Map<Class<?>, ConnectorHint<?>> hintMap = _connectionHintMap.get(connectorId);
 
-    if (hintMap == null) {
+    if (hintMap == null)
+    {
       throw new IllegalStateException("No hints defined for " + connectorId);
     }
 
@@ -174,12 +185,14 @@ public class ConnectorRepositoryImpl implements ConnectorRepository {
    * {@inheritDoc}
    */
   @Override
-  public ConnectorInfo getConnectionInfo(final String connectorId) {
+  public ConnectorInfo getConnectionInfo(final String connectorId)
+  {
     assert connectorId != null : "connectorId != null";
 
     final ConnectorInfo connectionInfo = _connectionInfoMap.get(connectorId);
 
-    if (connectionInfo == null) {
+    if (connectionInfo == null)
+    {
       throw new IllegalStateException("Connector not configured: " + connectorId);
     }
 
@@ -190,12 +203,14 @@ public class ConnectorRepositoryImpl implements ConnectorRepository {
    * {@inheritDoc}
    */
   @Override
-  public DatabaseMetaData getDatabaseMetaData(final String connectorId) throws SQLException {
+  public DatabaseMetaData getDatabaseMetaData(final String connectorId) throws SQLException
+  {
     assert connectorId != null : "connectorId != null";
 
     DatabaseMetaData databaseMetaData = _databaseMetaDataMap.get(connectorId);
 
-    if (databaseMetaData == null) {
+    if (databaseMetaData == null)
+    {
       final Connector connector = createConnector(connectorId);
       databaseMetaData = connector.retrieveDatabaseMetaData();
       _databaseMetaDataMap.put(connectorId, databaseMetaData);
@@ -208,7 +223,8 @@ public class ConnectorRepositoryImpl implements ConnectorRepository {
    * {@inheritDoc}
    */
   @Override
-  public void refreshDatabaseMetaData(final String connectorId) {
+  public void refreshDatabaseMetaData(final String connectorId)
+  {
     assert connectorId != null : "connectorId != null";
 
     _databaseMetaDataMap.remove(connectorId);
@@ -218,7 +234,8 @@ public class ConnectorRepositoryImpl implements ConnectorRepository {
    * {@inheritDoc}
    */
   @Override
-  public Connector createConnector(final String connectorId) {
+  public Connector createConnector(final String connectorId)
+  {
     assert connectorId != null : "connectorId != null";
 
     final ConnectorInfo connectionInfo = getConnectionInfo(connectorId);
@@ -230,16 +247,20 @@ public class ConnectorRepositoryImpl implements ConnectorRepository {
    * {@inheritDoc}
    */
   @Override
-  public SourceDatabaseConfiguration getSourceDatabaseConfiguration(final String connectorId) {
+  public SourceDatabaseConfiguration getSourceDatabaseConfiguration(final String connectorId)
+  {
     assert connectorId != null : "connectorId != null";
 
     final ConnectorInfo connectionInfo = getConnectionInfo(connectorId);
     final DatabaseType databaseType = connectionInfo.getDatabaseType();
     final SourceDatabaseConfiguration result = _sourceDatabaseConfigurationMap.get(databaseType);
 
-    if (result == null) {
+    if (result == null)
+    {
       throw new IllegalStateException("Unhandled source connector data base type: " + databaseType);
-    } else {
+    }
+    else
+    {
       return result;
     }
   }
@@ -248,7 +269,9 @@ public class ConnectorRepositoryImpl implements ConnectorRepository {
    * {@inheritDoc}
    */
   @Override
-  public void addSourceDatabaseConfiguration(final DatabaseType databaseType, final SourceDatabaseConfiguration sourceDatabaseConfiguration) {
+  public void addSourceDatabaseConfiguration(final DatabaseType databaseType,
+      final SourceDatabaseConfiguration sourceDatabaseConfiguration)
+  {
     assert databaseType != null : "databaseType != null";
     assert sourceDatabaseConfiguration != null : "sourceDatabaseConfiguration != null";
     _sourceDatabaseConfigurationMap.put(databaseType, sourceDatabaseConfiguration);
@@ -258,7 +281,9 @@ public class ConnectorRepositoryImpl implements ConnectorRepository {
    * {@inheritDoc}
    */
   @Override
-  public void addTargetDatabaseConfiguration(final DatabaseType databaseType, final TargetDatabaseConfiguration targetDatabaseConfiguration) {
+  public void addTargetDatabaseConfiguration(final DatabaseType databaseType,
+      final TargetDatabaseConfiguration targetDatabaseConfiguration)
+  {
     assert targetDatabaseConfiguration != null : "targetDatabaseConfiguration != null";
     assert databaseType != null : "databaseType != null";
 
@@ -269,16 +294,20 @@ public class ConnectorRepositoryImpl implements ConnectorRepository {
    * {@inheritDoc}
    */
   @Override
-  public TargetDatabaseConfiguration getTargetDatabaseConfiguration(final String connectorId) {
+  public TargetDatabaseConfiguration getTargetDatabaseConfiguration(final String connectorId)
+  {
     assert connectorId != null : "connectorId != null";
 
     final ConnectorInfo connectionInfo = getConnectionInfo(connectorId);
     final DatabaseType databaseType = connectionInfo.getDatabaseType();
     final TargetDatabaseConfiguration result = _targetDatabaseConfigurationMap.get(databaseType);
 
-    if (result == null) {
+    if (result == null)
+    {
       throw new IllegalStateException("Unhandled target connector data base type: " + databaseType);
-    } else {
+    }
+    else
+    {
       return result;
     }
   }
@@ -287,26 +316,34 @@ public class ConnectorRepositoryImpl implements ConnectorRepository {
    * {@inheritDoc}
    */
   @Override
-  public List<String> getConnectorIds() {
+  public List<String> getConnectorIds()
+  {
     return new ArrayList<String>(_connectionInfoMap.keySet());
   }
 
   private DatabaseMetaData createResultWithFilteredTables(final String connectorId, final DatabaseMetaData databaseMetaData)
-      throws SQLException {
+      throws SQLException
+  {
     final InternalDatabaseMetaData resultDatabaseMetaData = Util.copyObject(InternalDatabaseMetaData.class,
         (InternalDatabaseMetaData) databaseMetaData);
     final RepositoryTableFilter tableFilter = getConnectorHint(connectorId, RepositoryTableFilter.class).getValue();
     final RepositoryColumnFilter columnFilter = getConnectorHint(connectorId, RepositoryColumnFilter.class).getValue();
 
-    for (final TableMetaData tableMetaData : resultDatabaseMetaData.getTableMetaData()) {
-      if (tableFilter.accept(tableMetaData)) {
-        for (final ColumnMetaData columnMetaData : tableMetaData.getColumnMetaData()) {
-          if (!columnFilter.accept(columnMetaData)) {
+    for (final TableMetaData tableMetaData : resultDatabaseMetaData.getTableMetaData())
+    {
+      if (tableFilter.accept(tableMetaData))
+      {
+        for (final ColumnMetaData columnMetaData : tableMetaData.getColumnMetaData())
+        {
+          if (!columnFilter.accept(columnMetaData))
+          {
             ((InternalTableMetaData) tableMetaData).removeColumn(columnMetaData);
           }
         }
 
-      } else {
+      }
+      else
+      {
         resultDatabaseMetaData.removeTableMetaData(tableMetaData);
       }
     }
@@ -314,9 +351,11 @@ public class ConnectorRepositoryImpl implements ConnectorRepository {
     return resultDatabaseMetaData;
   }
 
-  private void initDefaultConfiguration() {
+  private void initDefaultConfiguration()
+  {
     addSourceDatabaseConfiguration(DatabaseType.GENERIC, new GenericSourceDatabaseConfiguration(this));
     addSourceDatabaseConfiguration(DatabaseType.MOCK, new GenericSourceDatabaseConfiguration(this));
+    addSourceDatabaseConfiguration(DatabaseType.DB2, new Db2SourceDatabaseConfiguration(this));
     addSourceDatabaseConfiguration(DatabaseType.MSSQL, new MsSqlSourceDatabaseConfiguration(this));
     addSourceDatabaseConfiguration(DatabaseType.MYSQL, new MySqlSourceDatabaseConfiguration(this));
     addSourceDatabaseConfiguration(DatabaseType.POSTGRESQL, new PostgresqlSourceDatabaseConfiguration(this));
@@ -330,6 +369,7 @@ public class ConnectorRepositoryImpl implements ConnectorRepository {
 
     addTargetDatabaseConfiguration(DatabaseType.GENERIC, new GenericTargetDatabaseConfiguration(this));
     addTargetDatabaseConfiguration(DatabaseType.MOCK, new GenericTargetDatabaseConfiguration(this));
+    addTargetDatabaseConfiguration(DatabaseType.DB2, new Db2TargetDatabaseConfiguration(this));
     addTargetDatabaseConfiguration(DatabaseType.MSSQL, new MsSqlTargetDatabaseConfiguration(this));
     addTargetDatabaseConfiguration(DatabaseType.MYSQL, new MySqlTargetDatabaseConfiguration(this));
     addTargetDatabaseConfiguration(DatabaseType.ORACLE, new OracleTargetDatabaseConfiguration(this));
@@ -342,7 +382,8 @@ public class ConnectorRepositoryImpl implements ConnectorRepository {
     addTargetDatabaseConfiguration(DatabaseType.MS_ACCESS, new MsAccessTargetDatabaseConfiguration(this));
   }
 
-  private void initDefaultHints(final String connectorId) {
+  private void initDefaultHints(final String connectorId)
+  {
     addConnectorHint(connectorId, new DefaultRepositoryTableFilterHint());
     addConnectorHint(connectorId, new DefaultDatabaseTableFilterHint());
     addConnectorHint(connectorId, new DefaultNumberOfRowsPerBatchHint());
