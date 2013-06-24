@@ -50,7 +50,12 @@ public class ZipImporter implements Importer {
     if (!file.exists()) {
       file = File.createTempFile("GuttenBase", ".jar");
       file.deleteOnExit();
-      IOUtils.copy(url.openStream(), new FileOutputStream(file));
+      final InputStream inputStream = url.openStream();
+      final FileOutputStream outputStream = new FileOutputStream(file);
+      IOUtils.copy(inputStream, outputStream);
+
+      IOUtils.closeQuietly(inputStream);
+      IOUtils.closeQuietly(outputStream);
     }
 
     _connectorRepository = connectorRepository;

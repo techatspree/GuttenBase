@@ -46,6 +46,22 @@
 		<url>http://guttenbase.spree.de</url>
 		<developerConnection>scm:git:git@github.com:akquinet/GuttenBase.git</developerConnection>
 	</scm>
+	
+	
+	<distributionManagement>
+		<repository>
+			<id>atsrepo</id>
+			<name>repo.spree.de.meyleReleases</name>
+			<url>https://repo.spree.de/nexus/content/repositories/ext-releases</url>
+		</repository>
+
+		<snapshotRepository>
+			<id>atsrepo</id>
+			<name>repo.spree.de.meyleSnapshots</name>
+			<url>https://repo.spree.de/nexus/content/repositories/ext-snapshots</url>
+		</snapshotRepository>
+	</distributionManagement>
+	
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
