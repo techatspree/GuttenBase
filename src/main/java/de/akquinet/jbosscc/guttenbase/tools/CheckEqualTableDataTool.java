@@ -23,6 +23,7 @@ import de.akquinet.jbosscc.guttenbase.hints.NumberOfCheckedTableDataHint;
 import de.akquinet.jbosscc.guttenbase.hints.TableNameMapperHint;
 import de.akquinet.jbosscc.guttenbase.hints.TableOrderHint;
 import de.akquinet.jbosscc.guttenbase.mapping.ColumnMapper;
+import de.akquinet.jbosscc.guttenbase.mapping.ColumnMapper.ColumnMapperResult;
 import de.akquinet.jbosscc.guttenbase.mapping.ColumnNameMapper;
 import de.akquinet.jbosscc.guttenbase.mapping.ColumnTypeMapping;
 import de.akquinet.jbosscc.guttenbase.mapping.TableMapper;
@@ -158,9 +159,9 @@ public class CheckEqualTableDataTool
         for (int columnIndex = 1; columnIndex <= orderedSourceColumns.size(); columnIndex++)
         {
           final ColumnMetaData sourceColumn = orderedSourceColumns.get(columnIndex - 1);
-          final List<ColumnMetaData> targetColumns = columnMapper.map(sourceColumn, targetTableMetaData);
+          final ColumnMapperResult mapping = columnMapper.map(sourceColumn, targetTableMetaData);
 
-          for (final ColumnMetaData columnMetaData2 : targetColumns)
+          for (final ColumnMetaData columnMetaData2 : mapping.getColumns())
           {
             final ColumnTypeMapping columnTypeMapping = commonColumnTypeResolver.getCommonColumnTypeMapping(sourceConnectorId,
                 sourceColumn, targetConnectorId, columnMetaData2);
