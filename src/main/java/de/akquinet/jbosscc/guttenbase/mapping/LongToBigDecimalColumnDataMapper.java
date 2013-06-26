@@ -14,7 +14,7 @@ import de.akquinet.jbosscc.guttenbase.meta.ColumnMetaData;
  * 
  * @author M. Dahm
  */
-public class BigIntLongToBigDecimalColumnDataMapper implements ColumnDataMapper {
+public class LongToBigDecimalColumnDataMapper implements ColumnDataMapper {
 	@Override
 	public Object map(final ColumnMetaData sourceColumnMetaData, final ColumnMetaData targetColumnMetaData, final Object value)
 			throws SQLException {
