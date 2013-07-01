@@ -53,7 +53,7 @@ public class InsertStatementFiller
         sourceTableMetaData);
     final ColumnMapper columnMapper = _connectorRepository.getConnectorHint(targetConnectorId, ColumnMapper.class).getValue();
     final DatabaseType targetDatabaseType = targetTableMetaData.getDatabaseMetaData().getDatabaseType();
-    int currentIndex = 1;
+    int targetColumnIndex = 1;
     int dataItemsCount = 0;
 
     for (int currentRow = 0; currentRow < numberOfRowsPerBatch; currentRow++)
@@ -72,6 +72,22 @@ public class InsertStatementFiller
         final ColumnMetaData columnMetaData1 = sourceColumns.get(columnIndex - 1);
         final ColumnMapperResult mapping = columnMapper.map(columnMetaData1, targetTableMetaData);
 
+        if (mapping.getColumns().isEmpty())
+        {
+          if (mapping.isEmptyColumnListOk())
+          {
+            // Unused result, but we may have to skip the next data item from an underlying stream implementation
+            rs.getObject(columnIndex);
+          }
+          else
+          {
+            throw new IncompatibleColumnsException("Cannot map column " + targetTableMetaData
+                + ":"
+                + columnMetaData1
+                + ": Target column list empty");
+          }
+        }
+
         for (final ColumnMetaData columnMetaData2 : mapping.getColumns())
         {
           final ColumnTypeMapping columnTypeMapping = findMapping(sourceConnectorId, targetConnectorId, commonColumnTypeResolver,
@@ -79,7 +95,7 @@ public class InsertStatementFiller
 
           Object value = columnTypeMapping.getSourceColumnType().getValue(rs, columnIndex);
           value = columnTypeMapping.getColumnDataMapper().map(columnMetaData1, columnMetaData2, value);
-          columnTypeMapping.getTargetColumnType().setValue(insertStatement, currentIndex++, value, targetDatabaseType,
+          columnTypeMapping.getTargetColumnType().setValue(insertStatement, targetColumnIndex++, value, targetDatabaseType,
               columnMetaData2.getColumnType());
           dataItemsCount++;
         }
@@ -89,7 +105,7 @@ public class InsertStatementFiller
       if (!useMultipleValuesClauses)
       {
         insertStatement.addBatch();
-        currentIndex = 1;
+        targetColumnIndex = 1;
       }
 
       targetDatabaseConfiguration.afterNewRow(targetConnection, targetConnectorId, targetTableMetaData);
