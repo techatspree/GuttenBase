@@ -17,7 +17,7 @@ public class Db2ReorgIndexesTablesTool extends AbstractTablesOperationTool
 {
   public Db2ReorgIndexesTablesTool(final ConnectorRepository connectorRepository)
   {
-    super(connectorRepository, "REORG INDEXES ALL FOR TABLE " + TABLE_PLACEHOLDER + ";");
+    super(connectorRepository, "CALL SYSPROC.ADMIN_CMD('REORG INDEXES ALL FOR TABLE " + TABLE_PLACEHOLDER + "');");
   }
 
   public void executeOnAllTables(final String target) throws SQLException

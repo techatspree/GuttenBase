@@ -17,7 +17,7 @@ public class Db2ReorgTablesTool extends AbstractTablesOperationTool
 {
   public Db2ReorgTablesTool(final ConnectorRepository connectorRepository)
   {
-    super(connectorRepository, "REORG TABLE " + TABLE_PLACEHOLDER + ";");
+    super(connectorRepository, "CALL SYSPROC.ADMIN_CMD('REORG TABLE " + TABLE_PLACEHOLDER + "');");
   }
 
   public void executeOnAllTables(final String target) throws SQLException
