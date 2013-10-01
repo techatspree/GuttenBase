@@ -23,12 +23,12 @@ public class CreateSchemaTool
     _connectorRepository = connectorRepository;
   }
 
-  public List<String> createDDLScript(final String connectorId) throws SQLException
+  public List<String> createDDLScript(final String connectorId, final String schema) throws SQLException
   {
     final List<String> result = new ArrayList<String>();
     final DatabaseMetaData databaseMetaData = _connectorRepository.getDatabaseMetaData(connectorId);
 
-    final DatabaseSchemaScriptCreator databaseSchemaScriptCreator = new DatabaseSchemaScriptCreator(databaseMetaData);
+    final DatabaseSchemaScriptCreator databaseSchemaScriptCreator = new DatabaseSchemaScriptCreator(databaseMetaData, schema);
     result.addAll(databaseSchemaScriptCreator.createTableStatements());
     result.addAll(databaseSchemaScriptCreator.createPrimaryKeyStatements());
     result.addAll(databaseSchemaScriptCreator.createForeignKeyStatements());
