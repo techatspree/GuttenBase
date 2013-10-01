@@ -21,7 +21,7 @@ public class DroppingColumnMapper extends DefaultColumnMapper
 {
   private final Map<String, List<String>> _droppedColumns = new HashMap<String, List<String>>();
 
-  public void addDroppedColumn(final String targetTableName, final String sourceColumName)
+  public DroppingColumnMapper addDroppedColumn(final String targetTableName, final String sourceColumName)
   {
     assert targetTableName != null : "tableName != null";
     assert sourceColumName != null : "columName != null";
@@ -35,6 +35,7 @@ public class DroppingColumnMapper extends DefaultColumnMapper
     }
 
     dropped.add(sourceColumName.toUpperCase());
+    return this;
   }
 
   @Override
