@@ -156,9 +156,11 @@ public class CheckEqualTableDataTool
     {
       while (resultSet1.next() && resultSet2.next() && rowIndex <= numberOfCheckData)
       {
-        for (int columnIndex = 1; columnIndex <= orderedSourceColumns.size(); columnIndex++)
+        int targetColumnIndex = 1;
+
+        for (int sourceColumnIndex = 1; sourceColumnIndex <= orderedSourceColumns.size(); sourceColumnIndex++)
         {
-          final ColumnMetaData sourceColumn = orderedSourceColumns.get(columnIndex - 1);
+          final ColumnMetaData sourceColumn = orderedSourceColumns.get(sourceColumnIndex - 1);
           final ColumnMapperResult mapping = columnMapper.map(sourceColumn, targetTableMetaData);
 
           for (final ColumnMetaData columnMetaData2 : mapping.getColumns())
@@ -181,9 +183,9 @@ public class CheckEqualTableDataTool
             }
 
             final ColumnType sourceColumnType = columnTypeMapping.getSourceColumnType();
-            Object data1 = sourceColumnType.getValue(resultSet1, columnIndex);
+            Object data1 = sourceColumnType.getValue(resultSet1, sourceColumnIndex);
             data1 = columnTypeMapping.getColumnDataMapper().map(sourceColumn, columnMetaData2, data1);
-            Object data2 = columnTypeMapping.getTargetColumnType().getValue(resultSet2, columnIndex);
+            Object data2 = columnTypeMapping.getTargetColumnType().getValue(resultSet2, targetColumnIndex);
 
             switch (sourceColumnType)
             {
@@ -205,6 +207,10 @@ public class CheckEqualTableDataTool
               data1 = createStringFromBlob(blob1);
               data2 = createStringFromBlob(blob2);
               break;
+
+            default:
+              // No conversion needed
+              break;
             }
 
             if ((data1 == null && data2 != null) || (data1 != null && data2 == null))
@@ -216,6 +222,8 @@ public class CheckEqualTableDataTool
               throw createIncompatibleDataException(tableName1, rowIndex, sourceColumnType, columnName1, data1, data2);
             }
           }
+
+          targetColumnIndex += mapping.getColumns().size();
         }
 
         rowIndex++;
