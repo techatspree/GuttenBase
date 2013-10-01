@@ -32,6 +32,13 @@ public class DropTablesTool
     _scriptExecutor = new ScriptExecutorTool(connectorRepository);
   }
 
+  public void drop(final String connectorId) throws SQLException
+  {
+    dropForeignKeys(connectorId);
+    dropIndexes(connectorId);
+    dropTables(connectorId);
+  }
+
   public void dropForeignKeys(final String connectorId) throws SQLException
   {
     final List<TableMetaData> tableMetaData = TableOrderHint.getSortedTables(_connectorRepository, connectorId);
