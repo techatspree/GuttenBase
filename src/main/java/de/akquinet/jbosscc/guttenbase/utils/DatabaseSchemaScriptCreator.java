@@ -1,5 +1,6 @@
 package de.akquinet.jbosscc.guttenbase.utils;
 
+import java.sql.Types;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -19,7 +20,7 @@ import de.akquinet.jbosscc.guttenbase.meta.TableMetaData;
  */
 public class DatabaseSchemaScriptCreator
 {
-  private int _foreignKeyCounter = 1;
+  private int _keyCounter = 1;
 
   private final DatabaseMetaData _databaseMetaData;
   private final String _schema;
@@ -133,7 +134,7 @@ public class DatabaseSchemaScriptCreator
         + " ADD CONSTRAINT PK_"
         + tableMetaData.getTableName()
         + "_"
-        + _foreignKeyCounter++
+        + _keyCounter++
         + " PRIMARY KEY (");
 
     for (final ColumnMetaData columnMetaData : primaryKeyColumns)
@@ -155,6 +156,8 @@ public class DatabaseSchemaScriptCreator
     final StringBuilder builder = new StringBuilder("CREATE" + unique
         + "INDEX "
         + indexMetaData.getIndexName()
+        + "_"
+        + _keyCounter++
         + " ON "
         + schemaPrefix
         + tableMetaData.getTableName()
@@ -189,7 +192,7 @@ public class DatabaseSchemaScriptCreator
         + "_"
         + referencedColumn.getColumnName().toUpperCase()
         + "_"
-        + _foreignKeyCounter++);
+        + _keyCounter++);
     builder.append(" FOREIGN KEY (" + columnMetaData.getColumnName()
         + ") REFERENCES "
         + schemaPrefix
@@ -204,7 +207,8 @@ public class DatabaseSchemaScriptCreator
   {
     final StringBuilder builder = new StringBuilder();
 
-    builder.append(columnMetaData.getColumnName() + " " + columnMetaData.getColumnTypeName());
+    final String precision = createPrecisionClause(columnMetaData);
+    builder.append(columnMetaData.getColumnName() + " " + columnMetaData.getColumnTypeName() + precision);
 
     if (!columnMetaData.isNullable())
     {
@@ -212,5 +216,19 @@ public class DatabaseSchemaScriptCreator
     }
 
     return builder.toString();
+  }
+
+  private String createPrecisionClause(final ColumnMetaData columnMetaData)
+  {
+    switch (columnMetaData.getColumnType())
+    {
+    case Types.CHAR:
+    case Types.VARCHAR:
+    case Types.VARBINARY:
+      return "(" + columnMetaData.getPrecision() + ")";
+
+    default:
+      return "";
+    }
   }
 }
