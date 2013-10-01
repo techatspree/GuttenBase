@@ -5,14 +5,14 @@ import java.util.List;
 
 /**
  * Information about a table.
- * 
  * <p>
  * &copy; 2012 akquinet tech@spree
  * </p>
  * 
  * @author M. Dahm
  */
-public interface TableMetaData extends Comparable<TableMetaData>, Serializable {
+public interface TableMetaData extends Comparable<TableMetaData>, Serializable
+{
   int getRowCount();
 
   List<ColumnMetaData> getColumnMetaData();
@@ -36,5 +36,7 @@ public interface TableMetaData extends Comparable<TableMetaData>, Serializable {
 
   List<IndexMetaData> getIndexesForColumn(ColumnMetaData columnMetaData);
 
-  List<ForeignKeyMetaData> getForeignKeys();
+  List<ForeignKeyMetaData> getImportedForeignKeys();
+
+  List<ForeignKeyMetaData> getExportedForeignKeys();
 }

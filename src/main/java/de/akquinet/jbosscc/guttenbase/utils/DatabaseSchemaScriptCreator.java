@@ -11,123 +11,206 @@ import de.akquinet.jbosscc.guttenbase.meta.TableMetaData;
 
 /**
  * Create DDL script from given database meta data.
- * 
  * <p>
  * &copy; 2012 akquinet tech@spree
  * </p>
  * 
  * @author M. Dahm
  */
-public class DatabaseSchemaScriptCreator {
-	private int _foreignKeyCounter = 1;
+public class DatabaseSchemaScriptCreator
+{
+  private int _foreignKeyCounter = 1;
 
-	public List<String> createTableStatements(final DatabaseMetaData databaseMetaData) {
-		final List<String> result = new ArrayList<String>();
+  private final DatabaseMetaData _databaseMetaData;
+  private final String _schema;
 
-		for (final TableMetaData tableMetaData : databaseMetaData.getTableMetaData()) {
-			result.add(createTable(tableMetaData));
-		}
+  public DatabaseSchemaScriptCreator(final DatabaseMetaData databaseMetaData, final String schema)
+  {
+    assert databaseMetaData != null : "databaseMetaData != null";
+    assert schema != null : "schema != null";
 
-		return result;
-	}
+    _databaseMetaData = databaseMetaData;
+    _schema = schema;
+  }
 
-	public List<String> createIndexStatements(final DatabaseMetaData databaseMetaData) {
-		final List<String> result = new ArrayList<String>();
+  public DatabaseSchemaScriptCreator(final DatabaseMetaData databaseMetaData)
+  {
+    this(databaseMetaData, databaseMetaData.getSchema().trim());
+  }
 
-		for (final TableMetaData tableMetaData : databaseMetaData.getTableMetaData()) {
-			final List<IndexMetaData> indexes = tableMetaData.getIndexes();
+  public List<String> createTableStatements()
+  {
+    final List<String> result = new ArrayList<String>();
 
-			for (final IndexMetaData indexMetaData : indexes) {
-				result.add(createIndexesForTable(indexMetaData));
-			}
-		}
+    for (final TableMetaData tableMetaData : _databaseMetaData.getTableMetaData())
+    {
+      result.add(createTable(tableMetaData));
+    }
 
-		return result;
-	}
+    return result;
+  }
 
-	public List<String> createForeignKeyStatements(final DatabaseMetaData databaseMetaData) {
-		final List<String> result = new ArrayList<String>();
+  public List<String> createPrimaryKeyStatements()
+  {
+    final List<String> result = new ArrayList<String>();
 
-		for (final TableMetaData tableMetaData : databaseMetaData.getTableMetaData()) {
-			final List<ColumnMetaData> columns = tableMetaData.getColumnMetaData();
+    for (final TableMetaData tableMetaData : _databaseMetaData.getTableMetaData())
+    {
+      final List<ColumnMetaData> primaryKeyColumns = tableMetaData.getPrimaryKeyColumns();
 
-			for (final ColumnMetaData columnMetaData : columns) {
-				if (columnMetaData.getReferencedColumn() != null) {
-					result.add(createForeignKeyForTable(columnMetaData));
-				}
-			}
-		}
+      if (!primaryKeyColumns.isEmpty())
+      {
+        result.add(createPrimaryKeyStatement(tableMetaData, primaryKeyColumns));
+      }
+    }
 
-		return result;
-	}
+    return result;
+  }
 
-	private String createTable(final TableMetaData tableMetaData) {
-		final String schema = tableMetaData.getDatabaseMetaData().getSchema().trim();
-		final StringBuilder builder = new StringBuilder("CREATE TABLE " + ("".equals(schema) ? "" : schema + ".")
-				+ tableMetaData.getTableName() + "\n(\n");
+  public List<String> createIndexStatements()
+  {
+    final List<String> result = new ArrayList<String>();
 
-		for (final Iterator<ColumnMetaData> iterator = tableMetaData.getColumnMetaData().iterator(); iterator.hasNext();) {
-			final ColumnMetaData columnMetaData = iterator.next();
+    for (final TableMetaData tableMetaData : _databaseMetaData.getTableMetaData())
+    {
+      final List<IndexMetaData> indexes = tableMetaData.getIndexes();
 
-			builder.append("  " + createColumn(columnMetaData));
+      for (final IndexMetaData indexMetaData : indexes)
+      {
+        result.add(createIndexesForTable(indexMetaData));
+      }
+    }
 
-			if (iterator.hasNext()) {
-				builder.append(", \n");
-			}
-		}
+    return result;
+  }
 
-		builder.append("\n);");
-		return builder.toString();
-	}
+  public List<String> createForeignKeyStatements()
+  {
+    final List<String> result = new ArrayList<String>();
 
-	private String createIndexesForTable(final IndexMetaData indexMetaData) {
-		final TableMetaData tableMetaData = indexMetaData.getTableMetaData();
-		final String schema = tableMetaData.getDatabaseMetaData().getSchema().trim();
-		final String schemaPrefix = "".equals(schema) ? "" : schema + ".";
-		final String unique = indexMetaData.isUnique() ? " UNIQUE " : " ";
+    for (final TableMetaData tableMetaData : _databaseMetaData.getTableMetaData())
+    {
+      final List<ColumnMetaData> columns = tableMetaData.getColumnMetaData();
 
-		final StringBuilder builder = new StringBuilder("CREATE" + unique + "INDEX " + indexMetaData.getIndexName() + " ON " + schemaPrefix
-				+ tableMetaData.getTableName() + "(");
+      for (final ColumnMetaData columnMetaData : columns)
+      {
+        if (columnMetaData.getReferencedColumn() != null)
+        {
+          result.add(createForeignKeyForTable(columnMetaData));
+        }
+      }
+    }
 
-		for (final Iterator<ColumnMetaData> iterator = indexMetaData.getColumnMetaData().iterator(); iterator.hasNext();) {
-			final ColumnMetaData columnMetaData = iterator.next();
+    return result;
+  }
 
-			builder.append(columnMetaData.getColumnName());
+  private String createTable(final TableMetaData tableMetaData)
+  {
+    final StringBuilder builder = new StringBuilder("CREATE TABLE " + ("".equals(_schema) ? "" : _schema + ".")
+        + tableMetaData.getTableName()
+        + "\n(\n");
 
-			if (iterator.hasNext()) {
-				builder.append(", ");
-			}
-		}
+    for (final Iterator<ColumnMetaData> iterator = tableMetaData.getColumnMetaData().iterator(); iterator.hasNext();)
+    {
+      final ColumnMetaData columnMetaData = iterator.next();
 
-		builder.append(");");
-		return builder.toString();
-	}
+      builder.append("  " + createColumn(columnMetaData));
 
-	private String createForeignKeyForTable(final ColumnMetaData columnMetaData) {
-		final TableMetaData tableMetaData = columnMetaData.getTableMetaData();
-		final String schema = tableMetaData.getDatabaseMetaData().getSchema().trim();
-		final String schemaPrefix = "".equals(schema) ? "" : schema + ".";
-		final ColumnMetaData referencedColumn = columnMetaData.getReferencedColumn();
+      if (iterator.hasNext())
+      {
+        builder.append(", \n");
+      }
+    }
 
-		final StringBuilder builder = new StringBuilder("ALTER TABLE " + schemaPrefix + tableMetaData.getTableName() + " ADD CONSTRAINT ");
-		builder.append("FK_" + columnMetaData.getColumnName().toUpperCase() + "_" + referencedColumn.getColumnName().toUpperCase() + "_"
-				+ _foreignKeyCounter++);
-		builder.append(" FOREIGN KEY (" + columnMetaData.getColumnName() + ") + REFERENCES " + schemaPrefix
-				+ referencedColumn.getTableMetaData() + "(" + referencedColumn.getColumnName() + ")");
-		return builder.toString();
-	}
+    builder.append("\n);");
+    return builder.toString();
+  }
 
-	private String createColumn(final ColumnMetaData columnMetaData) {
-		final StringBuilder builder = new StringBuilder();
+  private String createPrimaryKeyStatement(final TableMetaData tableMetaData, final List<ColumnMetaData> primaryKeyColumns)
+  {
+    final StringBuilder builder = new StringBuilder("ALTER TABLE " + ("".equals(_schema) ? "" : _schema + ".")
+        + tableMetaData.getTableName()
+        + " ADD CONSTRAINT PK_"
+        + tableMetaData.getTableName()
+        + "_"
+        + _foreignKeyCounter++
+        + " PRIMARY KEY (");
 
-		builder.append(columnMetaData.getColumnName() + " " + columnMetaData.getColumnTypeName());
+    for (final ColumnMetaData columnMetaData : primaryKeyColumns)
+    {
+      builder.append(columnMetaData.getColumnName() + ", ");
+    }
 
-		if (columnMetaData.isPrimaryKey()) {
-			builder.append(" PRIMARY KEY");
-		} else if (!columnMetaData.isNullable()) {
-			builder.append(" NOT NULL");
-		}
+    builder.setLength(builder.length() - 2);
+    builder.append(");");
+    return builder.toString();
+  }
 
-		return builder.toString();
-	}
+  private String createIndexesForTable(final IndexMetaData indexMetaData)
+  {
+    final TableMetaData tableMetaData = indexMetaData.getTableMetaData();
+    final String schemaPrefix = "".equals(_schema) ? "" : _schema + ".";
+    final String unique = indexMetaData.isUnique() ? " UNIQUE " : " ";
+
+    final StringBuilder builder = new StringBuilder("CREATE" + unique
+        + "INDEX "
+        + indexMetaData.getIndexName()
+        + " ON "
+        + schemaPrefix
+        + tableMetaData.getTableName()
+        + "(");
+
+    for (final Iterator<ColumnMetaData> iterator = indexMetaData.getColumnMetaData().iterator(); iterator.hasNext();)
+    {
+      final ColumnMetaData columnMetaData = iterator.next();
+
+      builder.append(columnMetaData.getColumnName());
+
+      if (iterator.hasNext())
+      {
+        builder.append(", ");
+      }
+    }
+
+    builder.append(");");
+    return builder.toString();
+  }
+
+  private String createForeignKeyForTable(final ColumnMetaData columnMetaData)
+  {
+    final TableMetaData tableMetaData = columnMetaData.getTableMetaData();
+    final String schemaPrefix = "".equals(_schema) ? "" : _schema + ".";
+    final ColumnMetaData referencedColumn = columnMetaData.getReferencedColumn();
+
+    final StringBuilder builder = new StringBuilder("ALTER TABLE " + schemaPrefix
+        + tableMetaData.getTableName()
+        + " ADD CONSTRAINT ");
+    builder.append("FK_" + columnMetaData.getColumnName().toUpperCase()
+        + "_"
+        + referencedColumn.getColumnName().toUpperCase()
+        + "_"
+        + _foreignKeyCounter++);
+    builder.append(" FOREIGN KEY (" + columnMetaData.getColumnName()
+        + ") REFERENCES "
+        + schemaPrefix
+        + referencedColumn.getTableMetaData()
+        + "("
+        + referencedColumn.getColumnName()
+        + ");");
+    return builder.toString();
+  }
+
+  private String createColumn(final ColumnMetaData columnMetaData)
+  {
+    final StringBuilder builder = new StringBuilder();
+
+    builder.append(columnMetaData.getColumnName() + " " + columnMetaData.getColumnTypeName());
+
+    if (!columnMetaData.isNullable())
+    {
+      builder.append(" NOT NULL");
+    }
+
+    return builder.toString();
+  }
 }
