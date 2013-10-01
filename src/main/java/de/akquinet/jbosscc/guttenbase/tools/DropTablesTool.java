@@ -56,7 +56,10 @@ public class DropTablesTool
       }
     }
 
-    _scriptExecutor.executeScript(connectorId, true, false, statements);
+    if (!statements.isEmpty())
+    {
+      _scriptExecutor.executeScript(connectorId, true, false, statements);
+    }
   }
 
   public void dropIndexes(final String connectorId) throws SQLException
@@ -66,13 +69,26 @@ public class DropTablesTool
 
     for (final TableMetaData table : tableMetaData)
     {
+      String schema = table.getDatabaseMetaData().getSchema();
+
+      if (!"".equals(schema))
+      {
+        schema += ".";
+      }
+
       for (final IndexMetaData index : table.getIndexes())
       {
-        statements.add("DROP INDEX " + index.getIndexName() + ";");
+        if (!index.isPrimaryKeyIndex())
+        {
+          statements.add("DROP INDEX " + schema + index.getIndexName() + ";");
+        }
       }
     }
 
-    _scriptExecutor.executeScript(connectorId, true, false, statements);
+    if (!statements.isEmpty())
+    {
+      _scriptExecutor.executeScript(connectorId, true, false, statements);
+    }
   }
 
   public void dropTables(final String connectorId) throws SQLException
@@ -86,6 +102,9 @@ public class DropTablesTool
       statements.add("DROP TABLE " + tableNameMapper.mapTableName(table) + ";");
     }
 
-    _scriptExecutor.executeScript(connectorId, true, false, statements);
+    if (!statements.isEmpty())
+    {
+      _scriptExecutor.executeScript(connectorId, true, false, statements);
+    }
   }
 }
