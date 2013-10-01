@@ -78,7 +78,10 @@ public class DropTablesTool
 
       for (final IndexMetaData index : table.getIndexes())
       {
-        statements.add("DROP INDEX " + schema + index.getIndexName() + ";");
+        if (!index.isPrimaryKeyIndex())
+        {
+          statements.add("DROP INDEX " + schema + index.getIndexName() + ";");
+        }
       }
     }
 
