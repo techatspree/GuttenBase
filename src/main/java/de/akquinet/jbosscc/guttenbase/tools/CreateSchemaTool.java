@@ -36,4 +36,13 @@ public class CreateSchemaTool
 
     return result;
   }
+
+  public void copySchema(final String sourceConnectorId, final String targetConnectorId) throws SQLException
+  {
+    final DatabaseMetaData databaseMetaData = _connectorRepository.getDatabaseMetaData(targetConnectorId);
+
+    final List<String> ddlScript = createDDLScript(sourceConnectorId, databaseMetaData.getSchema());
+
+    new ScriptExecutorTool(_connectorRepository).executeScript(targetConnectorId, ddlScript);
+  }
 }
