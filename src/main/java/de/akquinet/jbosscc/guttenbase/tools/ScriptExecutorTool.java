@@ -36,7 +36,7 @@ public class ScriptExecutorTool
   }
 
   /**
-   * Read SQL from file somewhere on class path.
+   * Read SQL from file somewhere on class path. Each statement (not line!) must end with a ';'
    */
   public void executeFileScript(final String connectorId, final String resourceName) throws SQLException
   {
@@ -44,7 +44,7 @@ public class ScriptExecutorTool
   }
 
   /**
-   * Read SQL from file somewhere on class path.
+   * Read SQL from file somewhere on class path. Each statement (not line!) must end with a ';'
    */
   public void executeFileScript(final String connectorId, final boolean updateSchema, final boolean prepareTargetConnection,
       final String resourceName) throws SQLException
@@ -53,7 +53,7 @@ public class ScriptExecutorTool
   }
 
   /**
-   * Execute given lines of SQL. Each statement (not line!) has end with a ';'
+   * Execute given lines of SQL. Each statement (not line!) must end with a ';'
    */
   public void executeScript(final String connectorId, final String... lines) throws SQLException
   {
@@ -61,7 +61,7 @@ public class ScriptExecutorTool
   }
 
   /**
-   * Execute given lines of SQL. Each statement (not line!) has end with a ';'
+   * Execute given lines of SQL. Each statement (not line!) must end with a ';'
    */
   public void executeScript(final String connectorId, final boolean updateSchema, final boolean prepareTargetConnection,
       final String... lines) throws SQLException
@@ -70,7 +70,7 @@ public class ScriptExecutorTool
   }
 
   /**
-   * Execute given lines of SQL. Each statement (not line!) end with a ';'
+   * Execute given lines of SQL. Each statement (not line!) must with a ';'
    */
   public void executeScript(final String connectorId, final List<String> lines) throws SQLException
   {
