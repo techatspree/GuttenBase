@@ -5,12 +5,14 @@ import java.util.List;
 
 /**
  * Information about index in table.
- * 
- * <p>&copy; 2012 akquinet tech@spree</p>
+ * <p>
+ * &copy; 2012 akquinet tech@spree
+ * </p>
  * 
  * @author M. Dahm
  */
-public interface IndexMetaData extends Serializable {
+public interface IndexMetaData extends Serializable
+{
   String getIndexName();
 
   boolean isAscending();
@@ -20,4 +22,6 @@ public interface IndexMetaData extends Serializable {
   List<ColumnMetaData> getColumnMetaData();
 
   TableMetaData getTableMetaData();
+
+  boolean isPrimaryKeyIndex();
 }

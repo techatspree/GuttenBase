@@ -165,11 +165,12 @@ public class DatabaseMetaDataInspectorTool
         if (column != null)
         {
           InternalIndexMetaData indexMetaData = (InternalIndexMetaData) table.getIndexMetaData(indexName);
+
           if (indexMetaData == null)
           {
             final boolean ascending = ascOrDesc == null || "A".equals(ascOrDesc);
             final boolean unique = !nonUnique;
-            indexMetaData = new IndexMetaDataImpl(table, indexName, ascending, unique);
+            indexMetaData = new IndexMetaDataImpl(table, indexName, ascending, unique, column.isPrimaryKey());
             table.addIndex(indexMetaData);
           }
 

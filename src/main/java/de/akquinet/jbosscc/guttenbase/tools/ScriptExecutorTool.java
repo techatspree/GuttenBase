@@ -15,6 +15,9 @@ import org.apache.log4j.Logger;
 
 import de.akquinet.jbosscc.guttenbase.configuration.TargetDatabaseConfiguration;
 import de.akquinet.jbosscc.guttenbase.connector.Connector;
+import de.akquinet.jbosscc.guttenbase.hints.TableOrderHint;
+import de.akquinet.jbosscc.guttenbase.meta.IndexMetaData;
+import de.akquinet.jbosscc.guttenbase.meta.TableMetaData;
 import de.akquinet.jbosscc.guttenbase.repository.ConnectorRepository;
 import de.akquinet.jbosscc.guttenbase.sql.SQLLexer;
 import de.akquinet.jbosscc.guttenbase.utils.Util;
@@ -213,5 +216,21 @@ public class ScriptExecutorTool
       final int updateCount = statement.getUpdateCount();
       LOG.info("Update count: " + updateCount);
     }
+  }
+
+  public void dropIndexes(DropTablesTool dropTablesTool, final String connectorId, final boolean updateSchema) throws SQLException
+  {
+    final List<TableMetaData> tableMetaData = TableOrderHint.getSortedTables(dropTablesTool._connectorRepository, connectorId);
+    final List<String> statements = new ArrayList<String>();
+  
+    for (final TableMetaData table : tableMetaData)
+    {
+      for (final IndexMetaData index : table.getIndexes())
+      {
+        statements.add("DROP INDEX " + index.getIndexName() + ";");
+      }
+    }
+  
+    executeScript(connectorId, updateSchema, false, statements);
   }
 }
