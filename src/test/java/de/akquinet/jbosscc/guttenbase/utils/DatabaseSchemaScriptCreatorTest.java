@@ -16,8 +16,8 @@ import de.akquinet.jbosscc.guttenbase.meta.builder.TableMetaDataBuilder;
 
 public class DatabaseSchemaScriptCreatorTest
 {
-  private final DatabaseSchemaScriptCreator _objectUnderTest = new DatabaseSchemaScriptCreator();
   private final DatabaseMetaData _databaseMetaData = createDatabaseMetaData();
+  private final DatabaseSchemaScriptCreator _objectUnderTest = new DatabaseSchemaScriptCreator(_databaseMetaData);
 
   private DatabaseMetaData createDatabaseMetaData()
   {
@@ -63,22 +63,22 @@ public class DatabaseSchemaScriptCreatorTest
   @Test
   public void testDDL() throws Exception
   {
-    final List<String> tableStatements = _objectUnderTest.createTableStatements(_databaseMetaData);
+    final List<String> tableStatements = _objectUnderTest.createTableStatements();
     assertEquals(2, tableStatements.size());
 
     final String createStatement = tableStatements.get(0);
 
     assertTrue(createStatement, createStatement.startsWith("CREATE TABLE schemaName.MY_TABLE1"));
-    assertTrue(createStatement, createStatement.contains("ID BIGINT PRIMARY KEY"));
+    assertTrue(createStatement, createStatement.contains("ID BIGINT NOT NULL"));
     assertTrue(createStatement, createStatement.contains("NAME VARCHAR(100) NOT NULL"));
 
-    final List<String> indexStatements = _objectUnderTest.createIndexStatements(_databaseMetaData);
+    final List<String> indexStatements = _objectUnderTest.createIndexStatements();
     assertEquals(2, indexStatements.size());
     final String indexStatement = indexStatements.get(0);
     assertTrue(indexStatement, indexStatement.startsWith("CREATE UNIQUE INDEX NAME_IDX1 ON schemaName.MY_TABLE"));
     assertTrue(indexStatement, indexStatement.contains("NAME"));
 
-    final List<String> foreignKeyStatements = _objectUnderTest.createForeignKeyStatements(_databaseMetaData);
+    final List<String> foreignKeyStatements = _objectUnderTest.createForeignKeyStatements();
     assertEquals(1, foreignKeyStatements.size());
     final String foreignKeyStatement = foreignKeyStatements.get(0);
 

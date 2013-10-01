@@ -21,11 +21,28 @@ public class DatabaseSchemaScriptCreator
 {
   private int _foreignKeyCounter = 1;
 
-  public List<String> createTableStatements(final DatabaseMetaData databaseMetaData)
+  private final DatabaseMetaData _databaseMetaData;
+  private final String _schema;
+
+  public DatabaseSchemaScriptCreator(final DatabaseMetaData databaseMetaData, final String schema)
+  {
+    assert databaseMetaData != null : "databaseMetaData != null";
+    assert schema != null : "schema != null";
+
+    _databaseMetaData = databaseMetaData;
+    _schema = schema;
+  }
+
+  public DatabaseSchemaScriptCreator(final DatabaseMetaData databaseMetaData)
+  {
+    this(databaseMetaData, databaseMetaData.getSchema().trim());
+  }
+
+  public List<String> createTableStatements()
   {
     final List<String> result = new ArrayList<String>();
 
-    for (final TableMetaData tableMetaData : databaseMetaData.getTableMetaData())
+    for (final TableMetaData tableMetaData : _databaseMetaData.getTableMetaData())
     {
       result.add(createTable(tableMetaData));
     }
@@ -33,11 +50,28 @@ public class DatabaseSchemaScriptCreator
     return result;
   }
 
-  public List<String> createIndexStatements(final DatabaseMetaData databaseMetaData)
+  public List<String> createPrimaryKeyStatements()
   {
     final List<String> result = new ArrayList<String>();
 
-    for (final TableMetaData tableMetaData : databaseMetaData.getTableMetaData())
+    for (final TableMetaData tableMetaData : _databaseMetaData.getTableMetaData())
+    {
+      final List<ColumnMetaData> primaryKeyColumns = tableMetaData.getPrimaryKeyColumns();
+
+      if (!primaryKeyColumns.isEmpty())
+      {
+        result.add(createPrimaryKeyStatement(tableMetaData, primaryKeyColumns));
+      }
+    }
+
+    return result;
+  }
+
+  public List<String> createIndexStatements()
+  {
+    final List<String> result = new ArrayList<String>();
+
+    for (final TableMetaData tableMetaData : _databaseMetaData.getTableMetaData())
     {
       final List<IndexMetaData> indexes = tableMetaData.getIndexes();
 
@@ -50,11 +84,11 @@ public class DatabaseSchemaScriptCreator
     return result;
   }
 
-  public List<String> createForeignKeyStatements(final DatabaseMetaData databaseMetaData)
+  public List<String> createForeignKeyStatements()
   {
     final List<String> result = new ArrayList<String>();
 
-    for (final TableMetaData tableMetaData : databaseMetaData.getTableMetaData())
+    for (final TableMetaData tableMetaData : _databaseMetaData.getTableMetaData())
     {
       final List<ColumnMetaData> columns = tableMetaData.getColumnMetaData();
 
@@ -72,8 +106,7 @@ public class DatabaseSchemaScriptCreator
 
   private String createTable(final TableMetaData tableMetaData)
   {
-    final String schema = tableMetaData.getDatabaseMetaData().getSchema().trim();
-    final StringBuilder builder = new StringBuilder("CREATE TABLE " + ("".equals(schema) ? "" : schema + ".")
+    final StringBuilder builder = new StringBuilder("CREATE TABLE " + ("".equals(_schema) ? "" : _schema + ".")
         + tableMetaData.getTableName()
         + "\n(\n");
 
@@ -93,11 +126,30 @@ public class DatabaseSchemaScriptCreator
     return builder.toString();
   }
 
+  private String createPrimaryKeyStatement(final TableMetaData tableMetaData, final List<ColumnMetaData> primaryKeyColumns)
+  {
+    final StringBuilder builder = new StringBuilder("ALTER TABLE " + ("".equals(_schema) ? "" : _schema + ".")
+        + tableMetaData.getTableName()
+        + " ADD CONSTRAINT PK_"
+        + tableMetaData.getTableName()
+        + "_"
+        + _foreignKeyCounter++
+        + " PRIMARY KEY (");
+
+    for (final ColumnMetaData columnMetaData : primaryKeyColumns)
+    {
+      builder.append(columnMetaData.getColumnName() + ", ");
+    }
+
+    builder.setLength(builder.length() - 2);
+    builder.append(");");
+    return builder.toString();
+  }
+
   private String createIndexesForTable(final IndexMetaData indexMetaData)
   {
     final TableMetaData tableMetaData = indexMetaData.getTableMetaData();
-    final String schema = tableMetaData.getDatabaseMetaData().getSchema().trim();
-    final String schemaPrefix = "".equals(schema) ? "" : schema + ".";
+    final String schemaPrefix = "".equals(_schema) ? "" : _schema + ".";
     final String unique = indexMetaData.isUnique() ? " UNIQUE " : " ";
 
     final StringBuilder builder = new StringBuilder("CREATE" + unique
@@ -120,15 +172,14 @@ public class DatabaseSchemaScriptCreator
       }
     }
 
-    builder.append("\n);");
+    builder.append(");");
     return builder.toString();
   }
 
   private String createForeignKeyForTable(final ColumnMetaData columnMetaData)
   {
     final TableMetaData tableMetaData = columnMetaData.getTableMetaData();
-    final String schema = tableMetaData.getDatabaseMetaData().getSchema().trim();
-    final String schemaPrefix = "".equals(schema) ? "" : schema + ".";
+    final String schemaPrefix = "".equals(_schema) ? "" : _schema + ".";
     final ColumnMetaData referencedColumn = columnMetaData.getReferencedColumn();
 
     final StringBuilder builder = new StringBuilder("ALTER TABLE " + schemaPrefix
@@ -145,7 +196,7 @@ public class DatabaseSchemaScriptCreator
         + referencedColumn.getTableMetaData()
         + "("
         + referencedColumn.getColumnName()
-        + "\n);");
+        + ");");
     return builder.toString();
   }
 
@@ -155,11 +206,7 @@ public class DatabaseSchemaScriptCreator
 
     builder.append(columnMetaData.getColumnName() + " " + columnMetaData.getColumnTypeName());
 
-    if (columnMetaData.isPrimaryKey())
-    {
-      builder.append(" PRIMARY KEY");
-    }
-    else if (!columnMetaData.isNullable())
+    if (!columnMetaData.isNullable())
     {
       builder.append(" NOT NULL");
     }
