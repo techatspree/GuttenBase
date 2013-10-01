@@ -7,6 +7,7 @@ import java.util.List;
 import de.akquinet.jbosscc.guttenbase.hints.TableOrderHint;
 import de.akquinet.jbosscc.guttenbase.mapping.TableNameMapper;
 import de.akquinet.jbosscc.guttenbase.meta.ForeignKeyMetaData;
+import de.akquinet.jbosscc.guttenbase.meta.IndexMetaData;
 import de.akquinet.jbosscc.guttenbase.meta.TableMetaData;
 import de.akquinet.jbosscc.guttenbase.repository.ConnectorRepository;
 
@@ -21,8 +22,8 @@ import de.akquinet.jbosscc.guttenbase.repository.ConnectorRepository;
  */
 public class DropTablesTool
 {
-  private final ConnectorRepository _connectorRepository;
-  private final ScriptExecutorTool _scriptExecutor;
+  final ConnectorRepository _connectorRepository;
+  public final ScriptExecutorTool _scriptExecutor;
 
   public DropTablesTool(final ConnectorRepository connectorRepository)
   {
@@ -31,18 +32,7 @@ public class DropTablesTool
     _scriptExecutor = new ScriptExecutorTool(connectorRepository);
   }
 
-  /**
-   * Drop all tables, foreign keys and indexes
-   * 
-   * @throws SQLException
-   */
-  public void dropTables(final String connectorId, final boolean updateSchema) throws SQLException
-  {
-    dropForeignKeys(connectorId, updateSchema);
-
-  }
-
-  public void dropForeignKeys(final String connectorId, final boolean updateSchema) throws SQLException
+  public void dropForeignKeys(final String connectorId) throws SQLException
   {
     final List<TableMetaData> tableMetaData = TableOrderHint.getSortedTables(_connectorRepository, connectorId);
     final TableNameMapper tableNameMapper = _connectorRepository.getConnectorHint(connectorId, TableNameMapper.class).getValue();
@@ -59,6 +49,36 @@ public class DropTablesTool
       }
     }
 
-    _scriptExecutor.executeScript(connectorId, updateSchema, false, statements);
+    _scriptExecutor.executeScript(connectorId, true, false, statements);
+  }
+
+  public void dropIndexes(final String connectorId) throws SQLException
+  {
+    final List<TableMetaData> tableMetaData = TableOrderHint.getSortedTables(_connectorRepository, connectorId);
+    final List<String> statements = new ArrayList<String>();
+
+    for (final TableMetaData table : tableMetaData)
+    {
+      for (final IndexMetaData index : table.getIndexes())
+      {
+        statements.add("DROP INDEX " + index.getIndexName() + ";");
+      }
+    }
+
+    _scriptExecutor.executeScript(connectorId, true, false, statements);
+  }
+
+  public void dropTables(final String connectorId) throws SQLException
+  {
+    final List<TableMetaData> tableMetaData = TableOrderHint.getSortedTables(_connectorRepository, connectorId);
+    final List<String> statements = new ArrayList<String>();
+    final TableNameMapper tableNameMapper = _connectorRepository.getConnectorHint(connectorId, TableNameMapper.class).getValue();
+
+    for (final TableMetaData table : tableMetaData)
+    {
+      statements.add("DROP TABLE " + tableNameMapper.mapTableName(table) + ";");
+    }
+
+    _scriptExecutor.executeScript(connectorId, true, false, statements);
   }
 }

@@ -1,6 +1,7 @@
 package de.akquinet.jbosscc.guttenbase.tools;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import java.sql.SQLException;
@@ -13,6 +14,7 @@ import org.junit.Test;
 import de.akquinet.jbosscc.guttenbase.configuration.TestH2ConnectionInfo;
 import de.akquinet.jbosscc.guttenbase.hints.TableOrderHint;
 import de.akquinet.jbosscc.guttenbase.meta.ForeignKeyMetaData;
+import de.akquinet.jbosscc.guttenbase.meta.IndexMetaData;
 import de.akquinet.jbosscc.guttenbase.meta.TableMetaData;
 
 public class DropTablesToolTest extends AbstractGuttenBaseTest
@@ -34,9 +36,32 @@ public class DropTablesToolTest extends AbstractGuttenBaseTest
   {
     assertTrue(getAllForeignKeys().size() > 0);
 
-    _objectUnderTest.dropForeignKeys(CONNECTOR_ID, true);
+    _objectUnderTest.dropForeignKeys(CONNECTOR_ID);
 
     assertEquals(0, getAllForeignKeys().size());
+  }
+
+  @Test
+  public void testDropIndexes() throws Exception
+  {
+    _objectUnderTest.dropForeignKeys(CONNECTOR_ID);
+
+    assertTrue(getAllIndexes().size() > 0);
+
+    _objectUnderTest._scriptExecutor.dropIndexes(_objectUnderTest, CONNECTOR_ID, true);
+
+    assertEquals(0, getAllIndexes().size());
+  }
+
+  @Test
+  public void testDropTables() throws Exception
+  {
+    assertFalse(_connectorRepository.getDatabaseMetaData(CONNECTOR_ID).getTableMetaData().isEmpty());
+    _objectUnderTest.dropForeignKeys(CONNECTOR_ID);
+    _objectUnderTest._scriptExecutor.dropIndexes(_objectUnderTest, CONNECTOR_ID, true);
+    _objectUnderTest.dropTables(CONNECTOR_ID);
+    assertTrue(_connectorRepository.getDatabaseMetaData(CONNECTOR_ID).getTableMetaData().isEmpty());
+
   }
 
   private List<ForeignKeyMetaData> getAllForeignKeys() throws SQLException
@@ -50,5 +75,26 @@ public class DropTablesToolTest extends AbstractGuttenBaseTest
     }
 
     return allKeys;
+  }
+
+  private List<IndexMetaData> getAllIndexes() throws SQLException
+  {
+    final List<TableMetaData> tableMetaData = TableOrderHint.getSortedTables(_connectorRepository, CONNECTOR_ID);
+    final List<IndexMetaData> allIndexes = new ArrayList<IndexMetaData>();
+
+    for (final TableMetaData table : tableMetaData)
+    {
+      final List<IndexMetaData> indexes = table.getIndexes();
+
+      for (final IndexMetaData indexMetaData : indexes)
+      {
+        //        if (!indexMetaData.isPrimaryKeyIndex())
+        {
+          allIndexes.add(indexMetaData);
+        }
+      }
+    }
+
+    return allIndexes;
   }
 }
