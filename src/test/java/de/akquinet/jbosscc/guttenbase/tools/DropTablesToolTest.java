@@ -57,9 +57,7 @@ public class DropTablesToolTest extends AbstractGuttenBaseTest
   public void testDropTables() throws Exception
   {
     assertFalse(_connectorRepository.getDatabaseMetaData(CONNECTOR_ID).getTableMetaData().isEmpty());
-    _objectUnderTest.dropForeignKeys(CONNECTOR_ID);
-    _objectUnderTest._scriptExecutor.dropIndexes(_objectUnderTest, CONNECTOR_ID, true);
-    _objectUnderTest.dropTables(CONNECTOR_ID);
+    _objectUnderTest.drop(CONNECTOR_ID);
     assertTrue(_connectorRepository.getDatabaseMetaData(CONNECTOR_ID).getTableMetaData().isEmpty());
 
   }
