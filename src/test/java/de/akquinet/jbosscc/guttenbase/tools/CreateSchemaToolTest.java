@@ -29,7 +29,8 @@ public class CreateSchemaToolTest extends AbstractGuttenBaseTest
     final List<String> script = _objectUnderTest.createDDLScript(CONNECTOR_ID, "BLA");
     final List<String> parsedScript = new SQLLexer(script).parse();
 
-    assertTrue(parsedScript.contains("CREATE TABLE BLA.FOO_COMPANY ( ID BIGINT NOT NULL,  SUPPLIER CHAR,  NAME VARCHAR )"));
+    assertTrue(parsedScript
+        .contains("CREATE TABLE BLA.FOO_COMPANY ( ID BIGINT NOT NULL,  SUPPLIER CHAR(1),  NAME VARCHAR(100) )"));
     assertTrue(parsedScript.contains("ALTER TABLE BLA.FOO_COMPANY ADD CONSTRAINT PK_FOO_COMPANY_1 PRIMARY KEY (ID)"));
     assertTrue(parsedScript
         .contains("ALTER TABLE BLA.FOO_USER_ROLES ADD CONSTRAINT FK_USER_ID_ID_9 FOREIGN KEY (USER_ID) REFERENCES BLA.FOO_USER(ID)"));
