@@ -18,7 +18,7 @@ public class SwingProgressIndicator implements ProgressIndicator
     _dialog.setTitle("Copying tables...");
     _dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 
-    final Dimension size = new Dimension(500, 300);
+    final Dimension size = new Dimension(600, 400);
     _dialog.getContentPane().setLayout(new BorderLayout());
     _dialog.getContentPane().add(_panel, BorderLayout.CENTER);
 
@@ -83,6 +83,8 @@ public class SwingProgressIndicator implements ProgressIndicator
     _timingDelegate.endBatch(totalCopiedRows);
 
     _panel.getTableProgress().setValue(totalCopiedRows);
+    _panel.getTotalTime().setText(Util.formatTime(_timingDelegate.getElapsedTotalTime()));
+    _panel.getTableTime().setText(Util.formatTime(_timingDelegate.getElapsedTableCopyTime()));
   }
 
   @Override

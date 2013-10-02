@@ -46,6 +46,8 @@ public class TimingProgressIndicator implements ProgressIndicator
   public void endBatch(final int totalCopiedRows)
   {
     setElapsedBatchTime(System.currentTimeMillis() - getStartBatch());
+    setElapsedTotalTime(System.currentTimeMillis() - getStartCopyTotal());
+    setElapsedTableCopyTime(System.currentTimeMillis() - getStartCopyTable());
   }
 
   @Override

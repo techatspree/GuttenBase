@@ -129,7 +129,7 @@ public class ProgressIndicatorPanel extends JPanel
     final JPanel panel = new JPanel();
     panel.setBorder(new TitledBorder(new EtchedBorder(), "Table rows", TitledBorder.LEADING, TitledBorder.TOP, null, null));
     final GridBagConstraints gbc_panel = new GridBagConstraints();
-    gbc_panel.weighty = 1.0;
+    gbc_panel.weighty = 0.2;
     gbc_panel.gridwidth = 6;
     gbc_panel.anchor = GridBagConstraints.WEST;
     gbc_panel.insets = new Insets(5, 5, 5, 0);
@@ -147,7 +147,7 @@ public class ProgressIndicatorPanel extends JPanel
     panel_1.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null), "Total progress",
         TitledBorder.LEADING, TitledBorder.TOP, null, null));
     final GridBagConstraints gbc_panel_1 = new GridBagConstraints();
-    gbc_panel_1.weighty = 1.0;
+    gbc_panel_1.weighty = 0.2;
     gbc_panel_1.anchor = GridBagConstraints.WEST;
     gbc_panel_1.gridwidth = 6;
     gbc_panel_1.insets = new Insets(5, 5, 5, 0);
@@ -165,6 +165,8 @@ public class ProgressIndicatorPanel extends JPanel
     panel_2.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null), "Messages", TitledBorder.LEADING,
         TitledBorder.TOP, null, null));
     final GridBagConstraints gbc_panel_2 = new GridBagConstraints();
+    gbc_panel_2.weighty = 1.0;
+    gbc_panel_2.weightx = 1.0;
     gbc_panel_2.gridheight = 2;
     gbc_panel_2.gridwidth = 6;
     gbc_panel_2.insets = new Insets(5, 5, 5, 5);
@@ -178,6 +180,7 @@ public class ProgressIndicatorPanel extends JPanel
     panel_2.add(scrollPane, BorderLayout.CENTER);
 
     _messages = new JTextArea();
+    _messages.setRows(20);
     scrollPane.setViewportView(_messages);
   }
 

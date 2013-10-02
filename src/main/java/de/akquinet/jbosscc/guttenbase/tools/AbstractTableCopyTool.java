@@ -104,7 +104,7 @@ public abstract class AbstractTableCopyTool
       {
         numberOfRowsPerBatch = maxNumberOfDataItems / columnCount;
         _progressIndicator.debug("Max number of data items " + maxNumberOfDataItems
-            + "exceeds numberOfValuesClauses * columns="
+            + " exceeds numberOfValuesClauses * columns="
             + defaultNumberOfRowsPerBatch
             + " * "
             + columnCount
@@ -115,7 +115,8 @@ public abstract class AbstractTableCopyTool
       sourceDatabaseConfiguration.beforeTableCopy(sourceConnection, sourceConnectorId, sourceTableMetaData);
       targetDatabaseConfiguration.beforeTableCopy(targetConnection, targetConnectorId, targetTableMetaData);
 
-      _progressIndicator.startCopyTable(sourceTableName, sourceTableMetaData.getRowCount(), targetTableName, numberOfRowsPerBatch);
+      _progressIndicator
+          .startCopyTable(sourceTableName, sourceTableMetaData.getRowCount(), targetTableName, numberOfRowsPerBatch);
 
       copyTable(sourceConnectorId, sourceConnection, sourceDatabaseConfiguration, sourceTableMetaData, sourceTableName,
           targetConnectorId, targetConnection, targetDatabaseConfiguration, targetTableMetaData, targetTableName,
