@@ -8,7 +8,7 @@ import de.akquinet.jbosscc.guttenbase.tools.MaxNumberOfDataItems;
  * Default maximum is 30000.
  * 
  * <p>
- * &copy; 2012 akquinet tech@spree
+ * &copy; 2012-2020 akquinet tech@spree
  * </p>
  * 
  * @author M. Dahm

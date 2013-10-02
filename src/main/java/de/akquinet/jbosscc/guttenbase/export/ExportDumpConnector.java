@@ -16,7 +16,7 @@ import de.akquinet.jbosscc.guttenbase.utils.Util;
  * Connection info for exporting data base contents to a file.
  * 
  * <p>
- * &copy; 2012 akquinet tech@spree
+ * &copy; 2012-2020 akquinet tech@spree
  * </p>
  * 
  * @Uses-Hint {@link ExporterFactoryHint} to determine exporter implementation

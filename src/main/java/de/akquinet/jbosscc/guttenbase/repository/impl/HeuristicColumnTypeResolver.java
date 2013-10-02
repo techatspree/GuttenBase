@@ -11,7 +11,7 @@ import de.akquinet.jbosscc.guttenbase.meta.ColumnType;
  * Will check column type names and determine what Java type is appropriate using some heuristic tests.
  * 
  * <p>
- * &copy; 2012 akquinet tech@spree
+ * &copy; 2012-2020 akquinet tech@spree
  * </p>
  * 
  * @author M. Dahm

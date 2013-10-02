@@ -8,7 +8,7 @@ import de.akquinet.jbosscc.guttenbase.mapping.TableNameMapper;
  * Test a schema migration where table names contains spaces and thus need to be escaped with double quotes ("")
  * 
  * <p>
- * &copy; 2012 akquinet tech@spree
+ * &copy; 2012-2020 akquinet tech@spree
  * </p>
  * 
  * @author M. Dahm

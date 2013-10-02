@@ -19,7 +19,7 @@ import de.akquinet.jbosscc.guttenbase.repository.ConnectorRepository;
  * Try to find common type mapping usable for both columns.
  * 
  * <p>
- * &copy; 2012 akquinet tech@spree
+ * &copy; 2012-2020 akquinet tech@spree
  * </p>
  * 
  * @Uses-Hint {@link ColumnDataMapperProviderHint} to determine mapping between different column types

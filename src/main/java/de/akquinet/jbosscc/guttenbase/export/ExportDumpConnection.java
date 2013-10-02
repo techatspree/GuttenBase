@@ -28,7 +28,7 @@ import de.akquinet.jbosscc.guttenbase.meta.TableMetaData;
  * Special "{@link Connection}" that supports writing data to a different storage then a data base. I.e., a file dump. Only few
  * inherited methods have a meaningful implementation, most methods will throw a {@link UnsupportedOperationException}.
  * <p>
- * &copy; 2012 akquinet tech@spree
+ * &copy; 2012-2020 akquinet tech@spree
  * </p>
  * 
  * @author M. Dahm

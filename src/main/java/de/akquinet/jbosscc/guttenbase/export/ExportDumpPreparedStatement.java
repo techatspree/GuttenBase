@@ -32,7 +32,7 @@ import de.akquinet.jbosscc.guttenbase.exceptions.ExportException;
  * Custom implementation of {@link PreparedStatement} dumping data to the given output stream. Only few inherited setter methods
  * have a meaningful implementation, most methods will throw a {@link UnsupportedOperationException}.
  * <p>
- * &copy; 2012 akquinet tech@spree
+ * &copy; 2012-2020 akquinet tech@spree
  * </p>
  * 
  * @author M. Dahm

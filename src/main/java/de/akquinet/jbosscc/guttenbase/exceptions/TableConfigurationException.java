@@ -8,7 +8,7 @@ import de.akquinet.jbosscc.guttenbase.repository.RepositoryTableFilter;
  * Thrown when data bases have not the same tables. You can omit tables deliberately using the {@link RepositoryTableFilter} hint.
  * 
  * <p>
- * &copy; 2012 akquinet tech@spree
+ * &copy; 2012-2020 akquinet tech@spree
  * </p>
  * 
  * @author M. Dahm

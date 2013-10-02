@@ -9,7 +9,7 @@ import de.akquinet.jbosscc.guttenbase.meta.ColumnMetaData;
  * Map Timestamp to Date as some databases use a DATETIME column others a simple DATE.
  * 
  * <p>
- * &copy; 2012 akquinet tech@spree
+ * &copy; 2012-2020 akquinet tech@spree
  * </p>
  * 
  * @author M. Dahm

@@ -24,7 +24,7 @@ import de.akquinet.jbosscc.guttenbase.tools.CommonColumnTypeResolverTool;
 /**
  * Fill previously created INSERT statement with data from source connector.
  * <p>
- * &copy; 2012 akquinet tech@spree
+ * &copy; 2012-2020 akquinet tech@spree
  * </p>
  * 
  * @Uses-Hint {@link ColumnOrderHint} to determine column order

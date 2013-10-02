@@ -10,7 +10,7 @@ import de.akquinet.jbosscc.guttenbase.tools.SplitColumn;
  * By default use the first primary key column, if any. Otherwise returns the first column.
  * 
  * <p>
- * &copy; 2012 akquinet tech@spree
+ * &copy; 2012-2020 akquinet tech@spree
  * </p>
  * 
  * @author M. Dahm

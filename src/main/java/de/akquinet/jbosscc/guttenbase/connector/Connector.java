@@ -9,7 +9,7 @@ import de.akquinet.jbosscc.guttenbase.meta.DatabaseMetaData;
  * Connectors maintain informations about the data base and how open and close the SQL {@link Connection}s.
  * 
  * <p>
- * &copy; 2012 akquinet tech@spree
+ * &copy; 2012-2020 akquinet tech@spree
  * </p>
  * 
  * @author M. Dahm

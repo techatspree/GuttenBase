@@ -13,7 +13,7 @@ import de.akquinet.jbosscc.guttenbase.tools.SplitColumn;
  * With this hint one may configure the column to be used for splitting.
  * 
  * <p>
- * &copy; 2012 akquinet tech@spree
+ * &copy; 2012-2020 akquinet tech@spree
  * </p>
  * 
  * @Applicable-For-Source

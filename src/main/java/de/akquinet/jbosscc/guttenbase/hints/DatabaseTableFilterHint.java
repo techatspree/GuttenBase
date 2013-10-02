@@ -11,7 +11,7 @@ import de.akquinet.jbosscc.guttenbase.repository.impl.DatabaseMetaDataInspectorT
  * {@link DatabaseMetaDataInspectorTool} is triggered by default in {@link AbstractConnector#retrieveDatabaseMetaData()}.
  * 
  * <p>
- * &copy; 2012 akquinet tech@spree
+ * &copy; 2012-2020 akquinet tech@spree
  * </p>
  * 
  * @Applicable-For-Source

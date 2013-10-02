@@ -15,7 +15,7 @@ import de.akquinet.jbosscc.guttenbase.tools.NumberOfRowsPerBatch;
  * The value also must not be too high so that data buffers are not exceeded.
  * 
  * <p>
- * &copy; 2012 akquinet tech@spree
+ * &copy; 2012-2020 akquinet tech@spree
  * </p>
  * 
  * @Applicable-For-Target

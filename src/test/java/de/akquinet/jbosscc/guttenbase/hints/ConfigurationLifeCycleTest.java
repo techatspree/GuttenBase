@@ -15,7 +15,7 @@ import de.akquinet.jbosscc.guttenbase.meta.TableMetaData;
  * Check that "life-cycle" methods are called correctly
  * 
  * <p>
- * &copy; 2012 akquinet tech@spree
+ * &copy; 2012-2020 akquinet tech@spree
  * </p>
  * 
  * @author M. Dahm

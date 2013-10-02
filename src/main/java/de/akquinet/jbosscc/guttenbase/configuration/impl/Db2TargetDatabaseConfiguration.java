@@ -17,7 +17,7 @@ import de.akquinet.jbosscc.guttenbase.tools.ScriptExecutorTool;
  * 
  * @see http://stackoverflow.com/questions/421518/is-there-a-way-to-enable-disable-constraints-in-db2-v7
  *      <p>
- *      &copy; 2012 akquinet tech@spree
+ *      &copy; 2012-2020 akquinet tech@spree
  *      </p>
  * @Uses-Hint {@link TableNameMapperHint}
  * @author M. Dahm

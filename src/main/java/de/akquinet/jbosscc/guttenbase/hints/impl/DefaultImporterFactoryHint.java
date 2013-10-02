@@ -9,7 +9,7 @@ import de.akquinet.jbosscc.guttenbase.hints.ImporterFactoryHint;
  * Default implementation uses {@link ZipImporter}.
  * 
  * <p>
- * &copy; 2012 akquinet tech@spree
+ * &copy; 2012-2020 akquinet tech@spree
  * </p>
  * 
  * @author M. Dahm

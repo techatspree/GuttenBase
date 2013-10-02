@@ -16,7 +16,7 @@ import de.akquinet.jbosscc.guttenbase.tools.SplitColumn;
  * Read minimum and maxim value of that column.
  * 
  * <p>
- * &copy; 2012 akquinet tech@spree
+ * &copy; 2012-2020 akquinet tech@spree
  * </p>
  * 
  * @Uses-Hint {@link SplitColumnHint}

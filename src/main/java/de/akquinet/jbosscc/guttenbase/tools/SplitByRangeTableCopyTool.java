@@ -22,7 +22,7 @@ import de.akquinet.jbosscc.guttenbase.statements.SplitByColumnSelectStatementCre
  * copying may take much longer than the {@link DefaultTableCopyTool}.
  * 
  * <p>
- * &copy; 2012 akquinet tech@spree
+ * &copy; 2012-2020 akquinet tech@spree
  * </p>
  * 
  * @author M. Dahm

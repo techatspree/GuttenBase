@@ -8,7 +8,7 @@ import de.akquinet.jbosscc.guttenbase.meta.ColumnMetaData;
  * Map data contained in a column to some other type. I.e., the target column may have a different type and thus an INSERT needs conversion.
  * 
  * <p>
- * &copy; 2012 akquinet tech@spree
+ * &copy; 2012-2020 akquinet tech@spree
  * </p>
  * 
  * @author M. Dahm

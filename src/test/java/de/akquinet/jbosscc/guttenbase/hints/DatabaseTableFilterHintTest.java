@@ -20,7 +20,7 @@ import de.akquinet.jbosscc.guttenbase.tools.ScriptExecutorTool;
  * Filters tables when inquiring the data base.
  * 
  * <p>
- * &copy; 2012 akquinet tech@spree
+ * &copy; 2012-2020 akquinet tech@spree
  * </p>
  * 
  * @author M. Dahm

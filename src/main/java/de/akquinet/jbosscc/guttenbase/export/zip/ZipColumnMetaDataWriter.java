@@ -10,7 +10,7 @@ import de.akquinet.jbosscc.guttenbase.meta.InternalColumnMetaData;
  * Write ZIP file entry containing information about a table column such as type and name.
  * 
  * <p>
- * &copy; 2012 akquinet tech@spree
+ * &copy; 2012-2020 akquinet tech@spree
  * </p>
  * 
  * @author M. Dahm

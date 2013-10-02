@@ -70,7 +70,7 @@ import de.akquinet.jbosscc.guttenbase.utils.Util;
 /**
  * The main repository containing all configured connectors.
  * <p>
- * &copy; 2012 akquinet tech@spree
+ * &copy; 2012-2020 akquinet tech@spree
  * </p>
  * 
  * @Uses-Hint {@link RepositoryTableFilterHint} when returning table meta data

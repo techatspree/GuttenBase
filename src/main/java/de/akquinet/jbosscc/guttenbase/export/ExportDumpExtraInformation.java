@@ -10,7 +10,7 @@ import de.akquinet.jbosscc.guttenbase.repository.ConnectorRepository;
  * Give the user a possibility to add extra informations to the dumped data.
  * 
  * <p>
- * &copy; 2012 akquinet tech@spree
+ * &copy; 2012-2020 akquinet tech@spree
  * </p>
  * 
  * @author M. Dahm

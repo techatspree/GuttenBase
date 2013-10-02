@@ -13,7 +13,7 @@ import de.akquinet.jbosscc.guttenbase.tools.CheckEqualTableDataTool;
  * Alternatively the list may also be empty.
  * 
  * <p>
- * &copy; 2012 akquinet tech@spree
+ * &copy; 2012-2020 akquinet tech@spree
  * </p>
  * 
  * @Applicable-For-Target
