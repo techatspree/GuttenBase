@@ -13,7 +13,7 @@ import de.akquinet.jbosscc.guttenbase.repository.ConnectorRepository;
  * Will execute given SQL scriptlet on all tables or single table of given connector. The table name can be referenced with @TABLE@
  * place holder.
  * <p>
- * &copy; 2012 akquinet tech@spree
+ * &copy; 2012-2020 akquinet tech@spree
  * </p>
  * 
  * @Uses-Hint {@link TableNameMapperHint}

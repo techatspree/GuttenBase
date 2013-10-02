@@ -13,7 +13,7 @@ import de.akquinet.jbosscc.guttenbase.repository.ConnectorRepository;
  * Connection info for importing data from a file.
  * 
  * <p>
- * &copy; 2012 akquinet tech@spree
+ * &copy; 2012-2020 akquinet tech@spree
  * </p>
  * 
  * @Uses-Hint {@link ImporterFactoryHint} to determine importer implementation

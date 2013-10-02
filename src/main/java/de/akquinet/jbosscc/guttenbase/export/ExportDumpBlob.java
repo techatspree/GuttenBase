@@ -10,7 +10,7 @@ import java.sql.SQLException;
  * read them in chunks and write the data to the output stream in a loop.
  * 
  * <p>
- * &copy; 2012 akquinet tech@spree
+ * &copy; 2012-2020 akquinet tech@spree
  * </p>
  * 
  * @author M. Dahm

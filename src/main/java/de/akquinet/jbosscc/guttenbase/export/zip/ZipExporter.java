@@ -36,7 +36,7 @@ import de.akquinet.jbosscc.guttenbase.utils.Util;
  * inspected with a ZIP tool. The structure of the ZIP is based on the structure of a data base.
  * 
  * <p>
- * &copy; 2012 akquinet tech@spree
+ * &copy; 2012-2020 akquinet tech@spree
  * </p>
  * 
  * @Uses-Hint {@link ZipExporterClassResourcesHint} to add custom classes to the generated JAR and configure the

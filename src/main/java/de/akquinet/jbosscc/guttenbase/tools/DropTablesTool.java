@@ -15,7 +15,7 @@ import de.akquinet.jbosscc.guttenbase.repository.ConnectorRepository;
 /**
  * Will drop tables in given schema. USE WITH CARE!
  * <p>
- * &copy; 2012 akquinet tech@spree
+ * &copy; 2012-2020 akquinet tech@spree
  * </p>
  * 
  * @Uses-Hint {@link TableOrderHint} to determine order of tables

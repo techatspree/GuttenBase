@@ -38,7 +38,7 @@ import de.akquinet.jbosscc.guttenbase.statements.SelectStatementCreator;
 /**
  * Check two schemas for equal data where the tool takes a configurable number of sample data from each table.
  * <p>
- * &copy; 2012 akquinet tech@spree
+ * &copy; 2012-2020 akquinet tech@spree
  * </p>
  * 
  * @Uses-Hint {@link TableNameMapperHint} to map table names

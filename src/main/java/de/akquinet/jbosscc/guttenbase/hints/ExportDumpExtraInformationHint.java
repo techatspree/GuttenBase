@@ -8,7 +8,7 @@ import de.akquinet.jbosscc.guttenbase.export.zip.ZipExporter;
  * When exporting to e JAR/ZIP file we give the user a possibility to add extra informations to the dumped data.
  * 
  * <p>
- * &copy; 2012 akquinet tech@spree
+ * &copy; 2012-2020 akquinet tech@spree
  * </p>
  * 
  * @Applicable-For-Target

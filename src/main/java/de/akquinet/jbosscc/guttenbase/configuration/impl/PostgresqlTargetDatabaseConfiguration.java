@@ -17,7 +17,7 @@ import de.akquinet.jbosscc.guttenbase.tools.postgresql.PostgresqlVacuumTablesToo
  * Running ANALYZE after insertions is recommended: http://www.postgresql.org/docs/7.4/static/populate.html
  * 
  * <p>
- * &copy; 2012 akquinet tech@spree
+ * &copy; 2012-2020 akquinet tech@spree
  * </p>
  * 
  * @Uses-Hint {@link TableNameMapperHint}

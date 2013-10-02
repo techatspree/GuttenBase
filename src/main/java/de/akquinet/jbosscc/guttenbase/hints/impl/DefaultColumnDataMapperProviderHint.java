@@ -11,7 +11,7 @@ import de.akquinet.jbosscc.guttenbase.meta.ColumnType;
  * Default implementation. You may inherit from this class and override {@link #addMappings(DefaultColumnDataMapperProvider)} to
  * add further mappings.
  * <p>
- * &copy; 2012 akquinet tech@spree
+ * &copy; 2012-2020 akquinet tech@spree
  * </p>
  * 
  * @author M. Dahm

@@ -17,7 +17,7 @@ import de.akquinet.jbosscc.guttenbase.tools.ScriptExecutorTool;
  * Test a schema migration where all BIGINT IDs are converted to UUID strings.
  * 
  * <p>
- * &copy; 2012 akquinet tech@spree
+ * &copy; 2012-2020 akquinet tech@spree
  * </p>
  * 
  * @author M. Dahm

@@ -29,7 +29,7 @@ import de.akquinet.jbosscc.guttenbase.meta.TableMetaData;
  * Default tool to start when "executing" the JAR file. It simply displays the file structure.
  * 
  * <p>
- * &copy; 2012 akquinet tech@spree
+ * &copy; 2012-2020 akquinet tech@spree
  * </p>
  * 
  * @author M. Dahm

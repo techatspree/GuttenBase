@@ -8,7 +8,7 @@ import de.akquinet.jbosscc.guttenbase.export.ImporterFactory;
  * Create @see {@link Importer} for reading dumped database using @see {@link ImportDumpConnector}.
  * 
  * <p>
- * &copy; 2012 akquinet tech@spree
+ * &copy; 2012-2020 akquinet tech@spree
  * </p>
  * 
  * @Applicable-For-Source

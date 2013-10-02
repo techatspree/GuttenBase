@@ -16,7 +16,7 @@ import de.akquinet.jbosscc.guttenbase.meta.DatabaseMetaData;
  * The main repository containing all configured connectors.
  * 
  * <p>
- * &copy; 2012 akquinet tech@spree
+ * &copy; 2012-2020 akquinet tech@spree
  * </p>
  * 
  * @author M. Dahm

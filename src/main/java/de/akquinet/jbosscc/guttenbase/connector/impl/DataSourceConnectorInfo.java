@@ -11,7 +11,7 @@ import de.akquinet.jbosscc.guttenbase.repository.ConnectorRepository;
  * Connector info via data source with optional user/password. To be used when running in an application server.
  * 
  * <p>
- * &copy; 2012 akquinet tech@spree
+ * &copy; 2012-2020 akquinet tech@spree
  * </p>
  * 
  * @author M. Dahm

@@ -8,7 +8,7 @@ import de.akquinet.jbosscc.guttenbase.tools.CheckEqualTableDataTool;
  * Thrown when table data is checked for equality.
  * 
  * <p>
- * &copy; 2012 akquinet tech@spree
+ * &copy; 2012-2020 akquinet tech@spree
  * </p>
  * 
  * @see CheckEqualTableDataTool

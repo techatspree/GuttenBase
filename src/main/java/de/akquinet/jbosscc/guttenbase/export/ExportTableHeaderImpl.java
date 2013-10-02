@@ -3,7 +3,7 @@ package de.akquinet.jbosscc.guttenbase.export;
 /**
  * Denote start of new table in export file
  * 
- * <p>&copy; 2012 akquinet tech@spree</p>
+ * <p>&copy; 2012-2020 akquinet tech@spree</p>
  * 
  * @author M. Dahm
  */

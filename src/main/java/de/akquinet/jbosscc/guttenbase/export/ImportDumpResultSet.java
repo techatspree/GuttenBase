@@ -29,7 +29,7 @@ import de.akquinet.jbosscc.guttenbase.meta.TableMetaData;
  * Special {@link ResultSet} that reads data from the given stream. Only few inherited getter methods have a meaningful
  * implementation, most methods will throw a {@link UnsupportedOperationException}.
  * <p>
- * &copy; 2012 akquinet tech@spree
+ * &copy; 2012-2020 akquinet tech@spree
  * </p>
  * 
  * @author M. Dahm

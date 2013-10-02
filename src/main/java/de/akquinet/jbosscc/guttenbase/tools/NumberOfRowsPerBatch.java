@@ -14,7 +14,7 @@ import de.akquinet.jbosscc.guttenbase.meta.TableMetaData;
  * The value also must not be too high so data buffers are not exceeded, especially when the table contains BLOBs.
  * 
  * <p>
- * &copy; 2012 akquinet tech@spree
+ * &copy; 2012-2020 akquinet tech@spree
  * </p>
  * 
  * @see MaxNumberOfDataItems

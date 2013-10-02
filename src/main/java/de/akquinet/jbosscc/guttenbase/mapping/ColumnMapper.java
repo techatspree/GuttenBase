@@ -10,7 +10,7 @@ import de.akquinet.jbosscc.guttenbase.meta.TableMetaData;
  * Select target column(s) for given source column. Usually, this will a 1:1 relationship. However, there may be situations where
  * you want to duplicate or transform data into multiple columns. You also may want to drop columns from the source database.
  * <p>
- * &copy; 2012 akquinet tech@spree
+ * &copy; 2012-2020 akquinet tech@spree
  * </p>
  * 
  * @author M. Dahm
