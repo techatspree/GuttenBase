@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 
 import javax.swing.JDialog;
+import javax.swing.SwingUtilities;
 
 public class SwingProgressIndicator implements ProgressIndicator
 {
@@ -30,29 +31,51 @@ public class SwingProgressIndicator implements ProgressIndicator
   public void initializeIndicator()
   {
     _timingDelegate.initializeIndicator();
-    _panel.getTotalTime().setText("");
-    _panel.getTableTime().setText("");
-    _dialog.setVisible(true);
+    SwingUtilities.invokeLater(new Runnable()
+    {
+      @Override
+      public void run()
+      {
+        _panel.getTotalTime().setText("");
+        _panel.getTableTime().setText("");
+        _dialog.setVisible(true);
+      }
+    });
   }
 
   @Override
   public void startCopying(final int numberOfTables)
   {
     _timingDelegate.startCopying(numberOfTables);
-    _panel.getTotalProgress().setValue(0);
-    _panel.getTotalProgress().setMinimum(0);
-    _panel.getTotalProgress().setMinimum(numberOfTables);
+
+    SwingUtilities.invokeLater(new Runnable()
+    {
+      @Override
+      public void run()
+      {
+        _panel.getTotalProgress().setValue(0);
+        _panel.getTotalProgress().setMinimum(0);
+        _panel.getTotalProgress().setMinimum(numberOfTables);
+      }
+    });
   }
 
   @Override
   public void startCopyTable(final String sourceTableName, final int rowCount, final String targetTableName,
       final int numberOfRowsPerBatch)
   {
-    _panel.getTableProgress().setMinimum(0);
-    _panel.getTableProgress().setMinimum(rowCount);
-    _panel.getTableProgress().setValue(0);
-
     _timingDelegate.startCopyTable(sourceTableName, rowCount, targetTableName, numberOfRowsPerBatch);
+
+    SwingUtilities.invokeLater(new Runnable()
+    {
+      @Override
+      public void run()
+      {
+        _panel.getTableProgress().setMinimum(0);
+        _panel.getTableProgress().setMinimum(rowCount);
+        _panel.getTableProgress().setValue(0);
+      }
+    });
   }
 
   @Override
@@ -71,7 +94,15 @@ public class SwingProgressIndicator implements ProgressIndicator
   public void endCopyTable()
   {
     _timingDelegate.endCopyTable();
-    _panel.getTableProgress().setValue(_timingDelegate.getRowCount());
+
+    SwingUtilities.invokeLater(new Runnable()
+    {
+      @Override
+      public void run()
+      {
+        _panel.getTableProgress().setValue(_timingDelegate.getRowCount());
+      }
+    });
   }
 
   @Override
@@ -108,6 +139,13 @@ public class SwingProgressIndicator implements ProgressIndicator
 
   private void updateMessages()
   {
-    _panel.getMessages().setText(_text.toString());
+    SwingUtilities.invokeLater(new Runnable()
+    {
+      @Override
+      public void run()
+      {
+        _panel.getMessages().setText(_text.toString());
+      }
+    });
   }
 }

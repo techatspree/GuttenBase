@@ -1,11 +1,7 @@
 package de.akquinet.jbosscc.guttenbase.utils;
 
-import org.apache.log4j.Logger;
-
 public class TimingProgressIndicator implements ProgressIndicator
 {
-  private static final Logger LOG = Logger.getLogger(TimingProgressIndicator.class);
-
   private long _startCopyTotal;
   private long _startCopyTable;
   private long _startBatch;
@@ -38,15 +34,6 @@ public class TimingProgressIndicator implements ProgressIndicator
     setRowCount(rowCount);
     setTargetTableName(targetTableName);
     setStartCopyTable(System.currentTimeMillis());
-
-    LOG.info("Copying of " + getSourceTableName()
-        + " -> "
-        + getTargetTableName()
-        + "("
-        + getTableCounter()
-        + "/"
-        + rowCount
-        + ") started");
   }
 
   @Override
@@ -59,13 +46,6 @@ public class TimingProgressIndicator implements ProgressIndicator
   public void endBatch(final int totalCopiedRows)
   {
     setElapsedBatchTime(System.currentTimeMillis() - getStartBatch());
-
-    LOG.info(getSourceTableName() + ":"
-        + totalCopiedRows
-        + "/"
-        + getRowCount()
-        + " lines copied: Last batch took "
-        + Util.formatTime(getElapsedBatchTime()));
   }
 
   @Override
@@ -73,38 +53,25 @@ public class TimingProgressIndicator implements ProgressIndicator
   {
     setElapsedTableCopyTime(System.currentTimeMillis() - getStartCopyTable());
 
-    LOG.info("Copying of " + getSourceTableName()
-        + " -> "
-        + getTargetTableName()
-        + " took "
-        + Util.formatTime(getElapsedTableCopyTime()));
-
     _tableCounter++;
   }
 
   @Override
   public void warn(final String text)
-  {
-    LOG.warn(text);
-  }
+  {}
 
   @Override
   public void info(final String text)
-  {
-    LOG.info(text);
-  }
+  {}
 
   @Override
   public void debug(final String text)
-  {
-    LOG.debug(text);
-  }
+  {}
 
   @Override
   public void finalizeIndicator()
   {
     setElapsedTotalTime(System.currentTimeMillis() - getStartCopyTotal());
-    LOG.info("Copying of " + getNumberOfTables() + " tables took " + Util.formatTime(getElapsedTotalTime()));
   }
 
   public final long getStartCopyTotal()
