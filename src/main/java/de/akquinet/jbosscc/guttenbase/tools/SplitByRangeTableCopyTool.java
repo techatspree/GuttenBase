@@ -15,20 +15,20 @@ import de.akquinet.jbosscc.guttenbase.statements.SplitByColumnSelectCountStateme
 import de.akquinet.jbosscc.guttenbase.statements.SplitByColumnSelectStatementCreator;
 
 /**
- * Sometimes the amount of data exceeds any buffer. In these cases we need to split the data by some given range, usually the primary key.
- * I.e., the data is read in chunks where these chunks are split using the ID column range of values.
- * 
- * Copy all tables from one connection to the other splitting the input with the given column. If the number range is populated sparsely the
+ * Sometimes the amount of data exceeds any buffer. In these cases we need to split the data by some given range, usually the
+ * primary key. I.e., the data is read in chunks where these chunks are split using the ID column range of values. Copy all tables
+ * from one connection to the other splitting the input with the given column. If the number range is populated sparsely the
  * copying may take much longer than the {@link DefaultTableCopyTool}.
- * 
  * <p>
  * &copy; 2012-2020 akquinet tech@spree
  * </p>
  * 
  * @author M. Dahm
  */
-public class SplitByRangeTableCopyTool extends AbstractTableCopyTool {
-  public SplitByRangeTableCopyTool(final ConnectorRepository connectorRepository) {
+public class SplitByRangeTableCopyTool extends AbstractTableCopyTool
+{
+  public SplitByRangeTableCopyTool(final ConnectorRepository connectorRepository)
+  {
     super(connectorRepository);
   }
 
@@ -39,11 +39,11 @@ public class SplitByRangeTableCopyTool extends AbstractTableCopyTool {
    */
   @Override
   protected void copyTable(final String sourceConnectorId, final Connection sourceConnection,
-      final SourceDatabaseConfiguration sourceDatabaseConfiguration, final TableMetaData sourceTableMetaData, final String sourceTableName,
-      final String targetConnectorId, final Connection targetConnection, final TargetDatabaseConfiguration targetDatabaseConfiguration,
-      final TableMetaData targetTableMetaData, final String targetTableName, final int numberOfRowsPerBatch,
-      final boolean useMultipleValuesClauses) throws SQLException {
-    final int sourceRowCount = sourceTableMetaData.getRowCount();
+      final SourceDatabaseConfiguration sourceDatabaseConfiguration, final TableMetaData sourceTableMetaData,
+      final String sourceTableName, final String targetConnectorId, final Connection targetConnection,
+      final TargetDatabaseConfiguration targetDatabaseConfiguration, final TableMetaData targetTableMetaData,
+      final String targetTableName, final int numberOfRowsPerBatch, final boolean useMultipleValuesClauses) throws SQLException
+  {
     final InsertStatementCreator insertStatementCreator = new InsertStatementCreator(_connectorRepository, targetConnectorId);
     final InsertStatementFiller insertStatementFiller = new InsertStatementFiller(_connectorRepository);
 
@@ -60,7 +60,8 @@ public class SplitByRangeTableCopyTool extends AbstractTableCopyTool {
     selectStatement.setFetchSize(Math.min(numberOfRowsPerBatch, selectStatement.getMaxRows()));
 
     int totalWritten = 0;
-    for (long splitColumnValue = minValue; splitColumnValue <= maxValue; splitColumnValue += numberOfRowsPerBatch + 1) {
+    for (long splitColumnValue = minValue; splitColumnValue <= maxValue; splitColumnValue += numberOfRowsPerBatch + 1)
+    {
       final long start = splitColumnValue;
       final long end = splitColumnValue + numberOfRowsPerBatch;
 
@@ -68,8 +69,9 @@ public class SplitByRangeTableCopyTool extends AbstractTableCopyTool {
       final long countData = getCurrentCount(countStatement, start, end);
       sourceDatabaseConfiguration.afterSelect(sourceConnection, sourceConnectorId, sourceTableMetaData);
 
-      if (countData > 0) {
-        LOG.debug(sourceTableName + ": " + " from " + start + " to " + end + " yields " + countData + " rows");
+      if (countData > 0)
+      {
+        _progressIndicator.startBatch();
         selectStatement.setLong(1, start);
         selectStatement.setLong(2, end);
 
@@ -81,28 +83,26 @@ public class SplitByRangeTableCopyTool extends AbstractTableCopyTool {
         final PreparedStatement bulkInsert = insertStatementCreator.createInsertStatement(sourceConnectorId, sourceTableMetaData,
             targetTableName, targetTableMetaData, targetConnection, (int) countData, useMultipleValuesClauses);
 
-        try {
-          insertStatementFiller.fillInsertStatementFromResultSet(sourceConnectorId, sourceTableMetaData, targetConnectorId,
-              targetTableMetaData, targetDatabaseConfiguration, targetConnection, resultSet, bulkInsert, (int) countData,
-              useMultipleValuesClauses);
-          bulkInsert.executeBatch();
+        insertStatementFiller.fillInsertStatementFromResultSet(sourceConnectorId, sourceTableMetaData, targetConnectorId,
+            targetTableMetaData, targetDatabaseConfiguration, targetConnection, resultSet, bulkInsert, (int) countData,
+            useMultipleValuesClauses);
+        bulkInsert.executeBatch();
 
-          if (targetDatabaseConfiguration.isMayCommit()) {
-            targetConnection.commit();
-          }
-
-          totalWritten += countData;
-          LOG.debug(countData + " written / " + totalWritten + " total written / " + sourceRowCount + " rows ");
-
-          if (resultSet.next()) {
-            LOG.warn("Uncopied data!!!");
-          }
-        } catch (final SQLException e) {
-          LOG.error("Error while copying from " + start + " TO " + end, e);
-        } finally {
-          resultSet.close();
-          bulkInsert.close();
+        if (targetDatabaseConfiguration.isMayCommit())
+        {
+          targetConnection.commit();
         }
+
+        totalWritten += countData;
+        _progressIndicator.endBatch(totalWritten);
+
+        if (resultSet.next())
+        {
+          _progressIndicator.warn("Uncopied data!!!");
+        }
+
+        resultSet.close();
+        bulkInsert.close();
 
         targetDatabaseConfiguration.afterInsert(targetConnection, targetConnectorId, targetTableMetaData);
       }
@@ -112,7 +112,8 @@ public class SplitByRangeTableCopyTool extends AbstractTableCopyTool {
     selectStatement.close();
   }
 
-  private long getCurrentCount(final PreparedStatement countStatement, final long start, final long end) throws SQLException {
+  private long getCurrentCount(final PreparedStatement countStatement, final long start, final long end) throws SQLException
+  {
     countStatement.setLong(1, start);
     countStatement.setLong(2, end);
 

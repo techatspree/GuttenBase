@@ -10,11 +10,24 @@ package de.akquinet.jbosscc.guttenbase.utils;
  */
 public interface ProgressIndicator
 {
-  void init(int numberOfTables);
+  void initializeIndicator();
 
-  void nextTable(String sourceTable, String targetTable);
+  void startCopying(int numberOfTables);
 
-  void batchDone(long timeMillis);
+  void startCopyTable(String sourceTableName, int rowCount, String targetTableName, int numberOfRowsPerBatch);
 
-  void log(String text);
+  void startBatch();
+
+  void endBatch(int totalCopiedRows);
+
+  void endCopyTable();
+
+  void warn(String string);
+
+  void info(String text);
+
+  void debug(String text);
+
+  void finalizeIndicator();
+
 }

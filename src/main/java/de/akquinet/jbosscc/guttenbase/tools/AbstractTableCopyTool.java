@@ -2,10 +2,7 @@ package de.akquinet.jbosscc.guttenbase.tools;
 
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.Iterator;
 import java.util.List;
-
-import org.apache.log4j.Logger;
 
 import de.akquinet.jbosscc.guttenbase.configuration.SourceDatabaseConfiguration;
 import de.akquinet.jbosscc.guttenbase.configuration.TargetDatabaseConfiguration;
@@ -20,7 +17,7 @@ import de.akquinet.jbosscc.guttenbase.mapping.TableNameMapper;
 import de.akquinet.jbosscc.guttenbase.meta.DatabaseMetaData;
 import de.akquinet.jbosscc.guttenbase.meta.TableMetaData;
 import de.akquinet.jbosscc.guttenbase.repository.ConnectorRepository;
-import de.akquinet.jbosscc.guttenbase.utils.Util;
+import de.akquinet.jbosscc.guttenbase.utils.ProgressIndicator;
 
 /**
  * Copy all tables from one connection to the other.
@@ -36,9 +33,8 @@ import de.akquinet.jbosscc.guttenbase.utils.Util;
  */
 public abstract class AbstractTableCopyTool
 {
-  protected static final Logger LOG = Logger.getLogger(AbstractTableCopyTool.class);
-
   protected final ConnectorRepository _connectorRepository;
+  protected ProgressIndicator _progressIndicator;
 
   public AbstractTableCopyTool(final ConnectorRepository connectorRepository)
   {
@@ -51,12 +47,14 @@ public abstract class AbstractTableCopyTool
    */
   public final void copyTables(final String sourceConnectorId, final String targetConnectorId) throws SQLException
   {
+    _progressIndicator = _connectorRepository.getConnectorHint(targetConnectorId, ProgressIndicator.class).getValue();
+    _progressIndicator.initializeIndicator();
+
     final List<TableMetaData> tableSourceMetaDatas = TableOrderHint.getSortedTables(_connectorRepository, sourceConnectorId);
     final NumberOfRowsPerBatch numberOfRowsPerInsertionHint = _connectorRepository.getConnectorHint(targetConnectorId,
         NumberOfRowsPerBatch.class).getValue();
     final MaxNumberOfDataItems maxNumberOfDataItemsHint = _connectorRepository.getConnectorHint(targetConnectorId,
         MaxNumberOfDataItems.class).getValue();
-    final long start = System.currentTimeMillis();
 
     final SourceDatabaseConfiguration sourceDatabaseConfiguration = _connectorRepository
         .getSourceDatabaseConfiguration(sourceConnectorId);
@@ -72,13 +70,14 @@ public abstract class AbstractTableCopyTool
         .getValue();
     final TableMapper tableMapper = _connectorRepository.getConnectorHint(targetConnectorId, TableMapper.class).getValue();
     final DatabaseMetaData targetDatabaseMetaData = _connectorRepository.getDatabaseMetaData(targetConnectorId);
+
     sourceDatabaseConfiguration.initializeSourceConnection(sourceConnection, sourceConnectorId);
     targetDatabaseConfiguration.initializeTargetConnection(targetConnection, targetConnectorId);
 
-    int tableCounter = 1;
-    for (final Iterator<TableMetaData> sourceTableIterator = tableSourceMetaDatas.iterator(); sourceTableIterator.hasNext(); tableCounter++)
+    _progressIndicator.startCopying(tableSourceMetaDatas.size());
+
+    for (final TableMetaData sourceTableMetaData : tableSourceMetaDatas)
     {
-      final TableMetaData sourceTableMetaData = sourceTableIterator.next();
       final TableMetaData targetTableMetaData = tableMapper.map(sourceTableMetaData, targetDatabaseMetaData);
       final int defaultNumberOfRowsPerBatch = numberOfRowsPerInsertionHint.getNumberOfRowsPerBatch(targetTableMetaData);
       final boolean useMultipleValuesClauses = numberOfRowsPerInsertionHint.useMultipleValuesClauses(targetTableMetaData);
@@ -91,12 +90,11 @@ public abstract class AbstractTableCopyTool
 
       final String sourceTableName = sourceTableNameMapper.mapTableName(sourceTableMetaData);
       final String targetTableName = targetTableNameMapper.mapTableName(targetTableMetaData);
-      final long startTimeCopyTable = System.currentTimeMillis();
       final int targetRowCount = targetTableMetaData.getRowCount();
 
       if (targetRowCount > 0)
       {
-        LOG.warn("Target table " + targetTableMetaData.getTableName() + " is not empty!");
+        _progressIndicator.warn("Target table " + targetTableMetaData.getTableName() + " is not empty!");
       }
 
       int numberOfRowsPerBatch = defaultNumberOfRowsPerBatch;
@@ -105,7 +103,7 @@ public abstract class AbstractTableCopyTool
       if (columnCount * numberOfRowsPerBatch > maxNumberOfDataItems)
       {
         numberOfRowsPerBatch = maxNumberOfDataItems / columnCount;
-        LOG.debug("Max number of data items " + maxNumberOfDataItems
+        _progressIndicator.debug("Max number of data items " + maxNumberOfDataItems
             + "exceeds numberOfValuesClauses * columns="
             + defaultNumberOfRowsPerBatch
             + " * "
@@ -117,38 +115,16 @@ public abstract class AbstractTableCopyTool
       sourceDatabaseConfiguration.beforeTableCopy(sourceConnection, sourceConnectorId, sourceTableMetaData);
       targetDatabaseConfiguration.beforeTableCopy(targetConnection, targetConnectorId, targetTableMetaData);
 
-      LOG.info("Copying of " + sourceTableName
-          + "-> "
-          + targetTableName
-          + "("
-          + tableCounter
-          + "/"
-          + tableSourceMetaDatas.size()
-          + ") started");
+      _progressIndicator.startCopyTable(sourceTableName, sourceTableMetaData.getRowCount(), targetTableName, numberOfRowsPerBatch);
+
       copyTable(sourceConnectorId, sourceConnection, sourceDatabaseConfiguration, sourceTableMetaData, sourceTableName,
           targetConnectorId, targetConnection, targetDatabaseConfiguration, targetTableMetaData, targetTableName,
           numberOfRowsPerBatch, useMultipleValuesClauses);
-      LOG.info("Copying of " + sourceTableName
-          + "-> "
-          + targetTableName
-          + "("
-          + tableCounter
-          + "/"
-          + tableSourceMetaDatas.size()
-          + ") finished");
 
       sourceDatabaseConfiguration.afterTableCopy(sourceConnection, sourceConnectorId, sourceTableMetaData);
       targetDatabaseConfiguration.afterTableCopy(targetConnection, targetConnectorId, targetTableMetaData);
 
-      final long endTimeCopyTable = System.currentTimeMillis();
-      final long elapsedTime = (endTimeCopyTable - startTimeCopyTable);
-      final long averagePerLine = elapsedTime / numberOfRowsPerBatch;
-
-      LOG.info("Copying of " + sourceTableMetaData.getTableName() + " took " + Util.formatTime(elapsedTime));
-      LOG.info(sourceTableMetaData.getRowCount() + " lines copied, average per batch ("
-          + numberOfRowsPerBatch
-          + ") = "
-          + Util.formatTime(averagePerLine));
+      _progressIndicator.endCopyTable();
     }
 
     sourceDatabaseConfiguration.finalizeSourceConnection(sourceConnection, sourceConnectorId);
@@ -157,10 +133,7 @@ public abstract class AbstractTableCopyTool
     sourceConnector.closeConnection();
     targetConnector.closeConnection();
 
-    final long end = System.currentTimeMillis();
-
-    LOG.info("Copying took " + Util.formatTime(end - start) + " total");
-
+    _progressIndicator.finalizeIndicator();
     _connectorRepository.refreshDatabaseMetaData(targetConnectorId);
   }
 
