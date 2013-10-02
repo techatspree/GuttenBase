@@ -4,6 +4,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import de.akquinet.jbosscc.guttenbase.connector.ConnectorInfo;
 import de.akquinet.jbosscc.guttenbase.hints.TableOrderHint;
 import de.akquinet.jbosscc.guttenbase.mapping.TableNameMapper;
 import de.akquinet.jbosscc.guttenbase.meta.ForeignKeyMetaData;
@@ -44,13 +45,26 @@ public class DropTablesTool
     final List<TableMetaData> tableMetaData = TableOrderHint.getSortedTables(_connectorRepository, connectorId);
     final TableNameMapper tableNameMapper = _connectorRepository.getConnectorHint(connectorId, TableNameMapper.class).getValue();
     final List<String> statements = new ArrayList<String>();
+    final ConnectorInfo connectionInfo = _connectorRepository.getConnectionInfo(connectorId);
+    String constraintClause;
+
+    switch (connectionInfo.getDatabaseType())
+    {
+    case MYSQL:
+      constraintClause = " FOREIGN KEY ";
+      break;
+    default:
+      constraintClause = " CONSTRAINT ";
+      break;
+    }
 
     for (final TableMetaData table : tableMetaData)
     {
       for (final ForeignKeyMetaData foreignKey : table.getImportedForeignKeys())
       {
         statements.add("ALTER TABLE " + tableNameMapper.mapTableName(table)
-            + " DROP CONSTRAINT "
+            + " DROP"
+            + constraintClause
             + foreignKey.getForeignKeyName()
             + ";");
       }
