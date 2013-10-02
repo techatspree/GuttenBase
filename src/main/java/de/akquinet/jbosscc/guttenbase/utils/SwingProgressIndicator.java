@@ -9,6 +9,7 @@ public class SwingProgressIndicator implements ProgressIndicator
 {
   private final ProgressIndicatorPanel _panel = new ProgressIndicatorPanel();
   private final JDialog _dialog = new JDialog();
+  private final TimingProgressIndicator _timingDelegate = new TimingProgressIndicator();
 
   public SwingProgressIndicator()
   {
@@ -27,45 +28,65 @@ public class SwingProgressIndicator implements ProgressIndicator
   @Override
   public void initializeIndicator()
   {
+    _timingDelegate.initializeIndicator();
     _dialog.setVisible(true);
   }
 
   @Override
   public void startCopying(final int numberOfTables)
-  {}
+  {
+    _timingDelegate.startCopying(numberOfTables);
+  }
 
   @Override
   public void startCopyTable(final String sourceTableName, final int rowCount, final String targetTableName,
       final int numberOfRowsPerBatch)
-  {}
+  {
+    _timingDelegate.startCopyTable(sourceTableName, rowCount, targetTableName, numberOfRowsPerBatch);
+  }
 
   @Override
   public void startBatch()
-  {}
+  {
+    _timingDelegate.startBatch();
+  }
 
   @Override
   public void endBatch(final int totalCopiedRows)
-  {}
+  {
+    _timingDelegate.endBatch(totalCopiedRows);
+
+  }
 
   @Override
   public void endCopyTable()
-  {}
+  {
+    _timingDelegate.endCopyTable();
+
+  }
 
   @Override
-  public void warn(final String string)
-  {}
+  public void warn(final String text)
+  {
+    _timingDelegate.warn(text);
+  }
 
   @Override
   public void info(final String text)
-  {}
+  {
+    _timingDelegate.info(text);
+  }
 
   @Override
   public void debug(final String text)
-  {}
+  {
+    _timingDelegate.debug(text);
+  }
 
   @Override
   public void finalizeIndicator()
   {
+    _timingDelegate.finalizeIndicator();
     _dialog.setVisible(false);
     _dialog.dispose();
   }

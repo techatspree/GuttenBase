@@ -10,7 +10,9 @@ public class LoggingProgressIndicator implements ProgressIndicator
 
   @Override
   public void initializeIndicator()
-  {}
+  {
+    _timingDelegate.initializeIndicator();
+  }
 
   @Override
   public void startCopying(final int numberOfTables)
