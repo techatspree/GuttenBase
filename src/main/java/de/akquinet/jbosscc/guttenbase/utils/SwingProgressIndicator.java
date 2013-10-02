@@ -4,7 +4,6 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 
 import javax.swing.JDialog;
-import javax.swing.SwingUtilities;
 
 public class SwingProgressIndicator implements ProgressIndicator
 {
@@ -19,7 +18,7 @@ public class SwingProgressIndicator implements ProgressIndicator
     _dialog.setTitle("Copying tables...");
     _dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 
-    final Dimension size = new Dimension(300, 70);
+    final Dimension size = new Dimension(500, 300);
     _dialog.getContentPane().setLayout(new BorderLayout());
     _dialog.getContentPane().add(_panel, BorderLayout.CENTER);
 
@@ -31,16 +30,22 @@ public class SwingProgressIndicator implements ProgressIndicator
   public void initializeIndicator()
   {
     _timingDelegate.initializeIndicator();
-    SwingUtilities.invokeLater(new Runnable()
+    _panel.getTotalTime().setText("");
+    _panel.getTableTime().setText("");
+    _panel.getSourceTable().setText("");
+    _panel.getTargetTable().setText("");
+
+    final Thread thread = new Thread()
     {
       @Override
       public void run()
       {
-        _panel.getTotalTime().setText("");
-        _panel.getTableTime().setText("");
         _dialog.setVisible(true);
       }
-    });
+    };
+
+    thread.setDaemon(true);
+    thread.start();
   }
 
   @Override
@@ -48,16 +53,9 @@ public class SwingProgressIndicator implements ProgressIndicator
   {
     _timingDelegate.startCopying(numberOfTables);
 
-    SwingUtilities.invokeLater(new Runnable()
-    {
-      @Override
-      public void run()
-      {
-        _panel.getTotalProgress().setValue(0);
-        _panel.getTotalProgress().setMinimum(0);
-        _panel.getTotalProgress().setMinimum(numberOfTables);
-      }
-    });
+    _panel.getTotalProgress().setValue(0);
+    _panel.getTotalProgress().setMinimum(0);
+    _panel.getTotalProgress().setMaximum(numberOfTables);
   }
 
   @Override
@@ -66,16 +64,11 @@ public class SwingProgressIndicator implements ProgressIndicator
   {
     _timingDelegate.startCopyTable(sourceTableName, rowCount, targetTableName, numberOfRowsPerBatch);
 
-    SwingUtilities.invokeLater(new Runnable()
-    {
-      @Override
-      public void run()
-      {
-        _panel.getTableProgress().setMinimum(0);
-        _panel.getTableProgress().setMinimum(rowCount);
-        _panel.getTableProgress().setValue(0);
-      }
-    });
+    _panel.getTableProgress().setMinimum(0);
+    _panel.getTableProgress().setMaximum(rowCount);
+    _panel.getTableProgress().setValue(0);
+    _panel.getSourceTable().setText(sourceTableName);
+    _panel.getTargetTable().setText(targetTableName);
   }
 
   @Override
@@ -88,6 +81,8 @@ public class SwingProgressIndicator implements ProgressIndicator
   public void endBatch(final int totalCopiedRows)
   {
     _timingDelegate.endBatch(totalCopiedRows);
+
+    _panel.getTableProgress().setValue(totalCopiedRows);
   }
 
   @Override
@@ -95,14 +90,8 @@ public class SwingProgressIndicator implements ProgressIndicator
   {
     _timingDelegate.endCopyTable();
 
-    SwingUtilities.invokeLater(new Runnable()
-    {
-      @Override
-      public void run()
-      {
-        _panel.getTableProgress().setValue(_timingDelegate.getRowCount());
-      }
-    });
+    _panel.getTableProgress().setValue(_timingDelegate.getRowCount());
+    _panel.getTotalProgress().setValue(_timingDelegate.getTableCounter());
   }
 
   @Override
@@ -139,13 +128,6 @@ public class SwingProgressIndicator implements ProgressIndicator
 
   private void updateMessages()
   {
-    SwingUtilities.invokeLater(new Runnable()
-    {
-      @Override
-      public void run()
-      {
-        _panel.getMessages().setText(_text.toString());
-      }
-    });
+    _panel.getMessages().setText(_text.toString());
   }
 }
