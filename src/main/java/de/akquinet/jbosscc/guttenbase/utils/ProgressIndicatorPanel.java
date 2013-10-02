@@ -9,8 +9,11 @@ import java.awt.Insets;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JProgressBar;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
+import javax.swing.border.EtchedBorder;
+import javax.swing.border.TitledBorder;
 
 public class ProgressIndicatorPanel extends JPanel
 {
@@ -28,7 +31,7 @@ public class ProgressIndicatorPanel extends JPanel
     final GridBagLayout gridBagLayout = new GridBagLayout();
     gridBagLayout.columnWidths = new int[] { 0, 0, 0, 0, 0, 0, 0 };
     gridBagLayout.rowHeights = new int[] { 0, 0, 0, 0, 0, 0, 0, 0 };
-    gridBagLayout.columnWeights = new double[] { 0.0, 1.0, 0.0, 0.0, 0, 0.0, Double.MIN_VALUE };
+    gridBagLayout.columnWeights = new double[] { 1.0, 1.0, 0.0, 0.0, 0, 0.0, Double.MIN_VALUE };
     gridBagLayout.rowWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE };
     setLayout(gridBagLayout);
 
@@ -46,6 +49,7 @@ public class ProgressIndicatorPanel extends JPanel
     _sourceTable = new JTextField();
     _sourceTable.setEditable(false);
     final GridBagConstraints gbc_sourceTable = new GridBagConstraints();
+    gbc_sourceTable.insets = new Insets(0, 0, 5, 5);
     gbc_sourceTable.gridwidth = 2;
     gbc_sourceTable.fill = GridBagConstraints.HORIZONTAL;
     gbc_sourceTable.anchor = GridBagConstraints.WEST;
@@ -67,6 +71,7 @@ public class ProgressIndicatorPanel extends JPanel
     _targetTable.setEditable(false);
     _targetTable.setColumns(40);
     final GridBagConstraints gbc_targetTable = new GridBagConstraints();
+    gbc_targetTable.insets = new Insets(0, 0, 5, 0);
     gbc_targetTable.weightx = 1.0;
     gbc_targetTable.anchor = GridBagConstraints.WEST;
     gbc_targetTable.gridwidth = 2;
@@ -88,6 +93,7 @@ public class ProgressIndicatorPanel extends JPanel
     _totalTime.setEditable(false);
     _totalTime.setColumns(10);
     final GridBagConstraints gbc_totalTime = new GridBagConstraints();
+    gbc_totalTime.insets = new Insets(0, 0, 5, 5);
     gbc_totalTime.anchor = GridBagConstraints.WEST;
     gbc_totalTime.fill = GridBagConstraints.HORIZONTAL;
     gbc_totalTime.gridx = 1;
@@ -107,6 +113,7 @@ public class ProgressIndicatorPanel extends JPanel
     _tableTime.setEditable(false);
     _tableTime.setColumns(10);
     final GridBagConstraints gbc_tableTime = new GridBagConstraints();
+    gbc_tableTime.insets = new Insets(0, 0, 5, 5);
     gbc_tableTime.weightx = 1.0;
     gbc_tableTime.gridwidth = 1;
     gbc_tableTime.fill = GridBagConstraints.HORIZONTAL;
@@ -114,6 +121,41 @@ public class ProgressIndicatorPanel extends JPanel
     gbc_tableTime.gridx = 4;
     gbc_tableTime.gridy = 2;
     add(_tableTime, gbc_tableTime);
+
+    final JPanel panel = new JPanel();
+    panel.setBorder(new TitledBorder(new EtchedBorder(), "Table rows", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+    final GridBagConstraints gbc_panel = new GridBagConstraints();
+    gbc_panel.weighty = 1.0;
+    gbc_panel.gridwidth = 6;
+    gbc_panel.anchor = GridBagConstraints.WEST;
+    gbc_panel.insets = new Insets(5, 5, 5, 5);
+    gbc_panel.fill = GridBagConstraints.BOTH;
+    gbc_panel.gridx = 0;
+    gbc_panel.gridy = 3;
+    add(panel, gbc_panel);
+    panel.setLayout(new BorderLayout(0, 0));
+
+    final JProgressBar _tableRows = new JProgressBar();
+    _tableRows.setStringPainted(true);
+    panel.add(_tableRows, BorderLayout.CENTER);
+
+    final JPanel panel_1 = new JPanel();
+    panel_1.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null), "Total progress",
+        TitledBorder.LEADING, TitledBorder.TOP, null, null));
+    final GridBagConstraints gbc_panel_1 = new GridBagConstraints();
+    gbc_panel_1.weighty = 1.0;
+    gbc_panel_1.anchor = GridBagConstraints.WEST;
+    gbc_panel_1.gridwidth = 6;
+    gbc_panel_1.insets = new Insets(5, 5, 5, 5);
+    gbc_panel_1.fill = GridBagConstraints.BOTH;
+    gbc_panel_1.gridx = 0;
+    gbc_panel_1.gridy = 4;
+    add(panel_1, gbc_panel_1);
+    panel_1.setLayout(new BorderLayout(0, 0));
+
+    final JProgressBar progressBar = new JProgressBar();
+    progressBar.setStringPainted(true);
+    panel_1.add(progressBar, BorderLayout.CENTER);
 
   }
 
