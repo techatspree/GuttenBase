@@ -6,7 +6,7 @@ import java.sql.SQLException;
  * Thrown when we find a column type we cannot handle (yet).
  * 
  * <p>
- * &copy; 2012 akquinet tech@spree
+ * &copy; 2012-2020 akquinet tech@spree
  * </p>
  * 
  * @author M. Dahm

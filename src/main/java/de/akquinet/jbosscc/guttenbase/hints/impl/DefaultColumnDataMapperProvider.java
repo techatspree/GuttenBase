@@ -15,7 +15,7 @@ import de.akquinet.jbosscc.guttenbase.meta.ColumnType;
  * {@link DefaultColumnDataMapperProviderHint#addMappings(DefaultColumnDataMapperProvider)} method.
  * 
  * <p>
- * &copy; 2012 akquinet tech@spree
+ * &copy; 2012-2020 akquinet tech@spree
  * </p>
  * 
  * @author M. Dahm

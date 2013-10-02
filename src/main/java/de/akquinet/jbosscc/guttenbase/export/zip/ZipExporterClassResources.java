@@ -10,7 +10,7 @@ import java.util.Map;
  * This allows to create a self-contained executable JAR that will startup with a Main class customizable by the framework user.
  * 
  * <p>
- * &copy; 2012 akquinet tech@spree
+ * &copy; 2012-2020 akquinet tech@spree
  * </p>
  * 
  * @author M. Dahm

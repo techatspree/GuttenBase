@@ -13,7 +13,7 @@ import de.akquinet.jbosscc.guttenbase.tools.SplitColumn;
  * I.e., the data is read in chunks where these chunks are split using the ID column range of values.
  * 
  * <p>
- * &copy; 2012 akquinet tech@spree
+ * &copy; 2012-2020 akquinet tech@spree
  * </p>
  * 
  * @Uses-Hint {@link SplitColumnHint}

@@ -9,7 +9,7 @@ import de.akquinet.jbosscc.guttenbase.export.zip.ZipExporterClassResources;
  * This allows to create a self-contained executable JAR that will startup with a Main class customizable by the framework user.
  * 
  * <p>
- * &copy; 2012 akquinet tech@spree
+ * &copy; 2012-2020 akquinet tech@spree
  * </p>
  * 
  * @Applicable-For-Target

@@ -9,7 +9,7 @@ import de.akquinet.jbosscc.guttenbase.meta.ColumnMetaData;
  * Map Long/Bigint to BigDecimal
  * 
  * <p>
- * &copy; 2012 akquinet tech@spree
+ * &copy; 2012-2020 akquinet tech@spree
  * </p>
  * 
  * @author M. Dahm

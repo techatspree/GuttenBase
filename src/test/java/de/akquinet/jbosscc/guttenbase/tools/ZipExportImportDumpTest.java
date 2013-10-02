@@ -30,7 +30,7 @@ import de.akquinet.jbosscc.guttenbase.utils.Util;
  * The ZIP exporter also allows you to specify a startup class for the resulting JAR.
  * 
  * <p>
- * &copy; 2012 akquinet tech@spree
+ * &copy; 2012-2020 akquinet tech@spree
  * </p>
  * 
  * @author M. Dahm

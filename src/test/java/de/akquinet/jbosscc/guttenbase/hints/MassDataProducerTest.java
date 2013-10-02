@@ -29,7 +29,7 @@ import de.akquinet.jbosscc.guttenbase.tools.ScriptExecutorTool;
  * Produce lots of data by duplicating and altering existing entries. IDs have to be adapted of course.
  * 
  * <p>
- * &copy; 2012 akquinet tech@spree
+ * &copy; 2012-2020 akquinet tech@spree
  * </p>
  * 
  * @author M. Dahm

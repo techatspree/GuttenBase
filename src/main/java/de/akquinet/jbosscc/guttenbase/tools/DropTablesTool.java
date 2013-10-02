@@ -15,7 +15,7 @@ import de.akquinet.jbosscc.guttenbase.repository.ConnectorRepository;
 /**
  * Will drop tables in given schema. USE WITH CARE!
  * <p>
- * &copy; 2012 akquinet tech@spree
+ * &copy; 2012-2020 akquinet tech@spree
  * </p>
  * 
  * @Uses-Hint {@link TableOrderHint} to determine order of tables
@@ -31,13 +31,6 @@ public class DropTablesTool
     assert connectorRepository != null : "connectorRepository != null";
     _connectorRepository = connectorRepository;
     _scriptExecutor = new ScriptExecutorTool(connectorRepository);
-  }
-
-  public void drop(final String connectorId) throws SQLException
-  {
-    dropForeignKeys(connectorId);
-    dropIndexes(connectorId);
-    dropTables(connectorId);
   }
 
   public void dropForeignKeys(final String connectorId) throws SQLException
@@ -118,7 +111,7 @@ public class DropTablesTool
 
     if (!statements.isEmpty())
     {
-      _scriptExecutor.executeScript(connectorId, true, false, statements);
+      _scriptExecutor.executeScript(connectorId, true, true, statements);
     }
   }
 }

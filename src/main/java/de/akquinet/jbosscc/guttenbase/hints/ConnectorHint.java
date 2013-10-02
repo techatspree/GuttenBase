@@ -5,7 +5,7 @@ package de.akquinet.jbosscc.guttenbase.hints;
  * default implementation added to a connector by the repository which may be overridden subsequently.
  * 
  * <p>
- * &copy; 2012 akquinet tech@spree
+ * &copy; 2012-2020 akquinet tech@spree
  * </p>
  * 
  * @author M. Dahm

@@ -6,7 +6,7 @@ import de.akquinet.jbosscc.guttenbase.repository.ConnectorRepository;
  * Implementation for MS Access via ODBC.
  * 
  * <p>
- * &copy; 2012 akquinet tech@spree
+ * &copy; 2012-2020 akquinet tech@spree
  * </p>
  * 
  * @author M. Dahm

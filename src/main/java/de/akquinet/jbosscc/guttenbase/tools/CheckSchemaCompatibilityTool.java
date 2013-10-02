@@ -24,7 +24,7 @@ import de.akquinet.jbosscc.guttenbase.repository.ConnectorRepository;
 /**
  * Will check two schema's tables for compatibility.
  * <p>
- * &copy; 2012 akquinet tech@spree
+ * &copy; 2012-2020 akquinet tech@spree
  * </p>
  * 
  * @Uses-Hint {@link ColumnNameMapperHint} to map column names

@@ -9,7 +9,7 @@ import de.akquinet.jbosscc.guttenbase.meta.ColumnType;
  * Used to find mappings for column data. E.g., when converting a number to a String or casting a LONG to a BIGINT.
  * 
  * <p>
- * &copy; 2012 akquinet tech@spree
+ * &copy; 2012-2020 akquinet tech@spree
  * </p>
  * 
  * @author M. Dahm

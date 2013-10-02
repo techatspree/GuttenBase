@@ -6,7 +6,7 @@ import java.sql.SQLException;
  * Thrown when tables in different data bases exist, but have different columns.
  * 
  * <p>
- * &copy; 2012 akquinet tech@spree
+ * &copy; 2012-2020 akquinet tech@spree
  * </p>
  * 
  * @author M. Dahm

@@ -13,7 +13,7 @@ import de.akquinet.jbosscc.guttenbase.meta.TableMetaData;
 /**
  * Create DDL script from given database meta data.
  * <p>
- * &copy; 2012 akquinet tech@spree
+ * &copy; 2012-2020 akquinet tech@spree
  * </p>
  * 
  * @author M. Dahm

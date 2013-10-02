@@ -30,7 +30,7 @@ import de.akquinet.jbosscc.guttenbase.meta.TableMetaData;
  * Custom implementation of {@link PreparedStatement} reading data from the given input stream. This done via the custom
  * {@link ImportDumpResultSet} object return by {@link #executeQuery()}.
  * <p>
- * &copy; 2012 akquinet tech@spree
+ * &copy; 2012-2020 akquinet tech@spree
  * </p>
  * 
  * @author M. Dahm

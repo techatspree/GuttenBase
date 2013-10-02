@@ -10,7 +10,7 @@ import de.akquinet.jbosscc.guttenbase.meta.ColumnMetaData;
  * Convert long ID to UUID
  * 
  * <p>
- * &copy; 2012 akquinet tech@spree
+ * &copy; 2012-2020 akquinet tech@spree
  * </p>
  * 
  * @author M. Dahm

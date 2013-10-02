@@ -16,7 +16,7 @@ import de.akquinet.jbosscc.guttenbase.statements.SplitByColumnSelectMinMaxStatem
  * Compute MIN and MAX of given Id-Column
  * 
  * <p>
- * &copy; 2012 akquinet tech@spree
+ * &copy; 2012-2020 akquinet tech@spree
  * </p>
  * 
  * @Uses-Hint {@link TableNameMapperHint}

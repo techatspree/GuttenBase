@@ -18,7 +18,7 @@ import de.akquinet.jbosscc.guttenbase.tools.CheckEqualTableDataTool;
  * Determine order of tables during copying/comparison.
  * 
  * <p>
- * &copy; 2012 akquinet tech@spree
+ * &copy; 2012-2020 akquinet tech@spree
  * </p>
  * 
  * @Applicable-For-Source

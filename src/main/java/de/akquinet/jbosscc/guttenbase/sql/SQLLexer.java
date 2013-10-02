@@ -6,7 +6,7 @@ import java.util.List;
 /**
  * Primitive implementation of SQL parser in order to check validity of script.
  * <p>
- * &copy; 2012 akquinet tech@spree
+ * &copy; 2012-2020 akquinet tech@spree
  * </p>
  * 
  * @author M. Dahm

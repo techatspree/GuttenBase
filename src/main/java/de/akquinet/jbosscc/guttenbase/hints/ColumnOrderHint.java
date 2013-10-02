@@ -17,7 +17,7 @@ import de.akquinet.jbosscc.guttenbase.tools.CheckEqualTableDataTool;
  * Determine order of columns in SELECT statement. This will of course also influence the ordering of the resulting INSERT statement.
  * 
  * <p>
- * &copy; 2012 akquinet tech@spree
+ * &copy; 2012-2020 akquinet tech@spree
  * </p>
  * 
  * @Applicable-For-Source

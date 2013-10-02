@@ -20,7 +20,7 @@ import de.akquinet.jbosscc.guttenbase.utils.Util;
  * This allows us to create a self-contained executable JAR with a user defined startup class.
  * 
  * <p>
- * &copy; 2012 akquinet tech@spree
+ * &copy; 2012-2020 akquinet tech@spree
  * </p>
  * 
  * @author M. Dahm

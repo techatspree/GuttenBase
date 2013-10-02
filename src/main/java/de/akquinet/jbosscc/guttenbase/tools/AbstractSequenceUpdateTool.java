@@ -17,7 +17,7 @@ import de.akquinet.jbosscc.guttenbase.repository.ConnectorRepository;
  * By default the sequence is updated to SELECT(MAX(ID) + 1) FROM table
  * 
  * <p>
- * &copy; 2012 akquinet tech@spree
+ * &copy; 2012-2020 akquinet tech@spree
  * </p>
  * 
  * @Uses-Hint {@link TableNameMapperHint}
