@@ -6,14 +6,7 @@ public class LoggingProgressIndicator implements ProgressIndicator
 {
   private static final Logger LOG = Logger.getLogger(LoggingProgressIndicator.class);
 
-  private long _startCopyTotal;
-  private long _startCopyTable;
-  private long _startBatch;
-  private int _tableCounter;
-  private String _sourceTableName;
-  private String _targetTableName;
-  private int _rowCount;
-  private int _numberOfTables;
+  private final TimingProgressIndicator _timingDelegate = new TimingProgressIndicator();
 
   @Override
   public void initializeIndicator()
@@ -22,73 +15,83 @@ public class LoggingProgressIndicator implements ProgressIndicator
   @Override
   public void startCopying(final int numberOfTables)
   {
-    _numberOfTables = numberOfTables;
-    _tableCounter = 1;
-    _startCopyTotal = System.currentTimeMillis();
+    _timingDelegate.startCopying(numberOfTables);
   }
 
   @Override
   public void startCopyTable(final String sourceTableName, final int rowCount, final String targetTableName,
       final int numberOfRowsPerBatch)
   {
-    _sourceTableName = sourceTableName;
-    _rowCount = rowCount;
-    _targetTableName = targetTableName;
-    _startCopyTable = System.currentTimeMillis();
+    _timingDelegate.startCopyTable(sourceTableName, rowCount, targetTableName, numberOfRowsPerBatch);
 
-    LOG.info("Copying of " + _sourceTableName + " -> " + _targetTableName + "(" + _tableCounter + "/" + rowCount + ") started");
+    LOG.info("Copying of " + _timingDelegate.getSourceTableName()
+        + " -> "
+        + _timingDelegate.getTargetTableName()
+        + "("
+        + _timingDelegate.getTableCounter()
+        + "/"
+        + rowCount
+        + ") started");
   }
 
   @Override
   public void startBatch()
   {
-    _startBatch = System.currentTimeMillis();
+    _timingDelegate.startBatch();
   }
 
   @Override
   public void endBatch(final int totalCopiedRows)
   {
-    final long elapsedTime = System.currentTimeMillis() - _startBatch;
+    _timingDelegate.endBatch(totalCopiedRows);
 
-    LOG.info(_sourceTableName + ":"
+    LOG.info(_timingDelegate.getSourceTableName() + ":"
         + totalCopiedRows
         + "/"
-        + _rowCount
+        + _timingDelegate.getRowCount()
         + " lines copied: Last batch took "
-        + Util.formatTime(elapsedTime));
+        + Util.formatTime(_timingDelegate.getElapsedBatchTime()));
   }
 
   @Override
   public void endCopyTable()
   {
-    final long elapsedTime = System.currentTimeMillis() - _startCopyTable;
+    _timingDelegate.endCopyTable();
 
-    LOG.info("Copying of " + _sourceTableName + " -> " + _targetTableName + " took " + Util.formatTime(elapsedTime));
-    _tableCounter++;
+    LOG.info("Copying of " + _timingDelegate.getSourceTableName()
+        + " -> "
+        + _timingDelegate.getTargetTableName()
+        + " took "
+        + Util.formatTime(_timingDelegate.getElapsedTableCopyTime()));
   }
 
   @Override
   public void warn(final String text)
   {
+    _timingDelegate.warn(text);
     LOG.warn(text);
   }
 
   @Override
   public void info(final String text)
   {
+    _timingDelegate.info(text);
     LOG.info(text);
   }
 
   @Override
   public void debug(final String text)
   {
+    _timingDelegate.debug(text);
     LOG.debug(text);
   }
 
   @Override
   public void finalizeIndicator()
   {
-    final long elapsedTime = System.currentTimeMillis() - _startCopyTotal;
-    LOG.info("Copying of " + _numberOfTables + " tables took " + Util.formatTime(elapsedTime));
+    _timingDelegate.finalizeIndicator();
+    LOG.info("Copying of " + _timingDelegate.getNumberOfTables()
+        + " tables took "
+        + Util.formatTime(_timingDelegate.getElapsedTotalTime()));
   }
 }
