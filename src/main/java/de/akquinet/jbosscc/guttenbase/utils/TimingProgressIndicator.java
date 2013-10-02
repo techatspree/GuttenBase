@@ -78,7 +78,8 @@ public class TimingProgressIndicator implements ProgressIndicator
         + getTargetTableName()
         + " took "
         + Util.formatTime(getElapsedTableCopyTime()));
-    setTableCounter(getTableCounter() + 1);
+
+    _tableCounter++;
   }
 
   @Override

@@ -6,7 +6,6 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
@@ -25,7 +24,8 @@ public class ProgressIndicatorPanel extends JPanel
   private final JTextField _totalTime;
   private final JTextField _tableTime;
   private final JProgressBar _totalProgress;
-  private final JProgressBar _tableRows;
+  private final JProgressBar _tableProgress;
+  private final JTextArea _messages;
 
   /**
    * Create the panel.
@@ -139,9 +139,9 @@ public class ProgressIndicatorPanel extends JPanel
     add(panel, gbc_panel);
     panel.setLayout(new BorderLayout(0, 0));
 
-    _tableRows = new JProgressBar();
-    _tableRows.setStringPainted(true);
-    panel.add(_tableRows, BorderLayout.CENTER);
+    _tableProgress = new JProgressBar();
+    _tableProgress.setStringPainted(true);
+    panel.add(_tableProgress, BorderLayout.CENTER);
 
     final JPanel panel_1 = new JPanel();
     panel_1.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null), "Total progress",
@@ -177,19 +177,42 @@ public class ProgressIndicatorPanel extends JPanel
     final JScrollPane scrollPane = new JScrollPane();
     panel_2.add(scrollPane, BorderLayout.CENTER);
 
-    final JTextArea textArea = new JTextArea();
-    scrollPane.setViewportView(textArea);
-
+    _messages = new JTextArea();
+    scrollPane.setViewportView(_messages);
   }
 
-  public static void main(final String[] args)
+  public final JTextField getSourceTable()
   {
-    final ProgressIndicatorPanel panel = new ProgressIndicatorPanel();
-    final JFrame frame = new JFrame();
-    frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-    frame.getContentPane().setLayout(new BorderLayout());
-    frame.getContentPane().add(panel, BorderLayout.CENTER);
-    frame.pack();
-    frame.setVisible(true);
+    return _sourceTable;
+  }
+
+  public final JTextField getTargetTable()
+  {
+    return _targetTable;
+  }
+
+  public final JTextField getTotalTime()
+  {
+    return _totalTime;
+  }
+
+  public final JTextField getTableTime()
+  {
+    return _tableTime;
+  }
+
+  public final JProgressBar getTotalProgress()
+  {
+    return _totalProgress;
+  }
+
+  public final JProgressBar getTableProgress()
+  {
+    return _tableProgress;
+  }
+
+  public final JTextArea getMessages()
+  {
+    return _messages;
   }
 }

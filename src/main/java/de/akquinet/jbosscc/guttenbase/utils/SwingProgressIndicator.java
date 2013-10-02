@@ -10,6 +10,7 @@ public class SwingProgressIndicator implements ProgressIndicator
   private final ProgressIndicatorPanel _panel = new ProgressIndicatorPanel();
   private final JDialog _dialog = new JDialog();
   private final TimingProgressIndicator _timingDelegate = new TimingProgressIndicator();
+  private final StringBuilder _text = new StringBuilder();
 
   public SwingProgressIndicator()
   {
@@ -29,6 +30,8 @@ public class SwingProgressIndicator implements ProgressIndicator
   public void initializeIndicator()
   {
     _timingDelegate.initializeIndicator();
+    _panel.getTotalTime().setText("");
+    _panel.getTableTime().setText("");
     _dialog.setVisible(true);
   }
 
@@ -36,12 +39,19 @@ public class SwingProgressIndicator implements ProgressIndicator
   public void startCopying(final int numberOfTables)
   {
     _timingDelegate.startCopying(numberOfTables);
+    _panel.getTotalProgress().setValue(0);
+    _panel.getTotalProgress().setMinimum(0);
+    _panel.getTotalProgress().setMinimum(numberOfTables);
   }
 
   @Override
   public void startCopyTable(final String sourceTableName, final int rowCount, final String targetTableName,
       final int numberOfRowsPerBatch)
   {
+    _panel.getTableProgress().setMinimum(0);
+    _panel.getTableProgress().setMinimum(rowCount);
+    _panel.getTableProgress().setValue(0);
+
     _timingDelegate.startCopyTable(sourceTableName, rowCount, targetTableName, numberOfRowsPerBatch);
   }
 
@@ -55,32 +65,37 @@ public class SwingProgressIndicator implements ProgressIndicator
   public void endBatch(final int totalCopiedRows)
   {
     _timingDelegate.endBatch(totalCopiedRows);
-
   }
 
   @Override
   public void endCopyTable()
   {
     _timingDelegate.endCopyTable();
-
+    _panel.getTableProgress().setValue(_timingDelegate.getRowCount());
   }
 
   @Override
   public void warn(final String text)
   {
     _timingDelegate.warn(text);
+    _text.append("WARNING: " + text + "\n");
+    updateMessages();
   }
 
   @Override
   public void info(final String text)
   {
     _timingDelegate.info(text);
+    _text.append("Info: " + text + "\n");
+    updateMessages();
   }
 
   @Override
   public void debug(final String text)
   {
     _timingDelegate.debug(text);
+    _text.append("Debug: " + text + "\n");
+    updateMessages();
   }
 
   @Override
@@ -91,4 +106,8 @@ public class SwingProgressIndicator implements ProgressIndicator
     _dialog.dispose();
   }
 
+  private void updateMessages()
+  {
+    _panel.getMessages().setText(_text.toString());
+  }
 }
