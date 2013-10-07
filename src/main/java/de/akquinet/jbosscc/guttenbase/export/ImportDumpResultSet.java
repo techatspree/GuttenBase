@@ -75,6 +75,8 @@ public class ImportDumpResultSet implements ResultSet
       {
         throw new ImportException("getObject", e);
       }
+
+      _currentRow.add(result);
     }
     else
     { // Return cached value
