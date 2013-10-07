@@ -19,7 +19,9 @@ import java.sql.SQLXML;
 import java.sql.Statement;
 import java.sql.Time;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 import java.util.Map;
 
 import de.akquinet.jbosscc.guttenbase.exceptions.ImportException;
@@ -40,6 +42,7 @@ public class ImportDumpResultSet implements ResultSet
   private final Importer _importer;
   private boolean _wasNull;
   private final TableMetaData _tableMetaData;
+  private List<Object> _currentRow = new ArrayList<Object>();
 
   public ImportDumpResultSet(final Importer importer, final TableMetaData tableMetaData)
   {
@@ -53,24 +56,36 @@ public class ImportDumpResultSet implements ResultSet
   @Override
   public boolean next() throws SQLException
   {
+    _currentRow = new ArrayList<Object>();
     return _rowCount++ < _tableMetaData.getRowCount();
   }
 
   @Override
   public Object getObject(final int columnIndex) throws SQLException
   {
-    try
-    {
-      final Object result = _importer.readObject();
+    Object result;
 
-      _wasNull = result == null;
-
-      return result;
-    }
-    catch (final Exception e)
+    if (columnIndex > _currentRow.size())
     {
-      throw new ImportException("getObject", e);
+      try
+      {
+        result = _importer.readObject();
+      }
+      catch (final Exception e)
+      {
+        throw new ImportException("getObject", e);
+      }
+
+      _currentRow.add(result);
     }
+    else
+    { // Return cached value
+      result = _currentRow.get(columnIndex - 1);
+    }
+
+    _wasNull = result == null;
+
+    return result;
   }
 
   @Override
@@ -192,7 +207,7 @@ public class ImportDumpResultSet implements ResultSet
   @Override
   public void close() throws SQLException
   {
-    // Ignored
+    _currentRow.clear();
   }
 
   @Override
@@ -444,15 +459,13 @@ public class ImportDumpResultSet implements ResultSet
   @Override
   public boolean last() throws SQLException
   {
-
     throw new UnsupportedOperationException();
   }
 
   @Override
   public int getRow() throws SQLException
   {
-
-    throw new UnsupportedOperationException();
+    return _rowCount + 1;
   }
 
   @Override
