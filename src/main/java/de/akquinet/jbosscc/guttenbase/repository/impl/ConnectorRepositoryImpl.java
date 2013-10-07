@@ -41,6 +41,7 @@ import de.akquinet.jbosscc.guttenbase.hints.impl.DefaultColumnMapperHint;
 import de.akquinet.jbosscc.guttenbase.hints.impl.DefaultColumnNameMapperHint;
 import de.akquinet.jbosscc.guttenbase.hints.impl.DefaultColumnOrderHint;
 import de.akquinet.jbosscc.guttenbase.hints.impl.DefaultColumnTypeResolverListHint;
+import de.akquinet.jbosscc.guttenbase.hints.impl.DefaultDatabaseColumnFilterHint;
 import de.akquinet.jbosscc.guttenbase.hints.impl.DefaultDatabaseTableFilterHint;
 import de.akquinet.jbosscc.guttenbase.hints.impl.DefaultEntityTableCheckerHint;
 import de.akquinet.jbosscc.guttenbase.hints.impl.DefaultExportDumpExtraInformationHint;
@@ -387,6 +388,7 @@ public class ConnectorRepositoryImpl implements ConnectorRepository
   {
     addConnectorHint(connectorId, new DefaultRepositoryTableFilterHint());
     addConnectorHint(connectorId, new DefaultDatabaseTableFilterHint());
+    addConnectorHint(connectorId, new DefaultDatabaseColumnFilterHint());
     addConnectorHint(connectorId, new DefaultNumberOfRowsPerBatchHint());
     addConnectorHint(connectorId, new DefaultNumberOfCheckedTableDataHint());
     addConnectorHint(connectorId, new DefaultMaxNumberOfDataItemsHint());
