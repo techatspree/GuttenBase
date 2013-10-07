@@ -1,7 +1,9 @@
 package de.akquinet.jbosscc.guttenbase.hints.impl;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import de.akquinet.jbosscc.guttenbase.mapping.ColumnDataMapper;
@@ -13,54 +15,67 @@ import de.akquinet.jbosscc.guttenbase.meta.ColumnType;
  * Default implementation. To add further mapping you should simply extend {@link DefaultColumnDataMapperProviderHint} and call
  * {@link #addMapping(ColumnType, ColumnType, ColumnDataMapper)} in the overridden
  * {@link DefaultColumnDataMapperProviderHint#addMappings(DefaultColumnDataMapperProvider)} method.
- * 
  * <p>
  * &copy; 2012-2020 akquinet tech@spree
  * </p>
  * 
  * @author M. Dahm
  */
-public class DefaultColumnDataMapperProvider implements ColumnDataMapperProvider {
-	private final Map<String, ColumnDataMapper> _mappings = new HashMap<String, ColumnDataMapper>();
+public class DefaultColumnDataMapperProvider implements ColumnDataMapperProvider
+{
+  private final Map<String, List<ColumnDataMapper>> _mappings = new HashMap<String, List<ColumnDataMapper>>();
 
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public ColumnDataMapper findMapping(final ColumnMetaData sourceColumnMetaData, final ColumnMetaData targetColumnMetaData,
-			final ColumnType sourceColumnType, final ColumnType targetColumnType) throws SQLException {
-		final ColumnDataMapper columnDataMapper = findMapping(sourceColumnType, targetColumnType);
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public ColumnDataMapper findMapping(final ColumnMetaData sourceColumnMetaData, final ColumnMetaData targetColumnMetaData,
+      final ColumnType sourceColumnType, final ColumnType targetColumnType) throws SQLException
+  {
+    final List<ColumnDataMapper> columnDataMappers = findMapping(sourceColumnType, targetColumnType);
 
-		if (columnDataMapper != null) {
-			if (columnDataMapper.isApplicable(sourceColumnMetaData, targetColumnMetaData)) {
-				return columnDataMapper;
-			}
-		}
+    for (final ColumnDataMapper columnDataMapper : columnDataMappers)
+    {
+      if (columnDataMapper.isApplicable(sourceColumnMetaData, targetColumnMetaData))
+      {
+        return columnDataMapper;
+      }
+    }
 
-		return null;
-	}
+    return null;
+  }
 
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void addMapping(final ColumnType sourceColumnType, final ColumnType targetColumnType, final ColumnDataMapper columnDataMapper) {
-		_mappings.put(createKey(sourceColumnType, targetColumnType), columnDataMapper);
-	}
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public void addMapping(final ColumnType sourceColumnType, final ColumnType targetColumnType,
+      final ColumnDataMapper columnDataMapper)
+  {
+    assert columnDataMapper != null : "columnDataMapper != null";
 
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void removeMapping(final ColumnType sourceColumnType, final ColumnType targetColumnType) {
-		_mappings.remove(createKey(sourceColumnType, targetColumnType));
-	}
+    findMapping(sourceColumnType, targetColumnType).add(columnDataMapper);
+  }
 
-	private String createKey(final ColumnType sourceColumnType, final ColumnType targetColumnType) {
-		return sourceColumnType.name() + ":" + targetColumnType.name();
-	}
+  private String createKey(final ColumnType sourceColumnType, final ColumnType targetColumnType)
+  {
+    assert sourceColumnType != null : "sourceColumnType != null";
+    assert targetColumnType != null : "targetColumnType != null";
 
-	private ColumnDataMapper findMapping(final ColumnType sourceColumnType, final ColumnType targetColumnType) {
-		return _mappings.get(createKey(sourceColumnType, targetColumnType));
-	}
+    return sourceColumnType.name() + ":" + targetColumnType.name();
+  }
+
+  private List<ColumnDataMapper> findMapping(final ColumnType sourceColumnType, final ColumnType targetColumnType)
+  {
+    final String key = createKey(sourceColumnType, targetColumnType);
+    List<ColumnDataMapper> result = _mappings.get(key);
+
+    if (result == null)
+    {
+      result = new ArrayList<ColumnDataMapper>();
+      _mappings.put(key, result);
+    }
+
+    return result;
+  }
 }
