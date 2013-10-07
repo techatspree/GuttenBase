@@ -54,9 +54,10 @@ public class DatabaseColumnFilterHintTest extends AbstractGuttenBaseTest
         return new DatabaseColumnFilter()
         {
           @Override
-          public boolean accept(final TableMetaData table, final ColumnMetaData columnMetaData) throws SQLException
+          public boolean accept(final ColumnMetaData columnMetaData) throws SQLException
           {
-            return !table.getTableName().equals("FOO_USER") || !columnMetaData.getColumnName().equals("PASSWORD");
+            return !columnMetaData.getTableMetaData().getTableName().equals("FOO_USER") || !columnMetaData.getColumnName()
+                .equals("PASSWORD");
           }
         };
       }
