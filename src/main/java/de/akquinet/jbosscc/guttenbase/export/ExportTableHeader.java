@@ -1,7 +1,6 @@
 package de.akquinet.jbosscc.guttenbase.export;
 
 import java.io.Serializable;
-import java.util.List;
 
 /**
  * Denote start of new table in export file. Provide mininmal information about table.
@@ -14,8 +13,4 @@ import java.util.List;
 public interface ExportTableHeader extends Serializable
 {
   String getTableName();
-
-  List<String> getColumns();
-
-  List<String> getColumnTypes();
 }
