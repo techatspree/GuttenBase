@@ -22,6 +22,7 @@ import de.akquinet.jbosscc.guttenbase.meta.impl.ForeignKeyMetaDataImpl;
 import de.akquinet.jbosscc.guttenbase.meta.impl.IndexMetaDataImpl;
 import de.akquinet.jbosscc.guttenbase.meta.impl.TableMetaDataImpl;
 import de.akquinet.jbosscc.guttenbase.repository.ConnectorRepository;
+import de.akquinet.jbosscc.guttenbase.repository.DatabaseColumnFilter;
 import de.akquinet.jbosscc.guttenbase.repository.DatabaseTableFilter;
 import de.akquinet.jbosscc.guttenbase.utils.Util;
 
@@ -217,7 +218,8 @@ public class DatabaseMetaDataInspectorTool
       final String schemaPrefix) throws SQLException
   {
     final String tableName = escapeTableName(tableMetaData, schemaPrefix);
-
+    final DatabaseColumnFilter columnFilter = _connectorRepository.getConnectorHint(_connectorId, DatabaseColumnFilter.class)
+        .getValue();
     LOG.debug("Retrieving column information for " + tableName);
 
     final String selectSQL = SELECT_STATEMENT.replace(TABLE_PLACEHOLDER, tableName);
@@ -236,8 +238,13 @@ public class DatabaseMetaDataInspectorTool
       final int precision = meta.getPrecision(i);
       final int scale = meta.getScale(i);
 
-      tableMetaData.addColumn(new ColumnMetaDataImpl(columnType, columnName, columnTypeName, columnClassName, isNullable,
-          isAutoIncrement, precision, scale, tableMetaData));
+      final ColumnMetaDataImpl column = new ColumnMetaDataImpl(columnType, columnName, columnTypeName, columnClassName,
+          isNullable, isAutoIncrement, precision, scale, tableMetaData);
+
+      if (columnFilter.accept(tableMetaData, column))
+      {
+        tableMetaData.addColumn(column);
+      }
     }
 
     resultSet.close();
