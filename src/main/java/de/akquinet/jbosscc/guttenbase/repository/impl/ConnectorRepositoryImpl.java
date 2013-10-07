@@ -41,6 +41,7 @@ import de.akquinet.jbosscc.guttenbase.hints.impl.DefaultColumnMapperHint;
 import de.akquinet.jbosscc.guttenbase.hints.impl.DefaultColumnNameMapperHint;
 import de.akquinet.jbosscc.guttenbase.hints.impl.DefaultColumnOrderHint;
 import de.akquinet.jbosscc.guttenbase.hints.impl.DefaultColumnTypeResolverListHint;
+import de.akquinet.jbosscc.guttenbase.hints.impl.DefaultDatabaseColumnFilterHint;
 import de.akquinet.jbosscc.guttenbase.hints.impl.DefaultDatabaseTableFilterHint;
 import de.akquinet.jbosscc.guttenbase.hints.impl.DefaultEntityTableCheckerHint;
 import de.akquinet.jbosscc.guttenbase.hints.impl.DefaultExportDumpExtraInformationHint;
@@ -50,6 +51,7 @@ import de.akquinet.jbosscc.guttenbase.hints.impl.DefaultImporterFactoryHint;
 import de.akquinet.jbosscc.guttenbase.hints.impl.DefaultMaxNumberOfDataItemsHint;
 import de.akquinet.jbosscc.guttenbase.hints.impl.DefaultNumberOfCheckedTableDataHint;
 import de.akquinet.jbosscc.guttenbase.hints.impl.DefaultNumberOfRowsPerBatchHint;
+import de.akquinet.jbosscc.guttenbase.hints.impl.DefaultProgressIndicatorHint;
 import de.akquinet.jbosscc.guttenbase.hints.impl.DefaultRepositoryColumnFilterHint;
 import de.akquinet.jbosscc.guttenbase.hints.impl.DefaultRepositoryTableFilterHint;
 import de.akquinet.jbosscc.guttenbase.hints.impl.DefaultSplitColumnHint;
@@ -386,6 +388,7 @@ public class ConnectorRepositoryImpl implements ConnectorRepository
   {
     addConnectorHint(connectorId, new DefaultRepositoryTableFilterHint());
     addConnectorHint(connectorId, new DefaultDatabaseTableFilterHint());
+    addConnectorHint(connectorId, new DefaultDatabaseColumnFilterHint());
     addConnectorHint(connectorId, new DefaultNumberOfRowsPerBatchHint());
     addConnectorHint(connectorId, new DefaultNumberOfCheckedTableDataHint());
     addConnectorHint(connectorId, new DefaultMaxNumberOfDataItemsHint());
@@ -405,5 +408,6 @@ public class ConnectorRepositoryImpl implements ConnectorRepository
     addConnectorHint(connectorId, new DefaultRepositoryColumnFilterHint());
     addConnectorHint(connectorId, new DefaultExportDumpExtraInformationHint());
     addConnectorHint(connectorId, new DefaultImportDumpExtraInformationHint());
+    addConnectorHint(connectorId, new DefaultProgressIndicatorHint());
   }
 }
