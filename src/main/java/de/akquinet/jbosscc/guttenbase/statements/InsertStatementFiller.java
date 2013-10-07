@@ -88,15 +88,15 @@ public class InsertStatementFiller
           }
         }
 
-        for (final ColumnMetaData columnMetaData2 : mapping.getColumns())
+        for (final ColumnMetaData targetColumnMetaData : mapping.getColumns())
         {
           final ColumnTypeMapping columnTypeMapping = findMapping(sourceConnectorId, targetConnectorId, commonColumnTypeResolver,
-              columnMetaData1, columnMetaData2);
+              columnMetaData1, targetColumnMetaData);
 
           Object value = columnTypeMapping.getSourceColumnType().getValue(rs, columnIndex);
-          value = columnTypeMapping.getColumnDataMapper().map(columnMetaData1, columnMetaData2, value);
+          value = columnTypeMapping.getColumnDataMapper().map(columnMetaData1, targetColumnMetaData, value);
           columnTypeMapping.getTargetColumnType().setValue(insertStatement, targetColumnIndex++, value, targetDatabaseType,
-              columnMetaData2.getColumnType());
+              targetColumnMetaData.getColumnType());
           dataItemsCount++;
         }
       }
