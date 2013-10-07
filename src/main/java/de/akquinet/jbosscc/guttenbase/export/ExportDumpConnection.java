@@ -438,7 +438,7 @@ public class ExportDumpConnection implements Connection
   {
     try
     {
-      _exporter.writeTableHeader(new ExportTableHeaderImpl(tableMetaData.getTableName()));
+      _exporter.writeTableHeader(new ExportTableHeaderImpl(tableMetaData));
     }
     catch (final Exception e)
     {

@@ -1,16 +1,21 @@
 package de.akquinet.jbosscc.guttenbase.export;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
- * Denote start of new table in export file.
- * 
+ * Denote start of new table in export file. Provide mininmal information about table.
  * <p>
  * &copy; 2012-2020 akquinet tech@spree
  * </p>
  * 
  * @author M. Dahm
  */
-public interface ExportTableHeader extends Serializable {
+public interface ExportTableHeader extends Serializable
+{
   String getTableName();
+
+  List<String> getColumns();
+
+  List<String> getColumnTypes();
 }
