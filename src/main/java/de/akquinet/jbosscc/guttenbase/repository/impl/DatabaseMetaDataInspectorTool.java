@@ -241,7 +241,7 @@ public class DatabaseMetaDataInspectorTool
       final ColumnMetaDataImpl column = new ColumnMetaDataImpl(columnType, columnName, columnTypeName, columnClassName,
           isNullable, isAutoIncrement, precision, scale, tableMetaData);
 
-      if (columnFilter.accept(tableMetaData, column))
+      if (columnFilter.accept(column))
       {
         tableMetaData.addColumn(column);
       }

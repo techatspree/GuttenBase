@@ -69,8 +69,8 @@ public class InsertStatementFiller
 
       for (int columnIndex = 1; columnIndex <= sourceColumns.size(); columnIndex++)
       {
-        final ColumnMetaData columnMetaData1 = sourceColumns.get(columnIndex - 1);
-        final ColumnMapperResult mapping = columnMapper.map(columnMetaData1, targetTableMetaData);
+        final ColumnMetaData sourceColumnMetaData = sourceColumns.get(columnIndex - 1);
+        final ColumnMapperResult mapping = columnMapper.map(sourceColumnMetaData, targetTableMetaData);
 
         if (mapping.getColumns().isEmpty())
         {
@@ -83,20 +83,20 @@ public class InsertStatementFiller
           {
             throw new IncompatibleColumnsException("Cannot map column " + targetTableMetaData
                 + ":"
-                + columnMetaData1
+                + sourceColumnMetaData
                 + ": Target column list empty");
           }
         }
 
-        for (final ColumnMetaData columnMetaData2 : mapping.getColumns())
+        for (final ColumnMetaData targetColumnMetaData : mapping.getColumns())
         {
           final ColumnTypeMapping columnTypeMapping = findMapping(sourceConnectorId, targetConnectorId, commonColumnTypeResolver,
-              columnMetaData1, columnMetaData2);
+              sourceColumnMetaData, targetColumnMetaData);
 
           Object value = columnTypeMapping.getSourceColumnType().getValue(rs, columnIndex);
-          value = columnTypeMapping.getColumnDataMapper().map(columnMetaData1, columnMetaData2, value);
+          value = columnTypeMapping.getColumnDataMapper().map(sourceColumnMetaData, targetColumnMetaData, value);
           columnTypeMapping.getTargetColumnType().setValue(insertStatement, targetColumnIndex++, value, targetDatabaseType,
-              columnMetaData2.getColumnType());
+              targetColumnMetaData.getColumnType());
           dataItemsCount++;
         }
       }

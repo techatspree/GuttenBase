@@ -18,11 +18,12 @@ public class SwingProgressIndicator implements ProgressIndicator
     _dialog.setTitle("Copying tables...");
     _dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 
-    final Dimension size = new Dimension(600, 400);
+    final Dimension size = new Dimension(800, 400);
     _dialog.getContentPane().setLayout(new BorderLayout());
     _dialog.getContentPane().add(_panel, BorderLayout.CENTER);
 
     _dialog.setSize(size);
+    _dialog.setMinimumSize(size);
     _panel.setPreferredSize(size);
   }
 

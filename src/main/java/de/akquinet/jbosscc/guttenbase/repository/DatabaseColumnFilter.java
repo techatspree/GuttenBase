@@ -3,7 +3,6 @@ package de.akquinet.jbosscc.guttenbase.repository;
 import java.sql.SQLException;
 
 import de.akquinet.jbosscc.guttenbase.meta.ColumnMetaData;
-import de.akquinet.jbosscc.guttenbase.meta.TableMetaData;
 import de.akquinet.jbosscc.guttenbase.repository.impl.DatabaseMetaDataInspectorTool;
 
 /**
@@ -19,5 +18,5 @@ public interface DatabaseColumnFilter
   /**
    * Perform custom check on column before adding it to table meta data
    */
-  boolean accept(TableMetaData table, ColumnMetaData columnMetaData) throws SQLException;
+  boolean accept(ColumnMetaData columnMetaData) throws SQLException;
 }
