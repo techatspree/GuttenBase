@@ -26,6 +26,7 @@ import java.util.Calendar;
 import de.akquinet.jbosscc.guttenbase.exceptions.MissingDataException;
 import de.akquinet.jbosscc.guttenbase.meta.DatabaseMetaData;
 import de.akquinet.jbosscc.guttenbase.meta.TableMetaData;
+import de.akquinet.jbosscc.guttenbase.utils.Util;
 
 /**
  * Custom implementation of {@link PreparedStatement} reading data from the given input stream. This done via the custom
@@ -76,7 +77,7 @@ public class ImportDumpPreparedStatement implements PreparedStatement
       throw new MissingDataException("Invalid number of expected rows");
     }
 
-    return new ImportDumpResultSet(_importer, _databaseMetaData, _tableMetaData);
+    return new ImportDumpResultSet(_importer, _databaseMetaData, _tableMetaData, Util.parseSelectedColumns(sql));
   }
 
   @Override

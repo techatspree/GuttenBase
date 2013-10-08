@@ -21,12 +21,7 @@ public class DefaultColumnOrderHint extends ColumnOrderHint {
 		return new ColumnOrderComparatorFactory() {
 			@Override
 			public Comparator<ColumnMetaData> createComparator() {
-				return new Comparator<ColumnMetaData>() {
-					@Override
-					public int compare(final ColumnMetaData c1, final ColumnMetaData c2) {
-						return c1.compareTo(c2);
-					}
-				};
+				return new DefaultColumnComparator();
 			}
 		};
 	}

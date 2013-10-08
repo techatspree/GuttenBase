@@ -294,6 +294,9 @@ public abstract class Util
     return os.indexOf("win") >= 0;
   }
 
+  /**
+   * @return uppercased list of columns in SELECT statement
+   */
   public static List<String> parseSelectedColumns(final String sql) throws SQLException
   {
     final List<String> result = new ArrayList<String>();
@@ -312,7 +315,7 @@ public abstract class Util
       }
       else
       {
-        result.add(column);
+        result.add(column.toUpperCase());
       }
     }
 

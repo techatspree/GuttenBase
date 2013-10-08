@@ -20,8 +20,8 @@ public class UtilTest
   @Test
   public void testParseSelect() throws Exception
   {
-    assertEquals(Arrays.asList("a", "b"), Util.parseSelectedColumns("select a,  b From bla"));
-    assertEquals(Arrays.asList("a"), Util.parseSelectedColumns("SELECT a FROM bla"));
+    assertEquals(Arrays.asList("A", "B"), Util.parseSelectedColumns("select a,  b From bla"));
+    assertEquals(Arrays.asList("A"), Util.parseSelectedColumns("SELECT a FROM bla"));
   }
 
   @Test(expected = SQLException.class)
