@@ -22,12 +22,10 @@ import java.sql.SQLXML;
 import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.Calendar;
-import java.util.List;
 
 import de.akquinet.jbosscc.guttenbase.exceptions.MissingDataException;
 import de.akquinet.jbosscc.guttenbase.meta.DatabaseMetaData;
 import de.akquinet.jbosscc.guttenbase.meta.TableMetaData;
-import de.akquinet.jbosscc.guttenbase.utils.Util;
 
 /**
  * Custom implementation of {@link PreparedStatement} reading data from the given input stream. This done via the custom
@@ -78,9 +76,7 @@ public class ImportDumpPreparedStatement implements PreparedStatement
       throw new MissingDataException("Invalid number of expected rows");
     }
 
-    final List<String> selectedColumns = Util.parseSelectedColumns(sql);
-
-    return new ImportDumpResultSet(_importer, _databaseMetaData, _tableMetaData, selectedColumns);
+    return new ImportDumpResultSet(_importer, _databaseMetaData, _tableMetaData);
   }
 
   @Override

@@ -21,10 +21,12 @@ import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import de.akquinet.jbosscc.guttenbase.exceptions.ImportException;
+import de.akquinet.jbosscc.guttenbase.meta.ColumnMetaData;
 import de.akquinet.jbosscc.guttenbase.meta.DatabaseMetaData;
 import de.akquinet.jbosscc.guttenbase.meta.TableMetaData;
 
@@ -43,26 +45,41 @@ public class ImportDumpResultSet implements ResultSet
   private final Importer _importer;
   private boolean _wasNull;
   private final TableMetaData _tableMetaData;
-  private final TableMetaData _origTableMetaData; // _tableMetaData may be a filtered set of columns
-  private final List<Object> _currentRow = new ArrayList<Object>();
-  private final List<String> _selectedColumns;
 
-  public ImportDumpResultSet(
-      final Importer importer,
-      final DatabaseMetaData databaseMetaData,
-      final TableMetaData tableMetaData,
-      final List<String> selectedColumns)
+  /**
+   * Since _tableMetaData may contain a limited set of columns, but the dumped data contains all columns, we need to map the
+   * indices.
+   */
+  private final Map<Integer, Integer> _columnIndexMap = new HashMap<Integer, Integer>();
+  private final List<Object> _currentRow = new ArrayList<Object>();
+
+  public ImportDumpResultSet(final Importer importer, final DatabaseMetaData databaseMetaData, final TableMetaData tableMetaData)
+      throws SQLException
   {
     assert importer != null : "objectInputStream != null";
     assert tableMetaData != null : "tableMetaData != null";
-    assert selectedColumns != null : "selectedColumns != null";
 
     _importer = importer;
     _tableMetaData = tableMetaData;
-    _selectedColumns = selectedColumns;
-    _origTableMetaData = databaseMetaData.getTableMetaData(tableMetaData.getTableName());
+    buildColumnIndexMap(tableMetaData, databaseMetaData.getTableMetaData(tableMetaData.getTableName()));
+  }
 
-    assert _origTableMetaData != null : "_origTableMetaData != null";
+  private void buildColumnIndexMap(final TableMetaData tableMetaData, final TableMetaData origTableMetaData) throws SQLException
+  {
+    assert origTableMetaData != null : "origTableMetaData != null";
+
+    for (int originalColumnIndex = 0; originalColumnIndex < origTableMetaData.getColumnCount(); originalColumnIndex++)
+    {
+      final ColumnMetaData column = origTableMetaData.getColumnMetaData().get(originalColumnIndex);
+      final int columnIndex = tableMetaData.getColumnMetaData().indexOf(column);
+
+      if (columnIndex < 0)
+      {
+        throw new SQLException("Cannot find column " + column.getColumnName());
+      }
+
+      _columnIndexMap.put(columnIndex + 1, originalColumnIndex + 1);
+    }
   }
 
   @Override
@@ -73,7 +90,7 @@ public class ImportDumpResultSet implements ResultSet
 
     if (hasNext) // Prefetch current row
     {
-      for (int i = 0; i < _origTableMetaData.getColumnCount(); i++)
+      for (int i = 0; i < _columnIndexMap.size(); i++)
       {
         _currentRow.add(readObject());
       }
@@ -85,7 +102,8 @@ public class ImportDumpResultSet implements ResultSet
   @Override
   public Object getObject(final int columnIndex) throws SQLException
   {
-    final Object result = _currentRow.get(columnIndex - 1);
+    final int realIndex = _columnIndexMap.get(columnIndex);
+    final Object result = _currentRow.get(realIndex - 1);
 
     _wasNull = result == null;
 
