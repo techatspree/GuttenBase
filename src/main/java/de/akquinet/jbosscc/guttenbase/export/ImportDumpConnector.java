@@ -11,7 +11,6 @@ import de.akquinet.jbosscc.guttenbase.repository.ConnectorRepository;
 
 /**
  * Connection info for importing data from a file.
- * 
  * <p>
  * &copy; 2012-2020 akquinet tech@spree
  * </p>
@@ -19,47 +18,58 @@ import de.akquinet.jbosscc.guttenbase.repository.ConnectorRepository;
  * @Uses-Hint {@link ImporterFactoryHint} to determine importer implementation
  * @author M. Dahm
  */
-public class ImportDumpConnector extends AbstractConnector {
-	private final ImportDumpConnectionInfo _importDumpConnectionInfo;
-	private DatabaseMetaData _databaseMetaData;
+public class ImportDumpConnector extends AbstractConnector
+{
+  private final ImportDumpConnectionInfo _importDumpConnectionInfo;
+  private DatabaseMetaData _databaseMetaData;
 
-	public ImportDumpConnector(final ConnectorRepository connectorRepository, final String connectorId,
-			final ImportDumpConnectionInfo importDumpConnectionInfo) {
-		super(connectorRepository, connectorId, importDumpConnectionInfo);
+  public ImportDumpConnector(
+      final ConnectorRepository connectorRepository,
+      final String connectorId,
+      final ImportDumpConnectionInfo importDumpConnectionInfo)
+  {
+    super(connectorRepository, connectorId, importDumpConnectionInfo);
 
-		_importDumpConnectionInfo = importDumpConnectionInfo;
-	}
+    _importDumpConnectionInfo = importDumpConnectionInfo;
+  }
 
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public Connection openConnection() throws SQLException {
-		if (_connection == null || _connection.isClosed()) {
-			try {
-				final Importer importer = _connectorRepository.getConnectorHint(_connectorId, ImporterFactory.class).getValue().createImporter();
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public Connection openConnection() throws SQLException
+  {
+    if (_connection == null || _connection.isClosed())
+    {
+      try
+      {
+        final Importer importer = _connectorRepository.getConnectorHint(_connectorId, ImporterFactory.class).getValue()
+            .createImporter();
 
-				importer.initializeImport(_connectorRepository, _connectorId, _importDumpConnectionInfo);
+        importer.initializeImport(_connectorRepository, _connectorId, _importDumpConnectionInfo);
 
-				_databaseMetaData = importer.readDatabaseMetaData();
-				_connection = new ImportDumpConnection(importer);
-			} catch (final Exception e) {
-				throw new ImportException("openConnection", e);
-			}
-		}
+        _databaseMetaData = importer.readDatabaseMetaData();
+        _connection = new ImportDumpConnection(importer, _databaseMetaData);
+      }
+      catch (final Exception e)
+      {
+        throw new ImportException("openConnection", e);
+      }
+    }
 
-		return _connection;
-	}
+    return _connection;
+  }
 
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public DatabaseMetaData retrieveDatabaseMetaData() throws SQLException {
-		// Make sure the information is there
-		openConnection();
-		closeConnection();
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public DatabaseMetaData retrieveDatabaseMetaData() throws SQLException
+  {
+    // Make sure the information is there
+    openConnection();
+    closeConnection();
 
-		return _databaseMetaData;
-	}
+    return _databaseMetaData;
+  }
 }
