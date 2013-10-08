@@ -24,7 +24,9 @@ import java.sql.Timestamp;
 import java.util.Calendar;
 
 import de.akquinet.jbosscc.guttenbase.exceptions.MissingDataException;
+import de.akquinet.jbosscc.guttenbase.meta.DatabaseMetaData;
 import de.akquinet.jbosscc.guttenbase.meta.TableMetaData;
+import de.akquinet.jbosscc.guttenbase.utils.Util;
 
 /**
  * Custom implementation of {@link PreparedStatement} reading data from the given input stream. This done via the custom
@@ -39,25 +41,43 @@ public class ImportDumpPreparedStatement implements PreparedStatement
 {
   private final Importer _importer;
   private final TableMetaData _tableMetaData;
+  private final String _selectSql;
+  private final DatabaseMetaData _databaseMetaData;
 
-  public ImportDumpPreparedStatement(final Importer importer, final TableMetaData tableMetaData)
+  public ImportDumpPreparedStatement(
+      final Importer importer,
+      final DatabaseMetaData databaseMetaData,
+      final TableMetaData tableMetaData,
+      final String selectSql)
   {
-    assert tableMetaData != null : "tableMetaData != null";
-
     assert importer != null : "importer != null";
+    assert databaseMetaData != null : "databaseMetaData != null";
+    assert tableMetaData != null : "tableMetaData != null";
+    assert selectSql != null : "selectSql != null";
+
     _importer = importer;
     _tableMetaData = tableMetaData;
+    _selectSql = selectSql;
+    _databaseMetaData = databaseMetaData;
   }
 
   @Override
-  public ImportDumpResultSet executeQuery() throws SQLException
+  public ResultSet executeQuery() throws SQLException
   {
+    return executeQuery(_selectSql);
+  }
+
+  @Override
+  public ResultSet executeQuery(final String sql) throws SQLException
+  {
+    assert sql != null : "sql != null";
+
     if (_tableMetaData.getRowCount() < 0)
     {
       throw new MissingDataException("Invalid number of expected rows");
     }
 
-    return new ImportDumpResultSet(_importer, _tableMetaData);
+    return new ImportDumpResultSet(_importer, _databaseMetaData, _tableMetaData, Util.parseSelectedColumns(sql));
   }
 
   @Override
@@ -78,12 +98,6 @@ public class ImportDumpPreparedStatement implements PreparedStatement
   public int getFetchSize() throws SQLException
   {
     throw new UnsupportedOperationException();
-  }
-
-  @Override
-  public ResultSet executeQuery(final String sql) throws SQLException
-  {
-    return executeQuery();
   }
 
   @Override

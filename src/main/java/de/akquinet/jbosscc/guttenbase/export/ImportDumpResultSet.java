@@ -21,10 +21,15 @@ import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import de.akquinet.jbosscc.guttenbase.exceptions.ImportException;
+import de.akquinet.jbosscc.guttenbase.hints.impl.DefaultColumnComparator;
+import de.akquinet.jbosscc.guttenbase.meta.ColumnMetaData;
+import de.akquinet.jbosscc.guttenbase.meta.DatabaseMetaData;
 import de.akquinet.jbosscc.guttenbase.meta.TableMetaData;
 
 /**
@@ -42,50 +47,93 @@ public class ImportDumpResultSet implements ResultSet
   private final Importer _importer;
   private boolean _wasNull;
   private final TableMetaData _tableMetaData;
-  private List<Object> _currentRow = new ArrayList<Object>();
 
-  public ImportDumpResultSet(final Importer importer, final TableMetaData tableMetaData)
+  /**
+   * Since _tableMetaData may contain a limited set of columns, but the dumped data contains all columns, we need to map the
+   * indices.
+   */
+  private final Map<Integer, Integer> _columnIndexMap = new HashMap<Integer, Integer>();
+  private final List<Object> _currentRow = new ArrayList<Object>();
+  private final TableMetaData _origTableMetaData;
+
+  public ImportDumpResultSet(
+      final Importer importer,
+      final DatabaseMetaData databaseMetaData,
+      final TableMetaData tableMetaData,
+      final List<String> selectedColumns) throws SQLException
   {
     assert importer != null : "objectInputStream != null";
     assert tableMetaData != null : "tableMetaData != null";
 
     _importer = importer;
     _tableMetaData = tableMetaData;
+    _origTableMetaData = databaseMetaData.getTableMetaData(tableMetaData.getTableName());
+
+    assert _origTableMetaData != null : "_origTableMetaData != null";
+
+    buildColumnIndexMap(selectedColumns);
+  }
+
+  private void buildColumnIndexMap(final List<String> selectedColumns) throws SQLException
+  {
+    final List<ColumnMetaData> columnMetaData = _origTableMetaData.getColumnMetaData();
+
+    // Use same ordering mechanism as defined by ColumnOrderHint
+    // TODO: We cannot ask the connector repository for the right hint here!
+    // Though it makes no sense, one could define another ColumnOrderHint for the
+    // dump source connector, which will cause unpredictable results then
+    Collections.sort(columnMetaData, new DefaultColumnComparator());
+
+    for (int originalColumnIndex = 0; originalColumnIndex < columnMetaData.size(); originalColumnIndex++)
+    {
+      final String column = columnMetaData.get(originalColumnIndex).getColumnName().toUpperCase();
+      final int columnIndex = selectedColumns.indexOf(column);
+
+      if (columnIndex >= 0)
+      {
+        _columnIndexMap.put(columnIndex + 1, originalColumnIndex + 1);
+      }
+    }
   }
 
   @Override
   public boolean next() throws SQLException
   {
-    _currentRow = new ArrayList<Object>();
-    return _rowCount++ < _tableMetaData.getRowCount();
+    _currentRow.clear();
+    final boolean hasNext = _rowCount++ < _tableMetaData.getRowCount();
+
+    if (hasNext) // Prefetch current row
+    {
+      for (int i = 0; i < _origTableMetaData.getColumnCount(); i++)
+      {
+        _currentRow.add(readObject());
+      }
+    }
+
+    return hasNext;
   }
 
   @Override
   public Object getObject(final int columnIndex) throws SQLException
   {
-    Object result;
-
-    if (columnIndex > _currentRow.size())
-    {
-      try
-      {
-        result = _importer.readObject();
-      }
-      catch (final Exception e)
-      {
-        throw new ImportException("getObject", e);
-      }
-
-      _currentRow.add(result);
-    }
-    else
-    { // Return cached value
-      result = _currentRow.get(columnIndex - 1);
-    }
+    final int realIndex = _columnIndexMap.get(columnIndex);
+    final Object result = _currentRow.get(realIndex - 1);
 
     _wasNull = result == null;
 
     return result;
+  }
+
+  private Object readObject() throws SQLException
+  {
+    try
+    {
+      return _importer.readObject();
+    }
+    catch (final Exception e)
+    {
+      throw new ImportException("readObject", e);
+    }
   }
 
   @Override
