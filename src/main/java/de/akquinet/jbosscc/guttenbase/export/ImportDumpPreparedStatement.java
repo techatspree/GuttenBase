@@ -39,23 +39,36 @@ public class ImportDumpPreparedStatement implements PreparedStatement
 {
   private final Importer _importer;
   private final TableMetaData _tableMetaData;
+  private final String _selectSql;
 
-  public ImportDumpPreparedStatement(final Importer importer, final TableMetaData tableMetaData)
+  public ImportDumpPreparedStatement(final Importer importer, final TableMetaData tableMetaData, final String selectSql)
   {
     assert tableMetaData != null : "tableMetaData != null";
-
     assert importer != null : "importer != null";
+    assert selectSql != null : "selectSql != null";
+
     _importer = importer;
     _tableMetaData = tableMetaData;
+    _selectSql = selectSql;
   }
 
   @Override
-  public ImportDumpResultSet executeQuery() throws SQLException
+  public ResultSet executeQuery() throws SQLException
   {
+    return executeQuery(_selectSql);
+  }
+
+  @Override
+  public ResultSet executeQuery(final String sql) throws SQLException
+  {
+    assert sql != null : "sql != null";
+
     if (_tableMetaData.getRowCount() < 0)
     {
       throw new MissingDataException("Invalid number of expected rows");
     }
+
+    //    final List<String> selectedColumns = parseSelectedColumns(sql);
 
     return new ImportDumpResultSet(_importer, _tableMetaData);
   }
@@ -78,12 +91,6 @@ public class ImportDumpPreparedStatement implements PreparedStatement
   public int getFetchSize() throws SQLException
   {
     throw new UnsupportedOperationException();
-  }
-
-  @Override
-  public ResultSet executeQuery(final String sql) throws SQLException
-  {
-    return executeQuery();
   }
 
   @Override

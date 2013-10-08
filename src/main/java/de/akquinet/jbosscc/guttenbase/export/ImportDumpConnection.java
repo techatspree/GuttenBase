@@ -68,7 +68,7 @@ public class ImportDumpConnection implements Connection
       seekTableHeader(_currentTableMetaData);
     }
 
-    return new ImportDumpPreparedStatement(_importer, _currentTableMetaData);
+    return new ImportDumpPreparedStatement(_importer, _currentTableMetaData, sql);
   }
 
   private void seekTableHeader(final TableMetaData tableMetaData) throws ImportException
