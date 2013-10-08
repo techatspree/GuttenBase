@@ -1,17 +1,5 @@
 package de.akquinet.jbosscc.guttenbase.tools;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-
-import java.io.File;
-import java.sql.SQLException;
-import java.util.List;
-import java.util.Map;
-
-import org.junit.Before;
-import org.junit.Test;
-
 import de.akquinet.jbosscc.guttenbase.configuration.TestDerbyConnectionInfo;
 import de.akquinet.jbosscc.guttenbase.configuration.TestHsqlConnectionInfo;
 import de.akquinet.jbosscc.guttenbase.export.ExportDumpConnectorInfo;
@@ -23,13 +11,22 @@ import de.akquinet.jbosscc.guttenbase.meta.ColumnMetaData;
 import de.akquinet.jbosscc.guttenbase.meta.TableMetaData;
 import de.akquinet.jbosscc.guttenbase.repository.RepositoryColumnFilter;
 import de.akquinet.jbosscc.guttenbase.repository.RepositoryTableFilter;
+import org.junit.Before;
+import org.junit.Test;
+
+import java.io.File;
+import java.sql.SQLException;
+import java.util.List;
+import java.util.Map;
+
+import static org.junit.Assert.*;
 
 /**
- * The ZIP exporter also allows you to specify a startup class for the resulting JAR.
+ * Copy limited set of data from dump source, i.e. just one table (FOO_USER) and only three columns: ID, USERNAME, PASSWORD
  * <p>
  * &copy; 2012-2020 akquinet tech@spree
  * </p>
- * 
+ *
  * @author M. Dahm
  */
 public class ReadFilteredDataFromImportDumpTest extends AbstractGuttenBaseTest
