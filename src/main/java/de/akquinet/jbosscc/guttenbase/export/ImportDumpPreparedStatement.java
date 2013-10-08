@@ -22,9 +22,12 @@ import java.sql.SQLXML;
 import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.Calendar;
+import java.util.List;
 
 import de.akquinet.jbosscc.guttenbase.exceptions.MissingDataException;
+import de.akquinet.jbosscc.guttenbase.meta.DatabaseMetaData;
 import de.akquinet.jbosscc.guttenbase.meta.TableMetaData;
+import de.akquinet.jbosscc.guttenbase.utils.Util;
 
 /**
  * Custom implementation of {@link PreparedStatement} reading data from the given input stream. This done via the custom
@@ -40,16 +43,23 @@ public class ImportDumpPreparedStatement implements PreparedStatement
   private final Importer _importer;
   private final TableMetaData _tableMetaData;
   private final String _selectSql;
+  private final DatabaseMetaData _databaseMetaData;
 
-  public ImportDumpPreparedStatement(final Importer importer, final TableMetaData tableMetaData, final String selectSql)
+  public ImportDumpPreparedStatement(
+      final Importer importer,
+      final DatabaseMetaData databaseMetaData,
+      final TableMetaData tableMetaData,
+      final String selectSql)
   {
-    assert tableMetaData != null : "tableMetaData != null";
     assert importer != null : "importer != null";
+    assert databaseMetaData != null : "databaseMetaData != null";
+    assert tableMetaData != null : "tableMetaData != null";
     assert selectSql != null : "selectSql != null";
 
     _importer = importer;
     _tableMetaData = tableMetaData;
     _selectSql = selectSql;
+    _databaseMetaData = databaseMetaData;
   }
 
   @Override
@@ -68,9 +78,9 @@ public class ImportDumpPreparedStatement implements PreparedStatement
       throw new MissingDataException("Invalid number of expected rows");
     }
 
-    //    final List<String> selectedColumns = parseSelectedColumns(sql);
+    final List<String> selectedColumns = Util.parseSelectedColumns(sql);
 
-    return new ImportDumpResultSet(_importer, _tableMetaData);
+    return new ImportDumpResultSet(_importer, _databaseMetaData, _tableMetaData, selectedColumns);
   }
 
   @Override

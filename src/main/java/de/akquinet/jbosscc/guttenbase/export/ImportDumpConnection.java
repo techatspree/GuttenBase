@@ -5,7 +5,6 @@ import java.sql.Blob;
 import java.sql.CallableStatement;
 import java.sql.Clob;
 import java.sql.Connection;
-import java.sql.DatabaseMetaData;
 import java.sql.NClob;
 import java.sql.PreparedStatement;
 import java.sql.SQLClientInfoException;
@@ -22,6 +21,7 @@ import java.util.Set;
 import java.util.concurrent.Executor;
 
 import de.akquinet.jbosscc.guttenbase.exceptions.ImportException;
+import de.akquinet.jbosscc.guttenbase.meta.DatabaseMetaData;
 import de.akquinet.jbosscc.guttenbase.meta.TableMetaData;
 
 /**
@@ -38,9 +38,11 @@ public class ImportDumpConnection implements Connection
   private boolean _closed;
   private final Set<TableMetaData> _importedTables = new HashSet<TableMetaData>();
   private TableMetaData _currentTableMetaData;
+  private final DatabaseMetaData _databaseMetaData;
 
-  public ImportDumpConnection(final Importer importer)
+  public ImportDumpConnection(final Importer importer, final DatabaseMetaData databaseMetaData)
   {
+    _databaseMetaData = databaseMetaData;
     assert importer != null : "importer != null";
 
     _importer = importer;
@@ -68,7 +70,7 @@ public class ImportDumpConnection implements Connection
       seekTableHeader(_currentTableMetaData);
     }
 
-    return new ImportDumpPreparedStatement(_importer, _currentTableMetaData, sql);
+    return new ImportDumpPreparedStatement(_importer, _databaseMetaData, _currentTableMetaData, sql);
   }
 
   private void seekTableHeader(final TableMetaData tableMetaData) throws ImportException
@@ -170,7 +172,7 @@ public class ImportDumpConnection implements Connection
   }
 
   @Override
-  public DatabaseMetaData getMetaData() throws SQLException
+  public java.sql.DatabaseMetaData getMetaData() throws SQLException
   {
     throw new UnsupportedOperationException();
   }
