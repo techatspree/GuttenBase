@@ -23,19 +23,27 @@ import de.akquinet.jbosscc.guttenbase.sql.SQLLexer;
 import de.akquinet.jbosscc.guttenbase.utils.Util;
 
 /**
- * Execute given SQL script or single statements. (C) 2012 by akquinet tech@spree
+ * Execute given SQL script or single statements separated by given delimiter. Delimiter is ';' by default.
  * 
+ * @copyright 2013 by akquinet tech@spree
  * @author M. Dahm
  */
 public class ScriptExecutorTool
 {
   private static final Logger LOG = Logger.getLogger(ScriptExecutorTool.class);
   private final ConnectorRepository _connectorRepository;
+  private final char _delimiter;
 
-  public ScriptExecutorTool(final ConnectorRepository connectorRepository)
+  public ScriptExecutorTool(final ConnectorRepository connectorRepository, final char delimiter)
   {
     assert connectorRepository != null : "connectorRepository != null";
     _connectorRepository = connectorRepository;
+    _delimiter = delimiter;
+  }
+
+  public ScriptExecutorTool(final ConnectorRepository connectorRepository)
+  {
+    this(connectorRepository, ';');
   }
 
   /**
@@ -100,7 +108,7 @@ public class ScriptExecutorTool
       throw new SQLException("DDL script not found or empty");
     }
 
-    final List<String> sqlStatements = new SQLLexer(lines).parse();
+    final List<String> sqlStatements = new SQLLexer(lines, _delimiter).parse();
     final Connector connector = _connectorRepository.createConnector(connectorId);
     final Connection connection = connector.openConnection();
 
@@ -218,11 +226,12 @@ public class ScriptExecutorTool
     }
   }
 
-  public void dropIndexes(DropTablesTool dropTablesTool, final String connectorId, final boolean updateSchema) throws SQLException
+  public void dropIndexes(final DropTablesTool dropTablesTool, final String connectorId, final boolean updateSchema)
+      throws SQLException
   {
     final List<TableMetaData> tableMetaData = TableOrderHint.getSortedTables(dropTablesTool._connectorRepository, connectorId);
     final List<String> statements = new ArrayList<String>();
-  
+
     for (final TableMetaData table : tableMetaData)
     {
       for (final IndexMetaData index : table.getIndexes())
@@ -230,7 +239,7 @@ public class ScriptExecutorTool
         statements.add("DROP INDEX " + index.getIndexName() + ";");
       }
     }
-  
+
     executeScript(connectorId, updateSchema, false, statements);
   }
 }
