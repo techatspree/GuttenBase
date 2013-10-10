@@ -13,6 +13,7 @@ import de.akquinet.jbosscc.guttenbase.meta.builder.DatabaseMetaDataBuilder;
 import de.akquinet.jbosscc.guttenbase.meta.builder.ForeignKeyMetaDataBuilder;
 import de.akquinet.jbosscc.guttenbase.meta.builder.IndexMetaDataBuilder;
 import de.akquinet.jbosscc.guttenbase.meta.builder.TableMetaDataBuilder;
+import de.akquinet.jbosscc.guttenbase.tools.schema.DatabaseSchemaScriptCreator;
 
 public class DatabaseSchemaScriptCreatorTest
 {
