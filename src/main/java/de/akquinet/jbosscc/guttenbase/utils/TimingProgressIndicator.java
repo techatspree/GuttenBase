@@ -27,7 +27,7 @@ public class TimingProgressIndicator implements TableCopyProgressIndicator
   {}
 
   @Override
-  public void startCopying(final int numberOfTables)
+  public void startProcess(final int numberOfTables)
   {
     setNumberOfTables(numberOfTables);
     setTableCounter(1);
@@ -45,19 +45,19 @@ public class TimingProgressIndicator implements TableCopyProgressIndicator
   }
 
   @Override
-  public void startBatch()
+  public void startExecution()
   {
     setStartBatch(System.currentTimeMillis());
   }
 
   @Override
-  public void endBatch(final int totalCopiedRows)
+  public void endExecution(final int totalCopiedRows)
   {
     updateTimers();
   }
 
   @Override
-  public void endCopyTable()
+  public void endProcess()
   {
     setElapsedTableCopyTime(System.currentTimeMillis() - getStartCopyTable());
 

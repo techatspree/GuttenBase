@@ -16,7 +16,7 @@ import javax.swing.SwingConstants;
 import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
 
-public class ProgressIndicatorPanel extends JPanel
+public class TableCopyProgressIndicatorPanel extends JPanel
 {
   private static final long serialVersionUID = 1L;
   private final JTextField _sourceTable;
@@ -30,7 +30,7 @@ public class ProgressIndicatorPanel extends JPanel
   /**
    * Create the panel.
    */
-  public ProgressIndicatorPanel()
+  public TableCopyProgressIndicatorPanel()
   {
     final GridBagLayout gridBagLayout = new GridBagLayout();
     gridBagLayout.columnWidths = new int[] { 0, 0, 0, 0, 0, 0, 0 };

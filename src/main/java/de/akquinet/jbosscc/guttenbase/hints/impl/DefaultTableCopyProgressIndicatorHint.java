@@ -1,7 +1,7 @@
 package de.akquinet.jbosscc.guttenbase.hints.impl;
 
-import de.akquinet.jbosscc.guttenbase.hints.ProgressIndicatorHint;
-import de.akquinet.jbosscc.guttenbase.utils.LoggingProgressIndicator;
+import de.akquinet.jbosscc.guttenbase.hints.TableCopyProgressIndicatorHint;
+import de.akquinet.jbosscc.guttenbase.utils.LoggingTableCopyProgressIndicator;
 import de.akquinet.jbosscc.guttenbase.utils.TableCopyProgressIndicator;
 
 /**
@@ -12,11 +12,11 @@ import de.akquinet.jbosscc.guttenbase.utils.TableCopyProgressIndicator;
  * 
  * @author M. Dahm
  */
-public class DefaultProgressIndicatorHint extends ProgressIndicatorHint
+public class DefaultTableCopyProgressIndicatorHint extends TableCopyProgressIndicatorHint
 {
   @Override
   public TableCopyProgressIndicator getValue()
   {
-    return new LoggingProgressIndicator();
+    return new LoggingTableCopyProgressIndicator();
   }
 }

@@ -1,8 +1,8 @@
 package de.akquinet.jbosscc.guttenbase.hints.impl;
 
-import de.akquinet.jbosscc.guttenbase.hints.ProgressIndicatorHint;
+import de.akquinet.jbosscc.guttenbase.hints.TableCopyProgressIndicatorHint;
+import de.akquinet.jbosscc.guttenbase.utils.SwingTableCopyProgressIndicator;
 import de.akquinet.jbosscc.guttenbase.utils.TableCopyProgressIndicator;
-import de.akquinet.jbosscc.guttenbase.utils.SwingProgressIndicator;
 
 /**
  * Use UI to show progress.
@@ -12,11 +12,11 @@ import de.akquinet.jbosscc.guttenbase.utils.SwingProgressIndicator;
  * 
  * @author M. Dahm
  */
-public final class SwingProgressIndicatorHint extends ProgressIndicatorHint
+public final class SwingTableCopyProgressIndicatorHint extends TableCopyProgressIndicatorHint
 {
   @Override
   public TableCopyProgressIndicator getValue()
   {
-    return new SwingProgressIndicator();
+    return new SwingTableCopyProgressIndicator();
   }
 }

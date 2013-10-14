@@ -74,7 +74,7 @@ public abstract class AbstractTableCopyTool
     sourceDatabaseConfiguration.initializeSourceConnection(sourceConnection, sourceConnectorId);
     targetDatabaseConfiguration.initializeTargetConnection(targetConnection, targetConnectorId);
 
-    _progressIndicator.startCopying(tableSourceMetaDatas.size());
+    _progressIndicator.startProcess(tableSourceMetaDatas.size());
 
     for (final TableMetaData sourceTableMetaData : tableSourceMetaDatas)
     {
@@ -125,7 +125,7 @@ public abstract class AbstractTableCopyTool
       sourceDatabaseConfiguration.afterTableCopy(sourceConnection, sourceConnectorId, sourceTableMetaData);
       targetDatabaseConfiguration.afterTableCopy(targetConnection, targetConnectorId, targetTableMetaData);
 
-      _progressIndicator.endCopyTable();
+      _progressIndicator.endProcess();
     }
 
     sourceDatabaseConfiguration.finalizeSourceConnection(sourceConnection, sourceConnectorId);

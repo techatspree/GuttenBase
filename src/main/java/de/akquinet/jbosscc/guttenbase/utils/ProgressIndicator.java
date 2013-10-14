@@ -12,7 +12,21 @@ public interface ProgressIndicator
 {
   void initializeIndicator();
 
+  void startProcess(int numberOfItems);
+
+  void startExecution();
+
+  void endExecution(int numberOfFinishedItems);
+
+  void endProcess();
+
   void updateTimers();
 
   void finalizeIndicator();
+
+  void warn(String string);
+
+  void info(String text);
+
+  void debug(String text);
 }

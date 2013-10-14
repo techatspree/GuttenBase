@@ -15,15 +15,15 @@ import javax.swing.JDialog;
  * 
  * @author M. Dahm
  */
-public class SwingProgressIndicator implements TableCopyProgressIndicator
+public class SwingTableCopyProgressIndicator implements TableCopyProgressIndicator
 {
-  private final ProgressIndicatorPanel _panel = new ProgressIndicatorPanel();
+  private final TableCopyProgressIndicatorPanel _panel = new TableCopyProgressIndicatorPanel();
   private final JDialog _dialog = new JDialog();
   private final TimingProgressIndicator _timingDelegate = new TimingProgressIndicator();
   private final StringBuilder _text = new StringBuilder();
   private TimerDaemonThread _timerDaemonThread;
 
-  public SwingProgressIndicator()
+  public SwingTableCopyProgressIndicator()
   {
     _dialog.setModal(true);
     _dialog.setTitle("Copying tables...");
@@ -61,9 +61,9 @@ public class SwingProgressIndicator implements TableCopyProgressIndicator
   }
 
   @Override
-  public void startCopying(final int numberOfTables)
+  public void startProcess(final int numberOfTables)
   {
-    _timingDelegate.startCopying(numberOfTables);
+    _timingDelegate.startProcess(numberOfTables);
 
     _panel.getTotalProgress().setValue(0);
     _panel.getTotalProgress().setMinimum(0);
@@ -84,24 +84,24 @@ public class SwingProgressIndicator implements TableCopyProgressIndicator
   }
 
   @Override
-  public void startBatch()
+  public void startExecution()
   {
-    _timingDelegate.startBatch();
+    _timingDelegate.startExecution();
   }
 
   @Override
-  public void endBatch(final int totalCopiedRows)
+  public void endExecution(final int totalCopiedRows)
   {
-    _timingDelegate.endBatch(totalCopiedRows);
+    _timingDelegate.endExecution(totalCopiedRows);
 
     _panel.getTableProgress().setValue(totalCopiedRows);
     updateTimers();
   }
 
   @Override
-  public void endCopyTable()
+  public void endProcess()
   {
-    _timingDelegate.endCopyTable();
+    _timingDelegate.endProcess();
 
     _panel.getTableProgress().setValue(_timingDelegate.getRowCount());
     _panel.getTotalProgress().setValue(_timingDelegate.getTableCounter());

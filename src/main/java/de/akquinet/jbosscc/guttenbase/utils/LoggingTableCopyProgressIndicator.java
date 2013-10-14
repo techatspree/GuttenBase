@@ -2,9 +2,9 @@ package de.akquinet.jbosscc.guttenbase.utils;
 
 import org.apache.log4j.Logger;
 
-public class LoggingProgressIndicator implements TableCopyProgressIndicator
+public class LoggingTableCopyProgressIndicator implements TableCopyProgressIndicator
 {
-  private static final Logger LOG = Logger.getLogger(LoggingProgressIndicator.class);
+  private static final Logger LOG = Logger.getLogger(LoggingTableCopyProgressIndicator.class);
 
   private final TimingProgressIndicator _timingDelegate = new TimingProgressIndicator();
 
@@ -15,9 +15,9 @@ public class LoggingProgressIndicator implements TableCopyProgressIndicator
   }
 
   @Override
-  public void startCopying(final int numberOfTables)
+  public void startProcess(final int numberOfTables)
   {
-    _timingDelegate.startCopying(numberOfTables);
+    _timingDelegate.startProcess(numberOfTables);
   }
 
   @Override
@@ -37,15 +37,15 @@ public class LoggingProgressIndicator implements TableCopyProgressIndicator
   }
 
   @Override
-  public void startBatch()
+  public void startExecution()
   {
-    _timingDelegate.startBatch();
+    _timingDelegate.startExecution();
   }
 
   @Override
-  public void endBatch(final int totalCopiedRows)
+  public void endExecution(final int totalCopiedRows)
   {
-    _timingDelegate.endBatch(totalCopiedRows);
+    _timingDelegate.endExecution(totalCopiedRows);
 
     LOG.info(_timingDelegate.getSourceTableName() + ":"
         + totalCopiedRows
@@ -56,9 +56,9 @@ public class LoggingProgressIndicator implements TableCopyProgressIndicator
   }
 
   @Override
-  public void endCopyTable()
+  public void endProcess()
   {
-    _timingDelegate.endCopyTable();
+    _timingDelegate.endProcess();
 
     LOG.info("Copying of " + _timingDelegate.getSourceTableName()
         + " -> "

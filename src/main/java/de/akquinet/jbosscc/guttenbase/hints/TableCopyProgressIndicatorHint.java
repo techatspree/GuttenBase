@@ -10,10 +10,10 @@ import de.akquinet.jbosscc.guttenbase.utils.TableCopyProgressIndicator;
  * </p>
  * 
  * @Applicable-For-Target
- * @Hint-Used-By {@link AbstractTableCopyTool} to map columns
+ * @Hint-Used-By {@link AbstractTableCopyTool}
  * @author M. Dahm
  */
-public abstract class ProgressIndicatorHint implements ConnectorHint<TableCopyProgressIndicator>
+public abstract class TableCopyProgressIndicatorHint implements ConnectorHint<TableCopyProgressIndicator>
 {
   @Override
   public Class<TableCopyProgressIndicator> getConnectorHintType()

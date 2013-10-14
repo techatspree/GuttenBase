@@ -11,8 +11,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.log4j.Logger;
-
 import de.akquinet.jbosscc.guttenbase.configuration.TargetDatabaseConfiguration;
 import de.akquinet.jbosscc.guttenbase.connector.Connector;
 import de.akquinet.jbosscc.guttenbase.hints.TableOrderHint;
@@ -20,6 +18,8 @@ import de.akquinet.jbosscc.guttenbase.meta.IndexMetaData;
 import de.akquinet.jbosscc.guttenbase.meta.TableMetaData;
 import de.akquinet.jbosscc.guttenbase.repository.ConnectorRepository;
 import de.akquinet.jbosscc.guttenbase.sql.SQLLexer;
+import de.akquinet.jbosscc.guttenbase.utils.ProgressIndicator;
+import de.akquinet.jbosscc.guttenbase.utils.ScriptExecutorToolProgressIndicator;
 import de.akquinet.jbosscc.guttenbase.utils.Util;
 
 /**
@@ -30,9 +30,9 @@ import de.akquinet.jbosscc.guttenbase.utils.Util;
  */
 public class ScriptExecutorTool
 {
-  private static final Logger LOG = Logger.getLogger(ScriptExecutorTool.class);
   private final ConnectorRepository _connectorRepository;
   private final char _delimiter;
+  private ProgressIndicator _progressIndicator;
 
   public ScriptExecutorTool(final ConnectorRepository connectorRepository, final char delimiter)
   {
@@ -108,6 +108,9 @@ public class ScriptExecutorTool
       throw new SQLException("DDL script not found or empty");
     }
 
+    _progressIndicator = _connectorRepository.getConnectorHint(connectorId, ScriptExecutorToolProgressIndicator.class).getValue();
+    _progressIndicator.initializeIndicator();
+
     final List<String> sqlStatements = new SQLLexer(lines, _delimiter).parse();
     final Connector connector = _connectorRepository.createConnector(connectorId);
     final Connection connection = connector.openConnection();
@@ -123,9 +126,13 @@ public class ScriptExecutorTool
 
     try
     {
+      _progressIndicator.startProcess(sqlStatements.size());
+
       for (final String sql : sqlStatements)
       {
+        _progressIndicator.startExecution();
         executeSQL(statement, sql);
+        _progressIndicator.endExecution(1);
       }
 
       statement.close();
@@ -136,6 +143,8 @@ public class ScriptExecutorTool
             .getTargetDatabaseConfiguration(connectorId);
         targetDatabaseConfiguration.finalizeTargetConnection(connection, connectorId);
       }
+
+      _progressIndicator.endProcess();
     }
     finally
     {
@@ -146,6 +155,8 @@ public class ScriptExecutorTool
     {
       _connectorRepository.refreshDatabaseMetaData(connectorId);
     }
+
+    _progressIndicator.finalizeIndicator();
   }
 
   /**
@@ -205,7 +216,7 @@ public class ScriptExecutorTool
 
   private void executeSQL(final Statement statement, final String sql) throws SQLException
   {
-    LOG.info("Executing: " + sql);
+    _progressIndicator.info("Executing: " + sql);
 
     final boolean result = statement.execute(sql);
 
@@ -217,12 +228,12 @@ public class ScriptExecutorTool
       readMapFromResultSet(resultMap, resultSet);
       resultSet.close();
 
-      LOG.info("Query result: " + resultMap);
+      _progressIndicator.info("Query result: " + resultMap);
     }
     else
     {
       final int updateCount = statement.getUpdateCount();
-      LOG.info("Update count: " + updateCount);
+      _progressIndicator.info("Update count: " + updateCount);
     }
   }
 
