@@ -1,6 +1,14 @@
 package de.akquinet.jbosscc.guttenbase.utils;
 
-public class TimingProgressIndicator implements ProgressIndicator
+/**
+ * Record timers.
+ * <p>
+ * &copy; 2013-2020 akquinet tech@spree
+ * </p>
+ * 
+ * @author M. Dahm
+ */
+public class TimingProgressIndicator implements TableCopyProgressIndicator
 {
   private long _startCopyTotal;
   private long _startCopyTable;
@@ -45,9 +53,7 @@ public class TimingProgressIndicator implements ProgressIndicator
   @Override
   public void endBatch(final int totalCopiedRows)
   {
-    setElapsedBatchTime(System.currentTimeMillis() - getStartBatch());
-    setElapsedTotalTime(System.currentTimeMillis() - getStartCopyTotal());
-    setElapsedTableCopyTime(System.currentTimeMillis() - getStartCopyTable());
+    updateTimers();
   }
 
   @Override
@@ -169,6 +175,14 @@ public class TimingProgressIndicator implements ProgressIndicator
   public final long getElapsedTotalTime()
   {
     return _elapsedTotalTime;
+  }
+
+  @Override
+  public final void updateTimers()
+  {
+    setElapsedBatchTime(System.currentTimeMillis() - getStartBatch());
+    setElapsedTotalTime(System.currentTimeMillis() - getStartCopyTotal());
+    setElapsedTableCopyTime(System.currentTimeMillis() - getStartCopyTable());
   }
 
   private void setElapsedTotalTime(final long elapsedTotalTime)

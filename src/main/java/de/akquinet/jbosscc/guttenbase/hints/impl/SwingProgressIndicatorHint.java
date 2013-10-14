@@ -1,7 +1,7 @@
 package de.akquinet.jbosscc.guttenbase.hints.impl;
 
 import de.akquinet.jbosscc.guttenbase.hints.ProgressIndicatorHint;
-import de.akquinet.jbosscc.guttenbase.utils.ProgressIndicator;
+import de.akquinet.jbosscc.guttenbase.utils.TableCopyProgressIndicator;
 import de.akquinet.jbosscc.guttenbase.utils.SwingProgressIndicator;
 
 /**
@@ -15,7 +15,7 @@ import de.akquinet.jbosscc.guttenbase.utils.SwingProgressIndicator;
 public final class SwingProgressIndicatorHint extends ProgressIndicatorHint
 {
   @Override
-  public ProgressIndicator getValue()
+  public TableCopyProgressIndicator getValue()
   {
     return new SwingProgressIndicator();
   }

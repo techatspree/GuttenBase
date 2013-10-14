@@ -1,7 +1,7 @@
 package de.akquinet.jbosscc.guttenbase.hints;
 
 import de.akquinet.jbosscc.guttenbase.tools.AbstractTableCopyTool;
-import de.akquinet.jbosscc.guttenbase.utils.ProgressIndicator;
+import de.akquinet.jbosscc.guttenbase.utils.TableCopyProgressIndicator;
 
 /**
  * Select implementation of progress indicator. May be simple logger or fancy UI.
@@ -13,11 +13,11 @@ import de.akquinet.jbosscc.guttenbase.utils.ProgressIndicator;
  * @Hint-Used-By {@link AbstractTableCopyTool} to map columns
  * @author M. Dahm
  */
-public abstract class ProgressIndicatorHint implements ConnectorHint<ProgressIndicator>
+public abstract class ProgressIndicatorHint implements ConnectorHint<TableCopyProgressIndicator>
 {
   @Override
-  public Class<ProgressIndicator> getConnectorHintType()
+  public Class<TableCopyProgressIndicator> getConnectorHintType()
   {
-    return ProgressIndicator.class;
+    return TableCopyProgressIndicator.class;
   }
 }

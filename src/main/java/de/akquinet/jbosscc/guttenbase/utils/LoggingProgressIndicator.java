@@ -2,7 +2,7 @@ package de.akquinet.jbosscc.guttenbase.utils;
 
 import org.apache.log4j.Logger;
 
-public class LoggingProgressIndicator implements ProgressIndicator
+public class LoggingProgressIndicator implements TableCopyProgressIndicator
 {
   private static final Logger LOG = Logger.getLogger(LoggingProgressIndicator.class);
 
@@ -95,5 +95,11 @@ public class LoggingProgressIndicator implements ProgressIndicator
     LOG.info("Copying of " + _timingDelegate.getNumberOfTables()
         + " tables took "
         + Util.formatTime(_timingDelegate.getElapsedTotalTime()));
+  }
+
+  @Override
+  public void updateTimers()
+  {
+    throw new UnsupportedOperationException();
   }
 }
