@@ -18,7 +18,6 @@ import de.akquinet.jbosscc.guttenbase.meta.IndexMetaData;
 import de.akquinet.jbosscc.guttenbase.meta.TableMetaData;
 import de.akquinet.jbosscc.guttenbase.repository.ConnectorRepository;
 import de.akquinet.jbosscc.guttenbase.sql.SQLLexer;
-import de.akquinet.jbosscc.guttenbase.utils.ProgressIndicator;
 import de.akquinet.jbosscc.guttenbase.utils.ScriptExecutorProgressIndicator;
 import de.akquinet.jbosscc.guttenbase.utils.Util;
 
@@ -32,7 +31,7 @@ public class ScriptExecutorTool
 {
   private final ConnectorRepository _connectorRepository;
   private final char _delimiter;
-  private ProgressIndicator _progressIndicator;
+  private ScriptExecutorProgressIndicator _progressIndicator;
 
   public ScriptExecutorTool(final ConnectorRepository connectorRepository, final char delimiter)
   {
@@ -130,9 +129,8 @@ public class ScriptExecutorTool
 
       for (final String sql : sqlStatements)
       {
-        _progressIndicator.startExecution();
         executeSQL(statement, sql);
-        _progressIndicator.endExecution(1);
+        _progressIndicator.endProcess();
       }
 
       statement.close();
@@ -143,8 +141,6 @@ public class ScriptExecutorTool
             .getTargetDatabaseConfiguration(connectorId);
         targetDatabaseConfiguration.finalizeTargetConnection(connection, connectorId);
       }
-
-      _progressIndicator.endProcess();
     }
     finally
     {

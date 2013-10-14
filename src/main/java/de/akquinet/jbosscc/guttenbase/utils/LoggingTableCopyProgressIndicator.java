@@ -52,7 +52,7 @@ public class LoggingTableCopyProgressIndicator implements TableCopyProgressIndic
         + "/"
         + _timingDelegate.getRowCount()
         + " lines copied: Last batch took "
-        + Util.formatTime(_timingDelegate.getElapsedBatchTime()));
+        + Util.formatTime(_timingDelegate.getElapsedExecutionTime()));
   }
 
   @Override
@@ -64,7 +64,7 @@ public class LoggingTableCopyProgressIndicator implements TableCopyProgressIndic
         + " -> "
         + _timingDelegate.getTargetTableName()
         + " took "
-        + Util.formatTime(_timingDelegate.getElapsedTableCopyTime()));
+        + Util.formatTime(_timingDelegate.getElapsedProcessTime()));
   }
 
   @Override

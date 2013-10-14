@@ -10,16 +10,16 @@ package de.akquinet.jbosscc.guttenbase.utils;
  */
 public class TimingProgressIndicator implements TableCopyProgressIndicator
 {
-  private long _startCopyTotal;
-  private long _startCopyTable;
-  private long _startBatch;
+  private long _startTotalTime;
+  private long _startProcessTime;
+  private long _startExecutionTime;
   private int _itemCounter;
   private String _sourceTableName;
   private String _targetTableName;
   private int _rowCount;
   private int _numberOfTables;
-  private long _elapsedBatchTime;
-  private long _elapsedTableCopyTime;
+  private long _elapsedExecutionTime;
+  private long _elapsedProcessTime;
   private long _elapsedTotalTime;
 
   @Override
@@ -31,8 +31,8 @@ public class TimingProgressIndicator implements TableCopyProgressIndicator
   {
     setNumberOfItems(numberOfItems);
     setItemCounter(1);
-    setStartCopyTotal(System.currentTimeMillis());
-    setStartCopyTable(System.currentTimeMillis());
+    setStartTotalTime(System.currentTimeMillis());
+    setStartProcessTime(System.currentTimeMillis());
   }
 
   @Override
@@ -42,17 +42,17 @@ public class TimingProgressIndicator implements TableCopyProgressIndicator
     setSourceTableName(sourceTableName);
     setRowCount(rowCount);
     setTargetTableName(targetTableName);
-    setStartCopyTable(System.currentTimeMillis());
+    setStartProcessTime(System.currentTimeMillis());
   }
 
   @Override
   public void startExecution()
   {
-    setStartBatch(System.currentTimeMillis());
+    setStartExecutionTime(System.currentTimeMillis());
   }
 
   @Override
-  public void endExecution(final int totalCopiedRows)
+  public void endExecution(final int numberOfItems)
   {
     updateTimers();
   }
@@ -60,7 +60,7 @@ public class TimingProgressIndicator implements TableCopyProgressIndicator
   @Override
   public void endProcess()
   {
-    setElapsedTableCopyTime(System.currentTimeMillis() - getStartCopyTable());
+    updateTimers();
 
     _itemCounter++;
   }
@@ -80,37 +80,37 @@ public class TimingProgressIndicator implements TableCopyProgressIndicator
   @Override
   public void finalizeIndicator()
   {
-    setElapsedTotalTime(System.currentTimeMillis() - getStartCopyTotal());
+    updateTimers();
   }
 
-  public final long getStartCopyTotal()
+  public final long getStartTotalTime()
   {
-    return _startCopyTotal;
+    return _startTotalTime;
   }
 
-  private void setStartCopyTotal(final long startCopyTotal)
+  private void setStartTotalTime(final long startCopyTotal)
   {
-    _startCopyTotal = startCopyTotal;
+    _startTotalTime = startCopyTotal;
   }
 
-  public final long getStartCopyTable()
+  public final long getStartProcessTime()
   {
-    return _startCopyTable;
+    return _startProcessTime;
   }
 
-  private void setStartCopyTable(final long startCopyTable)
+  private void setStartProcessTime(final long startCopyTable)
   {
-    _startCopyTable = startCopyTable;
+    _startProcessTime = startCopyTable;
   }
 
-  public final long getStartBatch()
+  public final long getStartExecutionTime()
   {
-    return _startBatch;
+    return _startExecutionTime;
   }
 
-  private void setStartBatch(final long startBatch)
+  private void setStartExecutionTime(final long startBatch)
   {
-    _startBatch = startBatch;
+    _startExecutionTime = startBatch;
   }
 
   public final String getSourceTableName()
@@ -153,24 +153,24 @@ public class TimingProgressIndicator implements TableCopyProgressIndicator
     _numberOfTables = numberOfTables;
   }
 
-  public final long getElapsedBatchTime()
+  public final long getElapsedExecutionTime()
   {
-    return _elapsedBatchTime;
+    return _elapsedExecutionTime;
   }
 
-  private void setElapsedBatchTime(final long elapsedBatchTime)
+  private void setElapsedExecutionTime(final long elapsedBatchTime)
   {
-    _elapsedBatchTime = elapsedBatchTime;
+    _elapsedExecutionTime = elapsedBatchTime;
   }
 
-  public final long getElapsedTableCopyTime()
+  public final long getElapsedProcessTime()
   {
-    return _elapsedTableCopyTime;
+    return _elapsedProcessTime;
   }
 
-  private void setElapsedTableCopyTime(final long elapsedTableCopyTime)
+  private void setElapsedProcessTime(final long elapsedTableCopyTime)
   {
-    _elapsedTableCopyTime = elapsedTableCopyTime;
+    _elapsedProcessTime = elapsedTableCopyTime;
   }
 
   public final long getElapsedTotalTime()
@@ -181,9 +181,9 @@ public class TimingProgressIndicator implements TableCopyProgressIndicator
   @Override
   public final void updateTimers()
   {
-    setElapsedBatchTime(System.currentTimeMillis() - getStartBatch());
-    setElapsedTotalTime(System.currentTimeMillis() - getStartCopyTotal());
-    setElapsedTableCopyTime(System.currentTimeMillis() - getStartCopyTable());
+    setElapsedExecutionTime(System.currentTimeMillis() - getStartExecutionTime());
+    setElapsedTotalTime(System.currentTimeMillis() - getStartTotalTime());
+    setElapsedProcessTime(System.currentTimeMillis() - getStartProcessTime());
   }
 
   private void setElapsedTotalTime(final long elapsedTotalTime)

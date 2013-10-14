@@ -144,7 +144,7 @@ public class SwingTableCopyProgressIndicator implements TableCopyProgressIndicat
   public final void updateTimers()
   {
     _panel.getTotalTime().setText(Util.formatTime(_timingDelegate.getElapsedTotalTime()));
-    _panel.getTableTime().setText(Util.formatTime(_timingDelegate.getElapsedTableCopyTime()));
+    _panel.getTableTime().setText(Util.formatTime(_timingDelegate.getElapsedProcessTime()));
   }
 
   private void updateMessages()

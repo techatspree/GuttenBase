@@ -89,6 +89,7 @@ public class SwingScriptExecutorProgressIndicator implements ScriptExecutorProgr
     _timingDelegate.endProcess();
 
     _panel.getTotalProgress().setValue(_timingDelegate.getItemCounter());
+    updateTimers();
   }
 
   @Override
@@ -128,7 +129,7 @@ public class SwingScriptExecutorProgressIndicator implements ScriptExecutorProgr
   public final void updateTimers()
   {
     _panel.getTotalTime().setText(Util.formatTime(_timingDelegate.getElapsedTotalTime()));
-    _panel.getScriptTime().setText(Util.formatTime(_timingDelegate.getElapsedTableCopyTime()));
+    _panel.getScriptTime().setText(Util.formatTime(_timingDelegate.getElapsedProcessTime()));
   }
 
   private void updateMessages()
