@@ -104,7 +104,7 @@ public class SwingTableCopyProgressIndicator implements TableCopyProgressIndicat
     _timingDelegate.endProcess();
 
     _panel.getTableProgress().setValue(_timingDelegate.getRowCount());
-    _panel.getTotalProgress().setValue(_timingDelegate.getTableCounter());
+    _panel.getTotalProgress().setValue(_timingDelegate.getItemCounter());
   }
 
   @Override

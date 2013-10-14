@@ -15,9 +15,9 @@ import javax.swing.JDialog;
  * 
  * @author M. Dahm
  */
-public class SwingScriptExecutorProgressIndicator implements ProgressIndicator
+public class SwingScriptExecutorProgressIndicator implements ScriptExecutorProgressIndicator
 {
-  private final TableCopyProgressIndicatorPanel _panel = new TableCopyProgressIndicatorPanel();
+  private final ScriptExecutorProgressIndicatorPanel _panel = new ScriptExecutorProgressIndicatorPanel();
   private final JDialog _dialog = new JDialog();
   private final TimingProgressIndicator _timingDelegate = new TimingProgressIndicator();
   private final StringBuilder _text = new StringBuilder();
@@ -52,22 +52,20 @@ public class SwingScriptExecutorProgressIndicator implements ProgressIndicator
     _timingDelegate.initializeIndicator();
 
     _panel.getTotalTime().setText("");
-    _panel.getTableTime().setText("");
-    _panel.getSourceTable().setText("");
-    _panel.getTargetTable().setText("");
+    _panel.getScriptTime().setText("");
 
     _timerDaemonThread = new TimerDaemonThread(_dialog, _timingDelegate, this);
     _timerDaemonThread.start();
   }
 
   @Override
-  public void startProcess(final int numberOfTables)
+  public void startProcess(final int numberOfItems)
   {
-    _timingDelegate.startProcess(numberOfTables);
+    _timingDelegate.startProcess(numberOfItems);
 
     _panel.getTotalProgress().setValue(0);
     _panel.getTotalProgress().setMinimum(0);
-    _panel.getTotalProgress().setMaximum(numberOfTables);
+    _panel.getTotalProgress().setMaximum(numberOfItems);
   }
 
   @Override
@@ -77,11 +75,11 @@ public class SwingScriptExecutorProgressIndicator implements ProgressIndicator
   }
 
   @Override
-  public void endExecution(final int totalCopiedRows)
+  public void endExecution(final int numberOfItems)
   {
-    _timingDelegate.endExecution(totalCopiedRows);
+    _timingDelegate.endExecution(numberOfItems);
 
-    _panel.getTableProgress().setValue(totalCopiedRows);
+    _panel.getTotalProgress().setValue(_timingDelegate.getItemCounter());
     updateTimers();
   }
 
@@ -90,8 +88,7 @@ public class SwingScriptExecutorProgressIndicator implements ProgressIndicator
   {
     _timingDelegate.endProcess();
 
-    _panel.getTableProgress().setValue(_timingDelegate.getRowCount());
-    _panel.getTotalProgress().setValue(_timingDelegate.getTableCounter());
+    _panel.getTotalProgress().setValue(_timingDelegate.getItemCounter());
   }
 
   @Override
@@ -131,7 +128,7 @@ public class SwingScriptExecutorProgressIndicator implements ProgressIndicator
   public final void updateTimers()
   {
     _panel.getTotalTime().setText(Util.formatTime(_timingDelegate.getElapsedTotalTime()));
-    _panel.getTableTime().setText(Util.formatTime(_timingDelegate.getElapsedTableCopyTime()));
+    _panel.getScriptTime().setText(Util.formatTime(_timingDelegate.getElapsedTableCopyTime()));
   }
 
   private void updateMessages()

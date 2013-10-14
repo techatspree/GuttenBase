@@ -1,7 +1,7 @@
 package de.akquinet.jbosscc.guttenbase.utils;
 
 /**
- * Record timers.
+ * Record timings.
  * <p>
  * &copy; 2013-2020 akquinet tech@spree
  * </p>
@@ -13,7 +13,7 @@ public class TimingProgressIndicator implements TableCopyProgressIndicator
   private long _startCopyTotal;
   private long _startCopyTable;
   private long _startBatch;
-  private int _tableCounter;
+  private int _itemCounter;
   private String _sourceTableName;
   private String _targetTableName;
   private int _rowCount;
@@ -27,11 +27,12 @@ public class TimingProgressIndicator implements TableCopyProgressIndicator
   {}
 
   @Override
-  public void startProcess(final int numberOfTables)
+  public void startProcess(final int numberOfItems)
   {
-    setNumberOfTables(numberOfTables);
-    setTableCounter(1);
+    setNumberOfItems(numberOfItems);
+    setItemCounter(1);
     setStartCopyTotal(System.currentTimeMillis());
+    setStartCopyTable(System.currentTimeMillis());
   }
 
   @Override
@@ -61,7 +62,7 @@ public class TimingProgressIndicator implements TableCopyProgressIndicator
   {
     setElapsedTableCopyTime(System.currentTimeMillis() - getStartCopyTable());
 
-    _tableCounter++;
+    _itemCounter++;
   }
 
   @Override
@@ -147,7 +148,7 @@ public class TimingProgressIndicator implements TableCopyProgressIndicator
     return _numberOfTables;
   }
 
-  private void setNumberOfTables(final int numberOfTables)
+  private void setNumberOfItems(final int numberOfTables)
   {
     _numberOfTables = numberOfTables;
   }
@@ -190,13 +191,13 @@ public class TimingProgressIndicator implements TableCopyProgressIndicator
     _elapsedTotalTime = elapsedTotalTime;
   }
 
-  public final int getTableCounter()
+  public final int getItemCounter()
   {
-    return _tableCounter;
+    return _itemCounter;
   }
 
-  private void setTableCounter(final int tableCounter)
+  private void setItemCounter(final int tableCounter)
   {
-    _tableCounter = tableCounter;
+    _itemCounter = tableCounter;
   }
 }

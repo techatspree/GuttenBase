@@ -51,10 +51,11 @@ import de.akquinet.jbosscc.guttenbase.hints.impl.DefaultImporterFactoryHint;
 import de.akquinet.jbosscc.guttenbase.hints.impl.DefaultMaxNumberOfDataItemsHint;
 import de.akquinet.jbosscc.guttenbase.hints.impl.DefaultNumberOfCheckedTableDataHint;
 import de.akquinet.jbosscc.guttenbase.hints.impl.DefaultNumberOfRowsPerBatchHint;
-import de.akquinet.jbosscc.guttenbase.hints.impl.DefaultTableCopyProgressIndicatorHint;
 import de.akquinet.jbosscc.guttenbase.hints.impl.DefaultRepositoryColumnFilterHint;
 import de.akquinet.jbosscc.guttenbase.hints.impl.DefaultRepositoryTableFilterHint;
+import de.akquinet.jbosscc.guttenbase.hints.impl.DefaultScriptExecutorProgressIndicatorHint;
 import de.akquinet.jbosscc.guttenbase.hints.impl.DefaultSplitColumnHint;
+import de.akquinet.jbosscc.guttenbase.hints.impl.DefaultTableCopyProgressIndicatorHint;
 import de.akquinet.jbosscc.guttenbase.hints.impl.DefaultTableMapperHint;
 import de.akquinet.jbosscc.guttenbase.hints.impl.DefaultTableNameMapperHint;
 import de.akquinet.jbosscc.guttenbase.hints.impl.DefaultTableOrderHint;
@@ -409,5 +410,6 @@ public class ConnectorRepositoryImpl implements ConnectorRepository
     addConnectorHint(connectorId, new DefaultExportDumpExtraInformationHint());
     addConnectorHint(connectorId, new DefaultImportDumpExtraInformationHint());
     addConnectorHint(connectorId, new DefaultTableCopyProgressIndicatorHint());
+    addConnectorHint(connectorId, new DefaultScriptExecutorProgressIndicatorHint());
   }
 }

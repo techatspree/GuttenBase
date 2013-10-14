@@ -1,7 +1,7 @@
 package de.akquinet.jbosscc.guttenbase.hints;
 
 import de.akquinet.jbosscc.guttenbase.tools.ScriptExecutorTool;
-import de.akquinet.jbosscc.guttenbase.utils.ScriptExecutorToolProgressIndicator;
+import de.akquinet.jbosscc.guttenbase.utils.ScriptExecutorProgressIndicator;
 
 /**
  * Select implementation of progress indicator. May be simple logger or fancy UI.
@@ -13,11 +13,11 @@ import de.akquinet.jbosscc.guttenbase.utils.ScriptExecutorToolProgressIndicator;
  * @Hint-Used-By {@link ScriptExecutorTool}
  * @author M. Dahm
  */
-public abstract class ScriptExecutorProgressIndicatorHint implements ConnectorHint<ScriptExecutorToolProgressIndicator>
+public abstract class ScriptExecutorProgressIndicatorHint implements ConnectorHint<ScriptExecutorProgressIndicator>
 {
   @Override
-  public Class<ScriptExecutorToolProgressIndicator> getConnectorHintType()
+  public Class<ScriptExecutorProgressIndicator> getConnectorHintType()
   {
-    return ScriptExecutorToolProgressIndicator.class;
+    return ScriptExecutorProgressIndicator.class;
   }
 }

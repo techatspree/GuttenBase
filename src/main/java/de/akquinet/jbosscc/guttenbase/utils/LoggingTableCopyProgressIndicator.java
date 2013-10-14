@@ -30,7 +30,7 @@ public class LoggingTableCopyProgressIndicator implements TableCopyProgressIndic
         + " -> "
         + _timingDelegate.getTargetTableName()
         + "("
-        + _timingDelegate.getTableCounter()
+        + _timingDelegate.getItemCounter()
         + "/"
         + rowCount
         + ") started");

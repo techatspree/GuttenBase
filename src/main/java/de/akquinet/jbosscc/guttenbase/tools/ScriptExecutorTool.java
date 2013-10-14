@@ -19,7 +19,7 @@ import de.akquinet.jbosscc.guttenbase.meta.TableMetaData;
 import de.akquinet.jbosscc.guttenbase.repository.ConnectorRepository;
 import de.akquinet.jbosscc.guttenbase.sql.SQLLexer;
 import de.akquinet.jbosscc.guttenbase.utils.ProgressIndicator;
-import de.akquinet.jbosscc.guttenbase.utils.ScriptExecutorToolProgressIndicator;
+import de.akquinet.jbosscc.guttenbase.utils.ScriptExecutorProgressIndicator;
 import de.akquinet.jbosscc.guttenbase.utils.Util;
 
 /**
@@ -108,7 +108,7 @@ public class ScriptExecutorTool
       throw new SQLException("DDL script not found or empty");
     }
 
-    _progressIndicator = _connectorRepository.getConnectorHint(connectorId, ScriptExecutorToolProgressIndicator.class).getValue();
+    _progressIndicator = _connectorRepository.getConnectorHint(connectorId, ScriptExecutorProgressIndicator.class).getValue();
     _progressIndicator.initializeIndicator();
 
     final List<String> sqlStatements = new SQLLexer(lines, _delimiter).parse();
