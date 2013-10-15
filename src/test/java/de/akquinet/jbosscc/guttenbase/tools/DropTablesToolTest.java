@@ -48,7 +48,7 @@ public class DropTablesToolTest extends AbstractGuttenBaseTest
 
     assertTrue(getAllIndexes().size() > 0);
 
-    _objectUnderTest._scriptExecutor.dropIndexes(_objectUnderTest, CONNECTOR_ID, true);
+    _objectUnderTest.dropIndexes(CONNECTOR_ID);
 
     assertEquals(0, getAllIndexes().size());
   }
@@ -86,7 +86,10 @@ public class DropTablesToolTest extends AbstractGuttenBaseTest
 
       for (final IndexMetaData indexMetaData : indexes)
       {
-        allIndexes.add(indexMetaData);
+        if (!indexMetaData.isPrimaryKeyIndex())
+        {
+          allIndexes.add(indexMetaData);
+        }
       }
     }
 

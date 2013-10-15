@@ -1,6 +1,7 @@
 package de.akquinet.jbosscc.guttenbase.tools;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import de.akquinet.jbosscc.guttenbase.hints.TableNameMapperHint;
@@ -40,11 +41,17 @@ public abstract class AbstractTablesOperationTool
       throws SQLException
   {
     final List<TableMetaData> tables = TableOrderHint.getSortedTables(_connectorRepository, connectorId);
+    final List<String> statements = new ArrayList<String>();
 
     for (final TableMetaData tableMetaData : tables)
     {
-      executeOnTable(connectorId, updateSchema, prepareTargetConnection, tableMetaData);
+      if (isApplicableOnTable(tableMetaData))
+      {
+        statements.add(createSql(connectorId, tableMetaData));
+      }
     }
+
+    _scriptExecutor.executeScript(connectorId, updateSchema, prepareTargetConnection, statements);
   }
 
   public void executeOnTable(final String connectorId, final boolean updateSchema, final boolean prepareTargetConnection,
@@ -52,13 +59,17 @@ public abstract class AbstractTablesOperationTool
   {
     if (isApplicableOnTable(tableMetaData))
     {
-      final TableNameMapper tableNameMapper = _connectorRepository.getConnectorHint(connectorId, TableNameMapper.class)
-          .getValue();
-      final String tableName = tableNameMapper.mapTableName(tableMetaData);
-
-      _scriptExecutor.executeScript(connectorId, updateSchema, prepareTargetConnection,
-          _template.replaceAll(TABLE_PLACEHOLDER, tableName));
+      final String sql = createSql(connectorId, tableMetaData);
+      _scriptExecutor.executeScript(connectorId, updateSchema, prepareTargetConnection, sql);
     }
+  }
+
+  private String createSql(final String connectorId, final TableMetaData tableMetaData) throws SQLException
+  {
+    final TableNameMapper tableNameMapper = _connectorRepository.getConnectorHint(connectorId, TableNameMapper.class).getValue();
+    final String tableName = tableNameMapper.mapTableName(tableMetaData);
+
+    return _template.replaceAll(TABLE_PLACEHOLDER, tableName);
   }
 
   /**

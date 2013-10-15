@@ -9,6 +9,7 @@ import org.junit.Test;
 
 import de.akquinet.jbosscc.guttenbase.configuration.TestH2ConnectionInfo;
 import de.akquinet.jbosscc.guttenbase.sql.SQLLexer;
+import de.akquinet.jbosscc.guttenbase.tools.schema.CreateSchemaTool;
 
 public class CreateSchemaToolTest extends AbstractGuttenBaseTest
 {

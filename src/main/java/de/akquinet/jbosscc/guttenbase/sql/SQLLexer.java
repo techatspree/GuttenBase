@@ -19,9 +19,18 @@ public class SQLLexer
   private int _currentIndex = 0;
 
   private boolean _withinString;
+  private final char _delimiter;
 
   public SQLLexer(final List<String> lines)
   {
+    this(lines, ';');
+  }
+
+  public SQLLexer(final List<String> lines, final char delimiter)
+  {
+    assert lines != null : "lines != null";
+
+    _delimiter = delimiter;
     final StringBuilder builder = new StringBuilder();
 
     for (final String line : lines)
@@ -141,7 +150,7 @@ public class SQLLexer
     {
       return SQLTokenType.MULTI_LINE_COMMENT_END;
     }
-    else if (!_withinString && ch1 == ';')
+    else if (!_withinString && ch1 == _delimiter)
     {
       return SQLTokenType.END_OF_STATEMENT;
     }

@@ -71,7 +71,7 @@ public class SplitByRangeTableCopyTool extends AbstractTableCopyTool
 
       if (countData > 0)
       {
-        _progressIndicator.startBatch();
+        _progressIndicator.startExecution();
         selectStatement.setLong(1, start);
         selectStatement.setLong(2, end);
 
@@ -94,7 +94,7 @@ public class SplitByRangeTableCopyTool extends AbstractTableCopyTool
         }
 
         totalWritten += countData;
-        _progressIndicator.endBatch(totalWritten);
+        _progressIndicator.endExecution(totalWritten);
 
         if (resultSet.next())
         {
