@@ -26,7 +26,7 @@ public class SwingScriptExecutorProgressIndicator implements ScriptExecutorProgr
   public SwingScriptExecutorProgressIndicator()
   {
     _dialog.setModal(true);
-    _dialog.setTitle("Copying tables...");
+    _dialog.setTitle("Executing SQL statements...");
 
     _dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 
