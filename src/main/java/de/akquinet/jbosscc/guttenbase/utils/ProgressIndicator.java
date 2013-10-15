@@ -12,7 +12,7 @@ public interface ProgressIndicator
 {
   void initializeIndicator();
 
-  void startProcess(int numberOfItems);
+  void startProcess(int totalNumberOfProcesses);
 
   void startExecution();
 

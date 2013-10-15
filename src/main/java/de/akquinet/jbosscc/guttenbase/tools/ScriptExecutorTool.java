@@ -129,7 +129,9 @@ public class ScriptExecutorTool
 
       for (final String sql : sqlStatements)
       {
+        _progressIndicator.startExecution();
         executeSQL(statement, sql);
+        _progressIndicator.endExecution(1);
         _progressIndicator.endProcess();
       }
 

@@ -28,12 +28,17 @@ public class SwingTableCopyProgressIndicator implements TableCopyProgressIndicat
     _dialog.setModal(true);
     _dialog.setTitle("Copying tables...");
 
+    _dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+
     _dialog.addWindowListener(new WindowAdapter()
     {
       @Override
       public void windowClosed(final WindowEvent e)
       {
-        finalizeIndicator();
+        if (_dialog.isVisible() && _timerDaemonThread != null && _timerDaemonThread.isActive())
+        {
+          finalizeIndicator();
+        }
       }
     });
 
@@ -71,10 +76,9 @@ public class SwingTableCopyProgressIndicator implements TableCopyProgressIndicat
   }
 
   @Override
-  public void startCopyTable(final String sourceTableName, final int rowCount, final String targetTableName,
-      final int numberOfRowsPerBatch)
+  public void startCopyTable(final String sourceTableName, final int rowCount, final String targetTableName)
   {
-    _timingDelegate.startCopyTable(sourceTableName, rowCount, targetTableName, numberOfRowsPerBatch);
+    _timingDelegate.startCopyTable(sourceTableName, rowCount, targetTableName);
 
     _panel.getTableProgress().setMinimum(0);
     _panel.getTableProgress().setMaximum(rowCount);
@@ -138,6 +142,7 @@ public class SwingTableCopyProgressIndicator implements TableCopyProgressIndicat
     _timerDaemonThread.setActive(false);
     _dialog.setVisible(false);
     _dialog.dispose();
+    _timerDaemonThread = null;
   }
 
   @Override

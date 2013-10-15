@@ -36,8 +36,7 @@ public class TimingProgressIndicator implements TableCopyProgressIndicator
   }
 
   @Override
-  public void startCopyTable(final String sourceTableName, final int rowCount, final String targetTableName,
-      final int numberOfRowsPerBatch)
+  public void startCopyTable(final String sourceTableName, final int rowCount, final String targetTableName)
   {
     setSourceTableName(sourceTableName);
     setRowCount(rowCount);
@@ -61,7 +60,6 @@ public class TimingProgressIndicator implements TableCopyProgressIndicator
   public void endProcess()
   {
     updateTimers();
-
     _itemCounter++;
   }
 

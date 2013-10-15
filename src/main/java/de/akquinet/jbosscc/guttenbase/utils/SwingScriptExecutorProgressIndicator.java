@@ -28,12 +28,17 @@ public class SwingScriptExecutorProgressIndicator implements ScriptExecutorProgr
     _dialog.setModal(true);
     _dialog.setTitle("Copying tables...");
 
+    _dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+
     _dialog.addWindowListener(new WindowAdapter()
     {
       @Override
       public void windowClosed(final WindowEvent e)
       {
-        finalizeIndicator();
+        if (_dialog.isVisible() && _timerDaemonThread != null && _timerDaemonThread.isActive())
+        {
+          finalizeIndicator();
+        }
       }
     });
 
@@ -59,13 +64,13 @@ public class SwingScriptExecutorProgressIndicator implements ScriptExecutorProgr
   }
 
   @Override
-  public void startProcess(final int numberOfItems)
+  public void startProcess(final int totalNumberOfProcesses)
   {
-    _timingDelegate.startProcess(numberOfItems);
+    _timingDelegate.startProcess(totalNumberOfProcesses);
 
     _panel.getTotalProgress().setValue(0);
     _panel.getTotalProgress().setMinimum(0);
-    _panel.getTotalProgress().setMaximum(numberOfItems);
+    _panel.getTotalProgress().setMaximum(totalNumberOfProcesses);
   }
 
   @Override
@@ -79,7 +84,6 @@ public class SwingScriptExecutorProgressIndicator implements ScriptExecutorProgr
   {
     _timingDelegate.endExecution(numberOfItems);
 
-    _panel.getTotalProgress().setValue(_timingDelegate.getItemCounter());
     updateTimers();
   }
 
@@ -123,13 +127,14 @@ public class SwingScriptExecutorProgressIndicator implements ScriptExecutorProgr
     _timerDaemonThread.setActive(false);
     _dialog.setVisible(false);
     _dialog.dispose();
+    _timerDaemonThread = null;
   }
 
   @Override
   public final void updateTimers()
   {
     _panel.getTotalTime().setText(Util.formatTime(_timingDelegate.getElapsedTotalTime()));
-    _panel.getScriptTime().setText(Util.formatTime(_timingDelegate.getElapsedProcessTime()));
+    _panel.getScriptTime().setText(Util.formatTime(_timingDelegate.getElapsedExecutionTime()));
   }
 
   private void updateMessages()

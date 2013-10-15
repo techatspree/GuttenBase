@@ -116,7 +116,7 @@ public abstract class AbstractTableCopyTool
       targetDatabaseConfiguration.beforeTableCopy(targetConnection, targetConnectorId, targetTableMetaData);
 
       _progressIndicator
-          .startCopyTable(sourceTableName, sourceTableMetaData.getRowCount(), targetTableName, numberOfRowsPerBatch);
+          .startCopyTable(sourceTableName, sourceTableMetaData.getRowCount(), targetTableName);
 
       copyTable(sourceConnectorId, sourceConnection, sourceDatabaseConfiguration, sourceTableMetaData, sourceTableName,
           targetConnectorId, targetConnection, targetDatabaseConfiguration, targetTableMetaData, targetTableName,

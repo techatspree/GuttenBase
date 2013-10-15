@@ -10,5 +10,5 @@ package de.akquinet.jbosscc.guttenbase.utils;
  */
 public interface TableCopyProgressIndicator extends ProgressIndicator
 {
-  void startCopyTable(String sourceTableName, int rowCount, String targetTableName, int numberOfRowsPerBatch);
+  void startCopyTable(String sourceTableName, int rowCount, String targetTableName);
 }

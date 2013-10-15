@@ -21,10 +21,9 @@ public class LoggingTableCopyProgressIndicator implements TableCopyProgressIndic
   }
 
   @Override
-  public void startCopyTable(final String sourceTableName, final int rowCount, final String targetTableName,
-      final int numberOfRowsPerBatch)
+  public void startCopyTable(final String sourceTableName, final int rowCount, final String targetTableName)
   {
-    _timingDelegate.startCopyTable(sourceTableName, rowCount, targetTableName, numberOfRowsPerBatch);
+    _timingDelegate.startCopyTable(sourceTableName, rowCount, targetTableName);
 
     LOG.info("Copying of " + _timingDelegate.getSourceTableName()
         + " -> "
