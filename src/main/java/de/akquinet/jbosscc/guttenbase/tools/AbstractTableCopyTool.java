@@ -17,7 +17,7 @@ import de.akquinet.jbosscc.guttenbase.mapping.TableNameMapper;
 import de.akquinet.jbosscc.guttenbase.meta.DatabaseMetaData;
 import de.akquinet.jbosscc.guttenbase.meta.TableMetaData;
 import de.akquinet.jbosscc.guttenbase.repository.ConnectorRepository;
-import de.akquinet.jbosscc.guttenbase.utils.ProgressIndicator;
+import de.akquinet.jbosscc.guttenbase.utils.TableCopyProgressIndicator;
 
 /**
  * Copy all tables from one connection to the other.
@@ -34,7 +34,7 @@ import de.akquinet.jbosscc.guttenbase.utils.ProgressIndicator;
 public abstract class AbstractTableCopyTool
 {
   protected final ConnectorRepository _connectorRepository;
-  protected ProgressIndicator _progressIndicator;
+  protected TableCopyProgressIndicator _progressIndicator;
 
   public AbstractTableCopyTool(final ConnectorRepository connectorRepository)
   {
@@ -47,7 +47,7 @@ public abstract class AbstractTableCopyTool
    */
   public final void copyTables(final String sourceConnectorId, final String targetConnectorId) throws SQLException
   {
-    _progressIndicator = _connectorRepository.getConnectorHint(targetConnectorId, ProgressIndicator.class).getValue();
+    _progressIndicator = _connectorRepository.getConnectorHint(targetConnectorId, TableCopyProgressIndicator.class).getValue();
     _progressIndicator.initializeIndicator();
 
     final List<TableMetaData> tableSourceMetaDatas = TableOrderHint.getSortedTables(_connectorRepository, sourceConnectorId);
@@ -74,7 +74,7 @@ public abstract class AbstractTableCopyTool
     sourceDatabaseConfiguration.initializeSourceConnection(sourceConnection, sourceConnectorId);
     targetDatabaseConfiguration.initializeTargetConnection(targetConnection, targetConnectorId);
 
-    _progressIndicator.startCopying(tableSourceMetaDatas.size());
+    _progressIndicator.startProcess(tableSourceMetaDatas.size());
 
     for (final TableMetaData sourceTableMetaData : tableSourceMetaDatas)
     {
@@ -116,7 +116,7 @@ public abstract class AbstractTableCopyTool
       targetDatabaseConfiguration.beforeTableCopy(targetConnection, targetConnectorId, targetTableMetaData);
 
       _progressIndicator
-          .startCopyTable(sourceTableName, sourceTableMetaData.getRowCount(), targetTableName, numberOfRowsPerBatch);
+          .startCopyTable(sourceTableName, sourceTableMetaData.getRowCount(), targetTableName);
 
       copyTable(sourceConnectorId, sourceConnection, sourceDatabaseConfiguration, sourceTableMetaData, sourceTableName,
           targetConnectorId, targetConnection, targetDatabaseConfiguration, targetTableMetaData, targetTableName,
@@ -125,7 +125,7 @@ public abstract class AbstractTableCopyTool
       sourceDatabaseConfiguration.afterTableCopy(sourceConnection, sourceConnectorId, sourceTableMetaData);
       targetDatabaseConfiguration.afterTableCopy(targetConnection, targetConnectorId, targetTableMetaData);
 
-      _progressIndicator.endCopyTable();
+      _progressIndicator.endProcess();
     }
 
     sourceDatabaseConfiguration.finalizeSourceConnection(sourceConnection, sourceConnectorId);

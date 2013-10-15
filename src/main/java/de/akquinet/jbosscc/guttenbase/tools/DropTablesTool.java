@@ -24,16 +24,14 @@ import de.akquinet.jbosscc.guttenbase.repository.ConnectorRepository;
 public class DropTablesTool
 {
   final ConnectorRepository _connectorRepository;
-  public final ScriptExecutorTool _scriptExecutor;
 
   public DropTablesTool(final ConnectorRepository connectorRepository)
   {
     assert connectorRepository != null : "connectorRepository != null";
     _connectorRepository = connectorRepository;
-    _scriptExecutor = new ScriptExecutorTool(connectorRepository);
   }
 
-  public void dropForeignKeys(final String connectorId) throws SQLException
+  public List<String> createDropForeignKeyStatements(final String connectorId) throws SQLException
   {
     final List<TableMetaData> tableMetaData = TableOrderHint.getSortedTables(_connectorRepository, connectorId);
     final TableNameMapper tableNameMapper = _connectorRepository.getConnectorHint(connectorId, TableNameMapper.class).getValue();
@@ -63,13 +61,10 @@ public class DropTablesTool
       }
     }
 
-    if (!statements.isEmpty())
-    {
-      _scriptExecutor.executeScript(connectorId, true, false, statements);
-    }
+    return statements;
   }
 
-  public void dropIndexes(final String connectorId) throws SQLException
+  public List<String> createDropIndexesStatements(final String connectorId) throws SQLException
   {
     final List<TableMetaData> tableMetaData = TableOrderHint.getSortedTables(_connectorRepository, connectorId);
     final List<String> statements = new ArrayList<String>();
@@ -92,13 +87,10 @@ public class DropTablesTool
       }
     }
 
-    if (!statements.isEmpty())
-    {
-      _scriptExecutor.executeScript(connectorId, true, false, statements);
-    }
+    return statements;
   }
 
-  public void dropTables(final String connectorId) throws SQLException
+  public List<String> createDropTableStatements(final String connectorId) throws SQLException
   {
     final List<TableMetaData> tableMetaData = TableOrderHint.getSortedTables(_connectorRepository, connectorId);
     final List<String> statements = new ArrayList<String>();
@@ -109,9 +101,21 @@ public class DropTablesTool
       statements.add("DROP TABLE " + tableNameMapper.mapTableName(table) + ";");
     }
 
-    if (!statements.isEmpty())
-    {
-      _scriptExecutor.executeScript(connectorId, true, true, statements);
-    }
+    return statements;
+  }
+
+  public void dropTables(final String targetId) throws SQLException
+  {
+    new ScriptExecutorTool(_connectorRepository).executeScript(targetId, true, true, createDropTableStatements(targetId));
+  }
+
+  public void dropIndexes(final String targetId) throws SQLException
+  {
+    new ScriptExecutorTool(_connectorRepository).executeScript(targetId, true, true, createDropIndexesStatements(targetId));
+  }
+
+  public void dropForeignKeys(final String targetId) throws SQLException
+  {
+    new ScriptExecutorTool(_connectorRepository).executeScript(targetId, true, true, createDropForeignKeyStatements(targetId));
   }
 }

@@ -62,7 +62,7 @@ public class DefaultTableCopyTool extends AbstractTableCopyTool
 
     for (int i = 0; i < numberOfBatches; i++)
     {
-      _progressIndicator.startBatch();
+      _progressIndicator.startExecution();
 
       insertStatementFiller.fillInsertStatementFromResultSet(sourceConnectorId, sourceTableMetaData, targetConnectorId,
           targetTableMetaData, targetDatabaseConfiguration, targetConnection, resultSet, batchInsertStatement,
@@ -75,7 +75,7 @@ public class DefaultTableCopyTool extends AbstractTableCopyTool
         targetConnection.commit();
       }
 
-      _progressIndicator.endBatch((i + 1) * numberOfRowsPerBatch);
+      _progressIndicator.endExecution((i + 1) * numberOfRowsPerBatch);
     }
 
     if (numberOfBatches > 0)
@@ -97,7 +97,7 @@ public class DefaultTableCopyTool extends AbstractTableCopyTool
         targetConnection.commit();
       }
 
-      _progressIndicator.endBatch(sourceRowCount);
+      _progressIndicator.endExecution(sourceRowCount);
 
       finalInsert.close();
     }

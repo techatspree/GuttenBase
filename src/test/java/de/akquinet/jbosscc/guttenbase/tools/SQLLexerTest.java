@@ -23,4 +23,15 @@ public class SQLLexerTest
         "CREATE TABLE FOO_USER_COMPANY( USER_ID bigint, ASSIGNED_COMPANY_ID bigint, CONSTRAINT PK_FOO_USER_COMPANY PRIMARY KEY (USER_ID, ASSIGNED_COMPANY_ID))",
         list.get(0));
   }
+
+  @Test
+  public void testDelimiter() throws Exception
+  {
+    final SQLLexer objectUnderTest = new SQLLexer(Arrays.asList("CREATE TABLE FOO(", "USER_ID bigint", ")@", "CREATE TABLE BAR(",
+        "USER_ID bigint", ")@"), '@');
+
+    final List<String> list = objectUnderTest.parse();
+    assertEquals(2, list.size());
+    assertEquals("CREATE TABLE FOO( USER_ID bigint )", list.get(0));
+  }
 }

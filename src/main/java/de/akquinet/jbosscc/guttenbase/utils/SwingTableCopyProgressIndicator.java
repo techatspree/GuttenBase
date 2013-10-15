@@ -2,21 +2,45 @@ package de.akquinet.jbosscc.guttenbase.utils;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 import javax.swing.JDialog;
 
-public class SwingProgressIndicator implements ProgressIndicator
+/**
+ * Swing UI for table copy
+ * <p>
+ * &copy; 2013-2020 akquinet tech@spree
+ * </p>
+ * 
+ * @author M. Dahm
+ */
+public class SwingTableCopyProgressIndicator implements TableCopyProgressIndicator
 {
-  private final ProgressIndicatorPanel _panel = new ProgressIndicatorPanel();
+  private final TableCopyProgressIndicatorPanel _panel = new TableCopyProgressIndicatorPanel();
   private final JDialog _dialog = new JDialog();
   private final TimingProgressIndicator _timingDelegate = new TimingProgressIndicator();
   private final StringBuilder _text = new StringBuilder();
+  private TimerDaemonThread _timerDaemonThread;
 
-  public SwingProgressIndicator()
+  public SwingTableCopyProgressIndicator()
   {
     _dialog.setModal(true);
     _dialog.setTitle("Copying tables...");
+
     _dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+
+    _dialog.addWindowListener(new WindowAdapter()
+    {
+      @Override
+      public void windowClosed(final WindowEvent e)
+      {
+        if (_dialog.isVisible() && _timerDaemonThread != null && _timerDaemonThread.isActive())
+        {
+          finalizeIndicator();
+        }
+      }
+    });
 
     final Dimension size = new Dimension(800, 400);
     _dialog.getContentPane().setLayout(new BorderLayout());
@@ -31,28 +55,20 @@ public class SwingProgressIndicator implements ProgressIndicator
   public void initializeIndicator()
   {
     _timingDelegate.initializeIndicator();
+
     _panel.getTotalTime().setText("");
     _panel.getTableTime().setText("");
     _panel.getSourceTable().setText("");
     _panel.getTargetTable().setText("");
 
-    final Thread thread = new Thread()
-    {
-      @Override
-      public void run()
-      {
-        _dialog.setVisible(true);
-      }
-    };
-
-    thread.setDaemon(true);
-    thread.start();
+    _timerDaemonThread = new TimerDaemonThread(_dialog, _timingDelegate, this);
+    _timerDaemonThread.start();
   }
 
   @Override
-  public void startCopying(final int numberOfTables)
+  public void startProcess(final int numberOfTables)
   {
-    _timingDelegate.startCopying(numberOfTables);
+    _timingDelegate.startProcess(numberOfTables);
 
     _panel.getTotalProgress().setValue(0);
     _panel.getTotalProgress().setMinimum(0);
@@ -60,10 +76,9 @@ public class SwingProgressIndicator implements ProgressIndicator
   }
 
   @Override
-  public void startCopyTable(final String sourceTableName, final int rowCount, final String targetTableName,
-      final int numberOfRowsPerBatch)
+  public void startCopyTable(final String sourceTableName, final int rowCount, final String targetTableName)
   {
-    _timingDelegate.startCopyTable(sourceTableName, rowCount, targetTableName, numberOfRowsPerBatch);
+    _timingDelegate.startCopyTable(sourceTableName, rowCount, targetTableName);
 
     _panel.getTableProgress().setMinimum(0);
     _panel.getTableProgress().setMaximum(rowCount);
@@ -73,28 +88,27 @@ public class SwingProgressIndicator implements ProgressIndicator
   }
 
   @Override
-  public void startBatch()
+  public void startExecution()
   {
-    _timingDelegate.startBatch();
+    _timingDelegate.startExecution();
   }
 
   @Override
-  public void endBatch(final int totalCopiedRows)
+  public void endExecution(final int totalCopiedRows)
   {
-    _timingDelegate.endBatch(totalCopiedRows);
+    _timingDelegate.endExecution(totalCopiedRows);
 
     _panel.getTableProgress().setValue(totalCopiedRows);
-    _panel.getTotalTime().setText(Util.formatTime(_timingDelegate.getElapsedTotalTime()));
-    _panel.getTableTime().setText(Util.formatTime(_timingDelegate.getElapsedTableCopyTime()));
+    updateTimers();
   }
 
   @Override
-  public void endCopyTable()
+  public void endProcess()
   {
-    _timingDelegate.endCopyTable();
+    _timingDelegate.endProcess();
 
     _panel.getTableProgress().setValue(_timingDelegate.getRowCount());
-    _panel.getTotalProgress().setValue(_timingDelegate.getTableCounter());
+    _panel.getTotalProgress().setValue(_timingDelegate.getItemCounter());
   }
 
   @Override
@@ -125,8 +139,17 @@ public class SwingProgressIndicator implements ProgressIndicator
   public void finalizeIndicator()
   {
     _timingDelegate.finalizeIndicator();
+    _timerDaemonThread.setActive(false);
     _dialog.setVisible(false);
     _dialog.dispose();
+    _timerDaemonThread = null;
+  }
+
+  @Override
+  public final void updateTimers()
+  {
+    _panel.getTotalTime().setText(Util.formatTime(_timingDelegate.getElapsedTotalTime()));
+    _panel.getTableTime().setText(Util.formatTime(_timingDelegate.getElapsedProcessTime()));
   }
 
   private void updateMessages()

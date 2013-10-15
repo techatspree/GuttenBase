@@ -2,9 +2,9 @@ package de.akquinet.jbosscc.guttenbase.utils;
 
 import org.apache.log4j.Logger;
 
-public class LoggingProgressIndicator implements ProgressIndicator
+public class LoggingTableCopyProgressIndicator implements TableCopyProgressIndicator
 {
-  private static final Logger LOG = Logger.getLogger(LoggingProgressIndicator.class);
+  private static final Logger LOG = Logger.getLogger(LoggingTableCopyProgressIndicator.class);
 
   private final TimingProgressIndicator _timingDelegate = new TimingProgressIndicator();
 
@@ -15,56 +15,55 @@ public class LoggingProgressIndicator implements ProgressIndicator
   }
 
   @Override
-  public void startCopying(final int numberOfTables)
+  public void startProcess(final int numberOfTables)
   {
-    _timingDelegate.startCopying(numberOfTables);
+    _timingDelegate.startProcess(numberOfTables);
   }
 
   @Override
-  public void startCopyTable(final String sourceTableName, final int rowCount, final String targetTableName,
-      final int numberOfRowsPerBatch)
+  public void startCopyTable(final String sourceTableName, final int rowCount, final String targetTableName)
   {
-    _timingDelegate.startCopyTable(sourceTableName, rowCount, targetTableName, numberOfRowsPerBatch);
+    _timingDelegate.startCopyTable(sourceTableName, rowCount, targetTableName);
 
     LOG.info("Copying of " + _timingDelegate.getSourceTableName()
         + " -> "
         + _timingDelegate.getTargetTableName()
         + "("
-        + _timingDelegate.getTableCounter()
+        + _timingDelegate.getItemCounter()
         + "/"
         + rowCount
         + ") started");
   }
 
   @Override
-  public void startBatch()
+  public void startExecution()
   {
-    _timingDelegate.startBatch();
+    _timingDelegate.startExecution();
   }
 
   @Override
-  public void endBatch(final int totalCopiedRows)
+  public void endExecution(final int totalCopiedRows)
   {
-    _timingDelegate.endBatch(totalCopiedRows);
+    _timingDelegate.endExecution(totalCopiedRows);
 
     LOG.info(_timingDelegate.getSourceTableName() + ":"
         + totalCopiedRows
         + "/"
         + _timingDelegate.getRowCount()
         + " lines copied: Last batch took "
-        + Util.formatTime(_timingDelegate.getElapsedBatchTime()));
+        + Util.formatTime(_timingDelegate.getElapsedExecutionTime()));
   }
 
   @Override
-  public void endCopyTable()
+  public void endProcess()
   {
-    _timingDelegate.endCopyTable();
+    _timingDelegate.endProcess();
 
     LOG.info("Copying of " + _timingDelegate.getSourceTableName()
         + " -> "
         + _timingDelegate.getTargetTableName()
         + " took "
-        + Util.formatTime(_timingDelegate.getElapsedTableCopyTime()));
+        + Util.formatTime(_timingDelegate.getElapsedProcessTime()));
   }
 
   @Override
@@ -95,5 +94,11 @@ public class LoggingProgressIndicator implements ProgressIndicator
     LOG.info("Copying of " + _timingDelegate.getNumberOfTables()
         + " tables took "
         + Util.formatTime(_timingDelegate.getElapsedTotalTime()));
+  }
+
+  @Override
+  public void updateTimers()
+  {
+    throw new UnsupportedOperationException();
   }
 }

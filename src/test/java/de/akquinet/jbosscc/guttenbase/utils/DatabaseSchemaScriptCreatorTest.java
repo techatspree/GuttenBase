@@ -7,12 +7,15 @@ import java.util.List;
 
 import org.junit.Test;
 
+import de.akquinet.jbosscc.guttenbase.meta.ColumnMetaData;
 import de.akquinet.jbosscc.guttenbase.meta.DatabaseMetaData;
 import de.akquinet.jbosscc.guttenbase.meta.builder.ColumnMetaDataBuilder;
 import de.akquinet.jbosscc.guttenbase.meta.builder.DatabaseMetaDataBuilder;
 import de.akquinet.jbosscc.guttenbase.meta.builder.ForeignKeyMetaDataBuilder;
 import de.akquinet.jbosscc.guttenbase.meta.builder.IndexMetaDataBuilder;
 import de.akquinet.jbosscc.guttenbase.meta.builder.TableMetaDataBuilder;
+import de.akquinet.jbosscc.guttenbase.tools.schema.DatabaseSchemaScriptCreator;
+import de.akquinet.jbosscc.guttenbase.tools.schema.DefaultSchemaColumnTypeMapper;
 
 public class DatabaseSchemaScriptCreatorTest
 {
@@ -83,5 +86,33 @@ public class DatabaseSchemaScriptCreatorTest
     final String foreignKeyStatement = foreignKeyStatements.get(0);
 
     assertTrue(foreignKeyStatement, foreignKeyStatement.startsWith("ALTER TABLE schemaName.MY_TABLE1"));
+  }
+
+  @Test
+  public void testSchemaColumnTypeMapper() throws Exception
+  {
+    _objectUnderTest.setColumnTypeMapper(new DefaultSchemaColumnTypeMapper()
+    {
+      @Override
+      public String getColumnType(final ColumnMetaData columnMetaData)
+      {
+        if ("BIGINT".equalsIgnoreCase(columnMetaData.getColumnTypeName()))
+        {
+          return "INTEGER";
+        }
+        else
+        {
+          return super.getColumnType(columnMetaData);
+        }
+      }
+    });
+    final List<String> tableStatements = _objectUnderTest.createTableStatements();
+    assertEquals(2, tableStatements.size());
+
+    final String createStatement = tableStatements.get(0);
+
+    assertTrue(createStatement, createStatement.startsWith("CREATE TABLE schemaName.MY_TABLE1"));
+    assertTrue(createStatement, createStatement.contains("ID INTEGER NOT NULL"));
+    assertTrue(createStatement, createStatement.contains("NAME VARCHAR(100) NOT NULL"));
   }
 }
