@@ -28,7 +28,7 @@ import de.akquinet.jbosscc.guttenbase.utils.Util;
 
 /**
  * Get table meta data from connection. (C) 2012 by akquinet tech@spree
- * 
+ *
  * @author M. Dahm
  */
 public class DatabaseMetaDataInspectorTool
@@ -131,11 +131,16 @@ public class DatabaseMetaDataInspectorTool
 
       final InternalTableMetaData pkTableMetaData = (InternalTableMetaData) databaseMetaData.getTableMetaData(pkTableName);
       final InternalTableMetaData fkTableMetaData = (InternalTableMetaData) databaseMetaData.getTableMetaData(fkTableName);
-      final ColumnMetaData pkColumn = pkTableMetaData.getColumnMetaData(pkColumnName);
-      final ColumnMetaData fkColumn = fkTableMetaData.getColumnMetaData(fkColumnName);
+      if(fkTableMetaData == null) {
+          // this table might have been excluded from the list of tables handled by this batch
+          LOG.debug("unable to retrieve metadata information for table " + fkTableName + " referenced by " + pkTableName);
+      } else {
+        final ColumnMetaData pkColumn = pkTableMetaData.getColumnMetaData(pkColumnName);
+        final ColumnMetaData fkColumn = fkTableMetaData.getColumnMetaData(fkColumnName);
 
-      pkTableMetaData.addExportedForeignKey(new ForeignKeyMetaDataImpl(pkTableMetaData, fkName, fkColumn, pkColumn));
-      fkTableMetaData.addImportedForeignKey(new ForeignKeyMetaDataImpl(fkTableMetaData, fkName, fkColumn, pkColumn));
+        pkTableMetaData.addExportedForeignKey(new ForeignKeyMetaDataImpl(pkTableMetaData, fkName, fkColumn, pkColumn));
+        fkTableMetaData.addImportedForeignKey(new ForeignKeyMetaDataImpl(fkTableMetaData, fkName, fkColumn, pkColumn));
+      }
     }
 
     resultSet.close();
