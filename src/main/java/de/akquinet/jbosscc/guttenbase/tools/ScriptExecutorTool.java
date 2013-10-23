@@ -104,7 +104,7 @@ public class ScriptExecutorTool
   {
     if (lines.isEmpty())
     {
-      throw new SQLException("DDL script not found or empty");
+      return;
     }
 
     _progressIndicator = _connectorRepository.getConnectorHint(connectorId, ScriptExecutorProgressIndicator.class).getValue();
