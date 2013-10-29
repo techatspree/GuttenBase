@@ -108,15 +108,14 @@ public abstract class AbstractTableCopyTool
             + defaultNumberOfRowsPerBatch
             + " * "
             + columnCount
-            + ". Cutting down number of VALUES clauses to "
+            + ". Trim number of VALUES clauses to "
             + numberOfRowsPerBatch);
       }
 
       sourceDatabaseConfiguration.beforeTableCopy(sourceConnection, sourceConnectorId, sourceTableMetaData);
       targetDatabaseConfiguration.beforeTableCopy(targetConnection, targetConnectorId, targetTableMetaData);
 
-      _progressIndicator
-          .startCopyTable(sourceTableName, sourceTableMetaData.getRowCount(), targetTableName);
+      _progressIndicator.startCopyTable(sourceTableName, sourceTableMetaData.getRowCount(), targetTableName);
 
       copyTable(sourceConnectorId, sourceConnection, sourceDatabaseConfiguration, sourceTableMetaData, sourceTableName,
           targetConnectorId, targetConnection, targetDatabaseConfiguration, targetTableMetaData, targetTableName,
