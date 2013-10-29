@@ -41,8 +41,11 @@ Features
 	- renaming columns
 	- changing the column type
 	- split columns into multiple columns
+	- ...
 - Transform data during the migration
 - Configure the copying process for maximum speed
 - Create mass data for testing by copying the source DB multiple times
 - Meta model of data base for analysis
+- Create tables from imported schema automatically
 - Supports builder pattern to create schema definitions
+- Highly configurable via custom configuration "hints"
