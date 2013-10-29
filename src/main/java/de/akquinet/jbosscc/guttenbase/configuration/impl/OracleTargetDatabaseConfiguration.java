@@ -5,6 +5,8 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.log4j.Logger;
+
 import de.akquinet.jbosscc.guttenbase.hints.TableNameMapperHint;
 import de.akquinet.jbosscc.guttenbase.hints.TableOrderHint;
 import de.akquinet.jbosscc.guttenbase.meta.TableMetaData;
@@ -13,15 +15,17 @@ import de.akquinet.jbosscc.guttenbase.tools.ScriptExecutorTool;
 
 /**
  * Implementation for Oracle data base.
- * 
+ *
  * <p>
  * &copy; 2012-2020 akquinet tech@spree
  * </p>
- * 
+ *
  * @Uses-Hint {@link TableNameMapperHint}
  * @author M. Dahm
  */
 public class OracleTargetDatabaseConfiguration extends DefaultTargetDatabaseConfiguration {
+  private static final Logger LOG = Logger.getLogger(OracleTargetDatabaseConfiguration.class);
+
   public OracleTargetDatabaseConfiguration(final ConnectorRepository connectorRepository) {
     super(connectorRepository);
   }
@@ -55,15 +59,36 @@ public class OracleTargetDatabaseConfiguration extends DefaultTargetDatabaseConf
     final String tablesList = createTablesList(tableMetaDatas);
 
     if (!"".equals(tablesList)) {
+      String schema = _connectorRepository.getConnectionInfo(connectorId).getSchema();
+      /* I want to disable all constraints in tables that reference the tables that I will update. */
       final List<Map<String, Object>> foreignKeyNames = new ScriptExecutorTool(_connectorRepository).executeQuery(connectorId,
-          "SELECT TABLE_NAME, CONSTRAINT_NAME FROM USER_CONSTRAINTS WHERE CONSTRAINT_TYPE = 'R' AND TABLE_NAME IN (" + tablesList + ")");
+          "SELECT DISTINCT AC.OWNER, AC.TABLE_NAME, AC.CONSTRAINT_NAME FROM ALL_CONSTRAINTS AC, ALL_CONS_COLUMNS ACC WHERE AC.CONSTRAINT_TYPE = 'R' AND ACC.TABLE_NAME IN (" +
+               tablesList + ") AND ACC.OWNER = '" + schema + "' AND ACC.CONSTRAINT_NAME = AC.R_CONSTRAINT_NAME AND ACC.OWNER = AC.R_OWNER");
+
+      // memorize any problems that occur during constraint handling
+      StringBuilder problems = new StringBuilder();
 
       for (final Map<String, Object> fkMap : foreignKeyNames) {
         final String tableName = fkMap.get("TABLE_NAME").toString();
         final String constraintName = fkMap.get("CONSTRAINT_NAME").toString();
+        final String owner = fkMap.get("OWNER").toString();
 
-        executeSQL(connection, "ALTER TABLE " + tableName + (enable ? " ENABLE " : " DISABLE ") + "CONSTRAINT " + constraintName);
+        try {
+          executeSQL(connection, "ALTER TABLE " + owner + "." + tableName + (enable ? " ENABLE " : " DISABLE ") + "CONSTRAINT " + constraintName);
+        } catch (SQLException e) {
+          // when there is an error with on constraint memorize it, but continue with other constraints
+          StringBuilder problem = new StringBuilder();
+          problem.append(owner).append(".").append(tableName).append(enable ? " ENABLE " : " DISABLE ").append("constraint ").append(constraintName);
+          LOG.error("unable to handle constraint: " + problem, e);
+          problems.append(problem).append(": ").append(e.getMessage());
+        }
       }
+
+      if(problems.length() > 0) {
+        // if there has been a problem with any constraint, now throw the exception
+        throw new SQLException("constraint problems occurred: " + problems.toString());
+      }
+
     }
   }
 
