@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.junit.Test;
 
+import de.akquinet.jbosscc.guttenbase.hints.CaseConversionMode;
 import de.akquinet.jbosscc.guttenbase.meta.ColumnMetaData;
 import de.akquinet.jbosscc.guttenbase.meta.DatabaseMetaData;
 import de.akquinet.jbosscc.guttenbase.meta.builder.ColumnMetaDataBuilder;
@@ -20,7 +21,8 @@ import de.akquinet.jbosscc.guttenbase.tools.schema.DefaultSchemaColumnTypeMapper
 public class DatabaseSchemaScriptCreatorTest
 {
   private final DatabaseMetaData _databaseMetaData = createDatabaseMetaData();
-  private final DatabaseSchemaScriptCreator _objectUnderTest = new DatabaseSchemaScriptCreator(_databaseMetaData);
+  private final DatabaseSchemaScriptCreator _objectUnderTest = new DatabaseSchemaScriptCreator(_databaseMetaData,
+      _databaseMetaData.getSchema(), CaseConversionMode.UPPER);
 
   private DatabaseMetaData createDatabaseMetaData()
   {
@@ -29,11 +31,11 @@ public class DatabaseSchemaScriptCreatorTest
     final TableMetaDataBuilder tableBuilder2 = createTable(2, databaseMetaDataBuilder);
 
     final ForeignKeyMetaDataBuilder foreignKeyMetaDataBuilder1 = new ForeignKeyMetaDataBuilder(tableBuilder1)
-        .setForeignKeyName("FK_NAME").setReferencingColumn(tableBuilder1.getColumn("NAME"))
-        .setReferencedColumn(tableBuilder2.getColumn("NAME"));
+        .setForeignKeyName("FK_Name").setReferencingColumn(tableBuilder1.getColumn("Name"))
+        .setReferencedColumn(tableBuilder2.getColumn("Name"));
     final ForeignKeyMetaDataBuilder foreignKeyMetaDataBuilder2 = new ForeignKeyMetaDataBuilder(tableBuilder2)
-        .setForeignKeyName("FK_NAME").setReferencingColumn(tableBuilder1.getColumn("NAME"))
-        .setReferencedColumn(tableBuilder2.getColumn("NAME"));
+        .setForeignKeyName("FK_Name").setReferencingColumn(tableBuilder1.getColumn("Name"))
+        .setReferencedColumn(tableBuilder2.getColumn("Name"));
 
     tableBuilder1.addImportedForeignKey(foreignKeyMetaDataBuilder1);
     tableBuilder2.addExportedForeignKey(foreignKeyMetaDataBuilder2);
@@ -48,17 +50,17 @@ public class DatabaseSchemaScriptCreatorTest
   private TableMetaDataBuilder createTable(final int index, final DatabaseMetaDataBuilder databaseMetaDataBuilder)
   {
     final TableMetaDataBuilder tableMetaDataBuilder = new TableMetaDataBuilder(databaseMetaDataBuilder)
-        .setTableName("MY_TABLE" + index);
-    final ColumnMetaDataBuilder primaryKeyBuilder = new ColumnMetaDataBuilder(tableMetaDataBuilder).setColumnName("ID")
+        .setTableName("My_Table" + index);
+    final ColumnMetaDataBuilder primaryKeyBuilder = new ColumnMetaDataBuilder(tableMetaDataBuilder).setColumnName("Id")
         .setColumnTypeName("BIGINT").setNullable(false).setPrimaryKey(true);
-    final ColumnMetaDataBuilder nameBuilder = new ColumnMetaDataBuilder(tableMetaDataBuilder).setColumnName("NAME")
+    final ColumnMetaDataBuilder nameBuilder = new ColumnMetaDataBuilder(tableMetaDataBuilder).setColumnName("Name")
         .setColumnTypeName("VARCHAR(100)").setNullable(false);
 
     tableMetaDataBuilder
         .addColumn(primaryKeyBuilder)
         .addColumn(nameBuilder)
         .addIndex(
-            new IndexMetaDataBuilder(tableMetaDataBuilder).setAscending(true).setIndexName("NAME_IDX" + index).setUnique(true)
+            new IndexMetaDataBuilder(tableMetaDataBuilder).setAscending(true).setIndexName("Name_IDX" + index).setUnique(true)
                 .addColumn(nameBuilder));
     return tableMetaDataBuilder;
   }
