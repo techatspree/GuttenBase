@@ -1,5 +1,6 @@
 package de.akquinet.jbosscc.guttenbase.hints.impl;
 
+import de.akquinet.jbosscc.guttenbase.defaults.impl.DefaultColumnMapper;
 import de.akquinet.jbosscc.guttenbase.hints.ColumnMapperHint;
 import de.akquinet.jbosscc.guttenbase.mapping.ColumnMapper;
 

@@ -2,16 +2,17 @@ package de.akquinet.jbosscc.guttenbase.tools;
 
 import de.akquinet.jbosscc.guttenbase.configuration.TestDerbyConnectionInfo;
 import de.akquinet.jbosscc.guttenbase.configuration.TestHsqlConnectionInfo;
+import de.akquinet.jbosscc.guttenbase.defaults.impl.DefaultColumnDataMapperProvider;
+import de.akquinet.jbosscc.guttenbase.defaults.impl.DefaultColumnMapper;
 import de.akquinet.jbosscc.guttenbase.hints.ColumnDataMapperProviderHint;
 import de.akquinet.jbosscc.guttenbase.hints.ColumnMapperHint;
-import de.akquinet.jbosscc.guttenbase.hints.impl.DefaultColumnDataMapperProvider;
 import de.akquinet.jbosscc.guttenbase.hints.impl.DefaultColumnDataMapperProviderHint;
-import de.akquinet.jbosscc.guttenbase.hints.impl.DefaultColumnMapper;
 import de.akquinet.jbosscc.guttenbase.mapping.ColumnDataMapper;
 import de.akquinet.jbosscc.guttenbase.mapping.ColumnMapper;
 import de.akquinet.jbosscc.guttenbase.meta.ColumnMetaData;
 import de.akquinet.jbosscc.guttenbase.meta.ColumnType;
 import de.akquinet.jbosscc.guttenbase.meta.TableMetaData;
+
 import org.junit.Before;
 import org.junit.Test;
 

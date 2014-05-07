@@ -1,4 +1,4 @@
-package de.akquinet.jbosscc.guttenbase.hints.impl;
+package de.akquinet.jbosscc.guttenbase.defaults.impl;
 
 import java.sql.SQLException;
 import java.util.ArrayList;

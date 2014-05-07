@@ -1,4 +1,4 @@
-package de.akquinet.jbosscc.guttenbase.hints.impl;
+package de.akquinet.jbosscc.guttenbase.defaults.impl;
 
 import de.akquinet.jbosscc.guttenbase.mapping.ColumnDataMapper;
 import de.akquinet.jbosscc.guttenbase.meta.ColumnMetaData;

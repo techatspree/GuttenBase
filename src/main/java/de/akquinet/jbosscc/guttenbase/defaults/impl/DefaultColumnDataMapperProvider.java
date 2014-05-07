@@ -1,4 +1,4 @@
-package de.akquinet.jbosscc.guttenbase.hints.impl;
+package de.akquinet.jbosscc.guttenbase.defaults.impl;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import de.akquinet.jbosscc.guttenbase.hints.impl.DefaultColumnDataMapperProviderHint;
 import de.akquinet.jbosscc.guttenbase.mapping.ColumnDataMapper;
 import de.akquinet.jbosscc.guttenbase.mapping.ColumnDataMapperProvider;
 import de.akquinet.jbosscc.guttenbase.meta.ColumnMetaData;

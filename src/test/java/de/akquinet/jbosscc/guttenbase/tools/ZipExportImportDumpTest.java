@@ -17,11 +17,11 @@ import java.util.zip.ZipEntry;
 import org.apache.commons.io.IOUtils;
 import org.junit.Before;
 
+import de.akquinet.jbosscc.guttenbase.defaults.impl.DefaultZipExporterClassResources;
 import de.akquinet.jbosscc.guttenbase.export.zip.ZipConstants;
 import de.akquinet.jbosscc.guttenbase.export.zip.ZipExporter;
 import de.akquinet.jbosscc.guttenbase.export.zip.ZipExporterClassResources;
 import de.akquinet.jbosscc.guttenbase.hints.ZipExporterClassResourcesHint;
-import de.akquinet.jbosscc.guttenbase.hints.impl.DefaultZipExporterClassResources;
 import de.akquinet.jbosscc.guttenbase.meta.DatabaseMetaData;
 import de.akquinet.jbosscc.guttenbase.meta.TableMetaData;
 import de.akquinet.jbosscc.guttenbase.utils.Util;

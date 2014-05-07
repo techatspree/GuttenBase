@@ -3,9 +3,9 @@ package de.akquinet.jbosscc.guttenbase.tools;
 import java.sql.SQLException;
 import java.util.List;
 
+import de.akquinet.jbosscc.guttenbase.defaults.impl.DefaultColumnDataMapper;
 import de.akquinet.jbosscc.guttenbase.hints.ColumnDataMapperProviderHint;
 import de.akquinet.jbosscc.guttenbase.hints.ColumnTypeResolverListHint;
-import de.akquinet.jbosscc.guttenbase.hints.impl.DefaultColumnDataMapper;
 import de.akquinet.jbosscc.guttenbase.mapping.ColumnDataMapper;
 import de.akquinet.jbosscc.guttenbase.mapping.ColumnDataMapperProvider;
 import de.akquinet.jbosscc.guttenbase.mapping.ColumnTypeMapping;

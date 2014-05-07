@@ -1,4 +1,4 @@
-package de.akquinet.jbosscc.guttenbase.hints.impl;
+package de.akquinet.jbosscc.guttenbase.defaults.impl;
 
 import java.net.URL;
 import java.util.ArrayList;

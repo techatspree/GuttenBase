@@ -1,5 +1,6 @@
 package de.akquinet.jbosscc.guttenbase.hints.impl;
 
+import de.akquinet.jbosscc.guttenbase.defaults.impl.DefaultSplitColumn;
 import de.akquinet.jbosscc.guttenbase.hints.SplitColumnHint;
 import de.akquinet.jbosscc.guttenbase.tools.SplitColumn;
 

@@ -1,8 +1,8 @@
 package de.akquinet.jbosscc.guttenbase.hints.impl;
 
+import de.akquinet.jbosscc.guttenbase.defaults.impl.DefaultColumnNameMapper;
 import de.akquinet.jbosscc.guttenbase.hints.ColumnNameMapperHint;
 import de.akquinet.jbosscc.guttenbase.mapping.ColumnNameMapper;
-import de.akquinet.jbosscc.guttenbase.meta.ColumnMetaData;
 
 /**
  * Default implementation just returns the plain column name.
@@ -16,11 +16,6 @@ import de.akquinet.jbosscc.guttenbase.meta.ColumnMetaData;
 public class DefaultColumnNameMapperHint extends ColumnNameMapperHint {
 	@Override
 	public ColumnNameMapper getValue() {
-		return new ColumnNameMapper() {
-			@Override
-			public String mapColumnName(final ColumnMetaData columnMetaData) {
-				return columnMetaData.getColumnName();
-			}
-		};
+		return new DefaultColumnNameMapper();
 	}
 }

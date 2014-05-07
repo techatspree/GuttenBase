@@ -1,5 +1,6 @@
 package de.akquinet.jbosscc.guttenbase.hints.impl;
 
+import de.akquinet.jbosscc.guttenbase.defaults.impl.DefaultDatabaseTableFilter;
 import de.akquinet.jbosscc.guttenbase.hints.DatabaseTableFilterHint;
 import de.akquinet.jbosscc.guttenbase.repository.DatabaseTableFilter;
 

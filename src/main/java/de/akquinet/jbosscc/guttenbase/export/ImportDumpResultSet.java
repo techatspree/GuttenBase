@@ -26,8 +26,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import de.akquinet.jbosscc.guttenbase.defaults.impl.DefaultColumnComparator;
 import de.akquinet.jbosscc.guttenbase.exceptions.ImportException;
-import de.akquinet.jbosscc.guttenbase.hints.impl.DefaultColumnComparator;
 import de.akquinet.jbosscc.guttenbase.meta.ColumnMetaData;
 import de.akquinet.jbosscc.guttenbase.meta.DatabaseMetaData;
 import de.akquinet.jbosscc.guttenbase.meta.TableMetaData;

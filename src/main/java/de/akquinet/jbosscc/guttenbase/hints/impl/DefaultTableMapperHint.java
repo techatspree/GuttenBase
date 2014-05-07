@@ -1,5 +1,6 @@
 package de.akquinet.jbosscc.guttenbase.hints.impl;
 
+import de.akquinet.jbosscc.guttenbase.defaults.impl.DefaultTableMapper;
 import de.akquinet.jbosscc.guttenbase.hints.TableMapperHint;
 import de.akquinet.jbosscc.guttenbase.mapping.TableMapper;
 
