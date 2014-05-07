@@ -8,7 +8,7 @@ import java.util.Map;
 
 import org.junit.Before;
 
-import de.akquinet.jbosscc.guttenbase.hints.impl.DefaultColumnDataMapperProvider;
+import de.akquinet.jbosscc.guttenbase.defaults.impl.DefaultColumnDataMapperProvider;
 import de.akquinet.jbosscc.guttenbase.hints.impl.DefaultColumnDataMapperProviderHint;
 import de.akquinet.jbosscc.guttenbase.mapping.ColumnDataMapper;
 import de.akquinet.jbosscc.guttenbase.meta.ColumnMetaData;

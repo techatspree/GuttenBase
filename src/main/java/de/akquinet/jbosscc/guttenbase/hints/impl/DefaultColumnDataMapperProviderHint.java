@@ -1,5 +1,6 @@
 package de.akquinet.jbosscc.guttenbase.hints.impl;
 
+import de.akquinet.jbosscc.guttenbase.defaults.impl.DefaultColumnDataMapperProvider;
 import de.akquinet.jbosscc.guttenbase.hints.ColumnDataMapperProviderHint;
 import de.akquinet.jbosscc.guttenbase.mapping.BigDecimalToLongColumnDataMapper;
 import de.akquinet.jbosscc.guttenbase.mapping.LongToBigDecimalColumnDataMapper;

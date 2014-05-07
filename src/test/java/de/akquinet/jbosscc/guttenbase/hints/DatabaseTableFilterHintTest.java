@@ -10,7 +10,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import de.akquinet.jbosscc.guttenbase.configuration.TestHsqlConnectionInfo;
-import de.akquinet.jbosscc.guttenbase.hints.impl.DefaultDatabaseTableFilter;
+import de.akquinet.jbosscc.guttenbase.defaults.impl.DefaultDatabaseTableFilter;
 import de.akquinet.jbosscc.guttenbase.meta.TableMetaData;
 import de.akquinet.jbosscc.guttenbase.repository.DatabaseTableFilter;
 import de.akquinet.jbosscc.guttenbase.tools.AbstractGuttenBaseTest;

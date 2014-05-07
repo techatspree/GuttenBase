@@ -2,7 +2,7 @@ package de.akquinet.jbosscc.guttenbase.hints;
 
 import org.junit.Before;
 
-import de.akquinet.jbosscc.guttenbase.hints.impl.DroppingColumnMapper;
+import de.akquinet.jbosscc.guttenbase.defaults.impl.DroppingColumnMapper;
 import de.akquinet.jbosscc.guttenbase.mapping.ColumnMapper;
 
 /**

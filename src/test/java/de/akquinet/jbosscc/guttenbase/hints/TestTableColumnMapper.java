@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import de.akquinet.jbosscc.guttenbase.hints.impl.DefaultColumnMapper;
+import de.akquinet.jbosscc.guttenbase.defaults.impl.DefaultColumnMapper;
 import de.akquinet.jbosscc.guttenbase.meta.ColumnMetaData;
 import de.akquinet.jbosscc.guttenbase.meta.TableMetaData;
 

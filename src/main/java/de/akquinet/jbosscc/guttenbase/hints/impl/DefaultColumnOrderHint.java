@@ -2,6 +2,7 @@ package de.akquinet.jbosscc.guttenbase.hints.impl;
 
 import java.util.Comparator;
 
+import de.akquinet.jbosscc.guttenbase.defaults.impl.DefaultColumnComparator;
 import de.akquinet.jbosscc.guttenbase.hints.ColumnOrderHint;
 import de.akquinet.jbosscc.guttenbase.mapping.ColumnOrderComparatorFactory;
 import de.akquinet.jbosscc.guttenbase.meta.ColumnMetaData;
