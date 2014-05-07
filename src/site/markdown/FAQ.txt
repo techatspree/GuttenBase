@@ -53,3 +53,13 @@ You'll have to limit the number of VALUES clauses to 1 or use the BATCH mode.
 					};
 				}
 			});
+
+Q: What does an error like "Error Code: 1025. Error on rename of './#sql-ddd_6' to './lokalubi/TABLE' (errno: 150)" mean using MySQL?
+--------------------------------------------------
+
+A: Error code 150 refers to foreign key constraints. Since foreign keys are disable during copying this might also be caused by problems with
+case-sensitivety. Copying may run well on a Windows system that does not regard case in table names, but fail on Linux, which does. 
+
+You may use a different target configuration to circumvent this problem:
+
+	 connectorRepository.addTargetDatabaseConfiguration(DatabaseType.MYSQL, new MySqlTargetDatabaseConfiguration(connectorRepository, false, 1));
