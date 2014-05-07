@@ -1,3 +1,7 @@
+What's new in Version 1.3
+============================
+- Handling case in table names, etc. improved
+
 What's new in Version 1.2
 ============================
 - Many bug fixes and enhancements
