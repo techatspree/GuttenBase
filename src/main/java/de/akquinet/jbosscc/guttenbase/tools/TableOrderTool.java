@@ -7,10 +7,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import de.akquinet.jbosscc.guttenbase.hints.TableOrderHint;
 import de.akquinet.jbosscc.guttenbase.meta.ForeignKeyMetaData;
 import de.akquinet.jbosscc.guttenbase.meta.TableMetaData;
-import de.akquinet.jbosscc.guttenbase.repository.ConnectorRepository;
 
 /**
  * Order tables by foreign key constraints, i.e. the foreign keys of a database schema spawn an directed (possibly cyclic!) graph
@@ -21,23 +19,19 @@ import de.akquinet.jbosscc.guttenbase.repository.ConnectorRepository;
  * &copy; 2012-2020 akquinet tech@spree
  * </p>
  * 
- * @Uses-Hint {@link TableOrderHint} to determine original order of tables which will affect output order
  * @author M. Dahm
  */
 public class TableOrderTool
 {
-  final ConnectorRepository _connectorRepository;
-
-  public TableOrderTool(final ConnectorRepository connectorRepository)
+  public List<TableMetaData> getOrderedTables(final List<TableMetaData> tableMetaData, final boolean topDown) throws SQLException
   {
-    assert connectorRepository != null : "connectorRepository != null";
-    _connectorRepository = connectorRepository;
+    final Map<String, TableNode> tableNodes = createGraph(tableMetaData);
+
+    return orderTables(tableNodes, topDown);
   }
 
-  public List<TableMetaData> getOrderedTables(final String connectorId, final boolean topDown) throws SQLException
+  private List<TableMetaData> orderTables(final Map<String, TableNode> tableNodes, final boolean topDown) throws SQLException
   {
-    assert connectorId != null : "connectorId != null";
-    final Map<String, TableNode> tableNodes = createGraph(connectorId);
     final List<TableMetaData> result = new ArrayList<TableMetaData>();
 
     while (!tableNodes.isEmpty())
@@ -61,7 +55,7 @@ public class TableOrderTool
       }
       else
       {
-        throw new SQLException("Cannot find matching node!!. Possibly a cycle? " + tableNodes.values());
+        throw new SQLException("Cannot find matching table node!!. Possibly a cycle in dependencies? " + tableNodes.values());
       }
     }
 
@@ -86,10 +80,9 @@ public class TableOrderTool
     return topDown ? tableNode.getReferencedTables().isEmpty() : tableNode.getReferencedByTables().isEmpty();
   }
 
-  private Map<String, TableNode> createGraph(final String connectorId) throws SQLException
+  private Map<String, TableNode> createGraph(final List<TableMetaData> tableMetaData)
   {
     final Map<String, TableNode> tableNodes = new LinkedHashMap<String, TableNode>();
-    final List<TableMetaData> tableMetaData = TableOrderHint.getSortedTables(_connectorRepository, connectorId);
 
     for (final TableMetaData table : tableMetaData)
     {

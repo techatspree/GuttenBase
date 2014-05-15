@@ -1,5 +1,6 @@
 package de.akquinet.jbosscc.guttenbase.tools.schema;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -9,6 +10,7 @@ import de.akquinet.jbosscc.guttenbase.meta.ColumnMetaData;
 import de.akquinet.jbosscc.guttenbase.meta.DatabaseMetaData;
 import de.akquinet.jbosscc.guttenbase.meta.IndexMetaData;
 import de.akquinet.jbosscc.guttenbase.meta.TableMetaData;
+import de.akquinet.jbosscc.guttenbase.tools.TableOrderTool;
 
 /**
  * Create DDL script from given database meta data.
@@ -29,15 +31,15 @@ public class DatabaseSchemaScriptCreator
 
   public DatabaseSchemaScriptCreator(
       final DatabaseMetaData databaseMetaData,
-      final String schema,
+      final String targetSchema,
       final CaseConversionMode caseConversionMode)
   {
     assert databaseMetaData != null : "databaseMetaData != null";
-    assert schema != null : "schema != null";
+    assert targetSchema != null : "schema != null";
     assert caseConversionMode != null : "caseConversionMode != null";
 
     _sourceDatabaseMetaData = databaseMetaData;
-    _targetSchema = schema;
+    _targetSchema = targetSchema;
     _caseConversionMode = caseConversionMode;
   }
 
@@ -57,11 +59,13 @@ public class DatabaseSchemaScriptCreator
     _columnTypeMapper = columnTypeMapper;
   }
 
-  public List<String> createTableStatements()
+  public List<String> createTableStatements() throws SQLException
   {
     final List<String> result = new ArrayList<String>();
 
-    for (final TableMetaData tableMetaData : _sourceDatabaseMetaData.getTableMetaData())
+    final List<TableMetaData> tables = new TableOrderTool().getOrderedTables(_sourceDatabaseMetaData.getTableMetaData(), true);
+
+    for (final TableMetaData tableMetaData : tables)
     {
       result.add(createTable(tableMetaData));
     }
@@ -69,7 +73,7 @@ public class DatabaseSchemaScriptCreator
     return result;
   }
 
-  public List<String> createPrimaryKeyStatements()
+  public List<String> createPrimaryKeyStatements() throws SQLException
   {
     final List<String> result = new ArrayList<String>();
 
@@ -86,7 +90,7 @@ public class DatabaseSchemaScriptCreator
     return result;
   }
 
-  public List<String> createIndexStatements()
+  public List<String> createIndexStatements() throws SQLException
   {
     final List<String> result = new ArrayList<String>();
 
@@ -103,7 +107,7 @@ public class DatabaseSchemaScriptCreator
     return result;
   }
 
-  public List<String> createForeignKeyStatements()
+  public List<String> createForeignKeyStatements() throws SQLException
   {
     final List<String> result = new ArrayList<String>();
 

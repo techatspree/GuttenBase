@@ -39,12 +39,12 @@ public class CreateSchemaTool
     this(connectorRepository, new DefaultSchemaColumnTypeMapper(), CaseConversionMode.NONE);
   }
 
-  public List<String> createDDLScript(final String connectorId, final String schema) throws SQLException
+  public List<String> createDDLScript(final String connectorId, final String targetSchema) throws SQLException
   {
     final List<String> result = new ArrayList<String>();
     final DatabaseMetaData databaseMetaData = _connectorRepository.getDatabaseMetaData(connectorId);
 
-    final DatabaseSchemaScriptCreator databaseSchemaScriptCreator = new DatabaseSchemaScriptCreator(databaseMetaData, schema,
+    final DatabaseSchemaScriptCreator databaseSchemaScriptCreator = new DatabaseSchemaScriptCreator(databaseMetaData, targetSchema,
         _caseConversionMode);
     databaseSchemaScriptCreator.setColumnTypeMapper(_schemaColumnTypeMapper);
     result.addAll(databaseSchemaScriptCreator.createTableStatements());
