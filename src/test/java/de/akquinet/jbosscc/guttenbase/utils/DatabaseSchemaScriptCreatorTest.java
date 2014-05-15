@@ -73,7 +73,7 @@ public class DatabaseSchemaScriptCreatorTest
 
     final String createStatement = tableStatements.get(0);
 
-    assertTrue(createStatement, createStatement.startsWith("CREATE TABLE schemaName.MY_TABLE1"));
+    assertTrue(createStatement, createStatement.startsWith("CREATE TABLE schemaName.MY_TABLE"));
     assertTrue(createStatement, createStatement.contains("ID BIGINT NOT NULL"));
     assertTrue(createStatement, createStatement.contains("NAME VARCHAR(100) NOT NULL"));
 
@@ -113,7 +113,7 @@ public class DatabaseSchemaScriptCreatorTest
 
     final String createStatement = tableStatements.get(0);
 
-    assertTrue(createStatement, createStatement.startsWith("CREATE TABLE schemaName.MY_TABLE1"));
+    assertTrue(createStatement, createStatement.startsWith("CREATE TABLE schemaName.MY_TABLE"));
     assertTrue(createStatement, createStatement.contains("ID INTEGER NOT NULL"));
     assertTrue(createStatement, createStatement.contains("NAME VARCHAR(100) NOT NULL"));
   }

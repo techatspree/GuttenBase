@@ -33,7 +33,8 @@ public class DropTablesTool
 
   public List<String> createDropForeignKeyStatements(final String connectorId) throws SQLException
   {
-    final List<TableMetaData> tableMetaData = TableOrderHint.getSortedTables(_connectorRepository, connectorId);
+    final List<TableMetaData> tableMetaData = new TableOrderTool().getOrderedTables(
+        TableOrderHint.getSortedTables(_connectorRepository, connectorId), false);
     final TableNameMapper tableNameMapper = _connectorRepository.getConnectorHint(connectorId, TableNameMapper.class).getValue();
     final List<String> statements = new ArrayList<String>();
     final ConnectorInfo connectionInfo = _connectorRepository.getConnectionInfo(connectorId);
@@ -66,7 +67,8 @@ public class DropTablesTool
 
   public List<String> createDropIndexesStatements(final String connectorId) throws SQLException
   {
-    final List<TableMetaData> tableMetaData = TableOrderHint.getSortedTables(_connectorRepository, connectorId);
+    final List<TableMetaData> tableMetaData = new TableOrderTool().getOrderedTables(
+        TableOrderHint.getSortedTables(_connectorRepository, connectorId), false);
     final List<String> statements = new ArrayList<String>();
 
     for (final TableMetaData table : tableMetaData)
@@ -92,7 +94,8 @@ public class DropTablesTool
 
   public List<String> createDropTableStatements(final String connectorId) throws SQLException
   {
-    final List<TableMetaData> tableMetaData = TableOrderHint.getSortedTables(_connectorRepository, connectorId);
+    final List<TableMetaData> tableMetaData = new TableOrderTool().getOrderedTables(
+        TableOrderHint.getSortedTables(_connectorRepository, connectorId), false);
     final List<String> statements = new ArrayList<String>();
     final TableNameMapper tableNameMapper = _connectorRepository.getConnectorHint(connectorId, TableNameMapper.class).getValue();
 
