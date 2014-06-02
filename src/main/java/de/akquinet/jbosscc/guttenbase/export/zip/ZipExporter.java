@@ -12,6 +12,7 @@ import de.akquinet.jbosscc.guttenbase.meta.IndexMetaData;
 import de.akquinet.jbosscc.guttenbase.meta.TableMetaData;
 import de.akquinet.jbosscc.guttenbase.repository.ConnectorRepository;
 import de.akquinet.jbosscc.guttenbase.utils.Util;
+import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
 
 import java.io.*;
@@ -141,7 +142,7 @@ public class ZipExporter implements Exporter
 
     final FileInputStream fis = new FileInputStream(_tempFile);
     Util.copy(fis, _zipOutputStream);
-    fis.close();
+    IOUtils.closeQuietly(fis);
     closeEntry();
 
     _tempFile.delete();
