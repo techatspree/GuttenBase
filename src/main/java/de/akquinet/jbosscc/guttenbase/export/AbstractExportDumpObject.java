@@ -14,11 +14,11 @@ import java.sql.SQLException;
  * Since CLOBs/BLOBs may be quite big. we do not load them into memory
  * completely, but read them in chunks and write the data to the output stream
  * in a loop.
- * 
+ *
  * <p>
  * &copy; 2012-2020 akquinet tech@spree
  * </p>
- * 
+ *
  * @author M. Dahm
  */
 public abstract class AbstractExportDumpObject implements Externalizable {
@@ -86,6 +86,7 @@ public abstract class AbstractExportDumpObject implements Externalizable {
 			final InputStream inputStream = getBinaryStream(pos, length);
 			final byte[] bytes = new byte[length];
 			inputStream.read(bytes);
+      inputStream.close();
 
 			return bytes;
 		} catch (final IOException e) {
