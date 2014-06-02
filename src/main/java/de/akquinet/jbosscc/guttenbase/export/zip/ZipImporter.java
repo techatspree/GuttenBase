@@ -44,7 +44,7 @@ public class ZipImporter implements Importer
     final URL url = importDumpConnectionInfo.getPath();
     File file = new File(url.getPath());
 
-    // In case it's a HTTP-URL or whatever, dump it to a file first
+    // In case it's an HTTP-URL or whatever, dump it to a file first
     if (!file.exists())
     {
       file = File.createTempFile("GuttenBase", ".jar");
