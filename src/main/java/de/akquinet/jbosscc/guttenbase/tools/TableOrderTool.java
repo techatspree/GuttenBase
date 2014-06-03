@@ -1,14 +1,10 @@
 package de.akquinet.jbosscc.guttenbase.tools;
 
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-
 import de.akquinet.jbosscc.guttenbase.meta.ForeignKeyMetaData;
 import de.akquinet.jbosscc.guttenbase.meta.TableMetaData;
+
+import java.sql.SQLException;
+import java.util.*;
 
 /**
  * Order tables by foreign key constraints, i.e. the foreign keys of a database schema spawn an directed (possibly cyclic!) graph
@@ -18,7 +14,7 @@ import de.akquinet.jbosscc.guttenbase.meta.TableMetaData;
  * <p>
  * &copy; 2012-2020 akquinet tech@spree
  * </p>
- * 
+ *
  * @author M. Dahm
  */
 public class TableOrderTool
@@ -183,9 +179,21 @@ public class TableOrderTool
     public String toString()
     {
       return _tableMetaData.getTableName() + "::referencedTables:"
-          + getReferencedTables()
-          + ", referencedByTables: "
-          + getReferencedByTables();
+              + toString(getReferencedTables())
+              + ", referencedByTables: "
+              + toString(getReferencedByTables());
+    }
+
+    private static String toString(final List<TableNode> referencedTables)
+    {
+      List<String> result = new ArrayList<String>();
+
+      for (TableNode tableNode : referencedTables)
+      {
+        result.add(tableNode.getTableMetaData().getTableName());
+      }
+
+      return result.toString();
     }
   }
 }
