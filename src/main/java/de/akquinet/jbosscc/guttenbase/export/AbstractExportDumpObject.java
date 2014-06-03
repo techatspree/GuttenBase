@@ -71,6 +71,7 @@ public abstract class AbstractExportDumpObject implements Externalizable
       _tempFile = File.createTempFile("GB-DUMP-", null);
       _tempFile.deleteOnExit();
     }
+
     final FileOutputStream fileOutputStream = new FileOutputStream(_tempFile);
 
     for (byte[] buffer = (byte[]) input.readObject(); buffer != null; buffer = (byte[]) input.readObject())
