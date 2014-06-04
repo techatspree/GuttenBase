@@ -10,7 +10,7 @@ import java.util.*;
  * Order tables by foreign key constraints, i.e. the foreign keys of a database schema spawn an directed (possibly cyclic!) graph
  * of dependencies. The tool tries to create of sequential order either in top-down (starting at the root nodes) or bottom-up
  * (starting at the leaves) manner. <br/>
- * It will fail however, if there are cycles in the dependencies.
+ * If there are cycles in the dependencies, we choose the node with the fewest incoming/outgoing edges.
  * <p>
  * &copy; 2012-2020 akquinet tech@spree
  * </p>
@@ -32,48 +32,44 @@ public class TableOrderTool
 
     while (!tableNodes.isEmpty())
     {
-      final TableNode tableNode = findMatchingNode(tableNodes.values(), topDown);
+      final TableNode tableNode = findMatchingNode(new ArrayList<TableNode>(tableNodes.values()), topDown);
 
-      if (tableNode != null)
+      for (final TableNode referencingTable : tableNode.getReferencedByTables())
       {
-        for (final TableNode referencingTable : tableNode.getReferencedByTables())
-        {
-          referencingTable.removeReferencedTable(tableNode);
-        }
-
-        for (final TableNode referencedTable : tableNode.getReferencedTables())
-        {
-          referencedTable.removeReferencedByTable(tableNode);
-        }
-
-        result.add(tableNode.getTableMetaData());
-        tableNodes.remove(tableNode.getTableMetaData().getTableName().toUpperCase());
+        referencingTable.removeReferencedTable(tableNode);
       }
-      else
+
+      for (final TableNode referencedTable : tableNode.getReferencedTables())
       {
-        throw new SQLException("Cannot find matching table node!!. Possibly a cycle in dependencies? " + tableNodes.values());
+        referencedTable.removeReferencedByTable(tableNode);
       }
+
+      result.add(tableNode.getTableMetaData());
+      tableNodes.remove(tableNode.getTableMetaData().getTableName().toUpperCase());
     }
 
     return result;
   }
 
-  private TableNode findMatchingNode(final Collection<TableNode> tableNodes, final boolean topDown)
+  private TableNode findMatchingNode(final List<TableNode> tableNodes, final boolean topDown)
   {
-    for (final TableNode tableNode : tableNodes)
+    Collections.sort(tableNodes, new Comparator<TableNode>()
     {
-      if (matchingNode(tableNode, topDown))
+      @Override
+      public int compare(final TableNode tn1, final TableNode tn2)
       {
-        return tableNode;
+        if (topDown)
+        {
+          return tn1.getReferencedTables().size() - tn2.getReferencedTables().size();
+        }
+        else
+        {
+          return tn1.getReferencedByTables().size() - tn2.getReferencedByTables().size();
+        }
       }
-    }
+    });
 
-    return null;
-  }
-
-  private static boolean matchingNode(final TableNode tableNode, final boolean topDown)
-  {
-    return topDown ? tableNode.getReferencedTables().isEmpty() : tableNode.getReferencedByTables().isEmpty();
+    return tableNodes.get(0);
   }
 
   private Map<String, TableNode> createGraph(final List<TableMetaData> tableMetaData)
