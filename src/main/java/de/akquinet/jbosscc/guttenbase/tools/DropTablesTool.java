@@ -1,9 +1,5 @@
 package de.akquinet.jbosscc.guttenbase.tools;
 
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
-
 import de.akquinet.jbosscc.guttenbase.connector.ConnectorInfo;
 import de.akquinet.jbosscc.guttenbase.hints.TableOrderHint;
 import de.akquinet.jbosscc.guttenbase.mapping.TableNameMapper;
@@ -12,14 +8,18 @@ import de.akquinet.jbosscc.guttenbase.meta.IndexMetaData;
 import de.akquinet.jbosscc.guttenbase.meta.TableMetaData;
 import de.akquinet.jbosscc.guttenbase.repository.ConnectorRepository;
 
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Will drop tables in given schema. USE WITH CARE!
  * <p>
  * &copy; 2012-2020 akquinet tech@spree
  * </p>
- * 
- * @Uses-Hint {@link TableOrderHint} to determine order of tables
+ *
  * @author M. Dahm
+ * @Uses-Hint {@link TableOrderHint} to determine order of tables
  */
 public class DropTablesTool
 {
@@ -34,7 +34,7 @@ public class DropTablesTool
   public List<String> createDropForeignKeyStatements(final String connectorId) throws SQLException
   {
     final List<TableMetaData> tableMetaData = new TableOrderTool().getOrderedTables(
-        TableOrderHint.getSortedTables(_connectorRepository, connectorId), false);
+            TableOrderHint.getSortedTables(_connectorRepository, connectorId), false);
     final TableNameMapper tableNameMapper = _connectorRepository.getConnectorHint(connectorId, TableNameMapper.class).getValue();
     final List<String> statements = new ArrayList<String>();
     final ConnectorInfo connectionInfo = _connectorRepository.getConnectionInfo(connectorId);
@@ -42,12 +42,12 @@ public class DropTablesTool
 
     switch (connectionInfo.getDatabaseType())
     {
-    case MYSQL:
-      constraintClause = " FOREIGN KEY ";
-      break;
-    default:
-      constraintClause = " CONSTRAINT ";
-      break;
+      case MYSQL:
+        constraintClause = " FOREIGN KEY ";
+        break;
+      default:
+        constraintClause = " CONSTRAINT ";
+        break;
     }
 
     for (final TableMetaData table : tableMetaData)
@@ -55,10 +55,10 @@ public class DropTablesTool
       for (final ForeignKeyMetaData foreignKey : table.getImportedForeignKeys())
       {
         statements.add("ALTER TABLE " + tableNameMapper.mapTableName(table)
-            + " DROP"
-            + constraintClause
-            + foreignKey.getForeignKeyName()
-            + ";");
+                + " DROP"
+                + constraintClause
+                + foreignKey.getForeignKeyName()
+                + ";");
       }
     }
 
@@ -68,7 +68,7 @@ public class DropTablesTool
   public List<String> createDropIndexesStatements(final String connectorId) throws SQLException
   {
     final List<TableMetaData> tableMetaData = new TableOrderTool().getOrderedTables(
-        TableOrderHint.getSortedTables(_connectorRepository, connectorId), false);
+            TableOrderHint.getSortedTables(_connectorRepository, connectorId), false);
     final List<String> statements = new ArrayList<String>();
 
     for (final TableMetaData table : tableMetaData)
@@ -95,7 +95,7 @@ public class DropTablesTool
   public List<String> createDropTableStatements(final String connectorId) throws SQLException
   {
     final List<TableMetaData> tableMetaData = new TableOrderTool().getOrderedTables(
-        TableOrderHint.getSortedTables(_connectorRepository, connectorId), false);
+            TableOrderHint.getSortedTables(_connectorRepository, connectorId), false);
     final List<String> statements = new ArrayList<String>();
     final TableNameMapper tableNameMapper = _connectorRepository.getConnectorHint(connectorId, TableNameMapper.class).getValue();
 
@@ -109,7 +109,7 @@ public class DropTablesTool
 
   public void dropTables(final String targetId) throws SQLException
   {
-    new ScriptExecutorTool(_connectorRepository).executeScript(targetId, true, true, createDropTableStatements(targetId));
+    new ScriptExecutorTool(_connectorRepository).executeScript(targetId, true, false, createDropTableStatements(targetId));
   }
 
   public void dropIndexes(final String targetId) throws SQLException
