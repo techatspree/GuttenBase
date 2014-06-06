@@ -65,8 +65,6 @@ public class ZipImporter implements Importer
   @Override
   public void finishImport() throws Exception
   {
-    readExtraInformation();
-
     _zipFile.close();
     _zipFile = null;
   }
@@ -83,6 +81,8 @@ public class ZipImporter implements Importer
     final ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);
     final DatabaseMetaData databaseMetaData = (DatabaseMetaData) objectInputStream.readObject();
     objectInputStream.close();
+
+    readExtraInformation();
 
     return databaseMetaData;
   }
