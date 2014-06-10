@@ -77,5 +77,15 @@ public class ResourceUtil
     {
       return _jarFileOrFolder.canRead() && _jarFileOrFolder.isFile();
     }
+
+    @Override
+    public String toString()
+    {
+      return "ResourceInfo{" +
+              "_protocol='" + _protocol + '\'' +
+              ", _jarFileOrFolder=" + _jarFileOrFolder +
+              ", _pathToClass='" + _pathToClass + '\'' +
+              '}';
+    }
   }
 }
