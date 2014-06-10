@@ -2,6 +2,8 @@ What's new in Version 1.3
 ============================
 - Handling case in table names, etc. improved
 - TableOrderTool computes DROP/CREATE order for tables
+- Sequence handling refactored
+- Free blob resources after usage
 
 What's new in Version 1.2
 ============================
