@@ -1,6 +1,13 @@
 package de.akquinet.jbosscc.guttenbase.export;
 
-import java.io.*;
+import java.io.Externalizable;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.ObjectInput;
+import java.io.ObjectOutput;
 import java.sql.SQLException;
 
 /**
@@ -109,7 +116,7 @@ public abstract class AbstractExportDumpObject implements Externalizable
     return getBinaryStream(0, length());
   }
 
-  public InputStream getBinaryStream(final long pos, final long length) throws SQLException
+  public InputStream getBinaryStream(final long pos, @SuppressWarnings("unused") final long length) throws SQLException
   {
     try
     {
