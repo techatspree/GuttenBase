@@ -1,5 +1,7 @@
 package de.akquinet.jbosscc.guttenbase.export;
 
+import org.apache.commons.io.IOUtils;
+
 import java.io.Externalizable;
 import java.io.File;
 import java.io.FileInputStream;
@@ -26,10 +28,10 @@ public abstract class AbstractExportDumpObject implements Externalizable
   private static final long serialVersionUID = 1L;
 
   public static final int DEFAULT_BUFFER_SIZE = 1024 * 1024 * 10;
-
-  private static transient File _tempFile;
-
   private transient final InputStream _inputStream;
+
+  private transient File _tempFile;
+  private transient FileInputStream _fileInputStream;
 
   public AbstractExportDumpObject()
   {
@@ -120,9 +122,9 @@ public abstract class AbstractExportDumpObject implements Externalizable
   {
     try
     {
-      final FileInputStream inputStream = new FileInputStream(_tempFile);
-      inputStream.skip(pos);
-      return inputStream;
+      _fileInputStream = new FileInputStream(_tempFile);
+      _fileInputStream.skip(pos);
+      return _fileInputStream;
     }
     catch (final IOException e)
     {
@@ -130,8 +132,18 @@ public abstract class AbstractExportDumpObject implements Externalizable
     }
   }
 
-  public void free() throws SQLException
+  public final void free() throws SQLException
   {
+    if (_tempFile != null && _tempFile.exists())
+    {
+      _tempFile.delete();
+      _tempFile = null;
+    }
 
+    if (_fileInputStream != null)
+    {
+      IOUtils.closeQuietly(_fileInputStream);
+      _fileInputStream = null;
+    }
   }
 }

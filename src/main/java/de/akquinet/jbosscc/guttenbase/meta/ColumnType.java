@@ -4,6 +4,10 @@ import de.akquinet.jbosscc.guttenbase.connector.DatabaseType;
 import de.akquinet.jbosscc.guttenbase.exceptions.UnhandledColumnTypeException;
 import de.akquinet.jbosscc.guttenbase.utils.Util;
 
+import java.io.Closeable;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.Reader;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -117,22 +121,25 @@ public enum ColumnType
   /**
    * Set value in {@link PreparedStatement}
    */
-  public void setValue(final PreparedStatement insertStatement, final int columnIndex, final Object data,
-                       final DatabaseType databaseType, final int sqlType) throws SQLException
+  public Closeable setValue(final PreparedStatement insertStatement, final int columnIndex, final Object data,
+                            final DatabaseType databaseType, final int sqlType) throws SQLException
   {
     if (data == null)
     {
       insertStatement.setNull(columnIndex, sqlType);
+      return null;
     }
     else
     {
-      setStatementValue(insertStatement, columnIndex, data, databaseType);
+      return setStatementValue(insertStatement, columnIndex, data, databaseType);
     }
   }
 
-  private void setStatementValue(final PreparedStatement insertStatement, final int columnIndex, final Object data,
-                                 final DatabaseType databaseType) throws SQLException
+  private Closeable setStatementValue(final PreparedStatement insertStatement, final int columnIndex, final Object data,
+                                      final DatabaseType databaseType) throws SQLException
   {
+    Closeable result = null;
+
     switch (this)
     {
       case CLASS_STRING:
@@ -150,25 +157,44 @@ public enum ColumnType
       case CLASS_BLOB:
         if (driverSupportsStream(databaseType))
         {
-          insertStatement.setBlob(columnIndex, ((Blob) data).getBinaryStream());
+          final InputStream inputStream = ((Blob) data).getBinaryStream();
+          result = inputStream;
+          insertStatement.setBlob(columnIndex, inputStream);
         }
         else
         {
-          insertStatement.setBlob(columnIndex, ((Blob) data));
+          final Blob blob = (Blob) data;
+          result = new ClosableBlobWrapper(blob);
+          insertStatement.setBlob(columnIndex, blob);
         }
         break;
       case CLASS_CLOB:
         if (driverSupportsStream(databaseType))
         {
-          insertStatement.setClob(columnIndex, ((Clob) data).getCharacterStream());
+          final Reader characterStream = ((Clob) data).getCharacterStream();
+          result = characterStream;
+          insertStatement.setClob(columnIndex, characterStream);
         }
         else
         {
-          insertStatement.setClob(columnIndex, ((Clob) data));
+          final Clob clob = (Clob) data;
+          result = new ClosableClobWrapper(clob);
+          insertStatement.setClob(columnIndex, clob);
         }
         break;
       case CLASS_SQLXML:
-        insertStatement.setSQLXML(columnIndex, (SQLXML) data);
+        if (driverSupportsStream(databaseType))
+        {
+          final InputStream inputStream = ((SQLXML) data).getBinaryStream();
+          result = inputStream;
+          insertStatement.setBlob(columnIndex, inputStream);
+        }
+        else
+        {
+          final SQLXML blob = (SQLXML) data;
+          result = new ClosableSqlXmlWrapper(blob);
+          insertStatement.setSQLXML(columnIndex, blob);
+        }
         break;
       case CLASS_BOOLEAN:
         insertStatement.setBoolean(columnIndex, (Boolean) data);
@@ -197,6 +223,8 @@ public enum ColumnType
       default:
         throw new UnhandledColumnTypeException("Unhandled column type (" + this + ")");
     }
+
+    return result;
   }
 
   private boolean driverSupportsStream(final DatabaseType databaseType)
@@ -290,6 +318,75 @@ public enum ColumnType
       catch (final ClassNotFoundException e)
       {
         throw new SQLException("Class not found: " + className, e);
+      }
+    }
+  }
+
+  private static class ClosableBlobWrapper implements Closeable
+  {
+    private final Blob _blob;
+
+    public ClosableBlobWrapper(final Blob blob)
+    {
+      _blob = blob;
+    }
+
+    @Override
+    public void close() throws IOException
+    {
+      try
+      {
+        _blob.free();
+      }
+      catch (SQLException e)
+      {
+        throw new IOException("close", e);
+      }
+    }
+  }
+
+  private static class ClosableClobWrapper implements Closeable
+  {
+    private final Clob _blob;
+
+    public ClosableClobWrapper(final Clob blob)
+    {
+      _blob = blob;
+    }
+
+    @Override
+    public void close() throws IOException
+    {
+      try
+      {
+        _blob.free();
+      }
+      catch (SQLException e)
+      {
+        throw new IOException("close", e);
+      }
+    }
+  }
+
+  private class ClosableSqlXmlWrapper implements Closeable
+  {
+    private final SQLXML _blob;
+
+    public ClosableSqlXmlWrapper(final SQLXML blob)
+    {
+      _blob = blob;
+    }
+
+    @Override
+    public void close() throws IOException
+    {
+      try
+      {
+        _blob.free();
+      }
+      catch (SQLException e)
+      {
+        throw new IOException("close", e);
       }
     }
   }
