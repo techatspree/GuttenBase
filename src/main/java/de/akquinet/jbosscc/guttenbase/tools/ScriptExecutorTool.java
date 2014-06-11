@@ -1,17 +1,5 @@
 package de.akquinet.jbosscc.guttenbase.tools;
 
-import java.nio.charset.Charset;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import de.akquinet.jbosscc.guttenbase.configuration.TargetDatabaseConfiguration;
 import de.akquinet.jbosscc.guttenbase.connector.Connector;
 import de.akquinet.jbosscc.guttenbase.hints.TableOrderHint;
@@ -22,9 +10,13 @@ import de.akquinet.jbosscc.guttenbase.sql.SQLLexer;
 import de.akquinet.jbosscc.guttenbase.utils.ScriptExecutorProgressIndicator;
 import de.akquinet.jbosscc.guttenbase.utils.Util;
 
+import java.nio.charset.Charset;
+import java.sql.*;
+import java.util.*;
+
 /**
  * Execute given SQL script or single statements separated by given delimiter. Delimiter is ';' by default.
- * 
+ *
  * @copyright 2013 by akquinet tech@spree
  * @author M. Dahm
  */
@@ -95,7 +87,7 @@ public class ScriptExecutorTool {
 
   /**
    * Execute given lines of SQL. Each statement (not line!) must end with a ';'
-   * 
+   *
    * @param connectorId
    * @param scriptUpdatesSchema
    *          The script alters the schema, scheme information needs to be reloaded
@@ -105,7 +97,7 @@ public class ScriptExecutorTool {
    *          SQL statements ending with ';'
    * @throws SQLException
    */
-  public void executeScript(final String connectorId, final boolean scriptUpdatesSchema, final boolean prepareTargetConnection,
+    public void executeScript(final String connectorId, final boolean scriptUpdatesSchema, final boolean prepareTargetConnection,
       final List<String> lines) throws SQLException {
     if (lines.isEmpty()) {
       return;
@@ -155,7 +147,7 @@ public class ScriptExecutorTool {
   /**
    * Execute query (i.e. SELECT...) and return the result set as a list of Maps where the key is the column name and the value the
    * respective data.
-   * 
+   *
    * @throws SQLException
    */
   public List<Map<String, Object>> executeQuery(final String connectorId, final String sql) throws SQLException {

@@ -1,10 +1,5 @@
 package de.akquinet.jbosscc.guttenbase.tools;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-
 import de.akquinet.jbosscc.guttenbase.configuration.SourceDatabaseConfiguration;
 import de.akquinet.jbosscc.guttenbase.configuration.TargetDatabaseConfiguration;
 import de.akquinet.jbosscc.guttenbase.meta.TableMetaData;
@@ -13,12 +8,17 @@ import de.akquinet.jbosscc.guttenbase.statements.InsertStatementCreator;
 import de.akquinet.jbosscc.guttenbase.statements.InsertStatementFiller;
 import de.akquinet.jbosscc.guttenbase.statements.SelectStatementCreator;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
 /**
  * Copy all tables from one connection to the other with multiple VALUES-tuples per batch statement.
  * <p>
  * &copy; 2012-2020 akquinet tech@spree
  * </p>
- * 
+ *
  * @author M. Dahm
  */
 public class DefaultTableCopyTool extends AbstractTableCopyTool
@@ -30,7 +30,7 @@ public class DefaultTableCopyTool extends AbstractTableCopyTool
 
   /**
    * Copy data with multiple VALUES-tuples per batch statement.
-   * 
+   *
    * @throws SQLException
    */
   @Override
@@ -75,6 +75,8 @@ public class DefaultTableCopyTool extends AbstractTableCopyTool
         targetConnection.commit();
       }
 
+      insertStatementFiller.clear();
+
       _progressIndicator.endExecution((i + 1) * numberOfRowsPerBatch);
     }
 
@@ -90,12 +92,15 @@ public class DefaultTableCopyTool extends AbstractTableCopyTool
       insertStatementFiller.fillInsertStatementFromResultSet(sourceConnectorId, sourceTableMetaData, targetConnectorId,
           targetTableMetaData, targetDatabaseConfiguration, targetConnection, resultSet, finalInsert, remainder,
           useMultipleValuesClauses);
+
       finalInsert.executeBatch();
 
       if (targetDatabaseConfiguration.isMayCommit())
       {
         targetConnection.commit();
       }
+
+      insertStatementFiller.clear();
 
       _progressIndicator.endExecution(sourceRowCount);
 

@@ -1,10 +1,5 @@
 package de.akquinet.jbosscc.guttenbase.tools;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-
 import de.akquinet.jbosscc.guttenbase.configuration.SourceDatabaseConfiguration;
 import de.akquinet.jbosscc.guttenbase.configuration.TargetDatabaseConfiguration;
 import de.akquinet.jbosscc.guttenbase.meta.TableMetaData;
@@ -14,6 +9,11 @@ import de.akquinet.jbosscc.guttenbase.statements.InsertStatementFiller;
 import de.akquinet.jbosscc.guttenbase.statements.SplitByColumnSelectCountStatementCreator;
 import de.akquinet.jbosscc.guttenbase.statements.SplitByColumnSelectStatementCreator;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
 /**
  * Sometimes the amount of data exceeds any buffer. In these cases we need to split the data by some given range, usually the
  * primary key. I.e., the data is read in chunks where these chunks are split using the ID column range of values. Copy all tables
@@ -22,7 +22,7 @@ import de.akquinet.jbosscc.guttenbase.statements.SplitByColumnSelectStatementCre
  * <p>
  * &copy; 2012-2020 akquinet tech@spree
  * </p>
- * 
+ *
  * @author M. Dahm
  */
 public class SplitByRangeTableCopyTool extends AbstractTableCopyTool
@@ -34,7 +34,7 @@ public class SplitByRangeTableCopyTool extends AbstractTableCopyTool
 
   /**
    * Copy data with multiple VALUES-tuples per batch statement.
-   * 
+   *
    * @throws SQLException
    */
   @Override
@@ -92,6 +92,8 @@ public class SplitByRangeTableCopyTool extends AbstractTableCopyTool
         {
           targetConnection.commit();
         }
+
+        insertStatementFiller.clear();
 
         totalWritten += countData;
         _progressIndicator.endExecution(totalWritten);

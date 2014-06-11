@@ -1,32 +1,24 @@
 package de.akquinet.jbosscc.guttenbase.meta;
 
-import java.io.Serializable;
+import de.akquinet.jbosscc.guttenbase.connector.DatabaseType;
+import de.akquinet.jbosscc.guttenbase.exceptions.UnhandledColumnTypeException;
+import de.akquinet.jbosscc.guttenbase.utils.Util;
+
+import java.io.*;
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.sql.Blob;
-import java.sql.Clob;
-import java.sql.Date;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.SQLXML;
-import java.sql.Time;
-import java.sql.Timestamp;
+import java.sql.*;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import de.akquinet.jbosscc.guttenbase.connector.DatabaseType;
-import de.akquinet.jbosscc.guttenbase.exceptions.UnhandledColumnTypeException;
-import de.akquinet.jbosscc.guttenbase.utils.Util;
 
 /**
  * Define column type and mapping methods
  * <p>
  * &copy; 2012-2020 akquinet tech@spree
  * </p>
- * 
+ *
  * @author M. Dahm
  */
 public enum ColumnType
@@ -75,134 +67,157 @@ public enum ColumnType
   }
 
   private Object getValueFromResultset(final ResultSet resultSet, final int columnIndex)
-      throws SQLException,
-      UnhandledColumnTypeException
+          throws SQLException
   {
     switch (this)
     {
-    case CLASS_STRING:
-      return resultSet.getString(columnIndex);
-    case CLASS_DOUBLE:
-      return resultSet.getDouble(columnIndex);
-    case CLASS_INTEGER:
-      return resultSet.getInt(columnIndex);
-    case CLASS_LONG:
-      return resultSet.getLong(columnIndex);
-    case CLASS_BLOB:
-      return resultSet.getBlob(columnIndex);
-    case CLASS_CLOB:
-      return resultSet.getClob(columnIndex);
-    case CLASS_SQLXML:
-      return resultSet.getSQLXML(columnIndex);
-    case CLASS_FLOAT:
-      return resultSet.getFloat(columnIndex);
-    case CLASS_BOOLEAN:
-      return resultSet.getBoolean(columnIndex);
-    case CLASS_BIGDECIMAL:
-      return resultSet.getBigDecimal(columnIndex);
-    case CLASS_TIMESTAMP:
-      return resultSet.getTimestamp(columnIndex);
-    case CLASS_DATE:
-      return resultSet.getDate(columnIndex);
-    case CLASS_SHORT:
-      return resultSet.getShort(columnIndex);
-    case CLASS_TIME:
-      return resultSet.getTime(columnIndex);
-    case CLASS_OBJECT:
-      return resultSet.getObject(columnIndex);
-    default:
-      throw new UnhandledColumnTypeException("Unhandled column type (" + this + ")");
+      case CLASS_STRING:
+        return resultSet.getString(columnIndex);
+      case CLASS_DOUBLE:
+        return resultSet.getDouble(columnIndex);
+      case CLASS_INTEGER:
+        return resultSet.getInt(columnIndex);
+      case CLASS_LONG:
+        return resultSet.getLong(columnIndex);
+      case CLASS_BLOB:
+        return resultSet.getBlob(columnIndex);
+      case CLASS_CLOB:
+        return resultSet.getClob(columnIndex);
+      case CLASS_SQLXML:
+        return resultSet.getSQLXML(columnIndex);
+      case CLASS_FLOAT:
+        return resultSet.getFloat(columnIndex);
+      case CLASS_BOOLEAN:
+        return resultSet.getBoolean(columnIndex);
+      case CLASS_BIGDECIMAL:
+        return resultSet.getBigDecimal(columnIndex);
+      case CLASS_TIMESTAMP:
+        return resultSet.getTimestamp(columnIndex);
+      case CLASS_DATE:
+        return resultSet.getDate(columnIndex);
+      case CLASS_SHORT:
+        return resultSet.getShort(columnIndex);
+      case CLASS_TIME:
+        return resultSet.getTime(columnIndex);
+      case CLASS_OBJECT:
+        return resultSet.getObject(columnIndex);
+      default:
+        throw new UnhandledColumnTypeException("Unhandled column type (" + this + ")");
     }
   }
 
   /**
    * Set value in {@link PreparedStatement}
    */
-  public void setValue(final PreparedStatement insertStatement, final int columnIndex, final Object data,
-      final DatabaseType databaseType, final int sqlType) throws SQLException
+  public Closeable setValue(final PreparedStatement insertStatement, final int columnIndex, final Object data,
+                            final DatabaseType databaseType, final int sqlType) throws SQLException
   {
     if (data == null)
     {
       insertStatement.setNull(columnIndex, sqlType);
+      return null;
     }
     else
     {
-      setStatementValue(insertStatement, columnIndex, data, databaseType);
+      return setStatementValue(insertStatement, columnIndex, data, databaseType);
     }
   }
 
-  private void setStatementValue(final PreparedStatement insertStatement, final int columnIndex, final Object data,
-      final DatabaseType databaseType) throws SQLException, UnhandledColumnTypeException
+  private Closeable setStatementValue(final PreparedStatement insertStatement, final int columnIndex, final Object data,
+                                      final DatabaseType databaseType) throws SQLException
   {
+    Closeable result = null;
+
     switch (this)
     {
-    case CLASS_STRING:
-      insertStatement.setString(columnIndex, (String) data);
-      break;
-    case CLASS_INTEGER:
-      insertStatement.setInt(columnIndex, (Integer) data);
-      break;
-    case CLASS_LONG:
-      insertStatement.setLong(columnIndex, (Long) data);
-      break;
-    case CLASS_DOUBLE:
-      insertStatement.setDouble(columnIndex, (Double) data);
-      break;
-    case CLASS_BLOB:
-      if (driverSupportsStream(databaseType))
-      {
-        insertStatement.setBlob(columnIndex, ((Blob) data).getBinaryStream());
-      }
-      else
-      {
-        insertStatement.setBlob(columnIndex, ((Blob) data));
-      }
-      break;
-    case CLASS_CLOB:
-      if (driverSupportsStream(databaseType))
-      {
-        insertStatement.setClob(columnIndex, ((Clob) data).getCharacterStream());
-      }
-      else
-      {
-        insertStatement.setClob(columnIndex, ((Clob) data));
-      }
-      break;
-    case CLASS_SQLXML:
-      insertStatement.setSQLXML(columnIndex, (SQLXML) data);
-      break;
-    case CLASS_BOOLEAN:
-      insertStatement.setBoolean(columnIndex, (Boolean) data);
-      break;
-    case CLASS_BIGDECIMAL:
-      insertStatement.setBigDecimal(columnIndex, (BigDecimal) data);
-      break;
-    case CLASS_TIMESTAMP:
-      insertStatement.setTimestamp(columnIndex, (Timestamp) data);
-      break;
-    case CLASS_DATE:
-      insertStatement.setDate(columnIndex, (Date) data);
-      break;
-    case CLASS_FLOAT:
-      insertStatement.setFloat(columnIndex, (Float) data);
-      break;
-    case CLASS_SHORT:
-      insertStatement.setShort(columnIndex, (Short) data);
-      break;
-    case CLASS_TIME:
-      insertStatement.setTime(columnIndex, (Time) data);
-      break;
-    case CLASS_OBJECT:
-      insertStatement.setObject(columnIndex, data);
-      break;
-    default:
-      throw new UnhandledColumnTypeException("Unhandled column type (" + this + ")");
+      case CLASS_STRING:
+        insertStatement.setString(columnIndex, (String) data);
+        break;
+      case CLASS_INTEGER:
+        insertStatement.setInt(columnIndex, (Integer) data);
+        break;
+      case CLASS_LONG:
+        insertStatement.setLong(columnIndex, (Long) data);
+        break;
+      case CLASS_DOUBLE:
+        insertStatement.setDouble(columnIndex, (Double) data);
+        break;
+      case CLASS_BLOB:
+        if (driverSupportsStream(databaseType))
+        {
+          final InputStream inputStream = ((Blob) data).getBinaryStream();
+          result = inputStream;
+          insertStatement.setBlob(columnIndex, inputStream);
+        }
+        else
+        {
+          final Blob blob = (Blob) data;
+          result = new ClosableBlobWrapper(blob);
+          insertStatement.setBlob(columnIndex, blob);
+        }
+        break;
+      case CLASS_CLOB:
+        if (driverSupportsStream(databaseType))
+        {
+          final Reader characterStream = ((Clob) data).getCharacterStream();
+          result = characterStream;
+          insertStatement.setClob(columnIndex, characterStream);
+        }
+        else
+        {
+          final Clob clob = (Clob) data;
+          result = new ClosableClobWrapper(clob);
+          insertStatement.setClob(columnIndex, clob);
+        }
+        break;
+      case CLASS_SQLXML:
+        if (driverSupportsStream(databaseType))
+        {
+          final InputStream inputStream = ((SQLXML) data).getBinaryStream();
+          result = inputStream;
+          insertStatement.setBlob(columnIndex, inputStream);
+        }
+        else
+        {
+          final SQLXML blob = (SQLXML) data;
+          result = new ClosableSqlXmlWrapper(blob);
+          insertStatement.setSQLXML(columnIndex, blob);
+        }
+        break;
+      case CLASS_BOOLEAN:
+        insertStatement.setBoolean(columnIndex, (Boolean) data);
+        break;
+      case CLASS_BIGDECIMAL:
+        insertStatement.setBigDecimal(columnIndex, (BigDecimal) data);
+        break;
+      case CLASS_TIMESTAMP:
+        insertStatement.setTimestamp(columnIndex, (Timestamp) data);
+        break;
+      case CLASS_DATE:
+        insertStatement.setDate(columnIndex, (Date) data);
+        break;
+      case CLASS_FLOAT:
+        insertStatement.setFloat(columnIndex, (Float) data);
+        break;
+      case CLASS_SHORT:
+        insertStatement.setShort(columnIndex, (Short) data);
+        break;
+      case CLASS_TIME:
+        insertStatement.setTime(columnIndex, (Time) data);
+        break;
+      case CLASS_OBJECT:
+        insertStatement.setObject(columnIndex, data);
+        break;
+      default:
+        throw new UnhandledColumnTypeException("Unhandled column type (" + this + ")");
     }
+
+    return result;
   }
 
   private boolean driverSupportsStream(final DatabaseType databaseType)
   {
-    return !(DatabaseType.POSTGRESQL.equals(databaseType) || DatabaseType.DB2.equals(databaseType));
+    return !(DatabaseType.POSTGRESQL.equals(databaseType) || DatabaseType.DB2.equals(databaseType) || DatabaseType.MSSQL.equals(databaseType));
   }
 
   /**
@@ -240,7 +255,7 @@ public enum ColumnType
   /**
    * Check if class can be mapped to {@link ColumnType}.
    */
-  public static boolean isSupportedClass(final Class<?> columnClass) throws SQLException
+  public static boolean isSupportedClass(final Class<?> columnClass)
   {
     init();
 
@@ -291,6 +306,75 @@ public enum ColumnType
       catch (final ClassNotFoundException e)
       {
         throw new SQLException("Class not found: " + className, e);
+      }
+    }
+  }
+
+  private static class ClosableBlobWrapper implements Closeable
+  {
+    private final Blob _blob;
+
+    public ClosableBlobWrapper(final Blob blob)
+    {
+      _blob = blob;
+    }
+
+    @Override
+    public void close() throws IOException
+    {
+      try
+      {
+        _blob.free();
+      }
+      catch (SQLException e)
+      {
+        throw new IOException("close", e);
+      }
+    }
+  }
+
+  private static class ClosableClobWrapper implements Closeable
+  {
+    private final Clob _blob;
+
+    public ClosableClobWrapper(final Clob blob)
+    {
+      _blob = blob;
+    }
+
+    @Override
+    public void close() throws IOException
+    {
+      try
+      {
+        _blob.free();
+      }
+      catch (SQLException e)
+      {
+        throw new IOException("close", e);
+      }
+    }
+  }
+
+  private class ClosableSqlXmlWrapper implements Closeable
+  {
+    private final SQLXML _blob;
+
+    public ClosableSqlXmlWrapper(final SQLXML blob)
+    {
+      _blob = blob;
+    }
+
+    @Override
+    public void close() throws IOException
+    {
+      try
+      {
+        _blob.free();
+      }
+      catch (SQLException e)
+      {
+        throw new IOException("close", e);
       }
     }
   }
