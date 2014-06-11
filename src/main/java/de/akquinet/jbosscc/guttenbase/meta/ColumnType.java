@@ -4,22 +4,10 @@ import de.akquinet.jbosscc.guttenbase.connector.DatabaseType;
 import de.akquinet.jbosscc.guttenbase.exceptions.UnhandledColumnTypeException;
 import de.akquinet.jbosscc.guttenbase.utils.Util;
 
-import java.io.Closeable;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.Reader;
-import java.io.Serializable;
+import java.io.*;
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.sql.Blob;
-import java.sql.Clob;
-import java.sql.Date;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.SQLXML;
-import java.sql.Time;
-import java.sql.Timestamp;
+import java.sql.*;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -229,7 +217,7 @@ public enum ColumnType
 
   private boolean driverSupportsStream(final DatabaseType databaseType)
   {
-    return !(DatabaseType.POSTGRESQL.equals(databaseType) || DatabaseType.DB2.equals(databaseType));
+    return !(DatabaseType.POSTGRESQL.equals(databaseType) || DatabaseType.DB2.equals(databaseType) || DatabaseType.MSSQL.equals(databaseType));
   }
 
   /**
