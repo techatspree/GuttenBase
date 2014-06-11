@@ -20,9 +20,9 @@ public class ResourceUtilTest
 
     final ResourceUtil.ResourceInfo resourceInfoFile = _objectUnderTest.getResourceInfo(ResourceUtilTest.class);
     Assert.assertFalse(resourceInfoFile.isJarFile());
-    Assert.assertTrue(resourceInfoFile.getJarFileOrFolder().getAbsolutePath(), resourceInfoFile.getJarFileOrFolder().getAbsolutePath().endsWith("/test-classes"));
-    Assert.assertTrue(resourceInfoFile.getPathToClass().endsWith("/ResourceUtilTest.class"));
+    Assert.assertTrue(resourceInfoFile.getJarFileOrFolder().getAbsolutePath(), resourceInfoFile.getJarFileOrFolder().getAbsolutePath().endsWith("test-classes"));
+    Assert.assertTrue(resourceInfoFile.getPathToClass().endsWith("ResourceUtilTest.class"));
     final File thisFile = new File(resourceInfoFile.getJarFileOrFolder(), resourceInfoFile.getPathToClass());
-    Assert.assertTrue(thisFile.getAbsolutePath(),thisFile.exists());
+    Assert.assertTrue(thisFile.getAbsolutePath(), thisFile.exists());
   }
 }

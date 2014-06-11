@@ -35,9 +35,14 @@ public class ResourceUtil
       throw new IOException("Cannot handle protocol " + protocol + " while reading classes");
     }
 
-    if (Util.isWindows() && path.startsWith("/"))
+    if (Util.isWindows())
     {
-      path = path.substring(1);
+      if (path.startsWith("/"))
+      {
+        path = path.substring(1);
+      }
+
+      path = path.replace('\\', '/'); // avoid ugly DOS path names
     }
 
     path = URLDecoder.decode(path, "UTF-8");
