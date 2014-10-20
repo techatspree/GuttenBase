@@ -80,14 +80,15 @@ public class DatabaseSchemaScriptCreatorTest
     final List<String> indexStatements = _objectUnderTest.createIndexStatements();
     assertEquals(2, indexStatements.size());
     final String indexStatement = indexStatements.get(0);
-    assertTrue(indexStatement, indexStatement.startsWith("CREATE UNIQUE INDEX NAME_IDX1_1 ON schemaName.MY_TABLE"));
+    assertTrue(indexStatement, indexStatement.startsWith("CREATE UNIQUE INDEX NAME_IDX1_MY_TABLE1_1 ON schemaName.MY_TABLE1"));
     assertTrue(indexStatement, indexStatement.contains("NAME"));
 
     final List<String> foreignKeyStatements = _objectUnderTest.createForeignKeyStatements();
     assertEquals(1, foreignKeyStatements.size());
     final String foreignKeyStatement = foreignKeyStatements.get(0);
 
-    assertTrue(foreignKeyStatement, foreignKeyStatement.startsWith("ALTER TABLE schemaName.MY_TABLE1"));
+    assertTrue(foreignKeyStatement,
+        foreignKeyStatement.startsWith("ALTER TABLE schemaName.MY_TABLE1 ADD CONSTRAINT FK_MY_TABLE1_NAME_NAME_1 FOREIGN KEY "));
   }
 
   @Test
