@@ -22,8 +22,6 @@ import de.akquinet.jbosscc.guttenbase.tools.TableOrderTool;
  */
 public class DatabaseSchemaScriptCreator
 {
-  private int _keyCounter = 1;
-
   private final DatabaseMetaData _sourceDatabaseMetaData;
   private final String _targetSchema;
   private SchemaColumnTypeMapper _columnTypeMapper = new DefaultSchemaColumnTypeMapper();
@@ -79,11 +77,12 @@ public class DatabaseSchemaScriptCreator
 
     for (final TableMetaData tableMetaData : _sourceDatabaseMetaData.getTableMetaData())
     {
+      final int counter = 1;
       final List<ColumnMetaData> primaryKeyColumns = tableMetaData.getPrimaryKeyColumns();
 
       if (!primaryKeyColumns.isEmpty())
       {
-        result.add(createPrimaryKeyStatement(tableMetaData, primaryKeyColumns));
+        result.add(createPrimaryKeyStatement(tableMetaData, primaryKeyColumns, counter));
       }
     }
 
@@ -96,11 +95,12 @@ public class DatabaseSchemaScriptCreator
 
     for (final TableMetaData tableMetaData : _sourceDatabaseMetaData.getTableMetaData())
     {
+      final int counter = 1;
       final List<IndexMetaData> indexes = tableMetaData.getIndexes();
 
       for (final IndexMetaData indexMetaData : indexes)
       {
-        result.add(createIndexesForTable(indexMetaData));
+        result.add(createIndexesForTable(indexMetaData, counter));
       }
     }
 
@@ -113,13 +113,14 @@ public class DatabaseSchemaScriptCreator
 
     for (final TableMetaData tableMetaData : _sourceDatabaseMetaData.getTableMetaData())
     {
+      final int counter = 1;
       final List<ColumnMetaData> columns = tableMetaData.getColumnMetaData();
 
       for (final ColumnMetaData columnMetaData : columns)
       {
         if (columnMetaData.getReferencedColumn() != null)
         {
-          result.add(createForeignKeyForTable(columnMetaData));
+          result.add(createForeignKeyForTable(columnMetaData, counter));
         }
       }
     }
@@ -149,7 +150,8 @@ public class DatabaseSchemaScriptCreator
     return builder.toString();
   }
 
-  private String createPrimaryKeyStatement(final TableMetaData tableMetaData, final List<ColumnMetaData> primaryKeyColumns)
+  private String createPrimaryKeyStatement(final TableMetaData tableMetaData, final List<ColumnMetaData> primaryKeyColumns,
+      int counter)
   {
     final String tableName = _caseConversionMode.convert(tableMetaData.getTableName());
     final StringBuilder builder = new StringBuilder("ALTER TABLE " + ("".equals(_targetSchema) ? "" : _targetSchema + ".")
@@ -157,7 +159,7 @@ public class DatabaseSchemaScriptCreator
         + " ADD CONSTRAINT PK_"
         + tableName
         + "_"
-        + _keyCounter++
+        + counter++
         + " PRIMARY KEY (");
 
     for (final ColumnMetaData columnMetaData : primaryKeyColumns)
@@ -170,7 +172,7 @@ public class DatabaseSchemaScriptCreator
     return builder.toString();
   }
 
-  private String createIndexesForTable(final IndexMetaData indexMetaData)
+  private String createIndexesForTable(final IndexMetaData indexMetaData, int counter)
   {
     final TableMetaData tableMetaData = indexMetaData.getTableMetaData();
     final String schemaPrefix = "".equals(_targetSchema) ? "" : _targetSchema + ".";
@@ -180,7 +182,9 @@ public class DatabaseSchemaScriptCreator
         + "INDEX "
         + _caseConversionMode.convert(indexMetaData.getIndexName())
         + "_"
-        + _keyCounter++
+        + _caseConversionMode.convert(tableMetaData.getTableName())
+        + "_"
+        + counter++
         + " ON "
         + schemaPrefix
         + _caseConversionMode.convert(tableMetaData.getTableName())
@@ -202,7 +206,7 @@ public class DatabaseSchemaScriptCreator
     return builder.toString();
   }
 
-  private String createForeignKeyForTable(final ColumnMetaData columnMetaData)
+  private String createForeignKeyForTable(final ColumnMetaData columnMetaData, int counter)
   {
     final TableMetaData tableMetaData = columnMetaData.getTableMetaData();
     final String schemaPrefix = "".equals(_targetSchema) ? "" : _targetSchema + ".";
@@ -211,11 +215,13 @@ public class DatabaseSchemaScriptCreator
     final StringBuilder builder = new StringBuilder("ALTER TABLE " + schemaPrefix
         + _caseConversionMode.convert(tableMetaData.getTableName())
         + " ADD CONSTRAINT ");
-    builder.append("FK_" + _caseConversionMode.convert(columnMetaData.getColumnName())
+    builder.append("FK_" + _caseConversionMode.convert(tableMetaData.getTableName())
+        + "_"
+        + _caseConversionMode.convert(columnMetaData.getColumnName())
         + "_"
         + _caseConversionMode.convert(referencedColumn.getColumnName())
         + "_"
-        + _keyCounter++);
+        + counter++);
     builder.append(" FOREIGN KEY (" + _caseConversionMode.convert(columnMetaData.getColumnName())
         + ") REFERENCES "
         + schemaPrefix
