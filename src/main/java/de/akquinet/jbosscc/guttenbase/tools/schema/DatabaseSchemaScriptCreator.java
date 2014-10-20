@@ -214,11 +214,10 @@ public class DatabaseSchemaScriptCreator
 
     final String tablename = _caseConversionMode.convert(tableMetaData.getTableName());
     final StringBuilder builder = new StringBuilder("ALTER TABLE " + schemaPrefix + tablename + " ADD CONSTRAINT ");
-    final String foreignkeyName = tablename + "_"
+    builder.append("FK_" + tablename + "_"
         + _caseConversionMode.convert(columnMetaData.getColumnName())
         + "_"
-        + _caseConversionMode.convert(referencedColumn.getColumnName());
-    builder.append("FK_" + (foreignkeyName.length() > 55 ? foreignkeyName.substring(0, 55) : foreignkeyName) + "_" + counter);
+        + _caseConversionMode.convert(referencedColumn.getColumnName()) + "_" + counter);
     builder.append(" FOREIGN KEY (" + _caseConversionMode.convert(columnMetaData.getColumnName())
         + ") REFERENCES "
         + schemaPrefix
