@@ -212,10 +212,9 @@ public class DatabaseSchemaScriptCreator
     final String schemaPrefix = "".equals(_targetSchema) ? "" : _targetSchema + ".";
     final ColumnMetaData referencedColumn = columnMetaData.getReferencedColumn();
 
-    final StringBuilder builder = new StringBuilder("ALTER TABLE " + schemaPrefix
-        + _caseConversionMode.convert(tableMetaData.getTableName())
-        + " ADD CONSTRAINT ");
-    builder.append("FK_" + _caseConversionMode.convert(tableMetaData.getTableName())
+    final String tablename = _caseConversionMode.convert(tableMetaData.getTableName());
+    final StringBuilder builder = new StringBuilder("ALTER TABLE " + schemaPrefix + tablename + " ADD CONSTRAINT ");
+    builder.append("FK_" + (tablename.length() > 40 ? tablename.substring(0, 40) : tablename)
         + "_"
         + _caseConversionMode.convert(columnMetaData.getColumnName())
         + "_"
