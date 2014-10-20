@@ -218,7 +218,7 @@ public class DatabaseSchemaScriptCreator
         + _caseConversionMode.convert(columnMetaData.getColumnName())
         + "_"
         + _caseConversionMode.convert(referencedColumn.getColumnName());
-    builder.append("FK_" + (foreignkeyName.length() > 64 ? foreignkeyName.substring(0, 63) : foreignkeyName) + "_" + counter++);
+    builder.append("FK_" + (foreignkeyName.length() > 55 ? foreignkeyName.substring(0, 55) : foreignkeyName) + "_" + counter++);
     builder.append(" FOREIGN KEY (" + _caseConversionMode.convert(columnMetaData.getColumnName())
         + ") REFERENCES "
         + schemaPrefix
