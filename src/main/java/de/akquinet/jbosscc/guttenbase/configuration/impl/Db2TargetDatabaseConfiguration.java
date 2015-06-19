@@ -1,34 +1,35 @@
 package de.akquinet.jbosscc.guttenbase.configuration.impl;
 
+import de.akquinet.jbosscc.guttenbase.hints.TableNameMapperHint;
+import de.akquinet.jbosscc.guttenbase.hints.TableOrderHint;
+import de.akquinet.jbosscc.guttenbase.meta.DatabaseMetaData;
+import de.akquinet.jbosscc.guttenbase.meta.TableMetaData;
+import de.akquinet.jbosscc.guttenbase.repository.ConnectorRepository;
+import de.akquinet.jbosscc.guttenbase.tools.ScriptExecutorTool;
+
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import de.akquinet.jbosscc.guttenbase.hints.TableNameMapperHint;
-import de.akquinet.jbosscc.guttenbase.meta.DatabaseMetaData;
-import de.akquinet.jbosscc.guttenbase.repository.ConnectorRepository;
-import de.akquinet.jbosscc.guttenbase.tools.ScriptExecutorTool;
-
 /**
  * Implementation for IBM DB2 data base.
- * 
- * @see http://stackoverflow.com/questions/421518/is-there-a-way-to-enable-disable-constraints-in-db2-v7
- *      <p>
- *      &copy; 2012-2020 akquinet tech@spree
- *      </p>
- * @Uses-Hint {@link TableNameMapperHint}
+ *
  * @author M. Dahm
+ * @Uses-Hint {@link TableNameMapperHint}
+ * @see http://stackoverflow.com/questions/421518/is-there-a-way-to-enable-disable-constraints-in-db2-v7
+ * <p>
+ * &copy; 2012-2020 akquinet tech@spree
+ * </p>
  */
-public class Db2TargetDatabaseConfiguration extends DefaultTargetDatabaseConfiguration
-{
-  private Map<String, String> _constraintsOfTable;
+public class Db2TargetDatabaseConfiguration extends DefaultTargetDatabaseConfiguration {
+  private final Map<String, List<String>> _constraintsOfTable = new LinkedHashMap<String, List<String>>();
   private String _schema;
 
-  public Db2TargetDatabaseConfiguration(final ConnectorRepository connectorRepository)
-  {
+  public Db2TargetDatabaseConfiguration(final ConnectorRepository connectorRepository) {
     super(connectorRepository);
   }
 
@@ -57,16 +58,22 @@ public class Db2TargetDatabaseConfiguration extends DefaultTargetDatabaseConfigu
    * {@inheritDoc}
    */
   @Override
-  public void initializeTargetConnection(final Connection connection, final String connectorId) throws SQLException
-  {
-    if (connection.getAutoCommit())
-    {
+  public void initializeTargetConnection(final Connection connection, final String connectorId) throws SQLException {
+    if (connection.getAutoCommit()) {
       connection.setAutoCommit(false);
     }
 
     final DatabaseMetaData databaseMetaData = _connectorRepository.getDatabaseMetaData(connectorId);
+    final List<TableMetaData> tableMetaDatas = TableOrderHint.getSortedTables(_connectorRepository, connectorId);
+
     _schema = databaseMetaData.getSchema();
-    _constraintsOfTable = loadConstraints(connection);
+    _constraintsOfTable.clear();
+
+    for (final TableMetaData tableMetaData : tableMetaDatas) {
+      _constraintsOfTable.put(tableMetaData.getTableName().toUpperCase(), new ArrayList<String>());
+    }
+
+    loadConstraints(connection);
 
     setTableForeignKeys(connection, false);
   }
@@ -75,41 +82,38 @@ public class Db2TargetDatabaseConfiguration extends DefaultTargetDatabaseConfigu
    * {@inheritDoc}
    */
   @Override
-  public void finalizeTargetConnection(final Connection connection, final String connectorId) throws SQLException
-  {
+  public void finalizeTargetConnection(final Connection connection, final String connectorId) throws SQLException {
     setTableForeignKeys(connection, true);
   }
 
-  private void setTableForeignKeys(final Connection connection, final boolean enable) throws SQLException
-  {
-    for (final Entry<String, String> entry : _constraintsOfTable.entrySet())
-    {
-      final String constraintName = entry.getKey();
-      final String tableName = entry.getValue();
+  private void setTableForeignKeys(final Connection connection, final boolean enable) throws SQLException {
+    for (final Entry<String, List<String>> entry : _constraintsOfTable.entrySet()) {
+      final String tableName = entry.getKey();
 
-      executeSQL(connection, "ALTER TABLE " + _schema
-          + "."
-          + tableName
-          + " ALTER FOREIGN KEY "
-          + constraintName
-          + (enable ? " ENFORCED" : " NOT ENFORCED"));
+      for (final String constraintName : entry.getValue()) {
+        executeSQL(connection, "ALTER TABLE " + _schema
+                + "."
+                + tableName
+                + " ALTER FOREIGN KEY "
+                + constraintName
+                + (enable ? " ENFORCED" : " NOT ENFORCED"));
+      }
     }
   }
 
-  private Map<String, String> loadConstraints(final Connection connection) throws SQLException
-  {
-    final HashMap<String, String> result = new HashMap<String, String>();
+  private void loadConstraints(final Connection connection) throws SQLException {
     final ScriptExecutorTool scriptExecutorTool = new ScriptExecutorTool(_connectorRepository);
     final List<Map<String, Object>> queryResult = scriptExecutorTool.executeQuery(connection,
-        "SELECT CONSTNAME, TABNAME FROM SYSCAT.TABCONST WHERE TABSCHEMA='" + _schema + "' AND TYPE='F' ORDER BY TABNAME");
+            "SELECT DISTINCT CONSTNAME, TABNAME FROM SYSCAT.TABCONST WHERE TABSCHEMA='" + _schema + "' AND TYPE='F' ORDER BY TABNAME");
 
-    for (final Map<String, Object> map : queryResult)
-    {
+    for (final Map<String, Object> map : queryResult) {
       final String constraintName = String.valueOf(map.get("CONSTNAME"));
-      final String tableName = String.valueOf(map.get("TABNAME"));
-      result.put(constraintName, tableName);
-    }
+      final String tableName = String.valueOf(map.get("TABNAME")).toUpperCase();
+      final List<String> constraintNames = _constraintsOfTable.get(tableName);
 
-    return result;
+      if (constraintNames != null) {
+        constraintNames.add(constraintName);
+      }
+    }
   }
 }
