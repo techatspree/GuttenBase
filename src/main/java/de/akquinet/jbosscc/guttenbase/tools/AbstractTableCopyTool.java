@@ -48,24 +48,23 @@ public abstract class AbstractTableCopyTool {
     _progressIndicator.initializeIndicator();
 
     final List<TableMetaData> tableSourceMetaDatas = TableOrderHint.getSortedTables(_connectorRepository, sourceConnectorId);
-    final NumberOfRowsPerBatch numberOfRowsPerInsertionHint = _connectorRepository.getConnectorHint(targetConnectorId,
-            NumberOfRowsPerBatch.class).getValue();
-    final MaxNumberOfDataItems maxNumberOfDataItemsHint = _connectorRepository.getConnectorHint(targetConnectorId,
-            MaxNumberOfDataItems.class).getValue();
+    final NumberOfRowsPerBatch numberOfRowsPerInsertionHint = _connectorRepository.getConnectorHint(targetConnectorId, NumberOfRowsPerBatch.class).getValue();
+    final MaxNumberOfDataItems maxNumberOfDataItemsHint = _connectorRepository.getConnectorHint(targetConnectorId, MaxNumberOfDataItems.class).getValue();
 
     final SourceDatabaseConfiguration sourceDatabaseConfiguration = _connectorRepository
             .getSourceDatabaseConfiguration(sourceConnectorId);
     final TargetDatabaseConfiguration targetDatabaseConfiguration = _connectorRepository
             .getTargetDatabaseConfiguration(targetConnectorId);
-    final Connector sourceConnector = _connectorRepository.createConnector(sourceConnectorId);
-    final Connector targetConnector = _connectorRepository.createConnector(targetConnectorId);
-    final Connection sourceConnection = sourceConnector.openConnection();
-    Connection targetConnection = targetConnector.openConnection();
     final TableNameMapper sourceTableNameMapper = _connectorRepository.getConnectorHint(sourceConnectorId, TableNameMapper.class).getValue();
     final TableNameMapper targetTableNameMapper = _connectorRepository.getConnectorHint(targetConnectorId, TableNameMapper.class).getValue();
     final RefreshTargetConnection refreshTargetConnection = _connectorRepository.getConnectorHint(targetConnectorId, RefreshTargetConnection.class).getValue();
     final TableMapper tableMapper = _connectorRepository.getConnectorHint(targetConnectorId, TableMapper.class).getValue();
     final DatabaseMetaData targetDatabaseMetaData = _connectorRepository.getDatabaseMetaData(targetConnectorId);
+
+    final Connector sourceConnector = _connectorRepository.createConnector(sourceConnectorId);
+    final Connector targetConnector = _connectorRepository.createConnector(targetConnectorId);
+    final Connection sourceConnection = sourceConnector.openConnection();
+    Connection targetConnection = targetConnector.openConnection();
 
     sourceDatabaseConfiguration.initializeSourceConnection(sourceConnection, sourceConnectorId);
     targetDatabaseConfiguration.initializeTargetConnection(targetConnection, targetConnectorId);
@@ -119,9 +118,8 @@ public abstract class AbstractTableCopyTool {
       targetDatabaseConfiguration.afterTableCopy(targetConnection, targetConnectorId, targetTableMetaData);
 
       _progressIndicator.endProcess();
-      noCopiedTables++;
 
-      if (refreshTargetConnection.refreshConnection(noCopiedTables, sourceTableMetaData)) {
+      if (refreshTargetConnection.refreshConnection(noCopiedTables++, sourceTableMetaData)) {
         _progressIndicator.info("Refreshing target connection.");
         targetDatabaseConfiguration.finalizeTargetConnection(targetConnection, targetConnectorId);
 
