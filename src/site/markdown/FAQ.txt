@@ -4,7 +4,7 @@ Frequently Asked Questions (FAQ)
 Q: Why do I get a "java.sql.SQLIntegrityConstraintViolationException: ORA-01400: cannot insert NULL" when copying to an Oracle DB?
 ---------------------
 
-A: Oracle chose for some reason to treat empty strings as NULL 
+A: Oracle chose for some reason to treat empty strings as NULL
 (See discussion in [stackoverflow](http://stackoverflow.com/questions/203493/why-does-oracle-9i-treat-an-empty-string-as-null)).
 
 There is a way to get around this using a DefaultColumnDataMapperProviderHint:
@@ -30,7 +30,7 @@ There is a way to get around this using a DefaultColumnDataMapperProviderHint:
 					});
 				}
 			});
-			
+
 Q: Why do I get a "java.sql.SQLSyntaxErrorException: ORA-00933: SQL command not properly ended" when copying to an Oracle DB?
 --------------------------------------------------
 
@@ -58,8 +58,16 @@ Q: What does an error like "Error Code: 1025. Error on rename of './#sql-ddd_6' 
 --------------------------------------------------
 
 A: Error code 150 refers to foreign key constraints. Since foreign keys are disable during copying this might also be caused by problems with
-case-sensitivety. Copying may run well on a Windows system that does not regard case in table names, but fail on Linux, which does. 
+case-sensitivety. Copying may run well on a Windows system that does not regard case in table names, but fail on Linux, which does.
 
 You may change your MySQL configuration file (my.cnf usually ) to enable the same behaviour:
 
 	  lower_case_table_names=1
+
+Q:Why do I get an OutOfMemory when copying tables from MySQL?
+--------------------------------------------------
+
+A: Try to set result set fetch size to Integer.MIN_VALUE. This is a special flag for the MySQL driver to stream results set and
+not try to cache them in memory. You can use the ResultSetParameters hint to accomplish that.
+
+(http://dev.mysql.com/doc/connector-j/en/connector-j-reference-implementation-notes.html)

@@ -14,11 +14,11 @@ import de.akquinet.jbosscc.guttenbase.statements.SplitByColumnSelectMinMaxStatem
 
 /**
  * Compute MIN and MAX of given Id-Column
- * 
+ *
  * <p>
  * &copy; 2012-2020 akquinet tech@spree
  * </p>
- * 
+ *
  * @Uses-Hint {@link TableNameMapperHint}
  * @author M. Dahm
  */
@@ -51,7 +51,7 @@ public class MinMaxIdSelectorTool {
     final TableNameMapper tableNameMapper = _connectorRepository.getConnectorHint(connectorId, TableNameMapper.class).getValue();
     final String tableName = tableNameMapper.mapTableName(tableMetaData);
     final PreparedStatement minMaxStatement = new SplitByColumnSelectMinMaxStatementCreator(_connectorRepository, connectorId)
-        .createSelectStatement(tableName, tableMetaData, connection);
+        .createSelectStatement(connection, tableName, tableMetaData);
 
     final ResultSet rangeResultSet = minMaxStatement.executeQuery();
     rangeResultSet.next();

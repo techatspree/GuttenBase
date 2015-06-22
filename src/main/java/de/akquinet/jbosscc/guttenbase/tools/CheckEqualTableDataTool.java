@@ -40,7 +40,7 @@ import de.akquinet.jbosscc.guttenbase.statements.SelectStatementCreator;
  * <p>
  * &copy; 2012-2020 akquinet tech@spree
  * </p>
- * 
+ *
  * @Uses-Hint {@link TableNameMapperHint} to map table names
  * @Uses-Hint {@link NumberOfCheckedTableDataHint} How many rows of tables shall be regarded when checking that data has been
  *            transferred correctly.
@@ -131,7 +131,7 @@ public class CheckEqualTableDataTool
     LOG.info("Checking data of " + tableName1 + " <--> " + tableName2 + " started");
 
     final PreparedStatement selectStatement1 = new SelectStatementCreator(_connectorRepository, sourceConnectorId)
-        .createSelectStatement(tableName1, sourceTableMetaData, sourceConnection);
+        .createSelectStatement(sourceConnection, tableName1, sourceTableMetaData);
     selectStatement1.setFetchSize(numberOfCheckData);
 
     sourceConfiguration.beforeSelect(sourceConnection, sourceConnectorId, sourceTableMetaData);
@@ -139,7 +139,7 @@ public class CheckEqualTableDataTool
     sourceConfiguration.afterSelect(sourceConnection, sourceConnectorId, sourceTableMetaData);
 
     final PreparedStatement selectStatement2 = new SelectStatementCreator(_connectorRepository, targetConnectorId)
-        .createMappedSelectStatement(sourceTableMetaData, tableName2, targetTableMetaData, targetConnection, sourceConnectorId);
+        .createMappedSelectStatement(targetConnection, sourceTableMetaData, tableName2, targetTableMetaData, sourceConnectorId);
     selectStatement2.setFetchSize(numberOfCheckData);
 
     targetConfiguration.beforeSelect(targetConnection, targetConnectorId, targetTableMetaData);

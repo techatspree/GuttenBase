@@ -53,10 +53,10 @@ public class SplitByRangeTableCopyTool extends AbstractTableCopyTool
     final long maxValue = minMaxIdSelector.getMaxValue();
 
     final PreparedStatement countStatement = new SplitByColumnSelectCountStatementCreator(_connectorRepository, sourceConnectorId)
-        .createSelectStatement(sourceTableName, sourceTableMetaData, sourceConnection);
+        .createSelectStatement(sourceConnection, sourceTableName, sourceTableMetaData);
 
     final PreparedStatement selectStatement = new SplitByColumnSelectStatementCreator(_connectorRepository, sourceConnectorId)
-        .createSelectStatement(sourceTableName, sourceTableMetaData, sourceConnection);
+        .createSelectStatement(sourceConnection, sourceTableName, sourceTableMetaData);
     selectStatement.setFetchSize(Math.min(numberOfRowsPerBatch, selectStatement.getMaxRows()));
 
     int totalWritten = 0;
