@@ -72,7 +72,7 @@ public class DatabaseSchemaScriptCreatorTest {
     final List<String> indexStatements = _objectUnderTest.createIndexStatements();
     assertEquals(2, indexStatements.size());
     final String indexStatement = indexStatements.get(0);
-    assertTrue(indexStatement, indexStatement.startsWith("CREATE UNIQUE INDEX NAME_IDX1_MY_TABLE1_1 ON schemaName.MY_TABLE1"));
+    assertTrue(indexStatement, indexStatement.startsWith("CREATE UNIQUE INDEX IDX_NAME_IDX1_MY_TABLE1_1 ON schemaName.MY_TABLE1"));
     assertTrue(indexStatement, indexStatement.contains("NAME"));
 
     final List<String> foreignKeyStatements = _objectUnderTest.createForeignKeyStatements();
