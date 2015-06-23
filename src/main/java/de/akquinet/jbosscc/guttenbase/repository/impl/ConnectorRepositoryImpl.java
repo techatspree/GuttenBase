@@ -305,6 +305,7 @@ public class ConnectorRepositoryImpl implements ConnectorRepository {
     addConnectorHint(connectorId, new DefaultDatabaseTableFilterHint());
     addConnectorHint(connectorId, new DefaultDatabaseColumnFilterHint());
     addConnectorHint(connectorId, new DefaultNumberOfRowsPerBatchHint());
+    addConnectorHint(connectorId, new DefaultResultSetParametersHint());
     addConnectorHint(connectorId, new DefaultNumberOfCheckedTableDataHint());
     addConnectorHint(connectorId, new DefaultMaxNumberOfDataItemsHint());
     addConnectorHint(connectorId, new DefaultSplitColumnHint());

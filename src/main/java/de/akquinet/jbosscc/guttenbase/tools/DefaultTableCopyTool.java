@@ -42,8 +42,7 @@ public class DefaultTableCopyTool extends AbstractTableCopyTool
   {
     final int sourceRowCount = sourceTableMetaData.getRowCount();
     final PreparedStatement selectStatement = new SelectStatementCreator(_connectorRepository, sourceConnectorId)
-        .createSelectStatement(sourceTableName, sourceTableMetaData, sourceConnection);
-    selectStatement.setFetchSize(Math.min(numberOfRowsPerBatch, selectStatement.getMaxRows()));
+        .createSelectStatement(sourceConnection, sourceTableName, sourceTableMetaData);
 
     sourceDatabaseConfiguration.beforeSelect(sourceConnection, sourceConnectorId, sourceTableMetaData);
     final ResultSet resultSet = selectStatement.executeQuery();

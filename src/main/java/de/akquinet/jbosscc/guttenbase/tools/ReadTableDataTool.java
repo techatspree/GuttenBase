@@ -22,11 +22,11 @@ import de.akquinet.jbosscc.guttenbase.statements.SelectStatementCreator;
 
 /**
  * Read data from given table and put into a map.
- * 
+ *
  * <p>
  * &copy; 2012-2020 akquinet tech@spree
  * </p>
- * 
+ *
  * @author M. Dahm
  */
 public class ReadTableDataTool {
@@ -67,7 +67,7 @@ public class ReadTableDataTool {
 		final ColumnNameMapper sourceColumnNameMapper = _connectorRepository.getConnectorHint(connectorId, ColumnNameMapper.class).getValue();
 
 		final PreparedStatement selectStatement = new SelectStatementCreator(_connectorRepository, connectorId).createSelectStatement(
-				tableName, tableMetaData, connection);
+						connection, tableName, tableMetaData);
 		selectStatement.setFetchSize(lines);
 
 		sourceConfiguration.beforeSelect(connection, connectorId, tableMetaData);
