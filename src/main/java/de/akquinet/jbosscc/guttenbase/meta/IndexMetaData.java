@@ -8,11 +8,10 @@ import java.util.List;
  * <p>
  * &copy; 2012-2020 akquinet tech@spree
  * </p>
- * 
+ *
  * @author M. Dahm
  */
-public interface IndexMetaData extends Serializable
-{
+public interface IndexMetaData extends Comparable<IndexMetaData>, Serializable {
   String getIndexName();
 
   boolean isAscending();
