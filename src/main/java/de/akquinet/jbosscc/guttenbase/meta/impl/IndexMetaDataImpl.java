@@ -100,7 +100,7 @@ public class IndexMetaDataImpl implements InternalIndexMetaData {
 
   @Override
   public String toString() {
-    return getIndexName() + ":" + getColumnMetaData();
+    return getTableMetaData()+":"+getIndexName() + ":" + getColumnMetaData();
   }
 
   @Override
