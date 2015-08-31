@@ -1,22 +1,22 @@
 package de.akquinet.jbosscc.guttenbase.meta.impl;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import de.akquinet.jbosscc.guttenbase.meta.ColumnMetaData;
+import de.akquinet.jbosscc.guttenbase.meta.IndexMetaData;
 import de.akquinet.jbosscc.guttenbase.meta.InternalIndexMetaData;
 import de.akquinet.jbosscc.guttenbase.meta.TableMetaData;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Information about index in table.
  * <p>
  * &copy; 2012-2020 akquinet tech@spree
  * </p>
- * 
+ *
  * @author M. Dahm
  */
-public class IndexMetaDataImpl implements InternalIndexMetaData
-{
+public class IndexMetaDataImpl implements InternalIndexMetaData {
   private static final long serialVersionUID = 1L;
 
   private final String _indexName;
@@ -27,12 +27,11 @@ public class IndexMetaDataImpl implements InternalIndexMetaData
   private final boolean _primaryKeyIndex;
 
   public IndexMetaDataImpl(
-      final TableMetaData tableMetaData,
-      final String indexName,
-      final boolean ascending,
-      final boolean unique,
-      final boolean primaryKeyIndex)
-  {
+          final TableMetaData tableMetaData,
+          final String indexName,
+          final boolean ascending,
+          final boolean unique,
+          final boolean primaryKeyIndex) {
     assert indexName != null : "indexName != null";
     assert tableMetaData != null : "tableMetaData != null";
 
@@ -47,8 +46,7 @@ public class IndexMetaDataImpl implements InternalIndexMetaData
    * {@inheritDoc}
    */
   @Override
-  public TableMetaData getTableMetaData()
-  {
+  public TableMetaData getTableMetaData() {
     return _tableMetaData;
   }
 
@@ -56,8 +54,7 @@ public class IndexMetaDataImpl implements InternalIndexMetaData
    * {@inheritDoc}
    */
   @Override
-  public String getIndexName()
-  {
+  public String getIndexName() {
     return _indexName;
   }
 
@@ -65,8 +62,7 @@ public class IndexMetaDataImpl implements InternalIndexMetaData
    * {@inheritDoc}
    */
   @Override
-  public boolean isAscending()
-  {
+  public boolean isAscending() {
     return _ascending;
   }
 
@@ -74,14 +70,12 @@ public class IndexMetaDataImpl implements InternalIndexMetaData
    * {@inheritDoc}
    */
   @Override
-  public boolean isUnique()
-  {
+  public boolean isUnique() {
     return _unique;
   }
 
   @Override
-  public final boolean isPrimaryKeyIndex()
-  {
+  public final boolean isPrimaryKeyIndex() {
     return _primaryKeyIndex;
   }
 
@@ -89,15 +83,38 @@ public class IndexMetaDataImpl implements InternalIndexMetaData
    * {@inheritDoc}
    */
   @Override
-  public List<ColumnMetaData> getColumnMetaData()
-  {
+  public List<ColumnMetaData> getColumnMetaData() {
     return new ArrayList<ColumnMetaData>(_columns);
   }
 
   @Override
-  public void addColumn(final ColumnMetaData columnMetaData)
-  {
+  public void addColumn(final ColumnMetaData columnMetaData) {
     assert columnMetaData != null : "columnMetaData != null";
     _columns.add(columnMetaData);
+  }
+
+  @Override
+  public int compareTo(final IndexMetaData that) {
+    return this.getIndexName().toUpperCase().compareTo(that.getIndexName().toUpperCase());
+  }
+
+  @Override
+  public String toString() {
+    return getTableMetaData()+":"+getIndexName() + ":" + getColumnMetaData();
+  }
+
+  @Override
+  public int hashCode() {
+    return getIndexName().toUpperCase().hashCode();
+  }
+
+  @Override
+  public boolean equals(final Object obj) {
+    if (obj instanceof IndexMetaData) {
+      final IndexMetaData that = (IndexMetaData) obj;
+      return this.getIndexName().equalsIgnoreCase(that.getIndexName());
+    } else {
+      return false;
+    }
   }
 }
