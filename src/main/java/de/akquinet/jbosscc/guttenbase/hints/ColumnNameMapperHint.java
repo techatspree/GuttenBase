@@ -8,17 +8,17 @@ import de.akquinet.jbosscc.guttenbase.tools.CheckEqualTableDataTool;
 /**
  * Map the way column names of a table are used. Usually you won't need that, but sometimes you want to map the names, e.g. to add `name`
  * backticks, in order to escape special characters.
- * 
+ *
  * <p>
  * &copy; 2012-2020 akquinet tech@spree
  * </p>
- * 
+ *
  * @Applicable-For-Source
  * @Applicable-For-Target
  * @Hint-Used-By {@link AbstractStatementCreator} to map column names
  * @Hint-Used-By {@link CheckEqualTableDataTool} to map column names
  * @Hint-Used-By {@link CheckSchemaCompatibilityTool} to map column names
- * 
+ *
  * @author M. Dahm
  */
 public abstract class ColumnNameMapperHint implements ConnectorHint<ColumnNameMapper> {

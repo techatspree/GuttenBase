@@ -16,7 +16,7 @@ import de.akquinet.jbosscc.guttenbase.tools.ScriptExecutorTool;
  * <p>
  * &copy; 2012-2020 akquinet tech@spree
  * </p>
- * 
+ *
  * @author M. Dahm
  */
 public abstract class AbstractHintTest extends AbstractGuttenBaseTest {
