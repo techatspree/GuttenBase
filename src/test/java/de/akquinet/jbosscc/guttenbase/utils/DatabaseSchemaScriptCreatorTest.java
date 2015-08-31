@@ -3,6 +3,8 @@ package de.akquinet.jbosscc.guttenbase.utils;
 import de.akquinet.jbosscc.guttenbase.hints.CaseConversionMode;
 import de.akquinet.jbosscc.guttenbase.meta.ColumnMetaData;
 import de.akquinet.jbosscc.guttenbase.meta.DatabaseMetaData;
+import de.akquinet.jbosscc.guttenbase.meta.ForeignKeyMetaData;
+import de.akquinet.jbosscc.guttenbase.meta.IndexMetaData;
 import de.akquinet.jbosscc.guttenbase.meta.builder.*;
 import de.akquinet.jbosscc.guttenbase.tools.schema.DatabaseSchemaScriptCreator;
 import de.akquinet.jbosscc.guttenbase.tools.schema.DefaultSchemaColumnTypeMapper;
@@ -10,9 +12,7 @@ import org.junit.Test;
 
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 public class DatabaseSchemaScriptCreatorTest {
   private final DatabaseMetaData _databaseMetaData = createDatabaseMetaData();
@@ -112,5 +112,22 @@ public class DatabaseSchemaScriptCreatorTest {
 
     assertFalse("FK_AUFTRAG_STELLUNGNAHME_HALTUNGSTELLUNGNAHME_ZU_HALTUNG_ID_PARENT_ID__ID_1".equals(constraintName));
     assertEquals(DatabaseSchemaScriptCreator.MAX_ID_LENGTH, constraintName.length());
+  }
+
+  @Test
+  public void testForeignKey() throws Exception {
+    final ForeignKeyMetaData foreignKeyMetaData = _databaseMetaData.getTableMetaData().get(0).getImportedForeignKeys().get(0);
+    final String sql = _objectUnderTest.createForeignKey(foreignKeyMetaData);
+
+    assertEquals("ALTER TABLE schemaName.MY_TABLE1 ADD CONSTRAINT FK_Name FOREIGN KEY (NAME) REFERENCES schemaName.MY_TABLE2(NAME);", sql);
+  }
+
+  @Test
+  public void testIndex() throws Exception {
+    final ColumnMetaData columnMetaData = _databaseMetaData.getTableMetaData().get(0).getColumnMetaData("name");
+    final IndexMetaData index = _databaseMetaData.getTableMetaData().get(0).getIndexesForColumn(columnMetaData).get(0);
+    final String sql = _objectUnderTest.createIndex(index);
+
+    assertEquals("CREATE UNIQUE INDEX Name_IDX1 ON schemaName.MY_TABLE1(NAME);", sql);
   }
 }
