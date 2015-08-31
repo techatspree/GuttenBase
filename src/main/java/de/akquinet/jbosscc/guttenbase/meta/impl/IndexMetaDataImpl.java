@@ -99,13 +99,13 @@ public class IndexMetaDataImpl implements InternalIndexMetaData {
   }
 
   @Override
-  public int hashCode() {
-    return getIndexName().hashCode() + getColumnMetaData().hashCode();
+  public String toString() {
+    return getIndexName() + ":" + getColumnMetaData();
   }
 
   @Override
-  public String toString() {
-    return getIndexName() + ":" + getColumnMetaData();
+  public int hashCode() {
+    return getIndexName().toUpperCase().hashCode();
   }
 
   @Override
