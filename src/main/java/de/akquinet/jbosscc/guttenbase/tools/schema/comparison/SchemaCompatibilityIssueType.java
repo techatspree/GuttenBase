@@ -13,7 +13,8 @@ public enum SchemaCompatibilityIssueType {
   MISSING_COLUMN(Level.SEVERE),
   INCOMPATIBLE_COLUMNS(Level.SEVERE),
   DROPPED_COLUMN(Level.WARNING),
-  ADDITIONAL_COLUMN(Level.INFO);
+  ADDITIONAL_COLUMN(Level.INFO),
+  MISSING_FOREIGN_KEY(Level.WARNING);
 
   private final Level _severity;
 

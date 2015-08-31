@@ -10,10 +10,10 @@ import de.akquinet.jbosscc.guttenbase.mapping.ColumnTypeMapping;
 import de.akquinet.jbosscc.guttenbase.mapping.TableMapper;
 import de.akquinet.jbosscc.guttenbase.meta.ColumnMetaData;
 import de.akquinet.jbosscc.guttenbase.meta.DatabaseMetaData;
+import de.akquinet.jbosscc.guttenbase.meta.ForeignKeyMetaData;
 import de.akquinet.jbosscc.guttenbase.meta.TableMetaData;
 import de.akquinet.jbosscc.guttenbase.repository.ConnectorRepository;
 import de.akquinet.jbosscc.guttenbase.tools.CommonColumnTypeResolverTool;
-import org.apache.log4j.Logger;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -29,8 +29,6 @@ import java.util.List;
  * @Uses-Hint {@link TableOrderHint} to determine order of tables
  */
 public class SchemaComparatorTool {
-  private static final Logger LOG = Logger.getLogger(SchemaComparatorTool.class);
-
   private final ConnectorRepository _connectorRepository;
   private final SchemaCompatibilityIssues _schemaCompatibilityIssues = new SchemaCompatibilityIssues();
 
@@ -57,14 +55,36 @@ public class SchemaComparatorTool {
 
       if (targetTable != null) {
         checkEqualColumns(sourceConnectorId, targetConnectorId, sourceTable, targetTable);
+        checkEqualForeignKeys(sourceTable, targetTable);
       }
     }
 
     return _schemaCompatibilityIssues;
   }
 
-  public void checkEqualColumns(final String sourceConnectorId, final String targetConnectorId,
-                                final TableMetaData tableMetaData1, final TableMetaData tableMetaData2) throws SQLException {
+  public SchemaCompatibilityIssues checkEqualForeignKeys(final TableMetaData sourceTable, final TableMetaData targetTable) throws SQLException {
+    for (final ForeignKeyMetaData sourceFK : sourceTable.getImportedForeignKeys()) {
+      ForeignKeyMetaData matchingFK = null;
+
+      for (final ForeignKeyMetaData targetFK : targetTable.getImportedForeignKeys()) {
+        if (sourceFK.getReferencedColumn().equals(targetFK.getReferencedColumn()) &&
+                sourceFK.getTableMetaData().equals(targetFK.getTableMetaData()) &&
+                sourceFK.getReferencingColumn().equals(targetFK.getReferencingColumn())) {
+          matchingFK = targetFK;
+        }
+      }
+
+      if (matchingFK == null) {
+        _schemaCompatibilityIssues.addIssue(new MissingForeignKeyIssue("Missing/incompatible foreign key " + sourceFK, sourceFK));
+      }
+    }
+
+
+    return _schemaCompatibilityIssues;
+  }
+
+  public SchemaCompatibilityIssues checkEqualColumns(final String sourceConnectorId, final String targetConnectorId,
+                                                     final TableMetaData tableMetaData1, final TableMetaData tableMetaData2) throws SQLException {
     final ColumnMapper columnMapper = _connectorRepository.getConnectorHint(targetConnectorId, ColumnMapper.class).getValue();
     final CommonColumnTypeResolverTool commonColumnTypeResolver = new CommonColumnTypeResolverTool(_connectorRepository);
     final ColumnNameMapper sourceColumnNameMapper = _connectorRepository.getConnectorHint(sourceConnectorId,
@@ -79,7 +99,7 @@ public class SchemaComparatorTool {
     for (final ColumnMetaData sourceColumn : sourceColumns) {
       final ColumnMapperResult mapping = columnMapper.map(sourceColumn, tableMetaData2);
       final List<ColumnMetaData> targetColumns = mapping.getColumns();
-      final String columnName1 = sourceColumnNameMapper.mapColumnName(sourceColumn);
+      final String sourceColumnName = sourceColumnNameMapper.mapColumnName(sourceColumn);
 
       if (targetColumns.isEmpty()) {
         if (mapping.isEmptyColumnListOk()) {
@@ -96,23 +116,25 @@ public class SchemaComparatorTool {
 
         if (columnTypeMapping == null) {
           _schemaCompatibilityIssues.addIssue(new IncompatibleColumnsIssue(
-          tableName + ":"
-                  + sourceColumn
-                  + ": Columns have incompatible types: "
-                  + columnName1
-                  + "/"
-                  + sourceColumn.getColumnTypeName()
-                  + "/"
-                  + sourceColumn.getColumnClassName()
-                  + " vs. "
-                  + targetColumnName
-                  + "/"
-                  + targetColumn.getColumnTypeName()
-                  + "/"
-                  + targetColumn.getColumnClassName(),sourceColumn,targetColumn));
+                  tableName + ":"
+                          + sourceColumn
+                          + ": Columns have incompatible types: "
+                          + sourceColumnName
+                          + "/"
+                          + sourceColumn.getColumnTypeName()
+                          + "/"
+                          + sourceColumn.getColumnClassName()
+                          + " vs. "
+                          + targetColumnName
+                          + "/"
+                          + targetColumn.getColumnTypeName()
+                          + "/"
+                          + targetColumn.getColumnClassName(), sourceColumn, targetColumn));
         }
       }
     }
+
+    return _schemaCompatibilityIssues;
   }
 
   private void checkEqualTables(final List<TableMetaData> sourceTableMetaData, final DatabaseMetaData targetDatabaseMetaData,
