@@ -8,10 +8,7 @@ import de.akquinet.jbosscc.guttenbase.mapping.ColumnMapper.ColumnMapperResult;
 import de.akquinet.jbosscc.guttenbase.mapping.ColumnNameMapper;
 import de.akquinet.jbosscc.guttenbase.mapping.ColumnTypeMapping;
 import de.akquinet.jbosscc.guttenbase.mapping.TableMapper;
-import de.akquinet.jbosscc.guttenbase.meta.ColumnMetaData;
-import de.akquinet.jbosscc.guttenbase.meta.DatabaseMetaData;
-import de.akquinet.jbosscc.guttenbase.meta.ForeignKeyMetaData;
-import de.akquinet.jbosscc.guttenbase.meta.TableMetaData;
+import de.akquinet.jbosscc.guttenbase.meta.*;
 import de.akquinet.jbosscc.guttenbase.repository.ConnectorRepository;
 import de.akquinet.jbosscc.guttenbase.tools.CommonColumnTypeResolverTool;
 
@@ -56,6 +53,7 @@ public class SchemaComparatorTool {
       if (targetTable != null) {
         checkEqualColumns(sourceConnectorId, targetConnectorId, sourceTable, targetTable);
         checkEqualForeignKeys(sourceTable, targetTable);
+        checkEqualIndexes(sourceTable, targetTable);
       }
     }
 
@@ -76,6 +74,25 @@ public class SchemaComparatorTool {
 
       if (matchingFK == null) {
         _schemaCompatibilityIssues.addIssue(new MissingForeignKeyIssue("Missing/incompatible foreign key " + sourceFK, sourceFK));
+      }
+    }
+
+
+    return _schemaCompatibilityIssues;
+  }
+
+  public SchemaCompatibilityIssues checkEqualIndexes(final TableMetaData sourceTable, final TableMetaData targetTable) throws SQLException {
+    for (final IndexMetaData sourceIndex : sourceTable.getIndexes()) {
+      IndexMetaData matchingIndex = null;
+
+      for (final IndexMetaData targetIndex : targetTable.getIndexes()) {
+        if (sourceIndex.getColumnMetaData().equals(targetIndex.getColumnMetaData())) {
+          matchingIndex = targetIndex;
+        }
+      }
+
+      if (matchingIndex == null) {
+        _schemaCompatibilityIssues.addIssue(new MissingIndexIssue("Missing index " + sourceIndex, sourceIndex));
       }
     }
 

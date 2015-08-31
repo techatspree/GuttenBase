@@ -52,7 +52,10 @@ public class SchemaComparatorToolTest extends AbstractGuttenBaseTest {
     Assert.assertNotNull(missingForeignKeyIssue);
 
     final ForeignKeyMetaData foreignKeyMetaData = ((MissingForeignKeyIssue) missingForeignKeyIssue).getForeignKeyMetaData();
-    Assert.assertEquals("ASSIGNED_COMPANY_ID",foreignKeyMetaData.getReferencingColumn().getColumnName());
+    Assert.assertEquals("ASSIGNED_COMPANY_ID", foreignKeyMetaData.getReferencingColumn().getColumnName());
 
+    final SchemaCompatibilityIssue missingIndexIssue = compatibilityIssues.contains(SchemaCompatibilityIssueType.MISSING_INDEX);
+    Assert.assertNotNull(missingIndexIssue);
+    Assert.assertEquals("COMPANY_NAME_IDX", ((MissingIndexIssue) missingIndexIssue).getIndexMetaData().getIndexName());
   }
 }
