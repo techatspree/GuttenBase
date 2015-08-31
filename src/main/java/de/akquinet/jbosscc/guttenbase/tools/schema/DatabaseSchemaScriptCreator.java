@@ -1,10 +1,7 @@
 package de.akquinet.jbosscc.guttenbase.tools.schema;
 
 import de.akquinet.jbosscc.guttenbase.hints.CaseConversionMode;
-import de.akquinet.jbosscc.guttenbase.meta.ColumnMetaData;
-import de.akquinet.jbosscc.guttenbase.meta.DatabaseMetaData;
-import de.akquinet.jbosscc.guttenbase.meta.IndexMetaData;
-import de.akquinet.jbosscc.guttenbase.meta.TableMetaData;
+import de.akquinet.jbosscc.guttenbase.meta.*;
 import de.akquinet.jbosscc.guttenbase.tools.TableOrderTool;
 
 import java.sql.SQLException;
@@ -60,9 +57,12 @@ public class DatabaseSchemaScriptCreator {
   }
 
   public List<String> createTableStatements() throws SQLException {
-    final List<String> result = new ArrayList<String>();
-
     final List<TableMetaData> tables = new TableOrderTool().getOrderedTables(_sourceDatabaseMetaData.getTableMetaData(), true);
+    return createTableStatements(tables);
+  }
+
+  public List<String> createTableStatements(final List<TableMetaData> tables) {
+    final List<String> result = new ArrayList<String>();
 
     for (final TableMetaData tableMetaData : tables) {
       result.add(createTable(tableMetaData));
@@ -72,9 +72,14 @@ public class DatabaseSchemaScriptCreator {
   }
 
   public List<String> createPrimaryKeyStatements() throws SQLException {
+    final List<TableMetaData> tables = _sourceDatabaseMetaData.getTableMetaData();
+    return createPrimaryKeyStatements(tables);
+  }
+
+  public List<String> createPrimaryKeyStatements(final List<TableMetaData> tables) {
     final List<String> result = new ArrayList<String>();
 
-    for (final TableMetaData tableMetaData : _sourceDatabaseMetaData.getTableMetaData()) {
+    for (final TableMetaData tableMetaData : tables) {
       int counter = 1;
       final List<ColumnMetaData> primaryKeyColumns = tableMetaData.getPrimaryKeyColumns();
 
@@ -87,14 +92,18 @@ public class DatabaseSchemaScriptCreator {
   }
 
   public List<String> createIndexStatements() throws SQLException {
+    final List<TableMetaData> tables = _sourceDatabaseMetaData.getTableMetaData();
+    return createIndexStatements(tables);
+  }
+
+  public List<String> createIndexStatements(final List<TableMetaData> tables) {
     final List<String> result = new ArrayList<String>();
 
-    for (final TableMetaData tableMetaData : _sourceDatabaseMetaData.getTableMetaData()) {
+    for (final TableMetaData tableMetaData : tables) {
       int counter = 1;
-      final List<IndexMetaData> indexes = tableMetaData.getIndexes();
 
-      for (final IndexMetaData indexMetaData : indexes) {
-        result.add(createIndexesForTable(indexMetaData, counter++));
+      for (final IndexMetaData indexMetaData : tableMetaData.getIndexes()) {
+        result.add(createIndex(indexMetaData, counter++));
       }
     }
 
@@ -102,15 +111,19 @@ public class DatabaseSchemaScriptCreator {
   }
 
   public List<String> createForeignKeyStatements() throws SQLException {
+    final List<TableMetaData> tables = _sourceDatabaseMetaData.getTableMetaData();
+    return createForeignKeyStatements(tables);
+  }
+
+  public List<String> createForeignKeyStatements(final List<TableMetaData> tables) {
     final List<String> result = new ArrayList<String>();
 
-    for (final TableMetaData tableMetaData : _sourceDatabaseMetaData.getTableMetaData()) {
+    for (final TableMetaData tableMetaData : tables) {
       int counter = 1;
-      final List<ColumnMetaData> columns = tableMetaData.getColumnMetaData();
 
-      for (final ColumnMetaData columnMetaData : columns) {
+      for (final ColumnMetaData columnMetaData : tableMetaData.getColumnMetaData()) {
         if (columnMetaData.getReferencedColumn() != null) {
-          result.add(createForeignKeyForTable(columnMetaData, counter++));
+          result.add(createForeignKey(columnMetaData, counter++));
         }
       }
     }
@@ -118,7 +131,7 @@ public class DatabaseSchemaScriptCreator {
     return result;
   }
 
-  private String createTable(final TableMetaData tableMetaData) {
+  public String createTable(final TableMetaData tableMetaData) {
     final StringBuilder builder = new StringBuilder("CREATE TABLE " + ("".equals(_targetSchema) ? "" : _targetSchema + ".")
             + _caseConversionMode.convert(tableMetaData.getTableName())
             + "\n(\n");
@@ -156,16 +169,24 @@ public class DatabaseSchemaScriptCreator {
     return builder.toString();
   }
 
-  private String createIndexesForTable(final IndexMetaData indexMetaData, final int counter) {
+  private String createIndex(final IndexMetaData indexMetaData, final int counter) {
     final TableMetaData tableMetaData = indexMetaData.getTableMetaData();
-    final String schemaPrefix = "".equals(_targetSchema) ? "" : _targetSchema + ".";
-    final String unique = indexMetaData.isUnique() ? " UNIQUE " : " ";
-
     final String indexName = createConstraintName("IDX_", _caseConversionMode.convert(indexMetaData.getIndexName())
                     + "_"
                     + _caseConversionMode.convert(tableMetaData.getTableName())
                     + "_",
             counter);
+    return createIndex(indexMetaData, indexName);
+  }
+
+  public String createIndex(final IndexMetaData indexMetaData) {
+    return createIndex(indexMetaData, indexMetaData.getIndexName());
+  }
+
+  private String createIndex(final IndexMetaData indexMetaData, final String indexName) {
+    final TableMetaData tableMetaData = indexMetaData.getTableMetaData();
+    final String schemaPrefix = "".equals(_targetSchema) ? "" : _targetSchema + ".";
+    final String unique = indexMetaData.isUnique() ? " UNIQUE " : " ";
 
     final StringBuilder builder = new StringBuilder("CREATE" + unique
             + "INDEX "
@@ -189,19 +210,47 @@ public class DatabaseSchemaScriptCreator {
     return builder.toString();
   }
 
-  private String createForeignKeyForTable(final ColumnMetaData columnMetaData, final int counter) {
-    final TableMetaData tableMetaData = columnMetaData.getTableMetaData();
-    final String schemaPrefix = "".equals(_targetSchema) ? "" : _targetSchema + ".";
-    final ColumnMetaData referencedColumn = columnMetaData.getReferencedColumn();
+  private String createForeignKey(final ColumnMetaData referencingColumn, final int counter) {
+    final TableMetaData tableMetaData = referencingColumn.getTableMetaData();
+    final ColumnMetaData referencedColumn = referencingColumn.getReferencedColumn();
     final String tablename = _caseConversionMode.convert(tableMetaData.getTableName());
     final String fkName = createConstraintName("FK_", tablename + "_"
-            + _caseConversionMode.convert(columnMetaData.getColumnName())
+            + _caseConversionMode.convert(referencingColumn.getColumnName())
             + "_"
             + _caseConversionMode.convert(referencedColumn.getColumnName()) + "_", counter);
 
+    return createForeignKey(referencingColumn, fkName);
+  }
+
+  public String createForeignKey(final ColumnMetaData referencingColumn, final String fkName) {
+    final TableMetaData tableMetaData = referencingColumn.getTableMetaData();
+    final ColumnMetaData referencedColumn = referencingColumn.getReferencedColumn();
+    final String tablename = _caseConversionMode.convert(tableMetaData.getTableName());
+    final String schemaPrefix = "".equals(_targetSchema) ? "" : _targetSchema + ".";
+
     final StringBuilder builder = new StringBuilder("ALTER TABLE " + schemaPrefix + tablename + " ADD CONSTRAINT ");
     builder.append(fkName);
-    builder.append(" FOREIGN KEY (" + _caseConversionMode.convert(columnMetaData.getColumnName())
+    builder.append(" FOREIGN KEY (" + _caseConversionMode.convert(referencingColumn.getColumnName())
+            + ") REFERENCES "
+            + schemaPrefix
+            + _caseConversionMode.convert(referencedColumn.getTableMetaData().getTableName())
+            + "("
+            + _caseConversionMode.convert(referencedColumn.getColumnName())
+            + ");");
+
+    return builder.toString();
+  }
+
+  public String createForeignKey(final ForeignKeyMetaData foreignKeyMetaData) {
+    final ColumnMetaData referencingColumn = foreignKeyMetaData.getReferencingColumn();
+    final TableMetaData tableMetaData = referencingColumn.getTableMetaData();
+    final ColumnMetaData referencedColumn = foreignKeyMetaData.getReferencedColumn();
+    final String tablename = _caseConversionMode.convert(tableMetaData.getTableName());
+    final String schemaPrefix = "".equals(_targetSchema) ? "" : _targetSchema + ".";
+
+    final StringBuilder builder = new StringBuilder("ALTER TABLE " + schemaPrefix + tablename + " ADD CONSTRAINT ");
+    builder.append(foreignKeyMetaData.getForeignKeyName());
+    builder.append(" FOREIGN KEY (" + _caseConversionMode.convert(referencingColumn.getColumnName())
             + ") REFERENCES "
             + schemaPrefix
             + _caseConversionMode.convert(referencedColumn.getTableMetaData().getTableName())
