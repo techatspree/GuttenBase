@@ -5,7 +5,7 @@ import de.akquinet.jbosscc.guttenbase.tools.ResultSetParameters;
 
 /**
  * <p>Set fetch size, result set type and concurrency tye for result set,
- * <p/>
+ *
  * <p>
  * &copy; 2012-2020 akquinet tech@spree
  * </p>

@@ -11,7 +11,7 @@ import java.util.List;
 
 /**
  * Create auto-increment sequences for table IDs.
- * <p/>
+ *
  * <p>
  * &copy; 2012-2020 akquinet tech@spree
  * </p>

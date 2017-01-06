@@ -223,6 +223,7 @@
 				<version>2.8.1</version>
 
 				<configuration>
+					<failOnError>false</failOnError>
 					<stylesheetfile>${basedir}/src/main/javadoc/stylesheet.css</stylesheetfile>
 					<docfilessubdirs>true</docfilessubdirs>
 					<bottom><![CDATA[Copyright 2012, <a href="http://www.akquinet.de">akquinet tech@spree<a>]]>

@@ -6,7 +6,7 @@ import de.akquinet.jbosscc.guttenbase.tools.RefreshTargetConnection;
 
 /**
  * By default, the connection is never flushed.
- * <p/>
+ *
  * <p>
  * &copy; 2012-2020 akquinet tech@spree
  * </p>
