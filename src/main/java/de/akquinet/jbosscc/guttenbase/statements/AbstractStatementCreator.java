@@ -21,10 +21,10 @@ import de.akquinet.jbosscc.guttenbase.repository.ConnectorRepository;
  * <p>
  * &copy; 2012-2020 akquinet tech@spree
  * </p>
- * 
- * @Uses-Hint {@link ColumnNameMapperHint} to map column names
- * @Uses-Hint {@link ColumnMapperHint} to map column names
- * @Uses-Hint {@link ColumnOrderHint} to determine column order
+ *
+ * @gb.UsesHint {@link ColumnNameMapperHint} to map column names
+ * @gb.UsesHint {@link ColumnMapperHint} to map column names
+ * @gb.UsesHint {@link ColumnOrderHint} to determine column order
  * @author M. Dahm
  */
 public abstract class AbstractStatementCreator

@@ -6,14 +6,14 @@ import de.akquinet.jbosscc.guttenbase.export.zip.ZipImporter;
 
 /**
  * When exporting to JAR/ZIP file we give the user a possibility to retrieve extra informations from the dumped data.
- * 
+ *
  * <p>
  * &copy; 2012-2020 akquinet tech@spree
  * </p>
- * 
- * @Applicable-For-Target
- * @Hint-Used-By {@link ZipImporter} to add custom informations to the dump
- * @Hint-Used-By {@link PlainGzipImporter} to add custom informations to the dump
+ *
+ * @gb.ApplicableForTarget
+ * @gb.HintUsedBy {@link ZipImporter} to add custom informations to the dump
+ * @gb.HintUsedBy {@link PlainGzipImporter} to add custom informations to the dump
  * @author M. Dahm
  */
 public abstract class ImportDumpExtraInformationHint implements ConnectorHint<ImportDumpExtraInformation> {

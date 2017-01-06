@@ -19,7 +19,7 @@ import java.util.List;
  * </p>
  *
  * @author M. Dahm
- * @Uses-Hint {@link TableOrderHint} to determine order of tables
+ * @gb.UsesHint {@link TableOrderHint} to determine order of tables
  */
 public class DropTablesTool
 {

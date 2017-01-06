@@ -13,15 +13,15 @@ import de.akquinet.jbosscc.guttenbase.repository.ConnectorRepository;
 
 /**
  * Update auto-increment sequences for table IDs.
- * 
+ *
  * By default the sequence is updated to SELECT(MAX(ID) + 1) FROM table
- * 
+ *
  * <p>
  * &copy; 2012-2020 akquinet tech@spree
  * </p>
- * 
- * @Uses-Hint {@link TableNameMapperHint}
- * @Uses-Hint {@link EntityTableCheckerHint} to look for entity classes, i.e. classes that may use an ID sequence
+ *
+ * @gb.UsesHint {@link TableNameMapperHint}
+ * @gb.UsesHint {@link EntityTableCheckerHint} to look for entity classes, i.e. classes that may use an ID sequence
  * @author M. Dahm
  */
 public abstract class AbstractSequenceUpdateTool {

@@ -5,7 +5,7 @@ import de.akquinet.jbosscc.guttenbase.tools.RefreshTargetConnection;
 
 /**
  * Some JDBC drivers seem to accumulate data over time, even after a connection is commited() and all statements, result sets, etc. are closed.
- * This will cause an OutOfMemoryError eventually.<br/>
+ * This will cause an OutOfMemoryError eventually.<br>
  * To avoid this the connection can be flushed, closed and re-established periodically using this hint.
  *
  * <p>
@@ -13,8 +13,8 @@ import de.akquinet.jbosscc.guttenbase.tools.RefreshTargetConnection;
  * </p>
  *
  * @author M. Dahm
- * @Applicable-For-Source
- * @Hint-Used-By {@link AbstractTableCopyTool} to determine table order
+ * @gb.ApplicableForSource
+ * @gb.HintUsedBy {@link AbstractTableCopyTool} to determine table order
  */
 public abstract class RefreshTargetConnectionHint implements ConnectorHint<RefreshTargetConnection> {
   @Override

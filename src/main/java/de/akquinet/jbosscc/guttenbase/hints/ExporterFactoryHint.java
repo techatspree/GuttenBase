@@ -6,13 +6,13 @@ import de.akquinet.jbosscc.guttenbase.export.ExporterFactory;
 
 /**
  * Create @see {@link Exporter} for dumping database using @see {@link ExportDumpConnector}.
- * 
+ *
  * <p>
  * &copy; 2012-2020 akquinet tech@spree
  * </p>
- * 
- * @Applicable-For-Target
- * @Hint-Used-By {@link ExportDumpConnector} to determine exporter implementation
+ *
+ * @gb.ApplicableForTarget
+ * @gb.HintUsedBy {@link ExportDumpConnector} to determine exporter implementation
  * @author M. Dahm
  */
 public abstract class ExporterFactoryHint implements ConnectorHint<ExporterFactory> {

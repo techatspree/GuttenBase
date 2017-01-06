@@ -14,8 +14,8 @@ import de.akquinet.jbosscc.guttenbase.repository.ConnectorRepository;
  * <p>
  * &copy; 2012-2020 akquinet tech@spree
  * </p>
- * 
- * @Uses-Hint {@link ImporterFactoryHint} to determine importer implementation
+ *
+ * @gb.UsesHint {@link ImporterFactoryHint} to determine importer implementation
  * @author M. Dahm
  */
 public class ImportDumpConnector extends AbstractConnector

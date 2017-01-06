@@ -17,8 +17,8 @@ import java.util.List;
  * </p>
  *
  * @author M. Dahm
- * @Uses-Hint {@link de.akquinet.jbosscc.guttenbase.hints.TableNameMapperHint}
- * @Uses-Hint {@link de.akquinet.jbosscc.guttenbase.hints.EntityTableCheckerHint} to look for entity classes, i.e. classes that may use an ID sequence
+ * @gb.UsesHint {@link de.akquinet.jbosscc.guttenbase.hints.TableNameMapperHint}
+ * @gb.UsesHint {@link de.akquinet.jbosscc.guttenbase.hints.EntityTableCheckerHint} to look for entity classes, i.e. classes that may use an ID sequence
  */
 public abstract class AbstractSequenceCreationTool
 {

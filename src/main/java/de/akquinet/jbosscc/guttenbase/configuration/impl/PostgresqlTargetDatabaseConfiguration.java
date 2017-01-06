@@ -13,14 +13,14 @@ import de.akquinet.jbosscc.guttenbase.tools.postgresql.PostgresqlVacuumTablesToo
 
 /**
  * Implementation for PostgreSQL data base.
- * 
+ *
  * Running ANALYZE after insertions is recommended: http://www.postgresql.org/docs/7.4/static/populate.html
- * 
+ *
  * <p>
  * &copy; 2012-2020 akquinet tech@spree
  * </p>
- * 
- * @Uses-Hint {@link TableNameMapperHint}
+ *
+ * @gb.UsesHint {@link TableNameMapperHint}
  * @author M. Dahm
  */
 public class PostgresqlTargetDatabaseConfiguration extends DefaultTargetDatabaseConfiguration {

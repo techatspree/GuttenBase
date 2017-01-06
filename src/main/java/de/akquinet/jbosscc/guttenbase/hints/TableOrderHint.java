@@ -19,10 +19,10 @@ import de.akquinet.jbosscc.guttenbase.tools.CheckSchemaCompatibilityTool;
  * &copy; 2012-2020 akquinet tech@spree
  * </p>
  *
- * @Applicable-For-Source
- * @Hint-Used-By {@link CheckSchemaCompatibilityTool} to determine table order
- * @Hint-Used-By {@link AbstractTableCopyTool} to determine table order
- * @Hint-Used-By {@link CheckEqualTableDataTool} to determine table order
+ * @gb.ApplicableForSource
+ * @gb.HintUsedBy {@link CheckSchemaCompatibilityTool} to determine table order
+ * @gb.HintUsedBy {@link AbstractTableCopyTool} to determine table order
+ * @gb.HintUsedBy {@link CheckEqualTableDataTool} to determine table order
  * @author M. Dahm
  */
 public abstract class TableOrderHint implements ConnectorHint<TableOrderComparatorFactory>

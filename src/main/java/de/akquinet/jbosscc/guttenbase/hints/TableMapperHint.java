@@ -12,10 +12,10 @@ import de.akquinet.jbosscc.guttenbase.tools.CheckEqualTableDataTool;
  * &copy; 2012-2020 akquinet tech@spree
  * </p>
  *
- * @Applicable-For-Target
- * @Hint-Used-By {@link CheckEqualTableDataTool} to get according table
- * @Hint-Used-By {@link CheckSchemaCompatibilityTool} to get according table
- * @Hint-Used-By {@link AbstractTableCopyTool} to get according table
+ * @gb.ApplicableForTarget
+ * @gb.HintUsedBy {@link CheckEqualTableDataTool} to get according table
+ * @gb.HintUsedBy {@link CheckSchemaCompatibilityTool} to get according table
+ * @gb.HintUsedBy {@link AbstractTableCopyTool} to get according table
  *
  * @author M. Dahm
  */

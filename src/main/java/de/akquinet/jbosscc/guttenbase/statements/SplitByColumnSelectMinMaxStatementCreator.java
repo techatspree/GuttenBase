@@ -12,14 +12,14 @@ import de.akquinet.jbosscc.guttenbase.tools.SplitColumn;
 /**
  * Sometimes the amount of data exceeds any buffer. In these cases we need to split the data by some given range, usually the primary key.
  * I.e., the data is read in chunks where these chunks are split using the ID column range of values.
- * 
+ *
  * Read minimum and maxim value of that column.
- * 
+ *
  * <p>
  * &copy; 2012-2020 akquinet tech@spree
  * </p>
- * 
- * @Uses-Hint {@link SplitColumnHint}
+ *
+ * @gb.UsesHint {@link SplitColumnHint}
  * @author M. Dahm
  */
 public class SplitByColumnSelectMinMaxStatementCreator extends AbstractSelectStatementCreator {

@@ -16,11 +16,11 @@ import de.akquinet.jbosscc.guttenbase.tools.CheckEqualTableDataTool;
  * &copy; 2012-2020 akquinet tech@spree
  * </p>
  *
- * @Applicable-For-Target
- * @Hint-Used-By {@link CheckEqualTableDataTool} to map columns
- * @Hint-Used-By {@link CheckSchemaCompatibilityTool} to map columns
- * @Hint-Used-By {@link AbstractTableCopyTool} to map columns
- * @Hint-Used-By {@link AbstractStatementCreator} to map columns
+ * @gb.ApplicableForTarget
+ * @gb.HintUsedBy {@link CheckEqualTableDataTool} to map columns
+ * @gb.HintUsedBy {@link CheckSchemaCompatibilityTool} to map columns
+ * @gb.HintUsedBy {@link AbstractTableCopyTool} to map columns
+ * @gb.HintUsedBy {@link AbstractStatementCreator} to map columns
  *
  * @author M. Dahm
  */

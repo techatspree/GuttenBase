@@ -15,12 +15,12 @@ import de.akquinet.jbosscc.guttenbase.tools.ScriptExecutorTool;
 
 /**
  * Implementation for Oracle data base.
- * 
+ *
  * <p>
  * &copy; 2012-2020 akquinet tech@spree
  * </p>
- * 
- * @Uses-Hint {@link TableNameMapperHint}
+ *
+ * @gb.UsesHint {@link TableNameMapperHint}
  * @author M. Dahm
  */
 public class OracleTargetDatabaseConfiguration extends DefaultTargetDatabaseConfiguration {

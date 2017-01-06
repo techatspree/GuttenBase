@@ -10,9 +10,9 @@ import de.akquinet.jbosscc.guttenbase.repository.impl.DatabaseMetaDataInspectorT
  * <p>
  * &copy; 2012-2020 akquinet tech@spree
  * </p>
- * 
- * @Applicable-For-Source
- * @Hint-Used-By {@link DatabaseMetaDataInspectorTool} when reading tables from {@link DatabaseMetaData}
+ *
+ * @gb.ApplicableForSource
+ * @gb.HintUsedBy {@link DatabaseMetaDataInspectorTool} when reading tables from {@link DatabaseMetaData}
  * @author M. Dahm
  */
 public abstract class DatabaseColumnFilterHint implements ConnectorHint<DatabaseColumnFilter>

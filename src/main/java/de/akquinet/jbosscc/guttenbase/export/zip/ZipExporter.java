@@ -32,9 +32,9 @@ import java.util.zip.ZipOutputStream;
  * </p>
  *
  * @author M. Dahm
- * @Uses-Hint {@link ZipExporterClassResourcesHint} to add custom classes to the generated JAR and configure the
+ * @gb.UsesHint {@link ZipExporterClassResourcesHint} to add custom classes to the generated JAR and configure the
  * META-INF/MANIFEST.MF Main-Class entry
- * @Uses-Hint {@link ExportDumpExtraInformationHint} to add custom information to the generated JAR
+ * @gb.UsesHint {@link ExportDumpExtraInformationHint} to add custom information to the generated JAR
  */
 public class ZipExporter implements Exporter
 {
