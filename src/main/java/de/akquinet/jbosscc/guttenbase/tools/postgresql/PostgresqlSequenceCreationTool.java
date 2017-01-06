@@ -10,8 +10,8 @@ import java.util.List;
 
 /**
  * Create an autoincrement ID sequence for tables.
- * <p/>
- * <p/>
+ *
+ *
  * <p>&copy; 2012-2020 akquinet tech@spree</p>
  *
  * @author M. Dahm

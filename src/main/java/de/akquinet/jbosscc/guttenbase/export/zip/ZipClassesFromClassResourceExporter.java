@@ -13,9 +13,9 @@ import java.util.zip.ZipOutputStream;
 
 /**
  * Copy all classes and data that can be found relative to the given class resource to the generated JAR/ZIP.
- * <p/>
+ *
  * This allows us to create a self-contained executable JAR with a user defined startup class.
- * <p/>
+ *
  * <p>
  * &copy; 2012-2020 akquinet tech@spree
  * </p>
@@ -31,7 +31,7 @@ public class ZipClassesFromClassResourceExporter extends ZipResourceExporter
 
   /**
    * Copy all classes and data that can be found relative to the given class resource to the generated JAR/ZIP.
-   * <p/>
+   *
    * We support classes read from file system or JAR.
    */
   public void copyClassesToZip(final Class<?> startupClass) throws IOException

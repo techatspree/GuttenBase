@@ -7,7 +7,7 @@ import de.akquinet.jbosscc.guttenbase.meta.TableMetaData;
 
 /**
  * Information about a foreign key between table columns.
- * <p/>
+ *
  * <p>
  * &copy; 2012-2020 akquinet tech@spree
  * </p>

@@ -41,12 +41,12 @@ import de.akquinet.jbosscc.guttenbase.statements.SelectStatementCreator;
  * &copy; 2012-2020 akquinet tech@spree
  * </p>
  *
- * @Uses-Hint {@link TableNameMapperHint} to map table names
- * @Uses-Hint {@link NumberOfCheckedTableDataHint} How many rows of tables shall be regarded when checking that data has been
+ * @gb.UsesHint {@link TableNameMapperHint} to map table names
+ * @gb.UsesHint {@link NumberOfCheckedTableDataHint} How many rows of tables shall be regarded when checking that data has been
  *            transferred correctly.
- * @Uses-Hint {@link ColumnNameMapperHint} to map column names
- * @Uses-Hint {@link ColumnOrderHint} to determine column order
- * @Uses-Hint {@link TableOrderHint} to determine order of tables
+ * @gb.UsesHint {@link ColumnNameMapperHint} to map column names
+ * @gb.UsesHint {@link ColumnOrderHint} to determine column order
+ * @gb.UsesHint {@link TableOrderHint} to determine order of tables
  * @author M. Dahm
  */
 public class CheckEqualTableDataTool

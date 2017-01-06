@@ -5,12 +5,12 @@ import de.akquinet.jbosscc.guttenbase.repository.ConnectorRepository;
 
 /**
  * Implementation for MS Access via ODBC.
- * 
+ *
  * <p>
  * &copy; 2012-2020 akquinet tech@spree
  * </p>
- * 
- * @Uses-Hint {@link TableNameMapperHint}
+ *
+ * @gb.UsesHint {@link TableNameMapperHint}
  * @author M. Dahm
  */
 public class MsAccessTargetDatabaseConfiguration extends DefaultTargetDatabaseConfiguration {

@@ -8,9 +8,9 @@ import de.akquinet.jbosscc.guttenbase.meta.TableMetaData;
  * stmt = conn.createStatement(ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
  * stmt.setFetchSize(100);
  * </pre>
- * <p/>
- * <p/>
- * <p/>
+ *
+ *
+ *
  * <p>
  * &copy; 2012-2020 akquinet tech@spree
  * </p>

@@ -30,7 +30,7 @@ import java.util.List;
  * </p>
  *
  * @author M. Dahm
- * @Uses-Hint {@link ColumnOrderHint} to determine column order
+ * @gb.UsesHint {@link ColumnOrderHint} to determine column order
  */
 public class InsertStatementFiller
 {

@@ -5,13 +5,13 @@ import de.akquinet.jbosscc.guttenbase.repository.RepositoryTableFilter;
 
 /**
  * This filter is applied when @see {@link ConnectorRepository#getDatabaseMetaData(String)} is called.
- * 
+ *
  * <p>
  * &copy; 2012-2020 akquinet tech@spree
  * </p>
- * 
- * @Applicable-For-Source
- * @Hint-Used-By {@link ConnectorRepository#getDatabaseMetaData(String)} when returning table meta data
+ *
+ * @gb.ApplicableForSource
+ * @gb.HintUsedBy {@link ConnectorRepository#getDatabaseMetaData(String)} when returning table meta data
  * @author M. Dahm
  */
 public abstract class RepositoryTableFilterHint implements ConnectorHint<RepositoryTableFilter> {
