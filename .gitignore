@@ -9,3 +9,5 @@
 .DS_Store/
 .svn/
 target/
+/.idea
+/GuttenBase.iml
