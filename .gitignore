@@ -10,3 +10,5 @@
 .svn/
 .idea/
 target/
+/.idea
+/GuttenBase.iml
