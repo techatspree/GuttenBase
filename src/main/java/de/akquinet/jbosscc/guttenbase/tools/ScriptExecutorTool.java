@@ -1,5 +1,17 @@
 package de.akquinet.jbosscc.guttenbase.tools;
 
+import java.nio.charset.Charset;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import de.akquinet.jbosscc.guttenbase.configuration.TargetDatabaseConfiguration;
 import de.akquinet.jbosscc.guttenbase.connector.Connector;
 import de.akquinet.jbosscc.guttenbase.hints.TableOrderHint;
@@ -9,10 +21,6 @@ import de.akquinet.jbosscc.guttenbase.repository.ConnectorRepository;
 import de.akquinet.jbosscc.guttenbase.sql.SQLLexer;
 import de.akquinet.jbosscc.guttenbase.utils.ScriptExecutorProgressIndicator;
 import de.akquinet.jbosscc.guttenbase.utils.Util;
-
-import java.nio.charset.Charset;
-import java.sql.*;
-import java.util.*;
 
 /**
  * Execute given SQL script or single statements separated by given delimiter. Delimiter is ';' by default.
@@ -129,16 +137,17 @@ public class ScriptExecutorTool {
 
       statement.close();
 
+
+      if (scriptUpdatesSchema) {
+        _connectorRepository.refreshDatabaseMetaData(connectorId);
+      }
+
       if (prepareTargetConnection) {
         final TargetDatabaseConfiguration targetDatabaseConfiguration = _connectorRepository.getTargetDatabaseConfiguration(connectorId);
         targetDatabaseConfiguration.finalizeTargetConnection(connection, connectorId);
       }
     } finally {
       connector.closeConnection();
-    }
-
-    if (scriptUpdatesSchema) {
-      _connectorRepository.refreshDatabaseMetaData(connectorId);
     }
 
     _progressIndicator.finalizeIndicator();
