@@ -25,17 +25,19 @@ import de.akquinet.jbosscc.guttenbase.utils.Util;
 /**
  * Execute given SQL script or single statements separated by given delimiter. Delimiter is ';' by default.
  *
- * @copyright 2013 by akquinet tech@spree
  * @author M. Dahm
+ * @copyright 2013 by akquinet tech@spree
  */
-public class ScriptExecutorTool {
+public class ScriptExecutorTool
+{
   public static final String DEFAULT_ENCODING = Charset.defaultCharset().name();
   private final ConnectorRepository _connectorRepository;
   private final char _delimiter;
   private ScriptExecutorProgressIndicator _progressIndicator;
   private final String _encoding;
 
-  public ScriptExecutorTool(final ConnectorRepository connectorRepository, final char delimiter, final String encoding) {
+  public ScriptExecutorTool(final ConnectorRepository connectorRepository, final char delimiter, final String encoding)
+  {
     assert connectorRepository != null : "connectorRepository != null";
     assert encoding != null : "encoding != null";
 
@@ -44,22 +46,26 @@ public class ScriptExecutorTool {
     _encoding = encoding;
   }
 
-  public ScriptExecutorTool(final ConnectorRepository connectorRepository, final String encoding) {
+  public ScriptExecutorTool(final ConnectorRepository connectorRepository, final String encoding)
+  {
     this(connectorRepository, ';', encoding);
   }
 
-  public ScriptExecutorTool(final ConnectorRepository connectorRepository, final char delimiter) {
+  public ScriptExecutorTool(final ConnectorRepository connectorRepository, final char delimiter)
+  {
     this(connectorRepository, delimiter, DEFAULT_ENCODING);
   }
 
-  public ScriptExecutorTool(final ConnectorRepository connectorRepository) {
+  public ScriptExecutorTool(final ConnectorRepository connectorRepository)
+  {
     this(connectorRepository, ';');
   }
 
   /**
    * Read SQL from file somewhere on class path. Each statement (not line!) must end with a ';'
    */
-  public void executeFileScript(final String connectorId, final String resourceName) throws SQLException {
+  public void executeFileScript(final String connectorId, final String resourceName) throws SQLException
+  {
     executeFileScript(connectorId, true, true, resourceName);
   }
 
@@ -67,14 +73,16 @@ public class ScriptExecutorTool {
    * Read SQL from file somewhere on class path. Each statement (not line!) must end with a ';'
    */
   public void executeFileScript(final String connectorId, final boolean updateSchema, final boolean prepareTargetConnection,
-      final String resourceName) throws SQLException {
+                                final String resourceName) throws SQLException
+  {
     executeScript(connectorId, updateSchema, prepareTargetConnection, Util.readLinesFromFile(resourceName, _encoding));
   }
 
   /**
    * Execute given lines of SQL. Each statement (not line!) must end with a ';'
    */
-  public void executeScript(final String connectorId, final String... lines) throws SQLException {
+  public void executeScript(final String connectorId, final String... lines) throws SQLException
+  {
     executeScript(connectorId, true, true, lines);
   }
 
@@ -82,14 +90,16 @@ public class ScriptExecutorTool {
    * Execute given lines of SQL. Each statement (not line!) must end with a ';'
    */
   public void executeScript(final String connectorId, final boolean updateSchema, final boolean prepareTargetConnection,
-      final String... lines) throws SQLException {
+                            final String... lines) throws SQLException
+  {
     executeScript(connectorId, updateSchema, prepareTargetConnection, Arrays.asList(lines));
   }
 
   /**
    * Execute given lines of SQL. Each statement (not line!) must with a ';'
    */
-  public void executeScript(final String connectorId, final List<String> lines) throws SQLException {
+  public void executeScript(final String connectorId, final List<String> lines) throws SQLException
+  {
     executeScript(connectorId, true, true, lines);
   }
 
@@ -97,17 +107,16 @@ public class ScriptExecutorTool {
    * Execute given lines of SQL. Each statement (not line!) must end with a ';'
    *
    * @param connectorId
-   * @param scriptUpdatesSchema
-   *          The script alters the schema, scheme information needs to be reloaded
-   * @param prepareTargetConnection
-   *          the target connection is initialized using the appropriate {@link TargetDatabaseConfiguration}
-   * @param lines
-   *          SQL statements ending with ';'
+   * @param scriptUpdatesSchema     The script alters the schema, scheme information needs to be reloaded
+   * @param prepareTargetConnection the target connection is initialized using the appropriate {@link TargetDatabaseConfiguration}
+   * @param lines                   SQL statements ending with ';'
    * @throws SQLException
    */
-    public void executeScript(final String connectorId, final boolean scriptUpdatesSchema, final boolean prepareTargetConnection,
-      final List<String> lines) throws SQLException {
-    if (lines.isEmpty()) {
+  public void executeScript(final String connectorId, final boolean scriptUpdatesSchema, final boolean prepareTargetConnection,
+                            final List<String> lines) throws SQLException
+  {
+    if (lines.isEmpty())
+    {
       return;
     }
 
@@ -118,17 +127,20 @@ public class ScriptExecutorTool {
     final Connector connector = _connectorRepository.createConnector(connectorId);
     final Connection connection = connector.openConnection();
 
-    if (prepareTargetConnection) {
+    if (prepareTargetConnection)
+    {
       final TargetDatabaseConfiguration targetDatabaseConfiguration = _connectorRepository.getTargetDatabaseConfiguration(connectorId);
       targetDatabaseConfiguration.initializeTargetConnection(connection, connectorId);
     }
 
     final Statement statement = connection.createStatement();
 
-    try {
+    try
+    {
       _progressIndicator.startProcess(sqlStatements.size());
 
-      for (final String sql : sqlStatements) {
+      for (final String sql : sqlStatements)
+      {
         _progressIndicator.startExecution();
         executeSQL(statement, sql);
         _progressIndicator.endExecution(1);
@@ -137,16 +149,25 @@ public class ScriptExecutorTool {
 
       statement.close();
 
-
-      if (scriptUpdatesSchema) {
+      if (scriptUpdatesSchema)
+      {
         _connectorRepository.refreshDatabaseMetaData(connectorId);
       }
 
-      if (prepareTargetConnection) {
+      if (prepareTargetConnection)
+      {
         final TargetDatabaseConfiguration targetDatabaseConfiguration = _connectorRepository.getTargetDatabaseConfiguration(connectorId);
         targetDatabaseConfiguration.finalizeTargetConnection(connection, connectorId);
       }
-    } finally {
+
+
+      if (scriptUpdatesSchema)
+      {
+        _connectorRepository.refreshDatabaseMetaData(connectorId);
+      }
+    }
+    finally
+    {
       connector.closeConnection();
     }
 
@@ -159,18 +180,23 @@ public class ScriptExecutorTool {
    *
    * @throws SQLException
    */
-  public List<Map<String, Object>> executeQuery(final String connectorId, final String sql) throws SQLException {
+  public List<Map<String, Object>> executeQuery(final String connectorId, final String sql) throws SQLException
+  {
     final Connector connector = _connectorRepository.createConnector(connectorId);
 
-    try {
+    try
+    {
       final Connection connection = connector.openConnection();
       return executeQuery(connection, sql);
-    } finally {
+    }
+    finally
+    {
       connector.closeConnection();
     }
   }
 
-  public List<Map<String, Object>> executeQuery(final Connection connection, final String sql) throws SQLException {
+  public List<Map<String, Object>> executeQuery(final Connection connection, final String sql) throws SQLException
+  {
     final List<Map<String, Object>> result = new ArrayList<Map<String, Object>>();
 
     final Statement statement = connection.createStatement();
@@ -182,14 +208,17 @@ public class ScriptExecutorTool {
     return result;
   }
 
-  private void readMapFromResultSet(final List<Map<String, Object>> result, final ResultSet resultSet) throws SQLException {
+  private void readMapFromResultSet(final List<Map<String, Object>> result, final ResultSet resultSet) throws SQLException
+  {
     final ResultSetMetaData metaData = resultSet.getMetaData();
 
-    while (resultSet.next()) {
+    while (resultSet.next())
+    {
       final int columnCount = metaData.getColumnCount();
       final Map<String, Object> map = new HashMap<String, Object>();
 
-      for (int i = 1; i <= columnCount; i++) {
+      for (int i = 1; i <= columnCount; i++)
+      {
         final String columnName = metaData.getColumnName(i);
         final Object value = resultSet.getObject(i);
 
@@ -200,12 +229,14 @@ public class ScriptExecutorTool {
     }
   }
 
-  private void executeSQL(final Statement statement, final String sql) throws SQLException {
+  private void executeSQL(final Statement statement, final String sql) throws SQLException
+  {
     _progressIndicator.info("Executing: " + sql);
 
     final boolean result = statement.execute(sql);
 
-    if (result) {
+    if (result)
+    {
       final List<Map<String, Object>> resultMap = new ArrayList<Map<String, Object>>();
 
       final ResultSet resultSet = statement.getResultSet();
@@ -213,18 +244,23 @@ public class ScriptExecutorTool {
       resultSet.close();
 
       _progressIndicator.info("Query result: " + resultMap);
-    } else {
+    }
+    else
+    {
       final int updateCount = statement.getUpdateCount();
       _progressIndicator.info("Update count: " + updateCount);
     }
   }
 
-  public void dropIndexes(final DropTablesTool dropTablesTool, final String connectorId, final boolean updateSchema) throws SQLException {
+  public void dropIndexes(final DropTablesTool dropTablesTool, final String connectorId, final boolean updateSchema) throws SQLException
+  {
     final List<TableMetaData> tableMetaData = TableOrderHint.getSortedTables(dropTablesTool._connectorRepository, connectorId);
     final List<String> statements = new ArrayList<String>();
 
-    for (final TableMetaData table : tableMetaData) {
-      for (final IndexMetaData index : table.getIndexes()) {
+    for (final TableMetaData table : tableMetaData)
+    {
+      for (final IndexMetaData index : table.getIndexes())
+      {
         statements.add("DROP INDEX " + index.getIndexName() + ";");
       }
     }
