@@ -13,11 +13,11 @@ import de.akquinet.jbosscc.guttenbase.tools.CheckEqualTableDataTool;
  * &copy; 2012-2020 akquinet tech@spree
  * </p>
  *
- * @Applicable-For-Source
- * @Applicable-For-Target
- * @Hint-Used-By {@link AbstractStatementCreator} to map column names
- * @Hint-Used-By {@link CheckEqualTableDataTool} to map column names
- * @Hint-Used-By {@link CheckSchemaCompatibilityTool} to map column names
+ * @gb.ApplicableForSource
+ * @gb.ApplicableForTarget
+ * @gb.HintUsedBy {@link AbstractStatementCreator} to map column names
+ * @gb.HintUsedBy {@link CheckEqualTableDataTool} to map column names
+ * @gb.HintUsedBy {@link CheckSchemaCompatibilityTool} to map column names
  *
  * @author M. Dahm
  */

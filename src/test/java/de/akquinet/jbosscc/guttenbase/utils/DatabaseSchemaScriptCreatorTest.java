@@ -1,23 +1,29 @@
 package de.akquinet.jbosscc.guttenbase.utils;
 
-import de.akquinet.jbosscc.guttenbase.hints.CaseConversionMode;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
+import java.util.List;
+
+import org.junit.Test;
+
 import de.akquinet.jbosscc.guttenbase.meta.ColumnMetaData;
 import de.akquinet.jbosscc.guttenbase.meta.DatabaseMetaData;
 import de.akquinet.jbosscc.guttenbase.meta.ForeignKeyMetaData;
 import de.akquinet.jbosscc.guttenbase.meta.IndexMetaData;
-import de.akquinet.jbosscc.guttenbase.meta.builder.*;
+import de.akquinet.jbosscc.guttenbase.meta.builder.ColumnMetaDataBuilder;
+import de.akquinet.jbosscc.guttenbase.meta.builder.DatabaseMetaDataBuilder;
+import de.akquinet.jbosscc.guttenbase.meta.builder.ForeignKeyMetaDataBuilder;
+import de.akquinet.jbosscc.guttenbase.meta.builder.IndexMetaDataBuilder;
+import de.akquinet.jbosscc.guttenbase.meta.builder.TableMetaDataBuilder;
 import de.akquinet.jbosscc.guttenbase.tools.schema.DatabaseSchemaScriptCreator;
 import de.akquinet.jbosscc.guttenbase.tools.schema.DefaultSchemaColumnTypeMapper;
-import org.junit.Test;
-
-import java.util.List;
-
-import static org.junit.Assert.*;
 
 public class DatabaseSchemaScriptCreatorTest {
   private final DatabaseMetaData _databaseMetaData = createDatabaseMetaData();
   private final DatabaseSchemaScriptCreator _objectUnderTest = new DatabaseSchemaScriptCreator(_databaseMetaData,
-          _databaseMetaData.getSchema(), CaseConversionMode.UPPER, DatabaseSchemaScriptCreator.MAX_ID_LENGTH);
+          _databaseMetaData.getSchema(), DatabaseSchemaScriptCreator.MAX_ID_LENGTH);
 
   private DatabaseMetaData createDatabaseMetaData() {
     final DatabaseMetaDataBuilder databaseMetaDataBuilder = new DatabaseMetaDataBuilder();

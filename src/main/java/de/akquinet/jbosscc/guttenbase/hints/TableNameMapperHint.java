@@ -10,20 +10,20 @@ import de.akquinet.jbosscc.guttenbase.tools.CheckEqualTableDataTool;
 
 /**
  * Map table names, e.g. prepend schema name schema.table or add backticks (`) to escape special names.
- * 
+ *
  * <p>
  * &copy; 2012-2020 akquinet tech@spree
  * </p>
- * 
- * @Applicable-For-Source
- * @Applicable-For-Target
- * @Hint-Used-By {@link MsSqlTargetDatabaseConfiguration}
- * @Hint-Used-By {@link PostgresqlTargetDatabaseConfiguration}
- * @Hint-Used-By {@link AbstractSequenceUpdateTool}
- * @Hint-Used-By {@link AbstractTableCopyTool}
- * @Hint-Used-By {@link MinMaxIdSelectorTool}
- * @Hint-Used-By {@link CheckEqualTableDataTool}
- * 
+ *
+ * @gb.ApplicableForSource
+ * @gb.ApplicableForTarget
+ * @gb.HintUsedBy {@link MsSqlTargetDatabaseConfiguration}
+ * @gb.HintUsedBy {@link PostgresqlTargetDatabaseConfiguration}
+ * @gb.HintUsedBy {@link AbstractSequenceUpdateTool}
+ * @gb.HintUsedBy {@link AbstractTableCopyTool}
+ * @gb.HintUsedBy {@link MinMaxIdSelectorTool}
+ * @gb.HintUsedBy {@link CheckEqualTableDataTool}
+ *
  * @author M. Dahm
  */
 public abstract class TableNameMapperHint implements ConnectorHint<TableNameMapper> {

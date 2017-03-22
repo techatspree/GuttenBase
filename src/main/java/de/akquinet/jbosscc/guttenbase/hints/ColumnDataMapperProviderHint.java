@@ -5,13 +5,13 @@ import de.akquinet.jbosscc.guttenbase.tools.CommonColumnTypeResolverTool;
 
 /**
  * Used to find mappings for column data. E.g., when converting a number to a String or casting a LONG to a BIGINT.
- * 
+ *
  * <p>
  * &copy; 2012-2020 akquinet tech@spree
  * </p>
- * 
- * @Hint-Used-By {@link CommonColumnTypeResolverTool} to determine mapping between different column types
- * @Applicable-For-Target
+ *
+ * @gb.HintUsedBy {@link CommonColumnTypeResolverTool} to determine mapping between different column types
+ * @gb.ApplicableForTarget
  * @author M. Dahm
  */
 public abstract class ColumnDataMapperProviderHint implements ConnectorHint<ColumnDataMapperProvider> {

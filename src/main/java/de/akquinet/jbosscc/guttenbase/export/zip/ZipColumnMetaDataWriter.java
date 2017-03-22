@@ -1,14 +1,14 @@
 package de.akquinet.jbosscc.guttenbase.export.zip;
 
-import de.akquinet.jbosscc.guttenbase.meta.ColumnMetaData;
-import de.akquinet.jbosscc.guttenbase.meta.InternalColumnMetaData;
-
 import java.io.IOException;
 import java.util.Iterator;
 
+import de.akquinet.jbosscc.guttenbase.meta.ColumnMetaData;
+import de.akquinet.jbosscc.guttenbase.meta.InternalColumnMetaData;
+
 /**
  * Write ZIP file entry containing information about a table column such as type and name.
- * <p/>
+ *
  * <p>
  * &copy; 2012-2020 akquinet tech@spree
  * </p>

@@ -9,7 +9,7 @@ import java.util.*;
 /**
  * Order tables by foreign key constraints, i.e. the foreign keys of a database schema spawn an directed (possibly cyclic!) graph
  * of dependencies. The tool tries to create of sequential order either in top-down (starting at the root nodes) or bottom-up
- * (starting at the leaves) manner. <br/>
+ * (starting at the leaves) manner. <br>
  * If there are cycles in the dependencies, we choose the node with the fewest incoming/outgoing edges.
  * <p>
  * &copy; 2012-2020 akquinet tech@spree

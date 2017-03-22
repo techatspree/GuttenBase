@@ -19,7 +19,7 @@ import java.util.zip.ZipFile;
 
 /**
  * Read database information and data from ZIP file.
- * <p/>
+ *
  * <p>
  * &copy; 2012-2020 akquinet tech@spree
  * </p>

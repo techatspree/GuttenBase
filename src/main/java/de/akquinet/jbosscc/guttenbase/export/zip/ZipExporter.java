@@ -26,15 +26,15 @@ import java.util.zip.ZipOutputStream;
 /**
  * Export schema information and data into executable JAR file. Since it is in ZIP file format the resulting file may as well be
  * inspected with a ZIP tool. The structure of the ZIP is based on the structure of a data base.
- * <p/>
+ *
  * <p>
  * &copy; 2012-2020 akquinet tech@spree
  * </p>
  *
  * @author M. Dahm
- * @Uses-Hint {@link ZipExporterClassResourcesHint} to add custom classes to the generated JAR and configure the
+ * @gb.UsesHint {@link ZipExporterClassResourcesHint} to add custom classes to the generated JAR and configure the
  * META-INF/MANIFEST.MF Main-Class entry
- * @Uses-Hint {@link ExportDumpExtraInformationHint} to add custom information to the generated JAR
+ * @gb.UsesHint {@link ExportDumpExtraInformationHint} to add custom information to the generated JAR
  */
 public class ZipExporter implements Exporter
 {
@@ -106,7 +106,7 @@ public class ZipExporter implements Exporter
 
   /**
    * {@inheritDoc}
-   * <p/>
+   *
    * Does nothing.
    */
   @Override
@@ -116,7 +116,7 @@ public class ZipExporter implements Exporter
 
   /**
    * {@inheritDoc}
-   * <p/>
+   *
    * Open new ZIP entry. Data will be written to a temporary file first, because otherwise it may exceed the memory.
    */
   @Override
@@ -132,7 +132,7 @@ public class ZipExporter implements Exporter
 
   /**
    * {@inheritDoc}
-   * <p/>
+   *
    * Close current ZIP entry.
    */
   @Override
@@ -152,7 +152,7 @@ public class ZipExporter implements Exporter
 
   /**
    * {@inheritDoc}
-   * <p/>
+   *
    * Does nothing.
    */
   @Override
@@ -162,7 +162,7 @@ public class ZipExporter implements Exporter
 
   /**
    * {@inheritDoc}
-   * <p/>
+   *
    * Does nothing.
    */
   @Override

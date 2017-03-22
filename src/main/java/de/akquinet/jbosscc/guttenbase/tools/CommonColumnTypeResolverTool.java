@@ -17,14 +17,14 @@ import de.akquinet.jbosscc.guttenbase.repository.ConnectorRepository;
 
 /**
  * Try to find common type mapping usable for both columns.
- * 
+ *
  * <p>
  * &copy; 2012-2020 akquinet tech@spree
  * </p>
- * 
- * @Uses-Hint {@link ColumnDataMapperProviderHint} to determine mapping between different column types
- * @Uses-Hint {@link ColumnTypeResolverListHint} to determine mapping strategies between different column types
- * 
+ *
+ * @gb.UsesHint {@link ColumnDataMapperProviderHint} to determine mapping between different column types
+ * @gb.UsesHint {@link ColumnTypeResolverListHint} to determine mapping strategies between different column types
+ *
  * @author M. Dahm
  */
 public class CommonColumnTypeResolverTool {

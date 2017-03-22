@@ -17,7 +17,7 @@ public class CaseConversionTest
     final TableMetaDataBuilder tableMetaDataBuilder = new TableMetaDataBuilder(databaseMetaDataBuilder).setTableName("Table");
 
     assertEquals("schema.Table", new DefaultTableNameMapper().mapTableName(tableMetaDataBuilder.build()));
-    assertEquals("schema.table", new DefaultTableNameMapper(CaseConversionMode.LOWER).mapTableName(tableMetaDataBuilder.build()));
-    assertEquals("schema.TABLE", new DefaultTableNameMapper(CaseConversionMode.UPPER).mapTableName(tableMetaDataBuilder.build()));
+    assertEquals("schema.table", new DefaultTableNameMapper(CaseConversionMode.LOWER, true).mapTableName(tableMetaDataBuilder.build()));
+    assertEquals("schema.TABLE", new DefaultTableNameMapper(CaseConversionMode.UPPER, true).mapTableName(tableMetaDataBuilder.build()));
   }
 }

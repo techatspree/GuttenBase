@@ -15,8 +15,8 @@ import java.sql.SQLException;
  * </p>
  *
  * @author M. Dahm
- * @Uses-Hint {@link ColumnNameMapperHint} to map column names
- * @Uses-Hint {@link TableOrderHint} to determine order of tables
+ * @gb.UsesHint {@link ColumnNameMapperHint} to map column names
+ * @gb.UsesHint {@link TableOrderHint} to determine order of tables
  * @deprecated Use SchemaComparatorTool
  */
 public class CheckSchemaCompatibilityTool extends SchemaComparatorTool {

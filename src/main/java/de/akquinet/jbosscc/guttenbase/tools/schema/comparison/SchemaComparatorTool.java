@@ -22,8 +22,8 @@ import java.util.List;
  * </p>
  *
  * @author M. Dahm
- * @Uses-Hint {@link ColumnNameMapperHint} to map column names
- * @Uses-Hint {@link TableOrderHint} to determine order of tables
+ * @gb.UsesHint {@link ColumnNameMapperHint} to map column names
+ * @gb.UsesHint {@link TableOrderHint} to determine order of tables
  */
 public class SchemaComparatorTool {
   private final ConnectorRepository _connectorRepository;
