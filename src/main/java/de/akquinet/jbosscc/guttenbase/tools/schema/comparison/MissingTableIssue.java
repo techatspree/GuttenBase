@@ -7,6 +7,7 @@ public class MissingTableIssue extends SchemaCompatibilityIssue {
 
   public MissingTableIssue(final String message, final TableMetaData sourceTableMetaData) {
     super(message);
+
     _sourceTableMetaData = sourceTableMetaData;
   }
 

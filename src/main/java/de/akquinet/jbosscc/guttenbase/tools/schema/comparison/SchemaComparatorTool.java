@@ -1,5 +1,8 @@
 package de.akquinet.jbosscc.guttenbase.tools.schema.comparison;
 
+import java.sql.SQLException;
+import java.util.List;
+
 import de.akquinet.jbosscc.guttenbase.hints.ColumnNameMapperHint;
 import de.akquinet.jbosscc.guttenbase.hints.ColumnOrderHint;
 import de.akquinet.jbosscc.guttenbase.hints.TableOrderHint;
@@ -8,12 +11,13 @@ import de.akquinet.jbosscc.guttenbase.mapping.ColumnMapper.ColumnMapperResult;
 import de.akquinet.jbosscc.guttenbase.mapping.ColumnNameMapper;
 import de.akquinet.jbosscc.guttenbase.mapping.ColumnTypeMapping;
 import de.akquinet.jbosscc.guttenbase.mapping.TableMapper;
-import de.akquinet.jbosscc.guttenbase.meta.*;
+import de.akquinet.jbosscc.guttenbase.meta.ColumnMetaData;
+import de.akquinet.jbosscc.guttenbase.meta.DatabaseMetaData;
+import de.akquinet.jbosscc.guttenbase.meta.ForeignKeyMetaData;
+import de.akquinet.jbosscc.guttenbase.meta.IndexMetaData;
+import de.akquinet.jbosscc.guttenbase.meta.TableMetaData;
 import de.akquinet.jbosscc.guttenbase.repository.ConnectorRepository;
 import de.akquinet.jbosscc.guttenbase.tools.CommonColumnTypeResolverTool;
-
-import java.sql.SQLException;
-import java.util.List;
 
 /**
  * Will check two schemas for compatibility and report found issues.
@@ -160,7 +164,7 @@ public class SchemaComparatorTool {
       final TableMetaData targetTableMetaData = tableMapper.map(tableMetaData, targetDatabaseMetaData);
 
       if (targetTableMetaData == null) {
-        _schemaCompatibilityIssues.addIssue(new MissingTableIssue("Table " + sourceTableMetaData + " is unknown/unmapped in target schema", tableMetaData));
+        _schemaCompatibilityIssues.addIssue(new MissingTableIssue("Table " + tableMetaData + " is unknown/unmapped in target schema", tableMetaData));
       }
     }
   }
