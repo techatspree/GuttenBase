@@ -20,7 +20,7 @@ import de.akquinet.jbosscc.guttenbase.tools.ScriptExecutorTool;
  * <p>
  * &copy; 2012-2020 akquinet tech@spree
  * </p>
- * 
+ *
  * @author M. Dahm
  */
 public class DatabaseColumnFilterHintTest extends AbstractGuttenBaseTest
@@ -39,6 +39,7 @@ public class DatabaseColumnFilterHintTest extends AbstractGuttenBaseTest
   {
     final TableMetaData tableMetaData = _connectorRepository.getDatabaseMetaData(SOURCE).getTableMetaData("FOO_USER");
 
+    assertNotNull(tableMetaData);
     assertNotNull(tableMetaData.getColumnMetaData("USERNAME"));
     assertNotNull(tableMetaData.getColumnMetaData("PASSWORD"));
   }
@@ -65,6 +66,7 @@ public class DatabaseColumnFilterHintTest extends AbstractGuttenBaseTest
 
     final TableMetaData tableMetaData = _connectorRepository.getDatabaseMetaData(SOURCE).getTableMetaData("FOO_USER");
 
+    assertNotNull(tableMetaData);
     assertNotNull(tableMetaData.getColumnMetaData("USERNAME"));
     assertNull(tableMetaData.getColumnMetaData("PASSWORD"));
   }
