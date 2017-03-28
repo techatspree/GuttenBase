@@ -10,20 +10,6 @@ public class RandomTableOrderHint extends TableOrderHint
   @Override
   public TableOrderComparatorFactory getValue()
   {
-    return new TableOrderComparatorFactory()
-    {
-      @Override
-      public Comparator<TableMetaData> createComparator()
-      {
-        return new Comparator<TableMetaData>()
-        {
-          @Override
-          public int compare(final TableMetaData o1, final TableMetaData o2)
-          {
-            return System.identityHashCode(o1) - System.identityHashCode(o2);
-          }
-        };
-      }
-    };
+    return () -> Comparator.comparingInt(System::identityHashCode);
   }
 }

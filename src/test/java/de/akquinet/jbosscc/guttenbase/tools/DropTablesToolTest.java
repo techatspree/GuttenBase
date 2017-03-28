@@ -65,7 +65,7 @@ public class DropTablesToolTest extends AbstractGuttenBaseTest
   private List<ForeignKeyMetaData> getAllForeignKeys() throws SQLException
   {
     final List<TableMetaData> tableMetaData = TableOrderHint.getSortedTables(_connectorRepository, CONNECTOR_ID);
-    final List<ForeignKeyMetaData> allKeys = new ArrayList<ForeignKeyMetaData>();
+    final List<ForeignKeyMetaData> allKeys = new ArrayList<>();
 
     for (final TableMetaData table : tableMetaData)
     {
@@ -78,7 +78,7 @@ public class DropTablesToolTest extends AbstractGuttenBaseTest
   private List<IndexMetaData> getAllIndexes() throws SQLException
   {
     final List<TableMetaData> tableMetaData = TableOrderHint.getSortedTables(_connectorRepository, CONNECTOR_ID);
-    final List<IndexMetaData> allIndexes = new ArrayList<IndexMetaData>();
+    final List<IndexMetaData> allIndexes = new ArrayList<>();
 
     for (final TableMetaData table : tableMetaData)
     {

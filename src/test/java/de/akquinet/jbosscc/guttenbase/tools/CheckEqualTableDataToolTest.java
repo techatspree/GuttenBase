@@ -50,12 +50,7 @@ public class CheckEqualTableDataToolTest extends AbstractGuttenBaseTest {
 		_connectorRepository.addConnectorHint(CONNECTOR_ID2, new NumberOfCheckedTableDataHint() {
 			@Override
 			public NumberOfCheckedTableData getValue() {
-				return new NumberOfCheckedTableData() {
-					@Override
-					public int getNumberOfCheckedTableData() {
-						return 1;
-					}
-				};
+				return () -> 1;
 			}
 		});
 

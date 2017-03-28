@@ -37,7 +37,7 @@ public class ExportDumpConnection implements Connection
 {
   private final Exporter _exporter;
   private boolean _closed;
-  private final Set<TableMetaData> _exportedTables = new HashSet<TableMetaData>();
+  private final Set<TableMetaData> _exportedTables = new HashSet<>();
   private TableMetaData _currentTableMetaData;
 
   public ExportDumpConnection(final Exporter exporter)

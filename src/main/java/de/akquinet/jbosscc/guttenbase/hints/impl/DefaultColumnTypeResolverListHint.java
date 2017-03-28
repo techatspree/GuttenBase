@@ -21,11 +21,6 @@ import de.akquinet.jbosscc.guttenbase.repository.impl.HeuristicColumnTypeResolve
 public class DefaultColumnTypeResolverListHint extends ColumnTypeResolverListHint {
   @Override
   public ColumnTypeResolverList getValue() {
-    return new ColumnTypeResolverList() {
-      @Override
-      public List<ColumnTypeResolver> getColumnTypeResolvers() {
-        return Arrays.asList(new HeuristicColumnTypeResolver(), new ClassNameColumnTypeResolver());
-      }
-    };
+    return () -> Arrays.asList(new HeuristicColumnTypeResolver(), new ClassNameColumnTypeResolver());
   }
 }

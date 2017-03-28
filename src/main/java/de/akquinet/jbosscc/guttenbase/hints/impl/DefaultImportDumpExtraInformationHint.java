@@ -18,10 +18,7 @@ import de.akquinet.jbosscc.guttenbase.hints.ImportDumpExtraInformationHint;
 public class DefaultImportDumpExtraInformationHint extends ImportDumpExtraInformationHint {
 	@Override
 	public ImportDumpExtraInformation getValue() {
-		return new ImportDumpExtraInformation() {
-			@Override
-			public void processExtraInformation(final Map<String, Serializable> extraInformation) throws Exception {
-			}
-		};
+		return extraInformation -> {
+        };
 	}
 }

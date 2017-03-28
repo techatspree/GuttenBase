@@ -30,7 +30,7 @@ public class DefaultZipExporterClassResources implements ZipExporterClassResourc
 
   @Override
   public List<Class<?>> getClassResources() {
-    final List<Class<?>> classes = new ArrayList<Class<?>>();
+    final List<Class<?>> classes = new ArrayList<>();
     classes.add(getStartupClass());
     classes.add(ZipExporter.class); // Representing all GuttenBase classes
     classes.add(Logger.class);
@@ -40,6 +40,6 @@ public class DefaultZipExporterClassResources implements ZipExporterClassResourc
 
   @Override
   public Map<String, URL> getUrlResources() {
-    return new HashMap<String, URL>();
+    return new HashMap<>();
   }
 }

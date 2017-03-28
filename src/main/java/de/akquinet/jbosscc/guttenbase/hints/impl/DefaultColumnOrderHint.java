@@ -19,11 +19,6 @@ import de.akquinet.jbosscc.guttenbase.meta.ColumnMetaData;
 public class DefaultColumnOrderHint extends ColumnOrderHint {
 	@Override
 	public ColumnOrderComparatorFactory getValue() {
-		return new ColumnOrderComparatorFactory() {
-			@Override
-			public Comparator<ColumnMetaData> createComparator() {
-				return new DefaultColumnComparator();
-			}
-		};
+		return DefaultColumnComparator::new;
 	}
 }

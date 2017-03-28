@@ -126,7 +126,7 @@ public class ColumnMetaDataImpl implements InternalColumnMetaData {
 
   @Override
   public List<ColumnMetaData> getReferencedByColumn() {
-    final List<ColumnMetaData> result = new ArrayList<ColumnMetaData>();
+    final List<ColumnMetaData> result = new ArrayList<>();
 
     for (final ForeignKeyMetaData foreignKey : getTableMetaData().getExportedForeignKeys()) {
       if (foreignKey.getReferencedColumn() == this) {

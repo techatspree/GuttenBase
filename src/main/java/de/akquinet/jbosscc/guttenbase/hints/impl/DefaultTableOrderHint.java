@@ -18,16 +18,6 @@ import de.akquinet.jbosscc.guttenbase.meta.TableMetaData;
 public class DefaultTableOrderHint extends TableOrderHint {
 	@Override
 	public TableOrderComparatorFactory getValue() {
-		return new TableOrderComparatorFactory() {
-			@Override
-			public Comparator<TableMetaData> createComparator() {
-				return new Comparator<TableMetaData>() {
-					@Override
-					public int compare(final TableMetaData t1, final TableMetaData t2) {
-						return t1.compareTo(t2);
-					}
-				};
-			}
-		};
+		return () -> Comparable::compareTo;
 	}
 }

@@ -41,10 +41,13 @@ public class SchemaComparatorTool {
 
     /**
      * Check compatibility of both connectors/schemata.
-     *
+     * @param sourceConnectorId
+     * @param targetConnectorId
      * @return List of found issues. If empty the schemas are completely compatible
      * @throws SQLException
      */
+
+    @SuppressWarnings("JavaDoc")
     public SchemaCompatibilityIssues check(final String sourceConnectorId, final String targetConnectorId) throws SQLException {
         final List<TableMetaData> sourceTables = TableOrderHint.getSortedTables(_connectorRepository, sourceConnectorId);
         final TableMapper tableMapper = _connectorRepository.getConnectorHint(targetConnectorId, TableMapper.class).getValue();

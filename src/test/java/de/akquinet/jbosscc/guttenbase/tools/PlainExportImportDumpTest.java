@@ -17,24 +17,14 @@ public class PlainExportImportDumpTest extends AbstractExportImportDumpTest {
 		_connectorRepository.addConnectorHint(EXPORT, new ExporterFactoryHint() {
 			@Override
 			public ExporterFactory getValue() {
-				return new ExporterFactory() {
-					@Override
-					public Exporter createExporter() {
-						return new PlainGzipExporter();
-					}
-				};
+				return PlainGzipExporter::new;
 			}
 		});
 
 		_connectorRepository.addConnectorHint(IMPORT, new ImporterFactoryHint() {
 			@Override
 			public ImporterFactory getValue() {
-				return new ImporterFactory() {
-					@Override
-					public Importer createImporter() {
-						return new PlainGzipImporter();
-					}
-				};
+				return PlainGzipImporter::new;
 			}
 		});
 	}

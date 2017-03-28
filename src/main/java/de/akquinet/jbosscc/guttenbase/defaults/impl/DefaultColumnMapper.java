@@ -24,8 +24,8 @@ public class DefaultColumnMapper implements ColumnMapper
   {
     final String columnName = source.getColumnName();
     final ColumnMetaData columnMetaData = targetTableMetaData.getColumnMetaData(columnName);
-    final List<ColumnMetaData> result = columnMetaData != null ? new ArrayList<ColumnMetaData>(Arrays.asList(columnMetaData))
-        : new ArrayList<ColumnMetaData>();
+    final List<ColumnMetaData> result = columnMetaData != null ? new ArrayList<>(Arrays.asList(columnMetaData))
+        : new ArrayList<>();
     return new ColumnMapperResult(result);
   }
 }

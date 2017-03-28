@@ -16,11 +16,6 @@ import de.akquinet.jbosscc.guttenbase.tools.RefreshTargetConnection;
 public class DefaultRefreshTargetConnectionHint extends RefreshTargetConnectionHint {
   @Override
   public RefreshTargetConnection getValue() {
-    return new RefreshTargetConnection() {
-      @Override
-      public boolean refreshConnection(int noCopiedTables, TableMetaData sourceTableMetaData) {
-        return false;
-      }
-    };
+    return (noCopiedTables, sourceTableMetaData) -> false;
   }
 }

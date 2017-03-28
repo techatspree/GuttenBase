@@ -33,6 +33,8 @@ public class DefaultTableCopyTool extends AbstractTableCopyTool
    *
    * @throws SQLException
    */
+
+  @SuppressWarnings("JavaDoc")
   @Override
   protected void copyTable(final String sourceConnectorId, final Connection sourceConnection,
       final SourceDatabaseConfiguration sourceDatabaseConfiguration, final TableMetaData sourceTableMetaData,

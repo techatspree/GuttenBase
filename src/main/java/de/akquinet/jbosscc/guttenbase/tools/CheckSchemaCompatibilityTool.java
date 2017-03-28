@@ -20,15 +20,20 @@ import java.sql.SQLException;
  * @deprecated Use SchemaComparatorTool
  */
 public class CheckSchemaCompatibilityTool extends SchemaComparatorTool {
+
   public CheckSchemaCompatibilityTool(final ConnectorRepository connectorRepository) {
     super(connectorRepository);
   }
 
-  /**
-   * Check compatibility of both connectors/schemata.
-   *
-   * @throws SQLException
-   */
+    /**
+     * Check compatibility of both connectors/schemata.
+     * @param sourceConnectorId
+     * @param targetConnectorId
+     * @throws SQLException
+     */
+
+
+  @SuppressWarnings("JavaDoc")
   public void checkTableConfiguration(final String sourceConnectorId, final String targetConnectorId) throws SQLException {
     final SchemaCompatibilityIssues schemaCompatibilityIssues = check(sourceConnectorId, targetConnectorId);
 

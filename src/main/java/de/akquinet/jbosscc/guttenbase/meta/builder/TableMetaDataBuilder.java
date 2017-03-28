@@ -17,10 +17,10 @@ import de.akquinet.jbosscc.guttenbase.meta.impl.TableMetaDataImpl;
 public class TableMetaDataBuilder
 {
   private String _tableName = "FOO";
-  private final List<ColumnMetaDataBuilder> _columns = new ArrayList<ColumnMetaDataBuilder>();
-  private final List<IndexMetaDataBuilder> _indexes = new ArrayList<IndexMetaDataBuilder>();
-  private final List<ForeignKeyMetaDataBuilder> _exportedforeignKeys = new ArrayList<ForeignKeyMetaDataBuilder>();
-  private final List<ForeignKeyMetaDataBuilder> _importedforeignKeys = new ArrayList<ForeignKeyMetaDataBuilder>();
+  private final List<ColumnMetaDataBuilder> _columns = new ArrayList<>();
+  private final List<IndexMetaDataBuilder> _indexes = new ArrayList<>();
+  private final List<ForeignKeyMetaDataBuilder> _exportedforeignKeys = new ArrayList<>();
+  private final List<ForeignKeyMetaDataBuilder> _importedforeignKeys = new ArrayList<>();
   private final DatabaseMetaDataBuilder _databaseMetaDataBuilder;
   private TableMetaDataImpl _result;
 

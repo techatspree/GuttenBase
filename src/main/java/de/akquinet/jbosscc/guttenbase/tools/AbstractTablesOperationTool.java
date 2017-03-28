@@ -41,7 +41,7 @@ public abstract class AbstractTablesOperationTool
       throws SQLException
   {
     final List<TableMetaData> tables = TableOrderHint.getSortedTables(_connectorRepository, connectorId);
-    final List<String> statements = new ArrayList<String>();
+    final List<String> statements = new ArrayList<>();
 
     for (final TableMetaData tableMetaData : tables)
     {

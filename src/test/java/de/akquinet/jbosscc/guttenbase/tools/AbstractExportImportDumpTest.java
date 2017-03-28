@@ -46,14 +46,10 @@ public abstract class AbstractExportImportDumpTest extends AbstractGuttenBaseTes
     _connectorRepository.addConnectorHint(EXPORT, new ExportDumpExtraInformationHint() {
       @Override
       public ExportDumpExtraInformation getValue() {
-        return new ExportDumpExtraInformation() {
-          @Override
-          public Map<String, Serializable> getExtraInformation(final ConnectorRepository connectorRepository, final String connectorId,
-              final ExportDumpConnectorInfo exportDumpConnectionInfo) throws SQLException {
-            final Map<String, Serializable> result = new HashMap<String, Serializable>();
-            result.put(KEY, VALUE);
-            return result;
-          }
+        return (connectorRepository, connectorId, exportDumpConnectionInfo) -> {
+          final Map<String, Serializable> result = new HashMap<>();
+          result.put(KEY, VALUE);
+          return result;
         };
       }
     });
@@ -61,12 +57,7 @@ public abstract class AbstractExportImportDumpTest extends AbstractGuttenBaseTes
     _connectorRepository.addConnectorHint(IMPORT, new ImportDumpExtraInformationHint() {
       @Override
       public ImportDumpExtraInformation getValue() {
-        return new ImportDumpExtraInformation() {
-          @Override
-          public void processExtraInformation(final Map<String, Serializable> extraInformation) throws Exception {
-            _extraInformation = extraInformation;
-          }
-        };
+        return extraInformation -> _extraInformation = extraInformation;
       }
     });
   }

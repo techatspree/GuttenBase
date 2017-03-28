@@ -42,14 +42,7 @@ public class RepositoryColumnFilterHintTest extends AbstractGuttenBaseTest
       @Override
       public RepositoryColumnFilter getValue()
       {
-        return new RepositoryColumnFilter()
-        {
-          @Override
-          public boolean accept(final ColumnMetaData column) throws SQLException
-          {
-            return !column.getColumnName().equalsIgnoreCase("password");
-          }
-        };
+        return column -> !column.getColumnName().equalsIgnoreCase("password");
       }
     });
 

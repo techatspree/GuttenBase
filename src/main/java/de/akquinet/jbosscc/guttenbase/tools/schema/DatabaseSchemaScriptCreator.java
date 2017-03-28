@@ -86,7 +86,7 @@ public class DatabaseSchemaScriptCreator
 
   public List<String> createTableStatements(final List<TableMetaData> tables) throws SQLException
   {
-    final List<String> result = new ArrayList<String>();
+    final List<String> result = new ArrayList<>();
 
     for (final TableMetaData tableMetaData : tables)
     {
@@ -104,7 +104,7 @@ public class DatabaseSchemaScriptCreator
 
   public List<String> createPrimaryKeyStatements(final List<TableMetaData> tables) throws SQLException
   {
-    final List<String> result = new ArrayList<String>();
+    final List<String> result = new ArrayList<>();
 
     for (final TableMetaData tableMetaData : tables)
     {
@@ -128,7 +128,7 @@ public class DatabaseSchemaScriptCreator
 
   public List<String> createIndexStatements(final List<TableMetaData> tables) throws SQLException
   {
-    final List<String> result = new ArrayList<String>();
+    final List<String> result = new ArrayList<>();
 
     for (final TableMetaData tableMetaData : tables)
     {
@@ -151,7 +151,7 @@ public class DatabaseSchemaScriptCreator
 
   public List<String> createForeignKeyStatements(final List<TableMetaData> tables) throws SQLException
   {
-    final List<String> result = new ArrayList<String>();
+    final List<String> result = new ArrayList<>();
 
     for (final TableMetaData tableMetaData : tables)
     {
