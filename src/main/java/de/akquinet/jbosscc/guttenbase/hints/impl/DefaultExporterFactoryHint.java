@@ -17,11 +17,6 @@ import de.akquinet.jbosscc.guttenbase.hints.ExporterFactoryHint;
 public class DefaultExporterFactoryHint extends ExporterFactoryHint {
 	@Override
 	public ExporterFactory getValue() {
-		return new ExporterFactory() {
-			@Override
-			public Exporter createExporter() {
-				return new ZipExporter();
-			}
-		};
+		return ZipExporter::new;
 	}
 }

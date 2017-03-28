@@ -21,7 +21,7 @@ public class IndexMetaDataBuilder
   private boolean _ascending = false;
   private boolean _unique = false;
   private boolean _primaryKey = false;
-  private final List<ColumnMetaDataBuilder> _columns = new ArrayList<ColumnMetaDataBuilder>();
+  private final List<ColumnMetaDataBuilder> _columns = new ArrayList<>();
   private final TableMetaDataBuilder _tableMetaDataBuilder;
   private IndexMetaDataImpl _result;
 

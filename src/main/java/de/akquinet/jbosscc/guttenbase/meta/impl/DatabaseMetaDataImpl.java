@@ -27,7 +27,7 @@ public class DatabaseMetaDataImpl implements InternalDatabaseMetaData {
   private final int _majorVersion;
   private final int _minorVersion;
   private final DatabaseType _databaseType;
-  private final Map<String, TableMetaData> _tableMetaDataMap = new LinkedHashMap<String, TableMetaData>();
+  private final Map<String, TableMetaData> _tableMetaDataMap = new LinkedHashMap<>();
 
   public DatabaseMetaDataImpl(final String schema, final String databaseName, final int majorVersion, final int minorVersion,
       final DatabaseType databaseType) {
@@ -69,7 +69,7 @@ public class DatabaseMetaDataImpl implements InternalDatabaseMetaData {
 
   @Override
   public List<TableMetaData> getTableMetaData() {
-    return new ArrayList<TableMetaData>(_tableMetaDataMap.values());
+    return new ArrayList<>(_tableMetaDataMap.values());
   }
 
   @Override

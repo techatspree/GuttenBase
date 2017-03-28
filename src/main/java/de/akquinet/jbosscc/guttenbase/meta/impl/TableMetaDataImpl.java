@@ -26,10 +26,10 @@ public class TableMetaDataImpl implements InternalTableMetaData
 
   private final String _tableName;
   private int _rowCount;
-  private final Map<String, ColumnMetaData> _columns = new LinkedHashMap<String, ColumnMetaData>();
-  private final Map<String, IndexMetaData> _indexes = new LinkedHashMap<String, IndexMetaData>();
-  private final Map<String, ForeignKeyMetaData> _importedForeignKeys = new LinkedHashMap<String, ForeignKeyMetaData>();
-  private final Map<String, ForeignKeyMetaData> _exportedForeignKeys = new LinkedHashMap<String, ForeignKeyMetaData>();
+  private final Map<String, ColumnMetaData> _columns = new LinkedHashMap<>();
+  private final Map<String, IndexMetaData> _indexes = new LinkedHashMap<>();
+  private final Map<String, ForeignKeyMetaData> _importedForeignKeys = new LinkedHashMap<>();
+  private final Map<String, ForeignKeyMetaData> _exportedForeignKeys = new LinkedHashMap<>();
   private final DatabaseMetaData _databaseMetaData;
 
   public TableMetaDataImpl(final String tableName, final DatabaseMetaData databaseMetaData)
@@ -64,7 +64,7 @@ public class TableMetaDataImpl implements InternalTableMetaData
   @Override
   public List<ColumnMetaData> getColumnMetaData()
   {
-    return new ArrayList<ColumnMetaData>(_columns.values());
+    return new ArrayList<>(_columns.values());
   }
 
   /**
@@ -115,7 +115,7 @@ public class TableMetaDataImpl implements InternalTableMetaData
   @Override
   public List<IndexMetaData> getIndexes()
   {
-    return new ArrayList<IndexMetaData>(_indexes.values());
+    return new ArrayList<>(_indexes.values());
   }
 
   @Override
@@ -127,7 +127,7 @@ public class TableMetaDataImpl implements InternalTableMetaData
   @Override
   public List<ForeignKeyMetaData> getExportedForeignKeys()
   {
-    return new ArrayList<ForeignKeyMetaData>(_exportedForeignKeys.values());
+    return new ArrayList<>(_exportedForeignKeys.values());
   }
 
   @Override
@@ -139,7 +139,7 @@ public class TableMetaDataImpl implements InternalTableMetaData
   @Override
   public List<ForeignKeyMetaData> getImportedForeignKeys()
   {
-    return new ArrayList<ForeignKeyMetaData>(_importedForeignKeys.values());
+    return new ArrayList<>(_importedForeignKeys.values());
   }
 
   @Override
@@ -154,7 +154,7 @@ public class TableMetaDataImpl implements InternalTableMetaData
   @Override
   public List<ColumnMetaData> getPrimaryKeyColumns()
   {
-    final List<ColumnMetaData> result = new ArrayList<ColumnMetaData>();
+    final List<ColumnMetaData> result = new ArrayList<>();
 
     for (final ColumnMetaData columnMetaData : getColumnMetaData())
     {
@@ -170,7 +170,7 @@ public class TableMetaDataImpl implements InternalTableMetaData
   @Override
   public List<IndexMetaData> getIndexesForColumn(final ColumnMetaData columnMetaData)
   {
-    final List<IndexMetaData> result = new ArrayList<IndexMetaData>();
+    final List<IndexMetaData> result = new ArrayList<>();
 
     for (final IndexMetaData index : getIndexes())
     {

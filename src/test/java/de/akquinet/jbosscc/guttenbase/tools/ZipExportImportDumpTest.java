@@ -51,7 +51,7 @@ public class ZipExportImportDumpTest extends AbstractExportImportDumpTest {
 
           @Override
           public Map<String, URL> getUrlResources() {
-            final Map<String, URL> result = new HashMap<String, URL>();
+            final Map<String, URL> result = new HashMap<>();
 
             result.put(KEY_GIF, this.getClass().getResource("/data/test.gif"));
 

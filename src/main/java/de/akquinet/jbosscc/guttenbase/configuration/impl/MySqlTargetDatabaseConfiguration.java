@@ -10,9 +10,10 @@ import de.akquinet.jbosscc.guttenbase.repository.ConnectorRepository;
  * <p>
  * &copy; 2012-2020 akquinet tech@spree
  * </p>
- * 
+ *
  * @author M. Dahm
  */
+@SuppressWarnings("JavaDoc")
 public class MySqlTargetDatabaseConfiguration extends DefaultTargetDatabaseConfiguration
 {
   private final boolean _disableUniqueChecks;
@@ -20,7 +21,7 @@ public class MySqlTargetDatabaseConfiguration extends DefaultTargetDatabaseConfi
   /**
    * @param connectorRepository
    * @param disableUniqueChecks
-   *          disable unique checks, too. Not just foreign key constraints.
+   * disable unique checks, too. Not just foreign key constraints.
    */
   public MySqlTargetDatabaseConfiguration(final ConnectorRepository connectorRepository, final boolean disableUniqueChecks)
   {

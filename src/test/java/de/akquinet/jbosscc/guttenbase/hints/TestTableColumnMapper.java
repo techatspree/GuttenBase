@@ -21,8 +21,8 @@ public final class TestTableColumnMapper extends DefaultColumnMapper
       final String newColumnName = mapColumnName(source);
       final ColumnMetaData columnMetaData = targetTableMetaData.getColumnMetaData(newColumnName);
 
-      final List<ColumnMetaData> result = columnMetaData != null ? new ArrayList<ColumnMetaData>(Arrays.asList(columnMetaData))
-          : new ArrayList<ColumnMetaData>();
+      final List<ColumnMetaData> result = columnMetaData != null ? new ArrayList<>(Arrays.asList(columnMetaData))
+          : new ArrayList<>();
 
       return new ColumnMapperResult(result);
     }

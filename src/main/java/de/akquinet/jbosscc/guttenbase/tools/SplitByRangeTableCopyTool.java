@@ -23,7 +23,6 @@ import java.sql.SQLException;
  * &copy; 2012-2020 akquinet tech@spree
  * </p>
  *
- * @author M. Dahm
  */
 public class SplitByRangeTableCopyTool extends AbstractTableCopyTool
 {
@@ -37,6 +36,8 @@ public class SplitByRangeTableCopyTool extends AbstractTableCopyTool
    *
    * @throws SQLException
    */
+
+  @SuppressWarnings("JavaDoc")
   @Override
   protected void copyTable(final String sourceConnectorId, final Connection sourceConnection,
       final SourceDatabaseConfiguration sourceDatabaseConfiguration, final TableMetaData sourceTableMetaData,

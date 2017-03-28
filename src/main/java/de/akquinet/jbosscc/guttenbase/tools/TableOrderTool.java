@@ -28,11 +28,11 @@ public class TableOrderTool
 
   private List<TableMetaData> orderTables(final Map<String, TableNode> tableNodes, final boolean topDown) throws SQLException
   {
-    final List<TableMetaData> result = new ArrayList<TableMetaData>();
+    final List<TableMetaData> result = new ArrayList<>();
 
     while (!tableNodes.isEmpty())
     {
-      final TableNode tableNode = findMatchingNode(new ArrayList<TableNode>(tableNodes.values()), topDown);
+      final TableNode tableNode = findMatchingNode(new ArrayList<>(tableNodes.values()), topDown);
 
       for (final TableNode referencingTable : tableNode.getReferencedByTables())
       {
@@ -53,19 +53,11 @@ public class TableOrderTool
 
   private TableNode findMatchingNode(final List<TableNode> tableNodes, final boolean topDown)
   {
-    Collections.sort(tableNodes, new Comparator<TableNode>()
-    {
-      @Override
-      public int compare(final TableNode tn1, final TableNode tn2)
-      {
-        if (topDown)
-        {
-          return tn1.getReferencedTables().size() - tn2.getReferencedTables().size();
-        }
-        else
-        {
-          return tn1.getReferencedByTables().size() - tn2.getReferencedByTables().size();
-        }
+    tableNodes.sort((tn1, tn2) -> {
+      if (topDown) {
+        return tn1.getReferencedTables().size() - tn2.getReferencedTables().size();
+      } else {
+        return tn1.getReferencedByTables().size() - tn2.getReferencedByTables().size();
       }
     });
 
@@ -74,7 +66,7 @@ public class TableOrderTool
 
   private Map<String, TableNode> createGraph(final List<TableMetaData> tableMetaData)
   {
-    final Map<String, TableNode> tableNodes = new LinkedHashMap<String, TableNode>();
+    final Map<String, TableNode> tableNodes = new LinkedHashMap<>();
 
     for (final TableMetaData table : tableMetaData)
     {
@@ -115,8 +107,8 @@ public class TableOrderTool
   private static class TableNode
   {
     private final TableMetaData _tableMetaData;
-    private final List<TableNode> _referencedTables = new ArrayList<TableNode>();
-    private final List<TableNode> _referencedByTables = new ArrayList<TableNode>();
+    private final List<TableNode> _referencedTables = new ArrayList<>();
+    private final List<TableNode> _referencedByTables = new ArrayList<>();
 
     public TableNode(final TableMetaData tableMetaData)
     {
@@ -182,7 +174,7 @@ public class TableOrderTool
 
     private static String toString(final List<TableNode> referencedTables)
     {
-      List<String> result = new ArrayList<String>();
+      List<String> result = new ArrayList<>();
 
       for (TableNode tableNode : referencedTables)
       {

@@ -45,7 +45,7 @@ public class SQLLexer
 
   public List<String> parse()
   {
-    final List<String> result = new ArrayList<String>();
+    final List<String> result = new ArrayList<>();
     final StringBuilder builder = new StringBuilder();
 
     while (hasNext())

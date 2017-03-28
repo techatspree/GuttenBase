@@ -39,12 +39,7 @@ public class RepositoryTableFilterHintTest extends AbstractGuttenBaseTest {
 		_connectorRepository.addConnectorHint(SOURCE, new RepositoryTableFilterHint() {
 			@Override
 			public RepositoryTableFilter getValue() {
-				return new RepositoryTableFilter() {
-					@Override
-					public boolean accept(final TableMetaData table) throws SQLException {
-						return table.getTableName().toUpperCase().contains("USER");
-					}
-				};
+				return table -> table.getTableName().toUpperCase().contains("USER");
 			}
 		});
 

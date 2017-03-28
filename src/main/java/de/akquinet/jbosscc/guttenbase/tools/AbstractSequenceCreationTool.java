@@ -37,7 +37,7 @@ public abstract class AbstractSequenceCreationTool
     final List<TableMetaData> tableMetaDatas = TableOrderHint.getSortedTables(_connectorRepository, connectorId);
     final EntityTableChecker entityTableChecker = _connectorRepository.getConnectorHint(connectorId, EntityTableChecker.class).getValue();
     final TableNameMapper tableNameMapper = _connectorRepository.getConnectorHint(connectorId, TableNameMapper.class).getValue();
-    final List<String> updateClauses = new ArrayList<String>();
+    final List<String> updateClauses = new ArrayList<>();
 
     for (final TableMetaData tableMetaData : tableMetaDatas)
     {

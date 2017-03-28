@@ -42,9 +42,9 @@ public enum ColumnType
 
   private final List<Class<?>> _columnClasses;
 
-  private static final Map<Class<?>, ColumnType> COLUMN_TYPES = new HashMap<Class<?>, ColumnType>();
+  private static final Map<Class<?>, ColumnType> COLUMN_TYPES = new HashMap<>();
 
-  private ColumnType(final Class<?>... columnClasses)
+  ColumnType(final Class<?>... columnClasses)
   {
     _columnClasses = Arrays.asList(columnClasses);
   }

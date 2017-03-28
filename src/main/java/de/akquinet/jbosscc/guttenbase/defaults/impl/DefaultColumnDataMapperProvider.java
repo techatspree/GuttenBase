@@ -24,7 +24,7 @@ import de.akquinet.jbosscc.guttenbase.meta.ColumnType;
  */
 public class DefaultColumnDataMapperProvider implements ColumnDataMapperProvider
 {
-  private final Map<String, List<ColumnDataMapper>> _mappings = new HashMap<String, List<ColumnDataMapper>>();
+  private final Map<String, List<ColumnDataMapper>> _mappings = new HashMap<>();
 
   /**
    * {@inheritDoc}
@@ -69,13 +69,7 @@ public class DefaultColumnDataMapperProvider implements ColumnDataMapperProvider
   private List<ColumnDataMapper> findMapping(final ColumnType sourceColumnType, final ColumnType targetColumnType)
   {
     final String key = createKey(sourceColumnType, targetColumnType);
-    List<ColumnDataMapper> result = _mappings.get(key);
-
-    if (result == null)
-    {
-      result = new ArrayList<ColumnDataMapper>();
-      _mappings.put(key, result);
-    }
+    List<ColumnDataMapper> result = _mappings.computeIfAbsent(key, k -> new ArrayList<>());
 
     return result;
   }

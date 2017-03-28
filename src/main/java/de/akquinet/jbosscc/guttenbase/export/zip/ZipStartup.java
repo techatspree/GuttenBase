@@ -130,12 +130,7 @@ public class ZipStartup extends JPanel {
     final JPanel buttonPanel = new JPanel(new FlowLayout());
 
     final JButton close = new JButton("Close");
-    close.addActionListener(new ActionListener() {
-      @Override
-      public void actionPerformed(final ActionEvent e) {
-        System.exit(0);
-      }
-    });
+    close.addActionListener(e -> System.exit(0));
     buttonPanel.add(close);
     return buttonPanel;
   }

@@ -32,15 +32,15 @@ import java.util.*;
 public class ConnectorRepositoryImpl implements ConnectorRepository {
   private static final long serialVersionUID = 1L;
 
-  private final Map<String, ConnectorInfo> _connectionInfoMap = new TreeMap<String, ConnectorInfo>();
-  private final Map<DatabaseType, SourceDatabaseConfiguration> _sourceDatabaseConfigurationMap = new HashMap<DatabaseType, SourceDatabaseConfiguration>();
-  private final Map<DatabaseType, TargetDatabaseConfiguration> _targetDatabaseConfigurationMap = new HashMap<DatabaseType, TargetDatabaseConfiguration>();
+  private final Map<String, ConnectorInfo> _connectionInfoMap = new TreeMap<>();
+  private final Map<DatabaseType, SourceDatabaseConfiguration> _sourceDatabaseConfigurationMap = new HashMap<>();
+  private final Map<DatabaseType, TargetDatabaseConfiguration> _targetDatabaseConfigurationMap = new HashMap<>();
 
   /**
    * Hash meta data since some data base are very slow on retrieving it.
    */
-  private final Map<String, DatabaseMetaData> _databaseMetaDataMap = new HashMap<String, DatabaseMetaData>();
-  private final Map<String, Map<Class<?>, ConnectorHint<?>>> _connectionHintMap = new HashMap<String, Map<Class<?>, ConnectorHint<?>>>();
+  private final Map<String, DatabaseMetaData> _databaseMetaDataMap = new HashMap<>();
+  private final Map<String, Map<Class<?>, ConnectorHint<?>>> _connectionHintMap = new HashMap<>();
 
   public ConnectorRepositoryImpl() {
     initDefaultConfiguration();
@@ -81,12 +81,7 @@ public class ConnectorRepositoryImpl implements ConnectorRepository {
     // Check connector if is configured
     getConnectionInfo(connectorId);
 
-    Map<Class<?>, ConnectorHint<?>> hintMap = _connectionHintMap.get(connectorId);
-
-    if (hintMap == null) {
-      hintMap = new HashMap<Class<?>, ConnectorHint<?>>();
-      _connectionHintMap.put(connectorId, hintMap);
-    }
+    Map<Class<?>, ConnectorHint<?>> hintMap = _connectionHintMap.computeIfAbsent(connectorId, k -> new HashMap<>());
 
     hintMap.put(hint.getConnectorHintType(), hint);
   }
@@ -244,7 +239,7 @@ public class ConnectorRepositoryImpl implements ConnectorRepository {
    */
   @Override
   public List<String> getConnectorIds() {
-    return new ArrayList<String>(_connectionInfoMap.keySet());
+    return new ArrayList<>(_connectionInfoMap.keySet());
   }
 
   private DatabaseMetaData createResultWithFilteredTables(final String connectorId, final DatabaseMetaData databaseMetaData)

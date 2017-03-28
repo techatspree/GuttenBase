@@ -24,7 +24,7 @@ public class ZipResourceExporter {
   protected static final Logger LOG = Logger.getLogger(ZipResourceExporter.class);
 
   private final ZipOutputStream _zipOutputStream;
-  private final Set<String> _entries = new HashSet<String>();
+  private final Set<String> _entries = new HashSet<>();
 
   public ZipResourceExporter(final ZipOutputStream zipOutputStream) {
     assert zipOutputStream != null : "zipOutputStream != null";

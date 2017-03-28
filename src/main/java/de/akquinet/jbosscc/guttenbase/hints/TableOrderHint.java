@@ -43,7 +43,7 @@ public abstract class TableOrderHint implements ConnectorHint<TableOrderComparat
     final Comparator<TableMetaData> comparator = connectorRepository
         .getConnectorHint(connectorId, TableOrderComparatorFactory.class).getValue().createComparator();
     final List<TableMetaData> tables = databaseMetaData.getTableMetaData();
-    Collections.sort(tables, comparator);
+    tables.sort(comparator);
 
     return tables;
   }

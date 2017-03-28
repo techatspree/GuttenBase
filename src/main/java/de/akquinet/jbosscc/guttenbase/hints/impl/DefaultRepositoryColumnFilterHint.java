@@ -18,11 +18,6 @@ import de.akquinet.jbosscc.guttenbase.repository.RepositoryColumnFilter;
 public class DefaultRepositoryColumnFilterHint extends RepositoryColumnFilterHint {
 	@Override
 	public RepositoryColumnFilter getValue() {
-		return new RepositoryColumnFilter() {
-			@Override
-			public boolean accept(final ColumnMetaData column) throws SQLException {
-				return true;
-			}
-		};
+		return column -> true;
 	}
 }

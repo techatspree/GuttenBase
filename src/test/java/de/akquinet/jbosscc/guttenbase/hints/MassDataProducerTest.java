@@ -65,7 +65,7 @@ public class MassDataProducerTest extends AbstractGuttenBaseTest {
 		}
 	};
 
-	private final Map<TableMetaData, Long> _maxTableIds = new HashMap<TableMetaData, Long>();
+	private final Map<TableMetaData, Long> _maxTableIds = new HashMap<>();
 	private int _loopCounter;
 
 	@Before

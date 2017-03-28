@@ -55,13 +55,14 @@ public class HeuristicColumnTypeResolver implements ColumnTypeResolver {
   private ColumnType checkDatabaseSpecificTypes(final String columnType, final DatabaseType databaseType) {
     switch (databaseType) {
     case POSTGRESQL:
-      if (columnType.equals("BIT")) {
-        return ColumnType.CLASS_STRING;
-      } else if ("INT8".equals(columnType)) {
-        return ColumnType.CLASS_BIGDECIMAL;
-      } else if (columnType.equals("OID")) {
-        return ColumnType.CLASS_BLOB;
-      }
+        switch (columnType) {
+            case "BIT":
+                return ColumnType.CLASS_STRING;
+            case "INT8":
+                return ColumnType.CLASS_BIGDECIMAL;
+            case "OID":
+                return ColumnType.CLASS_BLOB;
+        }
       break;
 
     case ORACLE:

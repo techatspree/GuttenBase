@@ -43,7 +43,7 @@ public class CreateSchemaTool
 
   public List<String> createDDLScript(final String connectorId, final String targetSchema) throws SQLException
   {
-    final List<String> result = new ArrayList<String>();
+    final List<String> result = new ArrayList<>();
     final DatabaseMetaData databaseMetaData = _connectorRepository.getDatabaseMetaData(connectorId);
 
     final DatabaseSchemaScriptCreator databaseSchemaScriptCreator = new DatabaseSchemaScriptCreator(databaseMetaData,

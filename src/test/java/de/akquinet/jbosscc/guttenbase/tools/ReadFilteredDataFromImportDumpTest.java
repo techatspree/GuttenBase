@@ -64,14 +64,7 @@ public class ReadFilteredDataFromImportDumpTest extends AbstractGuttenBaseTest
       @Override
       public RepositoryTableFilter getValue()
       {
-        return new RepositoryTableFilter()
-        {
-          @Override
-          public boolean accept(final TableMetaData table) throws SQLException
-          {
-            return table.getTableName().equalsIgnoreCase("FOO_USER");
-          }
-        };
+        return table -> table.getTableName().equalsIgnoreCase("FOO_USER");
       }
     };
 
@@ -80,15 +73,10 @@ public class ReadFilteredDataFromImportDumpTest extends AbstractGuttenBaseTest
       @Override
       public RepositoryColumnFilter getValue()
       {
-        return new RepositoryColumnFilter()
-        {
-          @Override
-          public boolean accept(final ColumnMetaData column) throws SQLException
-          {
-            final String columnName = column.getColumnName();
-            return columnName.equalsIgnoreCase("ID") || columnName.equalsIgnoreCase("USERNAME")
-                || columnName.equalsIgnoreCase("PASSWORD");
-          }
+        return column -> {
+          final String columnName = column.getColumnName();
+          return columnName.equalsIgnoreCase("ID") || columnName.equalsIgnoreCase("USERNAME")
+              || columnName.equalsIgnoreCase("PASSWORD");
         };
       }
     };
