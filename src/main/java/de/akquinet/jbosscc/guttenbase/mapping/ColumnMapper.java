@@ -1,10 +1,9 @@
 package de.akquinet.jbosscc.guttenbase.mapping;
 
-import java.sql.SQLException;
-import java.util.List;
-
 import de.akquinet.jbosscc.guttenbase.meta.ColumnMetaData;
 import de.akquinet.jbosscc.guttenbase.meta.TableMetaData;
+import java.sql.SQLException;
+import java.util.List;
 
 /**
  * Select target column(s) for given source column. Usually, this will a 1:1 relationship. However, there may be situations where
@@ -12,7 +11,7 @@ import de.akquinet.jbosscc.guttenbase.meta.TableMetaData;
  * <p>
  * &copy; 2012-2020 akquinet tech@spree
  * </p>
- * 
+ *
  * @author M. Dahm
  */
 public interface ColumnMapper
@@ -22,7 +21,7 @@ public interface ColumnMapper
    */
   ColumnMapperResult map(ColumnMetaData source, TableMetaData targetTableMetaData) throws SQLException;
 
-  public static class ColumnMapperResult
+  class ColumnMapperResult
   {
     private final List<ColumnMetaData> _columns;
     private final boolean _emptyColumnListOk;
@@ -45,7 +44,7 @@ public interface ColumnMapper
     }
 
     /**
-     * If the column cannot be found in the target table this raises an error. However, if you explicitely want to drop that
+     * If the column cannot be found in the target table this raises an error. However, if you explicitly want to drop that
      * column and this method returns true it will just output a warning instead.
      */
     public boolean isEmptyColumnListOk()

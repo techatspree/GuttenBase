@@ -40,6 +40,16 @@ public class SchemaComparatorToolTest extends AbstractGuttenBaseTest {
   }
 
   @Test
+  public void testAdditionalColumn() throws Exception {
+    new ScriptExecutorTool(_connectorRepository).executeFileScript(CONNECTOR_ID1, "/ddl/tables.sql");
+    new ScriptExecutorTool(_connectorRepository).executeFileScript(CONNECTOR_ID2, "/ddl/tables-additional-column.sql");
+
+    final SchemaCompatibilityIssues compatibilityIssues = _objectUnderTest.check(CONNECTOR_ID1, CONNECTOR_ID2);
+    Assert.assertTrue(compatibilityIssues.isSevere());
+    Assert.assertNotNull(compatibilityIssues.contains(SchemaCompatibilityIssueType.ADDITIONAL_NONNULL_COLUMN));
+  }
+
+  @Test
   public void testMissingColumn() throws Exception {
     new ScriptExecutorTool(_connectorRepository).executeFileScript(CONNECTOR_ID1, "/ddl/tables.sql");
     new ScriptExecutorTool(_connectorRepository).executeFileScript(CONNECTOR_ID2, "/ddl/tables-incompatibleColumn.sql");
