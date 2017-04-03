@@ -19,6 +19,7 @@ import java.sql.SQLException;
  *
  * @author M. Dahm
  */
+@SuppressWarnings("deprecation")
 public class IncompatibleColumnsException extends SQLException {
   private static final long serialVersionUID = 1L;
 

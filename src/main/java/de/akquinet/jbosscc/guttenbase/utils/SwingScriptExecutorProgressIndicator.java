@@ -100,7 +100,7 @@ public class SwingScriptExecutorProgressIndicator implements ScriptExecutorProgr
   public void warn(final String text)
   {
     _timingDelegate.warn(text);
-    _text.append("WARNING: " + text + "\n");
+    _text.append("WARNING: ").append(text).append("\n");
     updateMessages();
   }
 
@@ -108,7 +108,7 @@ public class SwingScriptExecutorProgressIndicator implements ScriptExecutorProgr
   public void info(final String text)
   {
     _timingDelegate.info(text);
-    _text.append("Info: " + text + "\n");
+    _text.append("Info: ").append(text).append("\n");
     updateMessages();
   }
 
@@ -116,7 +116,7 @@ public class SwingScriptExecutorProgressIndicator implements ScriptExecutorProgr
   public void debug(final String text)
   {
     _timingDelegate.debug(text);
-    _text.append("Debug: " + text + "\n");
+    _text.append("Debug: ").append(text).append("\n");
     updateMessages();
   }
 

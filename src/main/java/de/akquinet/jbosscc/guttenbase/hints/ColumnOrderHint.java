@@ -1,7 +1,6 @@
 package de.akquinet.jbosscc.guttenbase.hints;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 

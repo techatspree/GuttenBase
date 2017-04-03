@@ -19,6 +19,7 @@ import java.sql.SQLException;
  * @gb.UsesHint {@link TableOrderHint} to determine order of tables
  * @deprecated Use SchemaComparatorTool
  */
+@SuppressWarnings("DeprecatedIsStillUsed")
 public class CheckSchemaCompatibilityTool extends SchemaComparatorTool {
 
   public CheckSchemaCompatibilityTool(final ConnectorRepository connectorRepository) {

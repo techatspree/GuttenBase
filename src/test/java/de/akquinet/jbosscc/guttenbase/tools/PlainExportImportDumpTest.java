@@ -2,9 +2,7 @@ package de.akquinet.jbosscc.guttenbase.tools;
 
 import org.junit.Before;
 
-import de.akquinet.jbosscc.guttenbase.export.Exporter;
 import de.akquinet.jbosscc.guttenbase.export.ExporterFactory;
-import de.akquinet.jbosscc.guttenbase.export.Importer;
 import de.akquinet.jbosscc.guttenbase.export.ImporterFactory;
 import de.akquinet.jbosscc.guttenbase.export.plain.PlainGzipExporter;
 import de.akquinet.jbosscc.guttenbase.export.plain.PlainGzipImporter;

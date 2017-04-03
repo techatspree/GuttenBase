@@ -1,10 +1,7 @@
 package de.akquinet.jbosscc.guttenbase.hints.impl;
 
-import java.util.Comparator;
-
 import de.akquinet.jbosscc.guttenbase.hints.TableOrderHint;
 import de.akquinet.jbosscc.guttenbase.mapping.TableOrderComparatorFactory;
-import de.akquinet.jbosscc.guttenbase.meta.TableMetaData;
 
 /**
  * By default order by natural order of table names.

@@ -41,7 +41,7 @@ public class SelectStatementCreator extends AbstractSelectStatementCreator {
 			final int jdbcType = columnMetaData.getColumnType();
 
 			if (jdbcType > rangeFrom && jdbcType < rangeTo) {
-				buf.append(columnName + ", ");
+				buf.append(columnName).append(", ");
 				columnsAdded++;
 			}
 		}

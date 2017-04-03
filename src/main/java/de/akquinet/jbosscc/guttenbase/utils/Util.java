@@ -30,7 +30,7 @@ import org.apache.log4j.Logger;
  */
 public abstract class Util {
   private static final Logger LOG = Logger.getLogger(Util.class);
-  public static final Class<?> ByteArrayClass = new byte[0].getClass();
+  public static final Class<?> ByteArrayClass = byte[].class;
 
   public static final int DEFAULT_BUFFER_SIZE = 1024 * 4;
 
@@ -203,7 +203,7 @@ public abstract class Util {
 
   public static void copy(final InputStream input, final OutputStream output) throws IOException {
     final byte[] buffer = new byte[DEFAULT_BUFFER_SIZE];
-    int n = 0;
+    int n;
 
     while ((n = input.read(buffer)) > 0) {
       output.write(buffer, 0, n);

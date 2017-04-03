@@ -2,7 +2,6 @@ package de.akquinet.jbosscc.guttenbase.hints.impl;
 
 import de.akquinet.jbosscc.guttenbase.hints.EntityTableCheckerHint;
 import de.akquinet.jbosscc.guttenbase.meta.ColumnMetaData;
-import de.akquinet.jbosscc.guttenbase.meta.TableMetaData;
 import de.akquinet.jbosscc.guttenbase.tools.EntityTableChecker;
 
 /**

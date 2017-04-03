@@ -3,13 +3,10 @@ package de.akquinet.jbosscc.guttenbase.hints;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
-import java.sql.SQLException;
-
 import org.junit.Before;
 import org.junit.Test;
 
 import de.akquinet.jbosscc.guttenbase.configuration.TestHsqlConnectionInfo;
-import de.akquinet.jbosscc.guttenbase.meta.ColumnMetaData;
 import de.akquinet.jbosscc.guttenbase.meta.TableMetaData;
 import de.akquinet.jbosscc.guttenbase.repository.DatabaseColumnFilter;
 import de.akquinet.jbosscc.guttenbase.tools.AbstractGuttenBaseTest;

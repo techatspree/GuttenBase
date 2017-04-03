@@ -1,7 +1,6 @@
 package de.akquinet.jbosscc.guttenbase.hints;
 
 import java.sql.SQLException;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
@@ -25,6 +24,7 @@ import de.akquinet.jbosscc.guttenbase.tools.CheckSchemaCompatibilityTool;
  * @gb.HintUsedBy {@link CheckEqualTableDataTool} to determine table order
  * @author M. Dahm
  */
+@SuppressWarnings("deprecation")
 public abstract class TableOrderHint implements ConnectorHint<TableOrderComparatorFactory>
 {
   @Override

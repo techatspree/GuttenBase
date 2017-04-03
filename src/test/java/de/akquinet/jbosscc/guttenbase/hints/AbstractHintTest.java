@@ -19,6 +19,7 @@ import de.akquinet.jbosscc.guttenbase.tools.ScriptExecutorTool;
  *
  * @author M. Dahm
  */
+@SuppressWarnings("deprecation")
 public abstract class AbstractHintTest extends AbstractGuttenBaseTest {
   public static final String SOURCE = "SOURCE";
   public static final String TARGET = "TARGET";

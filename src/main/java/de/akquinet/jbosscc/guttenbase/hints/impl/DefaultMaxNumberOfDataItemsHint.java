@@ -1,7 +1,6 @@
 package de.akquinet.jbosscc.guttenbase.hints.impl;
 
 import de.akquinet.jbosscc.guttenbase.hints.MaxNumberOfDataItemsHint;
-import de.akquinet.jbosscc.guttenbase.meta.TableMetaData;
 import de.akquinet.jbosscc.guttenbase.tools.MaxNumberOfDataItems;
 
 /**

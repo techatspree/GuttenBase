@@ -70,10 +70,10 @@ public abstract class AbstractSelectStatementCreator extends AbstractStatementCr
     final StringBuilder buf = new StringBuilder("SELECT ");
 
     buf.append(createColumnClause(columns));
-    buf.append(FROM + tableName);
+    buf.append(FROM).append(tableName);
 
-    buf.append(" " + createWhereClause(tableMetaData));
-    buf.append(" " + createOrderBy(tableMetaData));
+    buf.append(" ").append(createWhereClause(tableMetaData));
+    buf.append(" ").append(createOrderBy(tableMetaData));
 
     return buf.toString();
   }
