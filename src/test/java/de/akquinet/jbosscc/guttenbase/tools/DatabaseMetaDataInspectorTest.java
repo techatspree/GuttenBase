@@ -1,11 +1,11 @@
 package de.akquinet.jbosscc.guttenbase.tools;
 
+import static java.util.Collections.*;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
-import java.util.Arrays;
 import java.util.List;
 
 import org.junit.Before;
@@ -66,7 +66,7 @@ public class DatabaseMetaDataInspectorTest extends AbstractGuttenBaseTest {
 		assertEquals("BIGINT", idColumn.getColumnTypeName());
 		assertTrue(idColumn.isPrimaryKey());
 		assertFalse(idColumn.isNullable());
-		assertEquals(Arrays.asList(idColumn), userTableMetaData.getPrimaryKeyColumns());
+		assertEquals(singletonList(idColumn), userTableMetaData.getPrimaryKeyColumns());
 		return idColumn;
 	}
 
@@ -81,6 +81,6 @@ public class DatabaseMetaDataInspectorTest extends AbstractGuttenBaseTest {
 		assertEquals("USERNAME", indexedColumn.getColumnName());
 
 		final List<IndexMetaData> indexesForColumn = userTableMetaData.getIndexesForColumn(indexedColumn);
-		assertEquals(Arrays.asList(indexMetaData), indexesForColumn);
+		assertEquals(singletonList(indexMetaData), indexesForColumn);
 	}
 }

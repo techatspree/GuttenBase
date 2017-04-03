@@ -5,7 +5,6 @@ import java.util.Comparator;
 import org.junit.Before;
 
 import de.akquinet.jbosscc.guttenbase.mapping.ColumnOrderComparatorFactory;
-import de.akquinet.jbosscc.guttenbase.meta.ColumnMetaData;
 
 /**
  * Test a schema migration where column ordering is customized...

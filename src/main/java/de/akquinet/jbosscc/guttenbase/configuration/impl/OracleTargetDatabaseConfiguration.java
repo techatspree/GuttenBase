@@ -83,7 +83,7 @@ public class OracleTargetDatabaseConfiguration extends DefaultTargetDatabaseConf
           executeSQL(connection, sql);
         } catch (final SQLException e) {
           LOG.error("Unable to handle constraint: " + sql, e);
-          problems.append("Unable to handle constraint: " + sql + "->" + e.getMessage() + ":" + e.getSQLState());
+          problems.append("Unable to handle constraint: ").append(sql).append("->").append(e.getMessage()).append(":").append(e.getSQLState());
         }
       }
 
@@ -99,7 +99,7 @@ public class OracleTargetDatabaseConfiguration extends DefaultTargetDatabaseConf
     final StringBuilder tablesBuilder = new StringBuilder();
 
     for (final TableMetaData tableMetaData : tableMetaDatas) {
-      tablesBuilder.append("'" + tableMetaData.getTableName() + "'" + ", ");
+      tablesBuilder.append("'").append(tableMetaData.getTableName()).append("'").append(", ");
     }
 
     if (tablesBuilder.length() > 2) {

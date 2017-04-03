@@ -1,9 +1,6 @@
 package de.akquinet.jbosscc.guttenbase.hints.impl;
 
-import java.sql.SQLException;
-
 import de.akquinet.jbosscc.guttenbase.hints.RepositoryColumnFilterHint;
-import de.akquinet.jbosscc.guttenbase.meta.ColumnMetaData;
 import de.akquinet.jbosscc.guttenbase.repository.RepositoryColumnFilter;
 
 /**

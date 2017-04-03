@@ -1,6 +1,5 @@
 package de.akquinet.jbosscc.guttenbase.hints.impl;
 
-import de.akquinet.jbosscc.guttenbase.export.Importer;
 import de.akquinet.jbosscc.guttenbase.export.ImporterFactory;
 import de.akquinet.jbosscc.guttenbase.export.zip.ZipImporter;
 import de.akquinet.jbosscc.guttenbase.hints.ImporterFactoryHint;

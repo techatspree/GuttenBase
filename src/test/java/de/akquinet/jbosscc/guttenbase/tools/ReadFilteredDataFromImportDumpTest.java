@@ -7,7 +7,6 @@ import de.akquinet.jbosscc.guttenbase.export.ImportDumpConnectionInfo;
 import de.akquinet.jbosscc.guttenbase.hints.RepositoryColumnFilterHint;
 import de.akquinet.jbosscc.guttenbase.hints.RepositoryTableFilterHint;
 import de.akquinet.jbosscc.guttenbase.hints.impl.DefaultZipExporterClassResourcesHint;
-import de.akquinet.jbosscc.guttenbase.meta.ColumnMetaData;
 import de.akquinet.jbosscc.guttenbase.meta.TableMetaData;
 import de.akquinet.jbosscc.guttenbase.repository.RepositoryColumnFilter;
 import de.akquinet.jbosscc.guttenbase.repository.RepositoryTableFilter;
@@ -15,7 +14,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.io.File;
-import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 

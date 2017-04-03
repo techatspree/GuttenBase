@@ -26,6 +26,7 @@ import de.akquinet.jbosscc.guttenbase.tools.TableOrderTool;
  *
  * @author M. Dahm
  */
+@SuppressWarnings("UnusedAssignment")
 public class DatabaseSchemaScriptCreator
 {
   private static final Random RANDOM = new Random();
@@ -179,7 +180,7 @@ public class DatabaseSchemaScriptCreator
     {
       final ColumnMetaData columnMetaData = iterator.next();
 
-      builder.append("  " + createColumn(columnMetaData));
+      builder.append("  ").append(createColumn(columnMetaData));
 
       if (iterator.hasNext())
       {
@@ -204,7 +205,7 @@ public class DatabaseSchemaScriptCreator
 
     for (final ColumnMetaData columnMetaData : primaryKeyColumns)
     {
-      builder.append(_columnNameMapper.mapColumnName(columnMetaData) + ", ");
+      builder.append(_columnNameMapper.mapColumnName(columnMetaData)).append(", ");
     }
 
     builder.setLength(builder.length() - 2);
@@ -280,13 +281,7 @@ public class DatabaseSchemaScriptCreator
 
     final StringBuilder builder = new StringBuilder("ALTER TABLE " + schemaPrefix + tablename + " ADD CONSTRAINT ");
     builder.append(fkName);
-    builder.append(" FOREIGN KEY (" + _columnNameMapper.mapColumnName(referencingColumn)
-        + ") REFERENCES "
-        + schemaPrefix
-        + _tableNameMapper.mapTableName(referencedColumn.getTableMetaData())
-        + "("
-        + _columnNameMapper.mapColumnName(referencedColumn)
-        + ");");
+    builder.append(" FOREIGN KEY (").append(_columnNameMapper.mapColumnName(referencingColumn)).append(") REFERENCES ").append(schemaPrefix).append(_tableNameMapper.mapTableName(referencedColumn.getTableMetaData())).append("(").append(_columnNameMapper.mapColumnName(referencedColumn)).append(");");
 
     return builder.toString();
   }
@@ -301,13 +296,7 @@ public class DatabaseSchemaScriptCreator
 
     final StringBuilder builder = new StringBuilder("ALTER TABLE " + schemaPrefix + tablename + " ADD CONSTRAINT ");
     builder.append(foreignKeyMetaData.getForeignKeyName());
-    builder.append(" FOREIGN KEY (" + _columnNameMapper.mapColumnName(referencingColumn)
-        + ") REFERENCES "
-        + schemaPrefix
-        + _tableNameMapper.mapTableName(referencedColumn.getTableMetaData())
-        + "("
-        + _columnNameMapper.mapColumnName(referencedColumn)
-        + ");");
+    builder.append(" FOREIGN KEY (").append(_columnNameMapper.mapColumnName(referencingColumn)).append(") REFERENCES ").append(schemaPrefix).append(_tableNameMapper.mapTableName(referencedColumn.getTableMetaData())).append("(").append(_columnNameMapper.mapColumnName(referencedColumn)).append(");");
 
     return builder.toString();
   }
@@ -316,8 +305,7 @@ public class DatabaseSchemaScriptCreator
   {
     final StringBuilder builder = new StringBuilder();
 
-    builder.append(_columnNameMapper.mapColumnName(columnMetaData) + " "
-        + _columnTypeMapper.getColumnType(columnMetaData));
+    builder.append(_columnNameMapper.mapColumnName(columnMetaData)).append(" ").append(_columnTypeMapper.getColumnType(columnMetaData));
 
     if (!columnMetaData.isNullable())
     {

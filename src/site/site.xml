@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--suppress XmlUnboundNsPrefix, XmlUnboundNsPrefix -->
 <project name="GuttenBase - Copying done right">
 <bannerLeft>
     <name>GuttenBase</name>
@@ -8,7 +9,7 @@
   <bannerRight>
     <src>http://guttenbase.spree.de/public/images/logo.png</src>
   </bannerRight>
-  
+
   <body>
     <links>
       <item name="Akquinet" href="http://www.akquinet.de/" />
@@ -26,7 +27,7 @@
 		<item name="Examples and use cases" href="Examples.html"/>
 		<item name="Builder pattern support" href="Builder.html"/>
 		<item name="Frequently Asked Questions (FAQ)" href="FAQ.html"/>
-		<item name="JavaDoc-API" href="apidocs/index.html"/>    
+		<item name="JavaDoc-API" href="apidocs/index.html"/>
 	</menu>
   </body>
 </project>

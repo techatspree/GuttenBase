@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 
 import java.sql.SQLException;
 import java.util.Arrays;
+import java.util.Collections;
 
 import org.junit.Test;
 
@@ -21,7 +22,7 @@ public class UtilTest
   public void testParseSelect() throws Exception
   {
     assertEquals(Arrays.asList("A", "B"), Util.parseSelectedColumns("select a,  b From bla"));
-    assertEquals(Arrays.asList("A"), Util.parseSelectedColumns("SELECT a FROM bla"));
+    assertEquals(Collections.singletonList("A"), Util.parseSelectedColumns("SELECT a FROM bla"));
   }
 
   @Test(expected = SQLException.class)

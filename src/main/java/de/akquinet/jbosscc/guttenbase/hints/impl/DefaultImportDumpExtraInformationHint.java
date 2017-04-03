@@ -1,8 +1,5 @@
 package de.akquinet.jbosscc.guttenbase.hints.impl;
 
-import java.io.Serializable;
-import java.util.Map;
-
 import de.akquinet.jbosscc.guttenbase.export.ImportDumpExtraInformation;
 import de.akquinet.jbosscc.guttenbase.hints.ImportDumpExtraInformationHint;
 

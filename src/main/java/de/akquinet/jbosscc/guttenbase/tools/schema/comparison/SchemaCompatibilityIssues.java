@@ -40,7 +40,7 @@ public class SchemaCompatibilityIssues {
     final StringBuilder builder = new StringBuilder();
 
     for (final SchemaCompatibilityIssue compatibilityIssue : _compatibilityIssues) {
-      builder.append(compatibilityIssue + "\n");
+      builder.append(compatibilityIssue).append("\n");
     }
 
     return builder.toString();

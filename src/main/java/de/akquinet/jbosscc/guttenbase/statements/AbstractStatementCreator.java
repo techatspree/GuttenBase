@@ -50,7 +50,7 @@ public abstract class AbstractStatementCreator
 
     for (final ColumnMetaData columnMetaData : columns)
     {
-      columnBuf.append(_columnNameMapper.mapColumnName(columnMetaData) + ", ");
+      columnBuf.append(_columnNameMapper.mapColumnName(columnMetaData)).append(", ");
     }
 
     columnBuf.setLength(columnBuf.length() - 2);
