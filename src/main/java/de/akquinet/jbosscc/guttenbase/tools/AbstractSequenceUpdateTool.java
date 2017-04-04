@@ -24,6 +24,7 @@ import de.akquinet.jbosscc.guttenbase.repository.ConnectorRepository;
  * @gb.UsesHint {@link EntityTableCheckerHint} to look for entity classes, i.e. classes that may use an ID sequence
  * @author M. Dahm
  */
+@SuppressWarnings("RedundantThrows")
 public abstract class AbstractSequenceUpdateTool {
 	protected final ConnectorRepository _connectorRepository;
 	protected final ScriptExecutorTool _scriptExecutor;
@@ -40,7 +41,7 @@ public abstract class AbstractSequenceUpdateTool {
 		final List<TableMetaData> tableMetaDatas = TableOrderHint.getSortedTables(_connectorRepository, connectorId);
 		final EntityTableChecker entityTableChecker = _connectorRepository.getConnectorHint(connectorId, EntityTableChecker.class).getValue();
 		final TableNameMapper tableNameMapper = _connectorRepository.getConnectorHint(connectorId, TableNameMapper.class).getValue();
-		final List<String> updateClauses = new ArrayList<String>();
+		final List<String> updateClauses = new ArrayList<>();
 
 		for (final TableMetaData tableMetaData : tableMetaDatas) {
 			if (entityTableChecker.isEntityTable(tableMetaData)) {

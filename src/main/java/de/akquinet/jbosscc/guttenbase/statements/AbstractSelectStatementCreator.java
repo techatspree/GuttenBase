@@ -67,14 +67,11 @@ public abstract class AbstractSelectStatementCreator extends AbstractStatementCr
 
   private String createSQL(final String tableName, final TableMetaData tableMetaData, final List<ColumnMetaData> columns)
           throws SQLException {
-    final StringBuilder buf = new StringBuilder("SELECT ");
+      String buf = "SELECT " + createColumnClause(columns) +
+              FROM + tableName +
+              " " + createWhereClause(tableMetaData) +
+              " " + createOrderBy(tableMetaData);
 
-    buf.append(createColumnClause(columns));
-    buf.append(FROM + tableName);
-
-    buf.append(" " + createWhereClause(tableMetaData));
-    buf.append(" " + createOrderBy(tableMetaData));
-
-    return buf.toString();
+      return buf;
   }
 }

@@ -30,7 +30,7 @@ import org.apache.log4j.Logger;
  */
 public abstract class Util {
   private static final Logger LOG = Logger.getLogger(Util.class);
-  public static final Class<?> ByteArrayClass = new byte[0].getClass();
+  public static final Class<?> ByteArrayClass = byte[].class;
 
   public static final int DEFAULT_BUFFER_SIZE = 1024 * 4;
 
@@ -50,17 +50,13 @@ public abstract class Util {
       LOG.warn(resourceName + " not found");
     }
 
-    return new ArrayList<String>();
+    return new ArrayList<>();
   }
 
   public static InputStream getResourceAsStream(final String resource) {
     final String stripped = resource.startsWith("/") ? resource.substring(1) : resource;
     final ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
-    URL url = null;
-
-    if (url == null) {
-      url = getResourceFromClassloader(resource, stripped, classLoader);
-    }
+    URL url =  getResourceFromClassloader(resource, stripped, classLoader);
 
     if (url == null) {
       url = getResourceFromClassloader(resource, stripped, Util.class.getClassLoader());
@@ -123,7 +119,7 @@ public abstract class Util {
    */
   public static List<String> readLinesFromStream(final InputStream inputStream, final String encoding) {
     assert inputStream != null : "inputStream != null";
-    final ArrayList<String> result = new ArrayList<String>();
+    final ArrayList<String> result = new ArrayList<>();
 
     try {
       final LineNumberReader reader = new LineNumberReader(new InputStreamReader(inputStream, encoding));
@@ -179,6 +175,7 @@ public abstract class Util {
    * 
    * @throws Exception
    */
+  @SuppressWarnings("JavaDoc")
   public static <T> T fromByteArray(final Class<T> clazz, final byte[] byteArray) throws Exception {
     final ByteArrayInputStream bis = new ByteArrayInputStream(byteArray);
     final ObjectInputStream objectInputStream = new ObjectInputStream(bis);
@@ -193,6 +190,7 @@ public abstract class Util {
    * 
    * @throws Exception
    */
+  @SuppressWarnings("JavaDoc")
   public static <T> T fromInputStream(final Class<T> clazz, final InputStream inputStream) throws Exception {
     final ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);
 
@@ -201,7 +199,7 @@ public abstract class Util {
 
   public static void copy(final InputStream input, final OutputStream output) throws IOException {
     final byte[] buffer = new byte[DEFAULT_BUFFER_SIZE];
-    int n = 0;
+    int n;
 
     while ((n = input.read(buffer)) > 0) {
       output.write(buffer, 0, n);
@@ -249,14 +247,14 @@ public abstract class Util {
 
   public static boolean isWindows() {
     final String os = System.getProperty("os.name").toLowerCase();
-    return os.indexOf("win") >= 0;
+    return os.contains("win");
   }
 
   /**
    * @return uppercased list of columns in SELECT statement
    */
   public static List<String> parseSelectedColumns(final String sql) throws SQLException {
-    final List<String> result = new ArrayList<String>();
+    final List<String> result = new ArrayList<>();
     final StringTokenizer stringTokenizer = new StringTokenizer(sql, " ,\n\r\t");
 
     if (!"SELECT".equalsIgnoreCase(stringTokenizer.nextToken())) {

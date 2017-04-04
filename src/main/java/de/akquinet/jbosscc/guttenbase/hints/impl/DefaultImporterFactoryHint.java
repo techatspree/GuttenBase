@@ -1,6 +1,5 @@
 package de.akquinet.jbosscc.guttenbase.hints.impl;
 
-import de.akquinet.jbosscc.guttenbase.export.Importer;
 import de.akquinet.jbosscc.guttenbase.export.ImporterFactory;
 import de.akquinet.jbosscc.guttenbase.export.zip.ZipImporter;
 import de.akquinet.jbosscc.guttenbase.hints.ImporterFactoryHint;
@@ -17,11 +16,6 @@ import de.akquinet.jbosscc.guttenbase.hints.ImporterFactoryHint;
 public class DefaultImporterFactoryHint extends ImporterFactoryHint {
 	@Override
 	public ImporterFactory getValue() {
-		return new ImporterFactory() {
-			@Override
-			public Importer createImporter() {
-				return new ZipImporter();
-			}
-		};
+		return ZipImporter::new;
 	}
 }

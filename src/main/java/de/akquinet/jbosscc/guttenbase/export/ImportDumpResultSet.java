@@ -21,7 +21,6 @@ import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -41,6 +40,7 @@ import de.akquinet.jbosscc.guttenbase.meta.TableMetaData;
  * 
  * @author M. Dahm
  */
+@SuppressWarnings("RedundantThrows")
 public class ImportDumpResultSet implements ResultSet
 {
   private int _rowCount;
@@ -52,8 +52,8 @@ public class ImportDumpResultSet implements ResultSet
    * Since _tableMetaData may contain a limited set of columns, but the dumped data contains all columns, we need to map the
    * indices.
    */
-  private final Map<Integer, Integer> _columnIndexMap = new HashMap<Integer, Integer>();
-  private final List<Object> _currentRow = new ArrayList<Object>();
+  private final Map<Integer, Integer> _columnIndexMap = new HashMap<>();
+  private final List<Object> _currentRow = new ArrayList<>();
   private final TableMetaData _origTableMetaData;
 
   public ImportDumpResultSet(
@@ -82,7 +82,7 @@ public class ImportDumpResultSet implements ResultSet
     // TODO: We cannot ask the connector repository for the right hint here!
     // Though it makes no sense, one could define another ColumnOrderHint for the
     // dump source connector, which will cause unpredictable results then
-    Collections.sort(columnMetaData, new DefaultColumnComparator());
+    columnMetaData.sort(new DefaultColumnComparator());
 
     for (int originalColumnIndex = 0; originalColumnIndex < columnMetaData.size(); originalColumnIndex++)
     {

@@ -28,7 +28,7 @@ public class TimerDaemonThread extends Thread
       {
         Thread.sleep(800L);
       }
-      catch (final InterruptedException e)
+      catch (final InterruptedException ignored)
       {}
 
       for (final ProgressIndicator progressIndicator : _progressIndicators)

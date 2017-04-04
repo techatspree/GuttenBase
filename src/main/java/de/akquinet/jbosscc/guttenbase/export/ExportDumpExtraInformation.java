@@ -15,6 +15,7 @@ import de.akquinet.jbosscc.guttenbase.repository.ConnectorRepository;
  * 
  * @author M. Dahm
  */
+@SuppressWarnings("RedundantThrows")
 public interface ExportDumpExtraInformation {
 	Map<String, Serializable> getExtraInformation(ConnectorRepository connectorRepository, String connectorId,
 			ExportDumpConnectorInfo exportDumpConnectionInfo) throws SQLException;

@@ -112,6 +112,7 @@ public class ScriptExecutorTool
    * @param lines                   SQL statements ending with ';'
    * @throws SQLException
    */
+  @SuppressWarnings("JavaDoc")
   public void executeScript(final String connectorId, final boolean scriptUpdatesSchema, final boolean prepareTargetConnection,
                             final List<String> lines) throws SQLException
   {
@@ -180,6 +181,7 @@ public class ScriptExecutorTool
    *
    * @throws SQLException
    */
+  @SuppressWarnings("JavaDoc")
   public List<Map<String, Object>> executeQuery(final String connectorId, final String sql) throws SQLException
   {
     final Connector connector = _connectorRepository.createConnector(connectorId);
@@ -197,7 +199,7 @@ public class ScriptExecutorTool
 
   public List<Map<String, Object>> executeQuery(final Connection connection, final String sql) throws SQLException
   {
-    final List<Map<String, Object>> result = new ArrayList<Map<String, Object>>();
+    final List<Map<String, Object>> result = new ArrayList<>();
 
     final Statement statement = connection.createStatement();
     final ResultSet resultSet = statement.executeQuery(sql);
@@ -215,7 +217,7 @@ public class ScriptExecutorTool
     while (resultSet.next())
     {
       final int columnCount = metaData.getColumnCount();
-      final Map<String, Object> map = new HashMap<String, Object>();
+      final Map<String, Object> map = new HashMap<>();
 
       for (int i = 1; i <= columnCount; i++)
       {
@@ -237,7 +239,7 @@ public class ScriptExecutorTool
 
     if (result)
     {
-      final List<Map<String, Object>> resultMap = new ArrayList<Map<String, Object>>();
+      final List<Map<String, Object>> resultMap = new ArrayList<>();
 
       final ResultSet resultSet = statement.getResultSet();
       readMapFromResultSet(resultMap, resultSet);
@@ -255,7 +257,7 @@ public class ScriptExecutorTool
   public void dropIndexes(final DropTablesTool dropTablesTool, final String connectorId, final boolean updateSchema) throws SQLException
   {
     final List<TableMetaData> tableMetaData = TableOrderHint.getSortedTables(dropTablesTool._connectorRepository, connectorId);
-    final List<String> statements = new ArrayList<String>();
+    final List<String> statements = new ArrayList<>();
 
     for (final TableMetaData table : tableMetaData)
     {

@@ -15,6 +15,7 @@ import de.akquinet.jbosscc.guttenbase.meta.InternalColumnMetaData;
  *
  * @author M. Dahm
  */
+@SuppressWarnings("RedundantThrows")
 public class ZipColumnMetaDataWriter extends ZipAbstractMetaDataWriter {
   public static final String COLUMN_NAME = "Name";
   public static final String COLUMN_ID = "Column-Id";

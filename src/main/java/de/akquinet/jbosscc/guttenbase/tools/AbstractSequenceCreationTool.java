@@ -20,6 +20,7 @@ import java.util.List;
  * @gb.UsesHint {@link de.akquinet.jbosscc.guttenbase.hints.TableNameMapperHint}
  * @gb.UsesHint {@link de.akquinet.jbosscc.guttenbase.hints.EntityTableCheckerHint} to look for entity classes, i.e. classes that may use an ID sequence
  */
+@SuppressWarnings("RedundantThrows")
 public abstract class AbstractSequenceCreationTool
 {
   protected final ConnectorRepository _connectorRepository;
@@ -37,7 +38,7 @@ public abstract class AbstractSequenceCreationTool
     final List<TableMetaData> tableMetaDatas = TableOrderHint.getSortedTables(_connectorRepository, connectorId);
     final EntityTableChecker entityTableChecker = _connectorRepository.getConnectorHint(connectorId, EntityTableChecker.class).getValue();
     final TableNameMapper tableNameMapper = _connectorRepository.getConnectorHint(connectorId, TableNameMapper.class).getValue();
-    final List<String> updateClauses = new ArrayList<String>();
+    final List<String> updateClauses = new ArrayList<>();
 
     for (final TableMetaData tableMetaData : tableMetaDatas)
     {

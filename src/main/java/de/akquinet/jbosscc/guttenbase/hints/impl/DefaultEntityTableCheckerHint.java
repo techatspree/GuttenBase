@@ -2,7 +2,6 @@ package de.akquinet.jbosscc.guttenbase.hints.impl;
 
 import de.akquinet.jbosscc.guttenbase.hints.EntityTableCheckerHint;
 import de.akquinet.jbosscc.guttenbase.meta.ColumnMetaData;
-import de.akquinet.jbosscc.guttenbase.meta.TableMetaData;
 import de.akquinet.jbosscc.guttenbase.tools.EntityTableChecker;
 
 /**
@@ -17,19 +16,16 @@ import de.akquinet.jbosscc.guttenbase.tools.EntityTableChecker;
 public class DefaultEntityTableCheckerHint extends EntityTableCheckerHint {
 	@Override
 	public EntityTableChecker getValue() {
-		return new EntityTableChecker() {
-			@Override
-			public boolean isEntityTable(final TableMetaData tableMetaData) {
-				for (final ColumnMetaData columnMetaData : tableMetaData.getColumnMetaData()) {
-					final String columnName = columnMetaData.getColumnName().toUpperCase();
+		return tableMetaData -> {
+            for (final ColumnMetaData columnMetaData : tableMetaData.getColumnMetaData()) {
+                final String columnName = columnMetaData.getColumnName().toUpperCase();
 
-					if (columnMetaData.isPrimaryKey() && (columnName.equals("ID") || columnName.equals("IDENT"))) {
-						return true;
-					}
-				}
+                if (columnMetaData.isPrimaryKey() && (columnName.equals("ID") || columnName.equals("IDENT"))) {
+                    return true;
+                }
+            }
 
-				return false;
-			}
-		};
+            return false;
+        };
 	}
 }

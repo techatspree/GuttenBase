@@ -13,6 +13,7 @@ import de.akquinet.jbosscc.guttenbase.meta.ColumnMetaData;
  * 
  * @author M. Dahm
  */
+@SuppressWarnings("RedundantThrows")
 public interface ColumnDataMapper {
 	/**
 	 * Mapper can be used for the given columns?

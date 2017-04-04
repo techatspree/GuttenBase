@@ -30,6 +30,7 @@ import org.apache.log4j.Logger;
  *
  * @author M. Dahm
  */
+@SuppressWarnings("RedundantThrows")
 public class DatabaseMetaDataInspectorTool
 {
   private static final Logger LOG = Logger.getLogger(DatabaseMetaDataInspectorTool.class);
@@ -74,22 +75,15 @@ public class DatabaseMetaDataInspectorTool
   private void updateTableMetaData(final Connection connection, final java.sql.DatabaseMetaData metaData,
                                    final DatabaseMetaData databaseMetaData, final String schemaPrefix) throws SQLException
   {
-    final Statement statement = connection.createStatement();
 
-    try
-    {
-      for (final TableMetaData table : databaseMetaData.getTableMetaData())
-      {
-        final InternalTableMetaData tableMetaData = (InternalTableMetaData) table;
-        updateTableWithRowCount(statement, tableMetaData, schemaPrefix);
+      try (Statement statement = connection.createStatement()) {
+          for (final TableMetaData table : databaseMetaData.getTableMetaData()) {
+              final InternalTableMetaData tableMetaData = (InternalTableMetaData) table;
+              updateTableWithRowCount(statement, tableMetaData, schemaPrefix);
 
-        updateTableMetaDataWithColumnInformation(statement, tableMetaData, schemaPrefix);
+              updateTableMetaDataWithColumnInformation(statement, tableMetaData, schemaPrefix);
+          }
       }
-    }
-    finally
-    {
-      statement.close();
-    }
 
     try
     {

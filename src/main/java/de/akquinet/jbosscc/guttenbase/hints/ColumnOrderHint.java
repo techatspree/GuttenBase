@@ -1,7 +1,6 @@
 package de.akquinet.jbosscc.guttenbase.hints;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
@@ -40,8 +39,8 @@ public abstract class ColumnOrderHint implements ConnectorHint<ColumnOrderCompar
 			final TableMetaData tableMetaData) {
 		final Comparator<ColumnMetaData> sourceColumnComparator = connectorRepository
 				.getConnectorHint(connectorId, ColumnOrderComparatorFactory.class).getValue().createComparator();
-		final List<ColumnMetaData> columns = new ArrayList<ColumnMetaData>(tableMetaData.getColumnMetaData());
-		Collections.sort(columns, sourceColumnComparator);
+		final List<ColumnMetaData> columns = new ArrayList<>(tableMetaData.getColumnMetaData());
+		columns.sort(sourceColumnComparator);
 
 		return columns;
 	}

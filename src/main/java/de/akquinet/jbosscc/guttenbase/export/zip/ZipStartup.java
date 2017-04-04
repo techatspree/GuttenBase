@@ -3,8 +3,6 @@ package de.akquinet.jbosscc.guttenbase.export.zip;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectInputStream;
@@ -34,6 +32,7 @@ import de.akquinet.jbosscc.guttenbase.meta.TableMetaData;
  * 
  * @author M. Dahm
  */
+@SuppressWarnings("RedundantThrows")
 public class ZipStartup extends JPanel {
   private static final long serialVersionUID = 1L;
 
@@ -130,12 +129,7 @@ public class ZipStartup extends JPanel {
     final JPanel buttonPanel = new JPanel(new FlowLayout());
 
     final JButton close = new JButton("Close");
-    close.addActionListener(new ActionListener() {
-      @Override
-      public void actionPerformed(final ActionEvent e) {
-        System.exit(0);
-      }
-    });
+    close.addActionListener(e -> System.exit(0));
     buttonPanel.add(close);
     return buttonPanel;
   }

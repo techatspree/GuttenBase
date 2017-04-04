@@ -67,7 +67,7 @@ public class ScriptExecutorTest {
 		expectConnectionSetup();
 
 		expect(statement.getResultSet()).andReturn(resultSet).anyTimes();
-		expect(statement.execute((String) anyObject())).andReturn(true); // one line
+		expect(statement.execute(anyObject())).andReturn(true); // one line
 
 		statement.close();
 
@@ -84,7 +84,7 @@ public class ScriptExecutorTest {
 
 		expect(preparedStatement.getResultSet()).andReturn(resultSet).anyTimes();
 
-		expect(preparedStatement.execute((String) anyObject())).andReturn(true).anyTimes();
+		expect(preparedStatement.execute(anyObject())).andReturn(true).anyTimes();
 
 		preparedStatement.close();
 

@@ -2,13 +2,14 @@ package de.akquinet.jbosscc.guttenbase.hints;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import de.akquinet.jbosscc.guttenbase.defaults.impl.DefaultColumnMapper;
 import de.akquinet.jbosscc.guttenbase.meta.ColumnMetaData;
 import de.akquinet.jbosscc.guttenbase.meta.TableMetaData;
 
+@SuppressWarnings("RedundantThrows")
 public final class TestTableColumnMapper extends DefaultColumnMapper
 {
   @Override
@@ -21,8 +22,8 @@ public final class TestTableColumnMapper extends DefaultColumnMapper
       final String newColumnName = mapColumnName(source);
       final ColumnMetaData columnMetaData = targetTableMetaData.getColumnMetaData(newColumnName);
 
-      final List<ColumnMetaData> result = columnMetaData != null ? new ArrayList<ColumnMetaData>(Arrays.asList(columnMetaData))
-          : new ArrayList<ColumnMetaData>();
+      final List<ColumnMetaData> result = columnMetaData != null ? new ArrayList<>(Collections.singletonList(columnMetaData))
+          : new ArrayList<>();
 
       return new ColumnMapperResult(result);
     }

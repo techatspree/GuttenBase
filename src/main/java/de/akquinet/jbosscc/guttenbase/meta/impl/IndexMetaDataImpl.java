@@ -22,7 +22,7 @@ public class IndexMetaDataImpl implements InternalIndexMetaData {
   private final String _indexName;
   private final boolean _ascending;
   private final boolean _unique;
-  private final List<ColumnMetaData> _columns = new ArrayList<ColumnMetaData>();
+  private final List<ColumnMetaData> _columns = new ArrayList<>();
   private final TableMetaData _tableMetaData;
   private final boolean _primaryKeyIndex;
 
@@ -84,7 +84,7 @@ public class IndexMetaDataImpl implements InternalIndexMetaData {
    */
   @Override
   public List<ColumnMetaData> getColumnMetaData() {
-    return new ArrayList<ColumnMetaData>(_columns);
+    return new ArrayList<>(_columns);
   }
 
   @Override

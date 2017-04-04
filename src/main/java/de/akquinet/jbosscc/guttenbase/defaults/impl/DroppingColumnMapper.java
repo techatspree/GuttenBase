@@ -19,20 +19,14 @@ import de.akquinet.jbosscc.guttenbase.meta.TableMetaData;
  */
 public class DroppingColumnMapper extends DefaultColumnMapper
 {
-  private final Map<String, List<String>> _droppedColumns = new HashMap<String, List<String>>();
+  private final Map<String, List<String>> _droppedColumns = new HashMap<>();
 
   public DroppingColumnMapper addDroppedColumn(final String targetTableName, final String sourceColumName)
   {
     assert targetTableName != null : "tableName != null";
     assert sourceColumName != null : "columName != null";
 
-    List<String> dropped = _droppedColumns.get(targetTableName.toUpperCase());
-
-    if (dropped == null)
-    {
-      dropped = new ArrayList<String>();
-      _droppedColumns.put(targetTableName.toUpperCase(), dropped);
-    }
+    List<String> dropped = _droppedColumns.computeIfAbsent(targetTableName.toUpperCase(), k -> new ArrayList<>());
 
     dropped.add(sourceColumName.toUpperCase());
     return this;
@@ -45,7 +39,7 @@ public class DroppingColumnMapper extends DefaultColumnMapper
 
     if (columns != null && columns.contains(source.getColumnName().toUpperCase()))
     {
-      return new ColumnMapperResult(new ArrayList<ColumnMetaData>(), true);
+      return new ColumnMapperResult(new ArrayList<>(), true);
     }
     else
     {

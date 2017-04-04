@@ -37,7 +37,7 @@ public class InsertStatementFiller
   private static final Logger LOG = Logger.getLogger(InsertStatementFiller.class);
 
   private final ConnectorRepository _connectorRepository;
-  private final List<Closeable> _closeableObjects = new ArrayList<Closeable>();
+  private final List<Closeable> _closeableObjects = new ArrayList<>();
 
   public InsertStatementFiller(final ConnectorRepository connectorRepository)
   {

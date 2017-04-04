@@ -13,6 +13,7 @@ import de.akquinet.jbosscc.guttenbase.meta.TableMetaData;
  * 
  * @author M. Dahm
  */
+@SuppressWarnings("RedundantThrows")
 public class ZipTableMetaDataWriter extends ZipAbstractMetaDataWriter {
   public static final String TABLE_NAME = "Name";
   public static final String COLUMN_COUNT = "Column-Count";

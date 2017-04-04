@@ -22,7 +22,7 @@ import java.util.concurrent.Executor;
 public class ImportDumpConnection implements Connection {
   private final Importer _importer;
   private boolean _closed;
-  private final Set<TableMetaData> _importedTables = new HashSet<TableMetaData>();
+  private final Set<TableMetaData> _importedTables = new HashSet<>();
   private TableMetaData _currentTableMetaData;
   private final DatabaseMetaData _databaseMetaData;
 
@@ -158,7 +158,7 @@ public class ImportDumpConnection implements Connection {
   @Override
   public int getTransactionIsolation() throws SQLException {
 
-    return 0;
+    return Connection.TRANSACTION_NONE;
   }
 
   @Override

@@ -3,13 +3,10 @@ package de.akquinet.jbosscc.guttenbase.hints;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
-import java.sql.SQLException;
-
 import org.junit.Before;
 import org.junit.Test;
 
 import de.akquinet.jbosscc.guttenbase.configuration.TestHsqlConnectionInfo;
-import de.akquinet.jbosscc.guttenbase.meta.ColumnMetaData;
 import de.akquinet.jbosscc.guttenbase.meta.TableMetaData;
 import de.akquinet.jbosscc.guttenbase.repository.DatabaseColumnFilter;
 import de.akquinet.jbosscc.guttenbase.tools.AbstractGuttenBaseTest;
@@ -52,15 +49,8 @@ public class DatabaseColumnFilterHintTest extends AbstractGuttenBaseTest
       @Override
       public DatabaseColumnFilter getValue()
       {
-        return new DatabaseColumnFilter()
-        {
-          @Override
-          public boolean accept(final ColumnMetaData columnMetaData) throws SQLException
-          {
-            return !columnMetaData.getTableMetaData().getTableName().equals("FOO_USER") || !columnMetaData.getColumnName()
-                .equals("PASSWORD");
-          }
-        };
+        return columnMetaData -> !columnMetaData.getTableMetaData().getTableName().equals("FOO_USER") || !columnMetaData.getColumnName()
+            .equals("PASSWORD");
       }
     });
 

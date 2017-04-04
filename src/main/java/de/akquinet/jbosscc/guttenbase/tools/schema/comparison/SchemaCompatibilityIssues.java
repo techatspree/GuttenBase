@@ -5,14 +5,14 @@ import java.util.List;
 import java.util.logging.Level;
 
 public class SchemaCompatibilityIssues {
-  private final List<SchemaCompatibilityIssue> _compatibilityIssues = new ArrayList<SchemaCompatibilityIssue>();
+  private final List<SchemaCompatibilityIssue> _compatibilityIssues = new ArrayList<>();
 
   public void addIssue(final SchemaCompatibilityIssue issue) {
     _compatibilityIssues.add(issue);
   }
 
   public List<SchemaCompatibilityIssue> getCompatibilityIssues() {
-    return new ArrayList<SchemaCompatibilityIssue>(_compatibilityIssues);
+    return new ArrayList<>(_compatibilityIssues);
   }
 
   public boolean isSevere() {
@@ -40,7 +40,7 @@ public class SchemaCompatibilityIssues {
     final StringBuilder builder = new StringBuilder();
 
     for (final SchemaCompatibilityIssue compatibilityIssue : _compatibilityIssues) {
-      builder.append(compatibilityIssue + "\n");
+      builder.append(compatibilityIssue).append("\n");
     }
 
     return builder.toString();

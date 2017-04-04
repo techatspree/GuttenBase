@@ -14,6 +14,7 @@ import de.akquinet.jbosscc.guttenbase.meta.TableMetaData;
  * 
  * @author M. Dahm
  */
+@SuppressWarnings("RedundantThrows")
 public interface TableMapper {
 	/**
 	 * Return matching table in target data base or null

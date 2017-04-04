@@ -35,6 +35,7 @@ public class PostgresqlTargetDatabaseConfiguration extends DefaultTargetDatabase
    * @param vacuumAfterCopy
    *          "Defragment" and optimize target table after copying
    */
+  @SuppressWarnings("JavaDoc")
   public PostgresqlTargetDatabaseConfiguration(final ConnectorRepository connectorRepository, final boolean vacuumAfterCopy) {
     super(connectorRepository);
     _vacuumAfterCopy = vacuumAfterCopy;

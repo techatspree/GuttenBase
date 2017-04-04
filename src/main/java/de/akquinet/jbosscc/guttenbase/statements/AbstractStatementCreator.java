@@ -50,7 +50,7 @@ public abstract class AbstractStatementCreator
 
     for (final ColumnMetaData columnMetaData : columns)
     {
-      columnBuf.append(_columnNameMapper.mapColumnName(columnMetaData) + ", ");
+      columnBuf.append(_columnNameMapper.mapColumnName(columnMetaData)).append(", ");
     }
 
     columnBuf.setLength(columnBuf.length() - 2);
@@ -72,7 +72,7 @@ public abstract class AbstractStatementCreator
     // Use same order as in SELECT clause
     final List<ColumnMetaData> sourceColumns = ColumnOrderHint.getSortedColumns(_connectorRepository, sourceConnectorId,
         sourceTableMetaData);
-    final List<ColumnMetaData> columns = new ArrayList<ColumnMetaData>();
+    final List<ColumnMetaData> columns = new ArrayList<>();
     final ColumnMapper columnMapper = _connectorRepository.getConnectorHint(_connectorId, ColumnMapper.class).getValue();
 
     for (final ColumnMetaData sourceColumnMetaData : sourceColumns)

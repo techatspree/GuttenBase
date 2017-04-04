@@ -2,13 +2,10 @@ package de.akquinet.jbosscc.guttenbase.hints;
 
 import static org.junit.Assert.assertEquals;
 
-import java.sql.SQLException;
-
 import org.junit.Before;
 import org.junit.Test;
 
 import de.akquinet.jbosscc.guttenbase.configuration.TestHsqlConnectionInfo;
-import de.akquinet.jbosscc.guttenbase.meta.TableMetaData;
 import de.akquinet.jbosscc.guttenbase.repository.RepositoryTableFilter;
 import de.akquinet.jbosscc.guttenbase.tools.AbstractGuttenBaseTest;
 import de.akquinet.jbosscc.guttenbase.tools.ScriptExecutorTool;
@@ -39,12 +36,7 @@ public class RepositoryTableFilterHintTest extends AbstractGuttenBaseTest {
 		_connectorRepository.addConnectorHint(SOURCE, new RepositoryTableFilterHint() {
 			@Override
 			public RepositoryTableFilter getValue() {
-				return new RepositoryTableFilter() {
-					@Override
-					public boolean accept(final TableMetaData table) throws SQLException {
-						return table.getTableName().toUpperCase().contains("USER");
-					}
-				};
+				return table -> table.getTableName().toUpperCase().contains("USER");
 			}
 		});
 

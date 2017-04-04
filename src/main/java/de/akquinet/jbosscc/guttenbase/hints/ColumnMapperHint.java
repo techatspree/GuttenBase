@@ -24,6 +24,7 @@ import de.akquinet.jbosscc.guttenbase.tools.CheckEqualTableDataTool;
  *
  * @author M. Dahm
  */
+@SuppressWarnings("deprecation")
 public abstract class ColumnMapperHint implements ConnectorHint<ColumnMapper> {
 	@Override
 	public Class<ColumnMapper> getConnectorHintType() {

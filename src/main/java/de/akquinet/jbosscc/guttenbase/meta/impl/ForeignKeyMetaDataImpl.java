@@ -25,7 +25,7 @@ public class ForeignKeyMetaDataImpl implements InternalForeignKeyMetaData {
   public ForeignKeyMetaDataImpl(final TableMetaData tableMetaData, final String foreignKeyName, final ColumnMetaData referencingColumn,
                                 final ColumnMetaData referencedColumn) {
     assert tableMetaData != null : "tableMetaData != null";
-    assert referencedColumn != null : "referencedColumn != null";
+    assert foreignKeyName != null : "foreignKeyName != null";
     assert referencingColumn != null : "referencingColumn != null";
     assert referencedColumn != null : "referencedColumn != null";
 

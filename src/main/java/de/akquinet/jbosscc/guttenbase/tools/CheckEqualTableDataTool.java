@@ -239,7 +239,9 @@ public class CheckEqualTableDataTool
         selectStatement2.close();
       }
       catch (final Exception e)
-      {}
+      {
+        LOG.warn("Closing", e);
+      }
     }
 
     LOG.info("Checking data of " + tableName1 + " <--> " + tableName2 + " finished");

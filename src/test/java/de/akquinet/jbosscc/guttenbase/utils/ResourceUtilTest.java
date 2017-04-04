@@ -8,7 +8,7 @@ import java.io.IOException;
 
 public class ResourceUtilTest
 {
-  private ResourceUtil _objectUnderTest = new ResourceUtil();
+  private final ResourceUtil _objectUnderTest = new ResourceUtil();
 
   @Test
   public void testResource() throws IOException

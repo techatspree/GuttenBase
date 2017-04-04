@@ -12,6 +12,7 @@ import de.akquinet.jbosscc.guttenbase.meta.ColumnMetaData;
  * 
  * @author M. Dahm
  */
+@SuppressWarnings("RedundantThrows")
 public interface ColumnNameMapper {
 	String mapColumnName(ColumnMetaData columnMetaData) throws SQLException;
 }

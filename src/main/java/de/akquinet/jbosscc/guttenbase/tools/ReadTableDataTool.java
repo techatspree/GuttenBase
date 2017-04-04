@@ -19,6 +19,7 @@ import de.akquinet.jbosscc.guttenbase.meta.ColumnType;
 import de.akquinet.jbosscc.guttenbase.meta.TableMetaData;
 import de.akquinet.jbosscc.guttenbase.repository.ConnectorRepository;
 import de.akquinet.jbosscc.guttenbase.statements.SelectStatementCreator;
+import org.apache.log4j.Logger;
 
 /**
  * Read data from given table and put into a map.
@@ -30,6 +31,7 @@ import de.akquinet.jbosscc.guttenbase.statements.SelectStatementCreator;
  * @author M. Dahm
  */
 public class ReadTableDataTool {
+	private static final Logger LOG = Logger.getLogger(ReadTableDataTool.class);
 	private final ConnectorRepository _connectorRepository;
 
 	public ReadTableDataTool(final ConnectorRepository connectorRepository) {
@@ -60,7 +62,7 @@ public class ReadTableDataTool {
 
 	private List<Map<String, Object>> readTableData(final Connection connection, final String connectorId,
 			final SourceDatabaseConfiguration sourceConfiguration, final TableMetaData tableMetaData, final int lines) throws SQLException {
-		final List<Map<String, Object>> result = new ArrayList<Map<String, Object>>();
+		final List<Map<String, Object>> result = new ArrayList<>();
 		final String tableName = _connectorRepository.getConnectorHint(connectorId, TableNameMapper.class).getValue()
 				.mapTableName(tableMetaData);
 		final CommonColumnTypeResolverTool commonColumnTypeResolver = new CommonColumnTypeResolverTool(_connectorRepository);
@@ -80,7 +82,7 @@ public class ReadTableDataTool {
 
 		try {
 			while (resultSet.next() && rowIndex <= lines) {
-				final Map<String, Object> rowData = new HashMap<String, Object>();
+				final Map<String, Object> rowData = new HashMap<>();
 				for (int columnIndex = 1; columnIndex <= orderedSourceColumns.size(); columnIndex++) {
 					final ColumnMetaData sourceColumn = orderedSourceColumns.get(columnIndex - 1);
 					final String columnName = sourceColumnNameMapper.mapColumnName(sourceColumn);
@@ -98,6 +100,7 @@ public class ReadTableDataTool {
 				resultSet.close();
 				selectStatement.close();
 			} catch (final Exception e) {
+				LOG.warn("Closing", e);
 			}
 		}
 

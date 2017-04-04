@@ -56,13 +56,7 @@ public abstract class AbstractTableCopyToolTest extends AbstractGuttenBaseTest {
     _connectorRepository.addConnectorHint(CONNECTOR_TARGET, new RefreshTargetConnectionHint() {
       @Override
       public RefreshTargetConnection getValue() {
-        return new RefreshTargetConnection() {
-
-          @Override
-          public boolean refreshConnection(int noCopiedTables, TableMetaData sourceTableMetaData) {
-            return noCopiedTables % 2 == 0;
-          }
-        };
+        return (noCopiedTables, sourceTableMetaData) -> noCopiedTables % 2 == 0;
       }
     });
 

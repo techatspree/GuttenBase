@@ -2,7 +2,7 @@ package de.akquinet.jbosscc.guttenbase.defaults.impl;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import de.akquinet.jbosscc.guttenbase.mapping.ColumnMapper;
@@ -24,8 +24,8 @@ public class DefaultColumnMapper implements ColumnMapper
   {
     final String columnName = source.getColumnName();
     final ColumnMetaData columnMetaData = targetTableMetaData.getColumnMetaData(columnName);
-    final List<ColumnMetaData> result = columnMetaData != null ? new ArrayList<ColumnMetaData>(Arrays.asList(columnMetaData))
-        : new ArrayList<ColumnMetaData>();
+    final List<ColumnMetaData> result = columnMetaData != null ? new ArrayList<>(Collections.singletonList(columnMetaData))
+        : new ArrayList<>();
     return new ColumnMapperResult(result);
   }
 }

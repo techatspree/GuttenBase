@@ -36,7 +36,7 @@ public class DropTablesTool
     final List<TableMetaData> tableMetaData = new TableOrderTool().getOrderedTables(
             TableOrderHint.getSortedTables(_connectorRepository, connectorId), false);
     final TableNameMapper tableNameMapper = _connectorRepository.getConnectorHint(connectorId, TableNameMapper.class).getValue();
-    final List<String> statements = new ArrayList<String>();
+    final List<String> statements = new ArrayList<>();
     final ConnectorInfo connectionInfo = _connectorRepository.getConnectionInfo(connectorId);
     String constraintClause;
 
@@ -69,7 +69,7 @@ public class DropTablesTool
   {
     final List<TableMetaData> tableMetaData = new TableOrderTool().getOrderedTables(
             TableOrderHint.getSortedTables(_connectorRepository, connectorId), false);
-    final List<String> statements = new ArrayList<String>();
+    final List<String> statements = new ArrayList<>();
 
     for (final TableMetaData table : tableMetaData)
     {
@@ -96,7 +96,7 @@ public class DropTablesTool
   {
     final List<TableMetaData> tableMetaData = new TableOrderTool().getOrderedTables(
             TableOrderHint.getSortedTables(_connectorRepository, connectorId), false);
-    final List<String> statements = new ArrayList<String>();
+    final List<String> statements = new ArrayList<>();
     final TableNameMapper tableNameMapper = _connectorRepository.getConnectorHint(connectorId, TableNameMapper.class).getValue();
 
     for (final TableMetaData table : tableMetaData)

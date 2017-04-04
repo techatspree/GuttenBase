@@ -26,6 +26,7 @@ import de.akquinet.jbosscc.guttenbase.tools.TableOrderTool;
  *
  * @author M. Dahm
  */
+@SuppressWarnings("UnusedAssignment")
 public class DatabaseSchemaScriptCreator
 {
   private static final Random RANDOM = new Random();
@@ -86,7 +87,7 @@ public class DatabaseSchemaScriptCreator
 
   public List<String> createTableStatements(final List<TableMetaData> tables) throws SQLException
   {
-    final List<String> result = new ArrayList<String>();
+    final List<String> result = new ArrayList<>();
 
     for (final TableMetaData tableMetaData : tables)
     {
@@ -104,7 +105,7 @@ public class DatabaseSchemaScriptCreator
 
   public List<String> createPrimaryKeyStatements(final List<TableMetaData> tables) throws SQLException
   {
-    final List<String> result = new ArrayList<String>();
+    final List<String> result = new ArrayList<>();
 
     for (final TableMetaData tableMetaData : tables)
     {
@@ -128,7 +129,7 @@ public class DatabaseSchemaScriptCreator
 
   public List<String> createIndexStatements(final List<TableMetaData> tables) throws SQLException
   {
-    final List<String> result = new ArrayList<String>();
+    final List<String> result = new ArrayList<>();
 
     for (final TableMetaData tableMetaData : tables)
     {
@@ -151,7 +152,7 @@ public class DatabaseSchemaScriptCreator
 
   public List<String> createForeignKeyStatements(final List<TableMetaData> tables) throws SQLException
   {
-    final List<String> result = new ArrayList<String>();
+    final List<String> result = new ArrayList<>();
 
     for (final TableMetaData tableMetaData : tables)
     {
@@ -179,7 +180,7 @@ public class DatabaseSchemaScriptCreator
     {
       final ColumnMetaData columnMetaData = iterator.next();
 
-      builder.append("  " + createColumn(columnMetaData));
+      builder.append("  ").append(createColumn(columnMetaData));
 
       if (iterator.hasNext())
       {
@@ -204,7 +205,7 @@ public class DatabaseSchemaScriptCreator
 
     for (final ColumnMetaData columnMetaData : primaryKeyColumns)
     {
-      builder.append(_columnNameMapper.mapColumnName(columnMetaData) + ", ");
+      builder.append(_columnNameMapper.mapColumnName(columnMetaData)).append(", ");
     }
 
     builder.setLength(builder.length() - 2);
@@ -278,17 +279,10 @@ public class DatabaseSchemaScriptCreator
     final String tablename = _tableNameMapper.mapTableName(tableMetaData);
     final String schemaPrefix = "".equals(_targetSchema) ? "" : _targetSchema + ".";
 
-    final StringBuilder builder = new StringBuilder("ALTER TABLE " + schemaPrefix + tablename + " ADD CONSTRAINT ");
-    builder.append(fkName);
-    builder.append(" FOREIGN KEY (" + _columnNameMapper.mapColumnName(referencingColumn)
-        + ") REFERENCES "
-        + schemaPrefix
-        + _tableNameMapper.mapTableName(referencedColumn.getTableMetaData())
-        + "("
-        + _columnNameMapper.mapColumnName(referencedColumn)
-        + ");");
+      String builder = "ALTER TABLE " + schemaPrefix + tablename + " ADD CONSTRAINT " + fkName +
+              " FOREIGN KEY (" + _columnNameMapper.mapColumnName(referencingColumn) + ") REFERENCES " + schemaPrefix + _tableNameMapper.mapTableName(referencedColumn.getTableMetaData()) + "(" + _columnNameMapper.mapColumnName(referencedColumn) + ");";
 
-    return builder.toString();
+      return builder;
   }
 
   public String createForeignKey(final ForeignKeyMetaData foreignKeyMetaData) throws SQLException
@@ -299,25 +293,17 @@ public class DatabaseSchemaScriptCreator
     final String tablename = _tableNameMapper.mapTableName(tableMetaData);
     final String schemaPrefix = "".equals(_targetSchema) ? "" : _targetSchema + ".";
 
-    final StringBuilder builder = new StringBuilder("ALTER TABLE " + schemaPrefix + tablename + " ADD CONSTRAINT ");
-    builder.append(foreignKeyMetaData.getForeignKeyName());
-    builder.append(" FOREIGN KEY (" + _columnNameMapper.mapColumnName(referencingColumn)
-        + ") REFERENCES "
-        + schemaPrefix
-        + _tableNameMapper.mapTableName(referencedColumn.getTableMetaData())
-        + "("
-        + _columnNameMapper.mapColumnName(referencedColumn)
-        + ");");
+    String builder = "ALTER TABLE " + schemaPrefix + tablename + " ADD CONSTRAINT " + foreignKeyMetaData.getForeignKeyName() +
+            " FOREIGN KEY (" + _columnNameMapper.mapColumnName(referencingColumn) + ") REFERENCES " + schemaPrefix + _tableNameMapper.mapTableName(referencedColumn.getTableMetaData()) + "(" + _columnNameMapper.mapColumnName(referencedColumn) + ");";
 
-    return builder.toString();
+    return builder;
   }
 
   private String createColumn(final ColumnMetaData columnMetaData) throws SQLException
   {
     final StringBuilder builder = new StringBuilder();
 
-    builder.append(_columnNameMapper.mapColumnName(columnMetaData) + " "
-        + _columnTypeMapper.getColumnType(columnMetaData));
+    builder.append(_columnNameMapper.mapColumnName(columnMetaData)).append(" ").append(_columnTypeMapper.getColumnType(columnMetaData));
 
     if (!columnMetaData.isNullable())
     {

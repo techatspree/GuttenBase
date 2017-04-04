@@ -17,7 +17,7 @@ import de.akquinet.jbosscc.guttenbase.meta.impl.DatabaseMetaDataImpl;
  * @author M. Dahm
  */
 public class DatabaseMetaDataBuilder {
-	private final List<TableMetaDataBuilder> _tables = new ArrayList<TableMetaDataBuilder>();
+	private final List<TableMetaDataBuilder> _tables = new ArrayList<>();
 	private String _schema = "";
 	private String _databaseName = "SomeDB";
 	private int _majorVersion = 1;

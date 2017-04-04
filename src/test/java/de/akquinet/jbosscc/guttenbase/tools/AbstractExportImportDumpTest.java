@@ -5,7 +5,6 @@ import static org.junit.Assert.assertNotNull;
 
 import java.io.File;
 import java.io.Serializable;
-import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -20,8 +19,8 @@ import de.akquinet.jbosscc.guttenbase.export.ImportDumpConnectionInfo;
 import de.akquinet.jbosscc.guttenbase.export.ImportDumpExtraInformation;
 import de.akquinet.jbosscc.guttenbase.hints.ExportDumpExtraInformationHint;
 import de.akquinet.jbosscc.guttenbase.hints.ImportDumpExtraInformationHint;
-import de.akquinet.jbosscc.guttenbase.repository.ConnectorRepository;
 
+@SuppressWarnings("deprecation")
 public abstract class AbstractExportImportDumpTest extends AbstractGuttenBaseTest {
   public static final String DATA_JAR = "./data.jar";
   public static final String IMPORT = "import";
@@ -46,14 +45,10 @@ public abstract class AbstractExportImportDumpTest extends AbstractGuttenBaseTes
     _connectorRepository.addConnectorHint(EXPORT, new ExportDumpExtraInformationHint() {
       @Override
       public ExportDumpExtraInformation getValue() {
-        return new ExportDumpExtraInformation() {
-          @Override
-          public Map<String, Serializable> getExtraInformation(final ConnectorRepository connectorRepository, final String connectorId,
-              final ExportDumpConnectorInfo exportDumpConnectionInfo) throws SQLException {
-            final Map<String, Serializable> result = new HashMap<String, Serializable>();
-            result.put(KEY, VALUE);
-            return result;
-          }
+        return (connectorRepository, connectorId, exportDumpConnectionInfo) -> {
+          final Map<String, Serializable> result = new HashMap<>();
+          result.put(KEY, VALUE);
+          return result;
         };
       }
     });
@@ -61,12 +56,7 @@ public abstract class AbstractExportImportDumpTest extends AbstractGuttenBaseTes
     _connectorRepository.addConnectorHint(IMPORT, new ImportDumpExtraInformationHint() {
       @Override
       public ImportDumpExtraInformation getValue() {
-        return new ImportDumpExtraInformation() {
-          @Override
-          public void processExtraInformation(final Map<String, Serializable> extraInformation) throws Exception {
-            _extraInformation = extraInformation;
-          }
-        };
+        return extraInformation -> _extraInformation = extraInformation;
       }
     });
   }
