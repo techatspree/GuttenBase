@@ -30,6 +30,7 @@ import java.util.Set;
  * @gb.UsesHint {@link ColumnNameMapperHint} to map column names
  * @gb.UsesHint {@link TableOrderHint} to determine order of tables
  */
+@SuppressWarnings("RedundantThrows")
 public class SchemaComparatorTool {
     private final ConnectorRepository _connectorRepository;
     private final SchemaCompatibilityIssues _schemaCompatibilityIssues = new SchemaCompatibilityIssues();

@@ -279,11 +279,10 @@ public class DatabaseSchemaScriptCreator
     final String tablename = _tableNameMapper.mapTableName(tableMetaData);
     final String schemaPrefix = "".equals(_targetSchema) ? "" : _targetSchema + ".";
 
-    final StringBuilder builder = new StringBuilder("ALTER TABLE " + schemaPrefix + tablename + " ADD CONSTRAINT ");
-    builder.append(fkName);
-    builder.append(" FOREIGN KEY (").append(_columnNameMapper.mapColumnName(referencingColumn)).append(") REFERENCES ").append(schemaPrefix).append(_tableNameMapper.mapTableName(referencedColumn.getTableMetaData())).append("(").append(_columnNameMapper.mapColumnName(referencedColumn)).append(");");
+      String builder = "ALTER TABLE " + schemaPrefix + tablename + " ADD CONSTRAINT " + fkName +
+              " FOREIGN KEY (" + _columnNameMapper.mapColumnName(referencingColumn) + ") REFERENCES " + schemaPrefix + _tableNameMapper.mapTableName(referencedColumn.getTableMetaData()) + "(" + _columnNameMapper.mapColumnName(referencedColumn) + ");";
 
-    return builder.toString();
+      return builder;
   }
 
   public String createForeignKey(final ForeignKeyMetaData foreignKeyMetaData) throws SQLException
@@ -294,11 +293,10 @@ public class DatabaseSchemaScriptCreator
     final String tablename = _tableNameMapper.mapTableName(tableMetaData);
     final String schemaPrefix = "".equals(_targetSchema) ? "" : _targetSchema + ".";
 
-    final StringBuilder builder = new StringBuilder("ALTER TABLE " + schemaPrefix + tablename + " ADD CONSTRAINT ");
-    builder.append(foreignKeyMetaData.getForeignKeyName());
-    builder.append(" FOREIGN KEY (").append(_columnNameMapper.mapColumnName(referencingColumn)).append(") REFERENCES ").append(schemaPrefix).append(_tableNameMapper.mapTableName(referencedColumn.getTableMetaData())).append("(").append(_columnNameMapper.mapColumnName(referencedColumn)).append(");");
+    String builder = "ALTER TABLE " + schemaPrefix + tablename + " ADD CONSTRAINT " + foreignKeyMetaData.getForeignKeyName() +
+            " FOREIGN KEY (" + _columnNameMapper.mapColumnName(referencingColumn) + ") REFERENCES " + schemaPrefix + _tableNameMapper.mapTableName(referencedColumn.getTableMetaData()) + "(" + _columnNameMapper.mapColumnName(referencedColumn) + ");";
 
-    return builder.toString();
+    return builder;
   }
 
   private String createColumn(final ColumnMetaData columnMetaData) throws SQLException

@@ -16,6 +16,7 @@ import de.akquinet.jbosscc.guttenbase.repository.impl.DatabaseMetaDataInspectorT
  *
  * @author M. Dahm
  */
+@SuppressWarnings("RedundantThrows")
 public interface DatabaseTableFilter
 {
   String getCatalog(final DatabaseMetaData databaseMetaData) throws SQLException;

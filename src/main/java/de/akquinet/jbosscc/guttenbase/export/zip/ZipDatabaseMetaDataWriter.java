@@ -15,6 +15,7 @@ import de.akquinet.jbosscc.guttenbase.meta.TableMetaData;
  * 
  * @author M. Dahm
  */
+@SuppressWarnings("RedundantThrows")
 public class ZipDatabaseMetaDataWriter extends ZipAbstractMetaDataWriter {
   public static final String DATABASE_NAME = "Database";
   public static final String DATABASE_TYPE = "Database-Type";

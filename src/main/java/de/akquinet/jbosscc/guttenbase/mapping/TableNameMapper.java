@@ -13,6 +13,7 @@ import de.akquinet.jbosscc.guttenbase.meta.TableMetaData;
  * 
  * @author M. Dahm
  */
+@SuppressWarnings("RedundantThrows")
 public interface TableNameMapper {
   String mapTableName(TableMetaData tableMetaData) throws SQLException;
 }

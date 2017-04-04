@@ -17,6 +17,7 @@ import java.util.*;
  *
  * @author M. Dahm
  */
+@SuppressWarnings("RedundantThrows")
 public class TableOrderTool
 {
   public List<TableMetaData> getOrderedTables(final List<TableMetaData> tableMetaData, final boolean topDown) throws SQLException

@@ -20,6 +20,7 @@ import java.util.List;
  * @gb.UsesHint {@link de.akquinet.jbosscc.guttenbase.hints.TableNameMapperHint}
  * @gb.UsesHint {@link de.akquinet.jbosscc.guttenbase.hints.EntityTableCheckerHint} to look for entity classes, i.e. classes that may use an ID sequence
  */
+@SuppressWarnings("RedundantThrows")
 public abstract class AbstractSequenceCreationTool
 {
   protected final ConnectorRepository _connectorRepository;
