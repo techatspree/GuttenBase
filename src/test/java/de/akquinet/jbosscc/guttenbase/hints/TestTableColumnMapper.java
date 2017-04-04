@@ -9,6 +9,7 @@ import de.akquinet.jbosscc.guttenbase.defaults.impl.DefaultColumnMapper;
 import de.akquinet.jbosscc.guttenbase.meta.ColumnMetaData;
 import de.akquinet.jbosscc.guttenbase.meta.TableMetaData;
 
+@SuppressWarnings("RedundantThrows")
 public final class TestTableColumnMapper extends DefaultColumnMapper
 {
   @Override

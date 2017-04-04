@@ -91,7 +91,7 @@ public abstract class AbstractExportDumpObject implements Externalizable
     fileOutputStream.close();
   }
 
-  public long length() throws SQLException
+  public long length()
   {
     return _tempFile.length();
   }
@@ -132,7 +132,7 @@ public abstract class AbstractExportDumpObject implements Externalizable
     }
   }
 
-  public final void free() throws SQLException
+  public final void free()
   {
     if (_tempFile != null && _tempFile.exists())
     {

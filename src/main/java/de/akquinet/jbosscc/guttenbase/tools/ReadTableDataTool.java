@@ -19,6 +19,7 @@ import de.akquinet.jbosscc.guttenbase.meta.ColumnType;
 import de.akquinet.jbosscc.guttenbase.meta.TableMetaData;
 import de.akquinet.jbosscc.guttenbase.repository.ConnectorRepository;
 import de.akquinet.jbosscc.guttenbase.statements.SelectStatementCreator;
+import org.apache.log4j.Logger;
 
 /**
  * Read data from given table and put into a map.
@@ -30,6 +31,7 @@ import de.akquinet.jbosscc.guttenbase.statements.SelectStatementCreator;
  * @author M. Dahm
  */
 public class ReadTableDataTool {
+	private static final Logger LOG = Logger.getLogger(ReadTableDataTool.class);
 	private final ConnectorRepository _connectorRepository;
 
 	public ReadTableDataTool(final ConnectorRepository connectorRepository) {
@@ -98,6 +100,7 @@ public class ReadTableDataTool {
 				resultSet.close();
 				selectStatement.close();
 			} catch (final Exception e) {
+				LOG.warn("Closing", e);
 			}
 		}
 

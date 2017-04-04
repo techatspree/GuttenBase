@@ -13,6 +13,7 @@ import de.akquinet.jbosscc.guttenbase.meta.ColumnMetaData;
  * 
  * @author M. Dahm
  */
+@SuppressWarnings("RedundantThrows")
 public interface RepositoryColumnFilter {
 	boolean accept(ColumnMetaData column) throws SQLException;
 }

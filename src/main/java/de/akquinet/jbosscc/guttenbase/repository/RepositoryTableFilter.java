@@ -13,6 +13,7 @@ import de.akquinet.jbosscc.guttenbase.meta.TableMetaData;
  * 
  * @author M. Dahm
  */
+@SuppressWarnings("RedundantThrows")
 public interface RepositoryTableFilter {
   boolean accept(TableMetaData table) throws SQLException;
 }

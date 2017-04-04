@@ -14,6 +14,7 @@ import de.akquinet.jbosscc.guttenbase.meta.TableMetaData;
  * 
  * @author M. Dahm
  */
+@SuppressWarnings("RedundantThrows")
 public interface EntityTableChecker {
   /**
    * @return true if the given table is a "main" table in the sense that it represents an entity. In terms of JPA: the corresponding Java

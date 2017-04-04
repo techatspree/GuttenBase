@@ -13,6 +13,7 @@ import de.akquinet.jbosscc.guttenbase.repository.ConnectorRepository;
  * 
  * @author M. Dahm
  */
+@SuppressWarnings("RedundantThrows")
 public interface Exporter {
 	/**
 	 * Start exporting to a file.

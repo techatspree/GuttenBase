@@ -16,6 +16,7 @@ import de.akquinet.jbosscc.guttenbase.meta.InternalColumnMetaData;
  * 
  * @author M. Dahm
  */
+@SuppressWarnings("RedundantThrows")
 public class ZipIndexMetaDataWriter extends ZipAbstractMetaDataWriter {
   public static final String INDEX_NAME = "Index-Name";
   public static final String COLUMN = "Index-Column";

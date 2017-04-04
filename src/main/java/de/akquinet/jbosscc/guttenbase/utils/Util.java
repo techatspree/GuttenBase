@@ -56,11 +56,7 @@ public abstract class Util {
   public static InputStream getResourceAsStream(final String resource) {
     final String stripped = resource.startsWith("/") ? resource.substring(1) : resource;
     final ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
-    URL url = null;
-
-    if (url == null) {
-      url = getResourceFromClassloader(resource, stripped, classLoader);
-    }
+    URL url =  getResourceFromClassloader(resource, stripped, classLoader);
 
     if (url == null) {
       url = getResourceFromClassloader(resource, stripped, Util.class.getClassLoader());

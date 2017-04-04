@@ -15,6 +15,7 @@ import de.akquinet.jbosscc.guttenbase.meta.TableMetaData;
  * 
  * @author M. Dahm
  */
+@SuppressWarnings("RedundantThrows")
 public interface SourceDatabaseConfiguration extends DatabaseConfiguration {
   /**
    * Called before any real action is performed.

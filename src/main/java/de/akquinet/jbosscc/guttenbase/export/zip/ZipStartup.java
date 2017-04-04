@@ -32,6 +32,7 @@ import de.akquinet.jbosscc.guttenbase.meta.TableMetaData;
  * 
  * @author M. Dahm
  */
+@SuppressWarnings("RedundantThrows")
 public class ZipStartup extends JPanel {
   private static final long serialVersionUID = 1L;
 

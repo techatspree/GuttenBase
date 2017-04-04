@@ -13,6 +13,7 @@ import de.akquinet.jbosscc.guttenbase.meta.ColumnType;
  * 
  * @author M. Dahm
  */
+@SuppressWarnings("RedundantThrows")
 public interface ColumnDataMapperProvider
 {
   /**

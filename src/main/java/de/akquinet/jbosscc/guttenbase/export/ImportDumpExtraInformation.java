@@ -12,6 +12,7 @@ import java.util.Map;
  * 
  * @author M. Dahm
  */
+@SuppressWarnings("RedundantThrows")
 public interface ImportDumpExtraInformation {
 	void processExtraInformation(Map<String, Serializable> extraInformation) throws Exception;
 }

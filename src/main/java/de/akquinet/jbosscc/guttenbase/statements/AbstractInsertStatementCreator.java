@@ -68,14 +68,11 @@ public abstract class AbstractInsertStatementCreator extends AbstractStatementCr
 			final TableMetaData targetTableMetaData, final int numberOfValueClauses) throws SQLException {
 		final List<ColumnMetaData> columns = getMappedTargetColumns(sourceTableMetaData, targetTableMetaData, sourceConnectorId);
 
-		final StringBuilder buf = new StringBuilder(INSERT_INTO + targetTableName + " (");
+        String buf = INSERT_INTO + targetTableName + " (" + createColumnClause(columns) +
+                ") VALUES " +
+                createValueTuples(numberOfValueClauses, columns.size()) +
+                createWhereClause(targetTableMetaData);
 
-		buf.append(createColumnClause(columns));
-
-		buf.append(") VALUES ");
-		buf.append(createValueTuples(numberOfValueClauses, columns.size()));
-		buf.append(createWhereClause(targetTableMetaData));
-
-		return buf.toString();
+        return buf;
 	}
 }

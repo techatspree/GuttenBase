@@ -30,6 +30,7 @@ import org.apache.log4j.Logger;
  *
  * @author M. Dahm
  */
+@SuppressWarnings("RedundantThrows")
 public class DatabaseMetaDataInspectorTool
 {
   private static final Logger LOG = Logger.getLogger(DatabaseMetaDataInspectorTool.class);

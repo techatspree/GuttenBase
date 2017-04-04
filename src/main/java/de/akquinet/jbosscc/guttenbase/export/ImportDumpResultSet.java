@@ -40,6 +40,7 @@ import de.akquinet.jbosscc.guttenbase.meta.TableMetaData;
  * 
  * @author M. Dahm
  */
+@SuppressWarnings("RedundantThrows")
 public class ImportDumpResultSet implements ResultSet
 {
   private int _rowCount;
