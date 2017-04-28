@@ -8,15 +8,17 @@ import de.akquinet.jbosscc.guttenbase.repository.RepositoryTableFilter;
 
 /**
  * Information about data base such as schema name.
- * 
+ *
  * <p>
  * &copy; 2012-2020 akquinet tech@spree
  * </p>
- * 
+ *
  * @author M. Dahm
  */
 public interface DatabaseMetaData extends Serializable {
   String getSchema();
+
+  String getSchemaPrefix();
 
   String getDatabaseName();
 
