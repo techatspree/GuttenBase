@@ -1,17 +1,14 @@
 package de.akquinet.jbosscc.guttenbase.configuration.impl;
 
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.util.List;
-import java.util.Map;
-
-import org.apache.log4j.Logger;
-
-import de.akquinet.jbosscc.guttenbase.hints.TableNameMapperHint;
 import de.akquinet.jbosscc.guttenbase.hints.TableOrderHint;
 import de.akquinet.jbosscc.guttenbase.meta.TableMetaData;
 import de.akquinet.jbosscc.guttenbase.repository.ConnectorRepository;
 import de.akquinet.jbosscc.guttenbase.tools.ScriptExecutorTool;
+import org.apache.log4j.Logger;
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Implementation for Oracle data base.

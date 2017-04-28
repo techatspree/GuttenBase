@@ -1,6 +1,5 @@
 package de.akquinet.jbosscc.guttenbase.configuration.impl;
 
-import de.akquinet.jbosscc.guttenbase.hints.TableNameMapperHint;
 import de.akquinet.jbosscc.guttenbase.repository.ConnectorRepository;
 
 /**

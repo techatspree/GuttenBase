@@ -11,14 +11,21 @@ import de.akquinet.jbosscc.guttenbase.export.ImportDumpDatabaseConfiguration;
 import de.akquinet.jbosscc.guttenbase.hints.ConnectorHint;
 import de.akquinet.jbosscc.guttenbase.hints.RepositoryTableFilterHint;
 import de.akquinet.jbosscc.guttenbase.hints.impl.*;
-import de.akquinet.jbosscc.guttenbase.meta.*;
+import de.akquinet.jbosscc.guttenbase.meta.ColumnMetaData;
+import de.akquinet.jbosscc.guttenbase.meta.DatabaseMetaData;
+import de.akquinet.jbosscc.guttenbase.meta.InternalDatabaseMetaData;
+import de.akquinet.jbosscc.guttenbase.meta.InternalTableMetaData;
+import de.akquinet.jbosscc.guttenbase.meta.TableMetaData;
 import de.akquinet.jbosscc.guttenbase.repository.ConnectorRepository;
 import de.akquinet.jbosscc.guttenbase.repository.RepositoryColumnFilter;
 import de.akquinet.jbosscc.guttenbase.repository.RepositoryTableFilter;
 import de.akquinet.jbosscc.guttenbase.utils.Util;
-
 import java.sql.SQLException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 /**
  * The main repository containing all configured connectors.
@@ -243,9 +250,9 @@ public class ConnectorRepositoryImpl implements ConnectorRepository {
   }
 
   private DatabaseMetaData createResultWithFilteredTables(final String connectorId, final DatabaseMetaData databaseMetaData)
-          throws SQLException {
+    throws SQLException {
     final InternalDatabaseMetaData resultDatabaseMetaData = Util.copyObject(InternalDatabaseMetaData.class,
-            (InternalDatabaseMetaData) databaseMetaData);
+      (InternalDatabaseMetaData) databaseMetaData);
     final RepositoryTableFilter tableFilter = getConnectorHint(connectorId, RepositoryTableFilter.class).getValue();
     final RepositoryColumnFilter columnFilter = getConnectorHint(connectorId, RepositoryColumnFilter.class).getValue();
 
@@ -307,7 +314,6 @@ public class ConnectorRepositoryImpl implements ConnectorRepository {
     addConnectorHint(connectorId, new DefaultColumnTypeResolverListHint());
     addConnectorHint(connectorId, new DefaultColumnNameMapperHint());
     addConnectorHint(connectorId, new DefaultEntityTableCheckerHint());
-    addConnectorHint(connectorId, new DefaultTableNameMapperHint());
     addConnectorHint(connectorId, new DefaultExporterFactoryHint());
     addConnectorHint(connectorId, new DefaultImporterFactoryHint());
     addConnectorHint(connectorId, new DefaultZipExporterClassResourcesHint());

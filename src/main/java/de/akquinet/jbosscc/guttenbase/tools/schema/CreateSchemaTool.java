@@ -1,10 +1,10 @@
 package de.akquinet.jbosscc.guttenbase.tools.schema;
 
 import de.akquinet.jbosscc.guttenbase.defaults.impl.DefaultColumnNameMapper;
-import de.akquinet.jbosscc.guttenbase.defaults.impl.DefaultTableNameMapper;
+import de.akquinet.jbosscc.guttenbase.defaults.impl.DefaultTableMapper;
 import de.akquinet.jbosscc.guttenbase.hints.CaseConversionMode;
 import de.akquinet.jbosscc.guttenbase.mapping.ColumnNameMapper;
-import de.akquinet.jbosscc.guttenbase.mapping.TableNameMapper;
+import de.akquinet.jbosscc.guttenbase.mapping.TableMapper;
 import de.akquinet.jbosscc.guttenbase.meta.DatabaseMetaData;
 import de.akquinet.jbosscc.guttenbase.repository.ConnectorRepository;
 import de.akquinet.jbosscc.guttenbase.tools.ScriptExecutorTool;
@@ -24,7 +24,7 @@ public class CreateSchemaTool
 
   private SchemaColumnTypeMapper _columnTypeMapper = new DefaultSchemaColumnTypeMapper();
   private ColumnNameMapper _columnNameMapper = new DefaultColumnNameMapper(CaseConversionMode.UPPER);
-  private TableNameMapper _tableNameMapper = new DefaultTableNameMapper(CaseConversionMode.UPPER, false);
+  private TableMapper _tableMapper = new DefaultTableMapper(CaseConversionMode.UPPER);
 
   public CreateSchemaTool(final ConnectorRepository connectorRepository,
       final int maxIdLength)
@@ -40,16 +40,17 @@ public class CreateSchemaTool
     this(connectorRepository, DatabaseSchemaScriptCreator.MAX_ID_LENGTH);
   }
 
-  public List<String> createDDLScript(final String connectorId, final String schemaPrefix) throws SQLException
+  public List<String> createDDLScript(final String sourceConnectorId, final DatabaseMetaData targetDatabaseMetaData) throws
+    SQLException
   {
     final List<String> result = new ArrayList<>();
-    final DatabaseMetaData databaseMetaData = _connectorRepository.getDatabaseMetaData(connectorId);
+    final DatabaseMetaData sourceDatabaseMetaData = _connectorRepository.getDatabaseMetaData(sourceConnectorId);
 
-    final DatabaseSchemaScriptCreator databaseSchemaScriptCreator = new DatabaseSchemaScriptCreator(databaseMetaData,
-        schemaPrefix, _maxIdLength);
+    final DatabaseSchemaScriptCreator databaseSchemaScriptCreator = new DatabaseSchemaScriptCreator(sourceDatabaseMetaData,
+      targetDatabaseMetaData, _maxIdLength);
     databaseSchemaScriptCreator.setColumnTypeMapper(_columnTypeMapper);
     databaseSchemaScriptCreator.setColumnNameMapper(_columnNameMapper);
-    databaseSchemaScriptCreator.setTableNameMapper(_tableNameMapper);
+    databaseSchemaScriptCreator.setTableMapper(_tableMapper);
 
     result.addAll(databaseSchemaScriptCreator.createTableStatements());
     result.addAll(databaseSchemaScriptCreator.createPrimaryKeyStatements());
@@ -63,14 +64,14 @@ public class CreateSchemaTool
   {
     final DatabaseMetaData databaseMetaData = _connectorRepository.getDatabaseMetaData(targetConnectorId);
 
-    final List<String> ddlScript = createDDLScript(sourceConnectorId, databaseMetaData.getSchemaPrefix());
+    final List<String> ddlScript = createDDLScript(sourceConnectorId, databaseMetaData);
 
     new ScriptExecutorTool(_connectorRepository).executeScript(targetConnectorId, ddlScript);
   }
 
-  public void setTableNameMapper(final TableNameMapper tableNameMapper)
+  public void setTableMapper(final TableMapper tableMapper)
   {
-    _tableNameMapper = tableNameMapper;
+    _tableMapper = tableMapper;
   }
 
   public void setColumnNameMapper(final ColumnNameMapper columnNameMapper)
