@@ -1,23 +1,22 @@
 package de.akquinet.jbosscc.guttenbase.meta.impl;
 
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-
 import de.akquinet.jbosscc.guttenbase.meta.ColumnMetaData;
 import de.akquinet.jbosscc.guttenbase.meta.DatabaseMetaData;
 import de.akquinet.jbosscc.guttenbase.meta.ForeignKeyMetaData;
 import de.akquinet.jbosscc.guttenbase.meta.IndexMetaData;
 import de.akquinet.jbosscc.guttenbase.meta.InternalTableMetaData;
 import de.akquinet.jbosscc.guttenbase.meta.TableMetaData;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Information about a table.
  * <p>
  * &copy; 2012-2020 akquinet tech@spree
  * </p>
- * 
+ *
  * @author M. Dahm
  */
 public class TableMetaDataImpl implements InternalTableMetaData
@@ -25,6 +24,7 @@ public class TableMetaDataImpl implements InternalTableMetaData
   private static final long serialVersionUID = 1L;
 
   private final String _tableName;
+  private final String _tableType;
   private int _rowCount;
   private final Map<String, ColumnMetaData> _columns = new LinkedHashMap<>();
   private final Map<String, IndexMetaData> _indexes = new LinkedHashMap<>();
@@ -32,11 +32,14 @@ public class TableMetaDataImpl implements InternalTableMetaData
   private final Map<String, ForeignKeyMetaData> _exportedForeignKeys = new LinkedHashMap<>();
   private final DatabaseMetaData _databaseMetaData;
 
-  public TableMetaDataImpl(final String tableName, final DatabaseMetaData databaseMetaData)
+  public TableMetaDataImpl(final String tableName, final DatabaseMetaData databaseMetaData, final String tableType)
   {
     assert tableName != null : "tableName != null";
     assert databaseMetaData != null : "databaseMetaData != null";
+    assert tableType != null : "tableType != null";
+
     _tableName = tableName;
+    _tableType = tableType;
     _databaseMetaData = databaseMetaData;
   }
 
@@ -193,6 +196,14 @@ public class TableMetaDataImpl implements InternalTableMetaData
   public String getTableName()
   {
     return _tableName;
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public String getTableType() {
+    return _tableType;
   }
 
   /**

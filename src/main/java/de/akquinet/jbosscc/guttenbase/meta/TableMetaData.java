@@ -8,7 +8,7 @@ import java.util.List;
  * <p>
  * &copy; 2012-2020 akquinet tech@spree
  * </p>
- * 
+ *
  * @author M. Dahm
  */
 public interface TableMetaData extends Comparable<TableMetaData>, Serializable
@@ -20,6 +20,11 @@ public interface TableMetaData extends Comparable<TableMetaData>, Serializable
   ColumnMetaData getColumnMetaData(String columnName);
 
   int getColumnCount();
+
+  /**
+   * @return type such as "TABLE" or "VIEW"
+   */
+  String getTableType();
 
   String getTableName();
 

@@ -1,27 +1,25 @@
 package de.akquinet.jbosscc.guttenbase.hints;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-
-import java.sql.SQLException;
-import java.util.List;
-
-import org.junit.Before;
-import org.junit.Test;
-
 import de.akquinet.jbosscc.guttenbase.configuration.TestHsqlConnectionInfo;
 import de.akquinet.jbosscc.guttenbase.defaults.impl.DefaultDatabaseTableFilter;
 import de.akquinet.jbosscc.guttenbase.meta.TableMetaData;
 import de.akquinet.jbosscc.guttenbase.repository.DatabaseTableFilter;
 import de.akquinet.jbosscc.guttenbase.tools.AbstractGuttenBaseTest;
 import de.akquinet.jbosscc.guttenbase.tools.ScriptExecutorTool;
+import org.junit.Before;
+import org.junit.Test;
+import java.sql.SQLException;
+import java.util.List;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Filters columns when inquiring the data base.
  * <p>
  * &copy; 2012-2020 akquinet tech@spree
  * </p>
- * 
+ *
  * @author M. Dahm
  */
 public class DatabaseTableFilterHintTest extends AbstractGuttenBaseTest
@@ -61,6 +59,7 @@ public class DatabaseTableFilterHintTest extends AbstractGuttenBaseTest
     for (final TableMetaData table : tableMetaData)
     {
       assertTrue(table.getTableName().toUpperCase().contains("USER"));
+      assertEquals("TABLE", table.getTableType());
     }
   }
 }
