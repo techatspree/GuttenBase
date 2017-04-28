@@ -1,9 +1,5 @@
 package de.akquinet.jbosscc.guttenbase.tools.schema;
 
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
-
 import de.akquinet.jbosscc.guttenbase.defaults.impl.DefaultColumnNameMapper;
 import de.akquinet.jbosscc.guttenbase.defaults.impl.DefaultTableNameMapper;
 import de.akquinet.jbosscc.guttenbase.hints.CaseConversionMode;
@@ -12,6 +8,9 @@ import de.akquinet.jbosscc.guttenbase.mapping.TableNameMapper;
 import de.akquinet.jbosscc.guttenbase.meta.DatabaseMetaData;
 import de.akquinet.jbosscc.guttenbase.repository.ConnectorRepository;
 import de.akquinet.jbosscc.guttenbase.tools.ScriptExecutorTool;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Create DDL from existing schema
@@ -41,13 +40,13 @@ public class CreateSchemaTool
     this(connectorRepository, DatabaseSchemaScriptCreator.MAX_ID_LENGTH);
   }
 
-  public List<String> createDDLScript(final String connectorId, final String targetSchema) throws SQLException
+  public List<String> createDDLScript(final String connectorId, final String schemaPrefix) throws SQLException
   {
     final List<String> result = new ArrayList<>();
     final DatabaseMetaData databaseMetaData = _connectorRepository.getDatabaseMetaData(connectorId);
 
     final DatabaseSchemaScriptCreator databaseSchemaScriptCreator = new DatabaseSchemaScriptCreator(databaseMetaData,
-        targetSchema, _maxIdLength);
+        schemaPrefix, _maxIdLength);
     databaseSchemaScriptCreator.setColumnTypeMapper(_columnTypeMapper);
     databaseSchemaScriptCreator.setColumnNameMapper(_columnNameMapper);
     databaseSchemaScriptCreator.setTableNameMapper(_tableNameMapper);
@@ -64,7 +63,7 @@ public class CreateSchemaTool
   {
     final DatabaseMetaData databaseMetaData = _connectorRepository.getDatabaseMetaData(targetConnectorId);
 
-    final List<String> ddlScript = createDDLScript(sourceConnectorId, databaseMetaData.getSchema());
+    final List<String> ddlScript = createDDLScript(sourceConnectorId, databaseMetaData.getSchemaPrefix());
 
     new ScriptExecutorTool(_connectorRepository).executeScript(targetConnectorId, ddlScript);
   }

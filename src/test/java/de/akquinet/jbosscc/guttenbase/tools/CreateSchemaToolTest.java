@@ -1,15 +1,13 @@
 package de.akquinet.jbosscc.guttenbase.tools;
 
-import static org.junit.Assert.assertTrue;
-
-import java.util.List;
-
-import org.junit.Before;
-import org.junit.Test;
-
 import de.akquinet.jbosscc.guttenbase.configuration.TestH2ConnectionInfo;
 import de.akquinet.jbosscc.guttenbase.sql.SQLLexer;
 import de.akquinet.jbosscc.guttenbase.tools.schema.CreateSchemaTool;
+import org.junit.Before;
+import org.junit.Test;
+import java.util.List;
+
+import static org.junit.Assert.assertTrue;
 
 public class CreateSchemaToolTest extends AbstractGuttenBaseTest
 {
@@ -27,7 +25,7 @@ public class CreateSchemaToolTest extends AbstractGuttenBaseTest
   @Test
   public void testScript() throws Exception
   {
-    final List<String> script = _objectUnderTest.createDDLScript(CONNECTOR_ID, "BLA");
+    final List<String> script = _objectUnderTest.createDDLScript(CONNECTOR_ID, "BLA.");
     final List<String> parsedScript = new SQLLexer(script).parse();
 
     assertTrue(parsedScript
