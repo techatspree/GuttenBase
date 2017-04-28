@@ -1,29 +1,27 @@
 package de.akquinet.jbosscc.guttenbase.tools;
 
-import static org.easymock.EasyMock.anyObject;
-import static org.easymock.EasyMock.expect;
-
+import de.akquinet.jbosscc.guttenbase.configuration.EasymockConnectionInfo;
+import de.akquinet.jbosscc.guttenbase.repository.ConnectorRepository;
+import de.akquinet.jbosscc.guttenbase.repository.impl.ConnectorRepositoryImpl;
+import org.easymock.EasyMock;
+import org.easymock.IArgumentMatcher;
+import org.junit.Before;
+import org.junit.Test;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.StringTokenizer;
 
-import org.easymock.EasyMock;
-import org.easymock.IArgumentMatcher;
-import org.junit.Before;
-import org.junit.Test;
-
-import de.akquinet.jbosscc.guttenbase.configuration.EasymockConnectionInfo;
-import de.akquinet.jbosscc.guttenbase.repository.ConnectorRepository;
-import de.akquinet.jbosscc.guttenbase.repository.impl.ConnectorRepositoryImpl;
+import static org.easymock.EasyMock.anyObject;
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.expectLastCall;
 
 public class ScriptExecutorTest {
 	public static final String CONNECTOR_ID = "easymock";
 
 	private final ConnectorRepository _connectorRepository = new ConnectorRepositoryImpl();
 	private final ScriptExecutorTool _objectUnderTest = new ScriptExecutorTool(_connectorRepository);
-
 	private final EasymockConnectionInfo _connectionInfo = new EasymockConnectionInfo();
 
 	@Before
@@ -100,7 +98,10 @@ public class ScriptExecutorTest {
 		expect(connection.createStatement()).andReturn(statement).anyTimes();
 		expect(connection.isClosed()).andReturn(false).anyTimes();
 		expect(connection.getAutoCommit()).andReturn(false).anyTimes();
+
 		connection.commit();
+		expectLastCall().atLeastOnce();
+
 		connection.close();
 	}
 

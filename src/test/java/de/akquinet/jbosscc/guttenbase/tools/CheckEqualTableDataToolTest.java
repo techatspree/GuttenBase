@@ -1,13 +1,11 @@
 package de.akquinet.jbosscc.guttenbase.tools;
 
-import org.junit.Before;
-import org.junit.Test;
-
 import de.akquinet.jbosscc.guttenbase.configuration.TestH2ConnectionInfo;
 import de.akquinet.jbosscc.guttenbase.configuration.TestHsqlConnectionInfo;
 import de.akquinet.jbosscc.guttenbase.exceptions.UnequalDataException;
 import de.akquinet.jbosscc.guttenbase.exceptions.UnequalNumberOfRowsException;
-import de.akquinet.jbosscc.guttenbase.hints.NumberOfCheckedTableDataHint;
+import org.junit.Before;
+import org.junit.Test;
 
 public class CheckEqualTableDataToolTest extends AbstractGuttenBaseTest {
 	private static final String CONNECTOR_ID1 = "hsqldb";
@@ -37,22 +35,6 @@ public class CheckEqualTableDataToolTest extends AbstractGuttenBaseTest {
 		new ScriptExecutorTool(_connectorRepository).executeFileScript(CONNECTOR_ID2, "/ddl/tables.sql");
 		new ScriptExecutorTool(_connectorRepository).executeFileScript(CONNECTOR_ID1, false, false, "/data/test-data.sql");
 		new ScriptExecutorTool(_connectorRepository).executeFileScript(CONNECTOR_ID2, false, false, "/data/test-data-missingRows.sql");
-
-		_objectUnderTest.checkTableData(CONNECTOR_ID1, CONNECTOR_ID2);
-	}
-
-	public void testTooFewRowsButWeCheckJustOneRow() throws Exception {
-		new ScriptExecutorTool(_connectorRepository).executeFileScript(CONNECTOR_ID1, "/ddl/tables.sql");
-		new ScriptExecutorTool(_connectorRepository).executeFileScript(CONNECTOR_ID2, "/ddl/tables.sql");
-		new ScriptExecutorTool(_connectorRepository).executeFileScript(CONNECTOR_ID1, false, false, "/data/test-data.sql");
-		new ScriptExecutorTool(_connectorRepository).executeFileScript(CONNECTOR_ID2, false, false, "/data/test-data-missingRows.sql");
-
-		_connectorRepository.addConnectorHint(CONNECTOR_ID2, new NumberOfCheckedTableDataHint() {
-			@Override
-			public NumberOfCheckedTableData getValue() {
-				return () -> 1;
-			}
-		});
 
 		_objectUnderTest.checkTableData(CONNECTOR_ID1, CONNECTOR_ID2);
 	}

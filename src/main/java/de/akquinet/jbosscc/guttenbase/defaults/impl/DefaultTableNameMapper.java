@@ -35,7 +35,7 @@ public class DefaultTableNameMapper implements TableNameMapper
     final String schema = tableMetaData.getDatabaseMetaData().getSchema();
     final String table = _caseConversionMode.convert(tableMetaData.getTableName());
 
-    if ("".equals(schema.trim()) || !_addSchema)
+    if ("".equals(schema) || !_addSchema)
     {
       return table;
     }
