@@ -1,10 +1,10 @@
 package de.akquinet.jbosscc.guttenbase.tools.schema;
 
 import de.akquinet.jbosscc.guttenbase.defaults.impl.DefaultColumnNameMapper;
-import de.akquinet.jbosscc.guttenbase.defaults.impl.DefaultTableNameMapper;
+import de.akquinet.jbosscc.guttenbase.defaults.impl.DefaultTableMapper;
 import de.akquinet.jbosscc.guttenbase.hints.CaseConversionMode;
 import de.akquinet.jbosscc.guttenbase.mapping.ColumnNameMapper;
-import de.akquinet.jbosscc.guttenbase.mapping.TableNameMapper;
+import de.akquinet.jbosscc.guttenbase.mapping.TableMapper;
 import de.akquinet.jbosscc.guttenbase.meta.ColumnMetaData;
 import de.akquinet.jbosscc.guttenbase.meta.DatabaseMetaData;
 import de.akquinet.jbosscc.guttenbase.meta.ForeignKeyMetaData;
@@ -31,34 +31,34 @@ public class DatabaseSchemaScriptCreator {
     public static final int MAX_ID_LENGTH = 64;
 
     private final DatabaseMetaData _sourceDatabaseMetaData;
-    private final String _schemaPrefix;
     private final int _maxIdLength;
+    private final DatabaseMetaData _targetDatabaseMetaData;
     private SchemaColumnTypeMapper _columnTypeMapper = new DefaultSchemaColumnTypeMapper();
     private ColumnNameMapper _columnNameMapper = new DefaultColumnNameMapper(CaseConversionMode.UPPER);
-    private TableNameMapper _tableNameMapper = new DefaultTableNameMapper(CaseConversionMode.UPPER, false);
+    private TableMapper _tableMapper = new DefaultTableMapper(CaseConversionMode.UPPER);
 
     public DatabaseSchemaScriptCreator(
-        final DatabaseMetaData databaseMetaData,
-        final String schemaPrefix,
+      final DatabaseMetaData sourceDatabaseMetaData,
+      final DatabaseMetaData targetDatabaseMetaData,
         final int maxIdLength) {
-        assert databaseMetaData != null : "databaseMetaData != null";
-        assert schemaPrefix != null : "schemaPrefix != null";
+        _targetDatabaseMetaData = targetDatabaseMetaData;
+        assert sourceDatabaseMetaData != null : "sourceDatabaseMetaData != null";
+        assert targetDatabaseMetaData != null : "targetDatabaseMetaData != null";
 
-        _sourceDatabaseMetaData = databaseMetaData;
-        _schemaPrefix = schemaPrefix;
+        _sourceDatabaseMetaData = sourceDatabaseMetaData;
         _maxIdLength = maxIdLength;
     }
 
-    public DatabaseSchemaScriptCreator(final DatabaseMetaData databaseMetaData, final String schema) {
-        this(databaseMetaData, schema, MAX_ID_LENGTH);
+    public DatabaseSchemaScriptCreator(final DatabaseMetaData databaseMetaData, final DatabaseMetaData targetDatabaseMetaData) {
+        this(databaseMetaData, targetDatabaseMetaData, MAX_ID_LENGTH);
     }
 
     public DatabaseSchemaScriptCreator(final DatabaseMetaData databaseMetaData) {
-        this(databaseMetaData, databaseMetaData.getSchemaPrefix());
+        this(databaseMetaData, databaseMetaData);
     }
 
-    public void setTableNameMapper(final TableNameMapper tableNameMapper) {
-        _tableNameMapper = tableNameMapper;
+    public void setTableMapper(final TableMapper tableMapper) {
+        _tableMapper = tableMapper;
     }
 
     public void setColumnNameMapper(final ColumnNameMapper columnNameMapper) {
@@ -147,8 +147,8 @@ public class DatabaseSchemaScriptCreator {
     }
 
     public String createTable(final TableMetaData tableMetaData) throws SQLException {
-        final StringBuilder builder = new StringBuilder("CREATE TABLE " + _schemaPrefix
-            + _tableNameMapper.mapTableName(tableMetaData)
+        final StringBuilder builder = new StringBuilder("CREATE TABLE "
+          + _tableMapper.fullyQualifiedTableName(tableMetaData, _targetDatabaseMetaData)
             + "\n(\n");
 
         for (final Iterator<ColumnMetaData> iterator = tableMetaData.getColumnMetaData().iterator(); iterator.hasNext(); ) {
@@ -167,12 +167,11 @@ public class DatabaseSchemaScriptCreator {
 
     private String createPrimaryKeyStatement(final TableMetaData tableMetaData, final List<ColumnMetaData> primaryKeyColumns,
                                              final int counter) throws SQLException {
-        final String tableName = _tableNameMapper.mapTableName(tableMetaData);
+        final String tableName = _tableMapper.mapTableName(tableMetaData, _targetDatabaseMetaData);
+        final String qualifiedTableName = _tableMapper.fullyQualifiedTableName(tableMetaData, _targetDatabaseMetaData);
         final String pkName = "PK_" + tableName + "_" + counter;
-        final StringBuilder builder = new StringBuilder("ALTER TABLE " + _schemaPrefix + tableName
-            + " ADD CONSTRAINT " +
-            pkName
-            + " PRIMARY KEY (");
+        final StringBuilder builder = new StringBuilder("ALTER TABLE " + qualifiedTableName
+          + " ADD CONSTRAINT " + pkName + " PRIMARY KEY (");
 
         for (final ColumnMetaData columnMetaData : primaryKeyColumns) {
             builder.append(_columnNameMapper.mapColumnName(columnMetaData)).append(", ");
@@ -187,7 +186,7 @@ public class DatabaseSchemaScriptCreator {
         final TableMetaData tableMetaData = indexMetaData.getTableMetaData();
         final String indexName = createConstraintName("IDX_", CaseConversionMode.UPPER.convert(indexMetaData.getIndexName())
                 + "_"
-                + _tableNameMapper.mapTableName(tableMetaData)
+            + _tableMapper.mapTableName(tableMetaData, _targetDatabaseMetaData)
                 + "_",
             counter);
         return createIndex(indexMetaData, indexName);
@@ -205,8 +204,7 @@ public class DatabaseSchemaScriptCreator {
             + "INDEX "
             + indexName
             + " ON "
-            + _schemaPrefix
-            + _tableNameMapper.mapTableName(tableMetaData)
+          + _tableMapper.fullyQualifiedTableName(tableMetaData, _targetDatabaseMetaData)
             + "(");
 
         for (final Iterator<ColumnMetaData> iterator = indexMetaData.getColumnMetaData().iterator(); iterator.hasNext(); ) {
@@ -226,7 +224,7 @@ public class DatabaseSchemaScriptCreator {
     private String createForeignKey(final ColumnMetaData referencingColumn, final int counter) throws SQLException {
         final TableMetaData tableMetaData = referencingColumn.getTableMetaData();
         final ColumnMetaData referencedColumn = referencingColumn.getReferencedColumn();
-        final String tablename = _tableNameMapper.mapTableName(tableMetaData);
+        final String tablename = _tableMapper.mapTableName(tableMetaData, _targetDatabaseMetaData);
         final String fkName = createConstraintName("FK_", tablename + "_"
             + _columnNameMapper.mapColumnName(referencingColumn)
             + "_"
@@ -238,20 +236,24 @@ public class DatabaseSchemaScriptCreator {
     public String createForeignKey(final ColumnMetaData referencingColumn, final String fkName) throws SQLException {
         final TableMetaData tableMetaData = referencingColumn.getTableMetaData();
         final ColumnMetaData referencedColumn = referencingColumn.getReferencedColumn();
-        final String tablename = _tableNameMapper.mapTableName(tableMetaData);
+        final String qualifiedTableName = _tableMapper.fullyQualifiedTableName(tableMetaData, _targetDatabaseMetaData);
 
-        return "ALTER TABLE " + _schemaPrefix + tablename + " ADD CONSTRAINT " + fkName +
-            " FOREIGN KEY (" + _columnNameMapper.mapColumnName(referencingColumn) + ") REFERENCES " + _schemaPrefix + _tableNameMapper.mapTableName(referencedColumn.getTableMetaData()) + "(" + _columnNameMapper.mapColumnName(referencedColumn) + ");";
+        return "ALTER TABLE " + qualifiedTableName + " ADD CONSTRAINT " + fkName +
+          " FOREIGN KEY (" + _columnNameMapper.mapColumnName(referencingColumn) + ") REFERENCES "
+          + _tableMapper.fullyQualifiedTableName(referencedColumn.getTableMetaData(), _targetDatabaseMetaData)
+          + "(" + _columnNameMapper.mapColumnName(referencedColumn) + ");";
     }
 
     public String createForeignKey(final ForeignKeyMetaData foreignKeyMetaData) throws SQLException {
         final ColumnMetaData referencingColumn = foreignKeyMetaData.getReferencingColumn();
         final TableMetaData tableMetaData = referencingColumn.getTableMetaData();
         final ColumnMetaData referencedColumn = foreignKeyMetaData.getReferencedColumn();
-        final String tablename = _tableNameMapper.mapTableName(tableMetaData);
+        final String qualifiedTableName = _tableMapper.fullyQualifiedTableName(tableMetaData, _targetDatabaseMetaData);
 
-        return "ALTER TABLE " + _schemaPrefix + tablename + " ADD CONSTRAINT " + foreignKeyMetaData.getForeignKeyName() +
-            " FOREIGN KEY (" + _columnNameMapper.mapColumnName(referencingColumn) + ") REFERENCES " + _schemaPrefix + _tableNameMapper.mapTableName(referencedColumn.getTableMetaData()) + "(" + _columnNameMapper.mapColumnName(referencedColumn) + ");";
+        return "ALTER TABLE " + qualifiedTableName + " ADD CONSTRAINT " + foreignKeyMetaData.getForeignKeyName() +
+          " FOREIGN KEY (" + _columnNameMapper.mapColumnName(referencingColumn) + ") REFERENCES "
+          + _tableMapper.fullyQualifiedTableName(referencedColumn.getTableMetaData(), _targetDatabaseMetaData)
+          + "(" + _columnNameMapper.mapColumnName(referencedColumn) + ");";
     }
 
     private String createColumn(final ColumnMetaData columnMetaData) throws SQLException {

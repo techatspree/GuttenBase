@@ -6,11 +6,11 @@ import de.akquinet.jbosscc.guttenbase.mapping.TableMapper;
 
 /**
  * By default return table with same name ignoring case.
- * 
+ *
  * <p>
  * &copy; 2012-2020 akquinet tech@spree
  * </p>
- * 
+ *
  * @author M. Dahm
  */
 public class DefaultTableMapperHint extends TableMapperHint {

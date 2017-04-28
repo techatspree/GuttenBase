@@ -1,26 +1,24 @@
 package de.akquinet.jbosscc.guttenbase.tools;
 
+import de.akquinet.jbosscc.guttenbase.connector.Connector;
+import de.akquinet.jbosscc.guttenbase.mapping.TableMapper;
+import de.akquinet.jbosscc.guttenbase.meta.TableMetaData;
+import de.akquinet.jbosscc.guttenbase.repository.ConnectorRepository;
+import de.akquinet.jbosscc.guttenbase.statements.SplitByColumnSelectMinMaxStatementCreator;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import de.akquinet.jbosscc.guttenbase.connector.Connector;
-import de.akquinet.jbosscc.guttenbase.hints.TableNameMapperHint;
-import de.akquinet.jbosscc.guttenbase.mapping.TableNameMapper;
-import de.akquinet.jbosscc.guttenbase.meta.TableMetaData;
-import de.akquinet.jbosscc.guttenbase.repository.ConnectorRepository;
-import de.akquinet.jbosscc.guttenbase.statements.SplitByColumnSelectMinMaxStatementCreator;
-
 /**
  * Compute MIN and MAX of given Id-Column
- *
+ * <p/>
  * <p>
  * &copy; 2012-2020 akquinet tech@spree
  * </p>
  *
- * @gb.UsesHint {@link TableNameMapperHint}
  * @author M. Dahm
+ * @gb.UsesHint {@link TableNameMapperHint}
  */
 public class MinMaxIdSelectorTool {
   private final ConnectorRepository _connectorRepository;
@@ -48,10 +46,10 @@ public class MinMaxIdSelectorTool {
    * Compute MIN and MAX of given Id-Column using existing connection
    */
   public void computeMinMax(final String connectorId, final TableMetaData tableMetaData, final Connection connection) throws SQLException {
-    final TableNameMapper tableNameMapper = _connectorRepository.getConnectorHint(connectorId, TableNameMapper.class).getValue();
-    final String tableName = tableNameMapper.mapTableName(tableMetaData);
+    final TableMapper tableMapper = _connectorRepository.getConnectorHint(connectorId, TableMapper.class).getValue();
+    final String tableName = tableMapper.fullyQualifiedTableName(tableMetaData, tableMetaData.getDatabaseMetaData());
     final PreparedStatement minMaxStatement = new SplitByColumnSelectMinMaxStatementCreator(_connectorRepository, connectorId)
-        .createSelectStatement(connection, tableName, tableMetaData);
+      .createSelectStatement(connection, tableName, tableMetaData);
 
     final ResultSet rangeResultSet = minMaxStatement.executeQuery();
     rangeResultSet.next();

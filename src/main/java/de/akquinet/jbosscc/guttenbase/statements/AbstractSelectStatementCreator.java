@@ -6,7 +6,6 @@ import de.akquinet.jbosscc.guttenbase.meta.TableMetaData;
 import de.akquinet.jbosscc.guttenbase.repository.ConnectorRepository;
 import de.akquinet.jbosscc.guttenbase.tools.CheckEqualTableDataTool;
 import de.akquinet.jbosscc.guttenbase.tools.ResultSetParameters;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -67,11 +66,10 @@ public abstract class AbstractSelectStatementCreator extends AbstractStatementCr
 
   private String createSQL(final String tableName, final TableMetaData tableMetaData, final List<ColumnMetaData> columns)
           throws SQLException {
-      String buf = "SELECT " + createColumnClause(columns) +
-              FROM + tableName +
-              " " + createWhereClause(tableMetaData) +
-              " " + createOrderBy(tableMetaData);
 
-      return buf;
+    return "SELECT " + createColumnClause(columns) +
+      FROM + tableName +
+      " " + createWhereClause(tableMetaData) +
+      " " + createOrderBy(tableMetaData);
   }
 }

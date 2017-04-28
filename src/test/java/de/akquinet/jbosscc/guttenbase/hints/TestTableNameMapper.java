@@ -1,15 +1,15 @@
 package de.akquinet.jbosscc.guttenbase.hints;
 
+import de.akquinet.jbosscc.guttenbase.defaults.impl.DefaultTableMapper;
+import de.akquinet.jbosscc.guttenbase.meta.DatabaseMetaData;
+import de.akquinet.jbosscc.guttenbase.meta.TableMetaData;
 import java.sql.SQLException;
 
-import de.akquinet.jbosscc.guttenbase.mapping.TableNameMapper;
-import de.akquinet.jbosscc.guttenbase.meta.TableMetaData;
+public class TestTableNameMapper extends DefaultTableMapper {
+  @Override
+  public String fullyQualifiedTableName(final TableMetaData source, final DatabaseMetaData targetDatabaseMetaData) throws SQLException {
+    final String tableName = mapTableName(source, targetDatabaseMetaData);
 
-public class TestTableNameMapper implements TableNameMapper {
-	@Override
-	public String mapTableName(final TableMetaData tableMetaData) throws SQLException {
-		final String tableName = tableMetaData.getTableName();
-
-		return "\"" + tableName + "\"";
-	}
+    return "\"" + tableName + "\"";
+  }
 }

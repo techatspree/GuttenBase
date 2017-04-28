@@ -21,7 +21,7 @@ import static org.junit.Assert.assertTrue;
 public class DatabaseSchemaScriptCreatorTest {
   private final DatabaseMetaData _databaseMetaData = createDatabaseMetaData();
   private final DatabaseSchemaScriptCreator _objectUnderTest = new DatabaseSchemaScriptCreator(_databaseMetaData,
-      _databaseMetaData.getSchemaPrefix(), DatabaseSchemaScriptCreator.MAX_ID_LENGTH);
+    _databaseMetaData, DatabaseSchemaScriptCreator.MAX_ID_LENGTH);
 
   private DatabaseMetaData createDatabaseMetaData() {
     final DatabaseMetaDataBuilder databaseMetaDataBuilder = new DatabaseMetaDataBuilder();
@@ -29,11 +29,11 @@ public class DatabaseSchemaScriptCreatorTest {
     final TableMetaDataBuilder tableBuilder2 = createTable(2, databaseMetaDataBuilder);
 
     final ForeignKeyMetaDataBuilder foreignKeyMetaDataBuilder1 = new ForeignKeyMetaDataBuilder(tableBuilder1)
-            .setForeignKeyName("FK_Name").setReferencingColumn(tableBuilder1.getColumn("Name"))
-            .setReferencedColumn(tableBuilder2.getColumn("Name"));
+      .setForeignKeyName("FK_Name").setReferencingColumn(tableBuilder1.getColumn("Name"))
+      .setReferencedColumn(tableBuilder2.getColumn("Name"));
     final ForeignKeyMetaDataBuilder foreignKeyMetaDataBuilder2 = new ForeignKeyMetaDataBuilder(tableBuilder2)
-            .setForeignKeyName("FK_Name").setReferencingColumn(tableBuilder1.getColumn("Name"))
-            .setReferencedColumn(tableBuilder2.getColumn("Name"));
+      .setForeignKeyName("FK_Name").setReferencingColumn(tableBuilder1.getColumn("Name"))
+      .setReferencedColumn(tableBuilder2.getColumn("Name"));
 
     tableBuilder1.addImportedForeignKey(foreignKeyMetaDataBuilder1);
     tableBuilder2.addExportedForeignKey(foreignKeyMetaDataBuilder2);
@@ -47,18 +47,18 @@ public class DatabaseSchemaScriptCreatorTest {
 
   private TableMetaDataBuilder createTable(final int index, final DatabaseMetaDataBuilder databaseMetaDataBuilder) {
     final TableMetaDataBuilder tableMetaDataBuilder = new TableMetaDataBuilder(databaseMetaDataBuilder)
-            .setTableName("My_Table" + index);
+      .setTableName("My_Table" + index);
     final ColumnMetaDataBuilder primaryKeyBuilder = new ColumnMetaDataBuilder(tableMetaDataBuilder).setColumnName("Id")
-            .setColumnTypeName("BIGINT").setNullable(false).setPrimaryKey(true);
+      .setColumnTypeName("BIGINT").setNullable(false).setPrimaryKey(true);
     final ColumnMetaDataBuilder nameBuilder = new ColumnMetaDataBuilder(tableMetaDataBuilder).setColumnName("Name")
-            .setColumnTypeName("VARCHAR(100)").setNullable(false);
+      .setColumnTypeName("VARCHAR(100)").setNullable(false);
 
     tableMetaDataBuilder
-            .addColumn(primaryKeyBuilder)
-            .addColumn(nameBuilder)
-            .addIndex(
-                    new IndexMetaDataBuilder(tableMetaDataBuilder).setAscending(true).setIndexName("Name_IDX" + index).setUnique(true)
-                            .addColumn(nameBuilder));
+      .addColumn(primaryKeyBuilder)
+      .addColumn(nameBuilder)
+      .addIndex(
+        new IndexMetaDataBuilder(tableMetaDataBuilder).setAscending(true).setIndexName("Name_IDX" + index).setUnique(true)
+          .addColumn(nameBuilder));
     return tableMetaDataBuilder;
   }
 
@@ -84,7 +84,7 @@ public class DatabaseSchemaScriptCreatorTest {
     final String foreignKeyStatement = foreignKeyStatements.get(0);
 
     assertTrue(foreignKeyStatement,
-            foreignKeyStatement.startsWith("ALTER TABLE schemaName.MY_TABLE1 ADD CONSTRAINT FK_MY_TABLE1_NAME_NAME_1 FOREIGN KEY "));
+      foreignKeyStatement.startsWith("ALTER TABLE schemaName.MY_TABLE1 ADD CONSTRAINT FK_MY_TABLE1_NAME_NAME_1 FOREIGN KEY "));
   }
 
   @Test

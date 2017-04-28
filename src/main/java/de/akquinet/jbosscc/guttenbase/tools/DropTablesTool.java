@@ -3,7 +3,7 @@ package de.akquinet.jbosscc.guttenbase.tools;
 import de.akquinet.jbosscc.guttenbase.connector.ConnectorInfo;
 import de.akquinet.jbosscc.guttenbase.connector.DatabaseType;
 import de.akquinet.jbosscc.guttenbase.hints.TableOrderHint;
-import de.akquinet.jbosscc.guttenbase.mapping.TableNameMapper;
+import de.akquinet.jbosscc.guttenbase.mapping.TableMapper;
 import de.akquinet.jbosscc.guttenbase.meta.ForeignKeyMetaData;
 import de.akquinet.jbosscc.guttenbase.meta.IndexMetaData;
 import de.akquinet.jbosscc.guttenbase.meta.TableMetaData;
@@ -35,7 +35,7 @@ public class DropTablesTool {
     public List<String> createDropForeignKeyStatements(final String connectorId) throws SQLException {
         final List<TableMetaData> tableMetaData = new TableOrderTool().getOrderedTables(
             TableOrderHint.getSortedTables(_connectorRepository, connectorId), false);
-        final TableNameMapper tableNameMapper = _connectorRepository.getConnectorHint(connectorId, TableNameMapper.class).getValue();
+        final TableMapper tableMapper = _connectorRepository.getConnectorHint(connectorId, TableMapper.class).getValue();
         final List<String> statements = new ArrayList<>();
         final ConnectorInfo connectionInfo = _connectorRepository.getConnectionInfo(connectorId);
         final String constraintClause;
@@ -51,7 +51,7 @@ public class DropTablesTool {
 
         for (final TableMetaData table : tableMetaData) {
             for (final ForeignKeyMetaData foreignKey : table.getImportedForeignKeys()) {
-                statements.add("ALTER TABLE " + tableNameMapper.mapTableName(table)
+                statements.add("ALTER TABLE " + tableMapper.fullyQualifiedTableName(table, table.getDatabaseMetaData())
                     + " DROP"
                     + constraintClause
                     + foreignKey.getForeignKeyName()
@@ -67,15 +67,15 @@ public class DropTablesTool {
             TableOrderHint.getSortedTables(_connectorRepository, connectorId), false);
         final List<String> statements = new ArrayList<>();
         final ConnectorInfo connectionInfo = _connectorRepository.getConnectionInfo(connectorId);
-        final TableNameMapper tableNameMapper = _connectorRepository.getConnectorHint(connectorId, TableNameMapper.class).getValue();
+        final TableMapper tableMapper = _connectorRepository.getConnectorHint(connectorId, TableMapper.class).getValue();
 
         for (final TableMetaData table : tableMetaData) {
-            final String schema = table.getDatabaseMetaData().getSchemaPrefix();
-            final String fullTableName = tableNameMapper.mapTableName(table);
+            final String schemaPrefix = table.getDatabaseMetaData().getSchemaPrefix();
+            final String fullTableName = tableMapper.fullyQualifiedTableName(table, table.getDatabaseMetaData());
 
             for (final IndexMetaData index : table.getIndexes()) {
                 if (!index.isPrimaryKeyIndex()) {
-                    final String fullIndexName = schema + index.getIndexName();
+                    final String fullIndexName = schemaPrefix + index.getIndexName();
 
                     String constraintClause = DEFAULT_INDEX_DROP;
 
@@ -99,10 +99,10 @@ public class DropTablesTool {
         final List<TableMetaData> tableMetaData = new TableOrderTool().getOrderedTables(
             TableOrderHint.getSortedTables(_connectorRepository, connectorId), false);
         final List<String> statements = new ArrayList<>();
-        final TableNameMapper tableNameMapper = _connectorRepository.getConnectorHint(connectorId, TableNameMapper.class).getValue();
+        final TableMapper tableMapper = _connectorRepository.getConnectorHint(connectorId, TableMapper.class).getValue();
 
         for (final TableMetaData table : tableMetaData) {
-            statements.add("DROP TABLE " + tableNameMapper.mapTableName(table) + ";");
+            statements.add("DROP TABLE " + tableMapper.fullyQualifiedTableName(table, table.getDatabaseMetaData()) + ";");
         }
 
         return statements;

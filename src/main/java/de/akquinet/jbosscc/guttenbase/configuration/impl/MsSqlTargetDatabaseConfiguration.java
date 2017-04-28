@@ -1,24 +1,22 @@
 package de.akquinet.jbosscc.guttenbase.configuration.impl;
 
+import de.akquinet.jbosscc.guttenbase.mapping.TableMapper;
+import de.akquinet.jbosscc.guttenbase.meta.ColumnMetaData;
+import de.akquinet.jbosscc.guttenbase.meta.TableMetaData;
+import de.akquinet.jbosscc.guttenbase.repository.ConnectorRepository;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
 
-import de.akquinet.jbosscc.guttenbase.hints.TableNameMapperHint;
-import de.akquinet.jbosscc.guttenbase.mapping.TableNameMapper;
-import de.akquinet.jbosscc.guttenbase.meta.ColumnMetaData;
-import de.akquinet.jbosscc.guttenbase.meta.TableMetaData;
-import de.akquinet.jbosscc.guttenbase.repository.ConnectorRepository;
-
 /**
  * Implementation for MS Server SQL data base.
- *
+ * <p/>
  * <p>
  * &copy; 2012-2020 akquinet tech@spree
  * </p>
  *
- * @gb.UsesHint {@link TableNameMapperHint}
  * @author M. Dahm
+ * @gb.UsesHint {@link TableNameMapperHint}
  */
 public class MsSqlTargetDatabaseConfiguration extends DefaultTargetDatabaseConfiguration {
   public MsSqlTargetDatabaseConfiguration(final ConnectorRepository connectorRepository) {
@@ -66,30 +64,30 @@ public class MsSqlTargetDatabaseConfiguration extends DefaultTargetDatabaseConfi
   }
 
   private void disableTableForeignKeys(final Connection connection, final String connectorId, final List<TableMetaData> tableMetaData)
-      throws SQLException {
+    throws SQLException {
     setTableForeignKeys(connection, connectorId, tableMetaData, false);
   }
 
   private void enableTableForeignKeys(final Connection connection, final String connectorId, final List<TableMetaData> tableMetaData)
-      throws SQLException {
+    throws SQLException {
     setTableForeignKeys(connection, connectorId, tableMetaData, true);
   }
 
   private void setTableForeignKeys(final Connection connection, final String connectorId, final List<TableMetaData> tableMetaDatas,
-      final boolean enable) throws SQLException {
-    final TableNameMapper tableNameMapper = _connectorRepository.getConnectorHint(connectorId, TableNameMapper.class).getValue();
+                                   final boolean enable) throws SQLException {
+    final TableMapper tableMapper = _connectorRepository.getConnectorHint(connectorId, TableMapper.class).getValue();
 
     for (final TableMetaData tableMetaData : tableMetaDatas) {
-      final String tableName = tableNameMapper.mapTableName(tableMetaData);
+      final String tableName = tableMapper.fullyQualifiedTableName(tableMetaData, tableMetaData.getDatabaseMetaData());
 
       executeSQL(connection, "ALTER TABLE " + tableName + (enable ? " CHECK CONSTRAINT ALL" : " NOCHECK CONSTRAINT ALL"));
     }
   }
 
   private void setIdentityInsert(final Connection connection, final String connectorId, final boolean enable,
-      final TableMetaData tableMetaData) throws SQLException {
-    final TableNameMapper tableNameMapper = _connectorRepository.getConnectorHint(connectorId, TableNameMapper.class).getValue();
-    final String tableName = tableNameMapper.mapTableName(tableMetaData);
+                                 final TableMetaData tableMetaData) throws SQLException {
+    final TableMapper tableMapper = _connectorRepository.getConnectorHint(connectorId, TableMapper.class).getValue();
+    final String tableName = tableMapper.fullyQualifiedTableName(tableMetaData, tableMetaData.getDatabaseMetaData());
 
     if (hasIdentityColumn(tableMetaData)) {
       executeSQL(connection, "SET IDENTITY_INSERT " + tableName + " " + (enable ? "ON" : "OFF"));
