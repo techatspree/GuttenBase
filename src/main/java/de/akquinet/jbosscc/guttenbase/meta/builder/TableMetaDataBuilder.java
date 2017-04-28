@@ -1,17 +1,16 @@
 package de.akquinet.jbosscc.guttenbase.meta.builder;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import de.akquinet.jbosscc.guttenbase.meta.InternalTableMetaData;
 import de.akquinet.jbosscc.guttenbase.meta.impl.TableMetaDataImpl;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Builder class for TableMetaData.
  * <p>
  * &copy; 2012-2020 akquinet tech@spree
  * </p>
- * 
+ *
  * @author M. Dahm
  */
 public class TableMetaDataBuilder
@@ -34,7 +33,7 @@ public class TableMetaDataBuilder
   {
     if (_result == null)
     {
-      _result = new TableMetaDataImpl(_tableName, _databaseMetaDataBuilder.build());
+      _result = new TableMetaDataImpl(_tableName, _databaseMetaDataBuilder.build(), "TABLE");
 
       for (final ColumnMetaDataBuilder columnBuilder : _columns)
       {

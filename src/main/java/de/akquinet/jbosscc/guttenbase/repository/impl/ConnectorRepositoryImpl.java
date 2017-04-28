@@ -263,7 +263,6 @@ public class ConnectorRepositoryImpl implements ConnectorRepository {
             ((InternalTableMetaData) tableMetaData).removeColumn(columnMetaData);
           }
         }
-
       } else {
         resultDatabaseMetaData.removeTableMetaData(tableMetaData);
       }

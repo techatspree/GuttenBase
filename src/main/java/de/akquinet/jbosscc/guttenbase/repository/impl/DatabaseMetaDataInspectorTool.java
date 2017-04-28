@@ -1,11 +1,5 @@
 package de.akquinet.jbosscc.guttenbase.repository.impl;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
-import java.sql.SQLException;
-import java.sql.Statement;
-
 import de.akquinet.jbosscc.guttenbase.connector.ConnectorInfo;
 import de.akquinet.jbosscc.guttenbase.meta.ColumnMetaData;
 import de.akquinet.jbosscc.guttenbase.meta.DatabaseMetaData;
@@ -24,6 +18,11 @@ import de.akquinet.jbosscc.guttenbase.repository.DatabaseColumnFilter;
 import de.akquinet.jbosscc.guttenbase.repository.DatabaseTableFilter;
 import de.akquinet.jbosscc.guttenbase.utils.Util;
 import org.apache.log4j.Logger;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
+import java.sql.SQLException;
+import java.sql.Statement;
 
 /**
  * Get table meta data from connection. (C) 2012 by akquinet tech@spree
@@ -168,6 +167,7 @@ public class DatabaseMetaDataInspectorTool
           {
             final boolean ascending = ascOrDesc == null || "A".equals(ascOrDesc);
             final boolean unique = !nonUnique;
+
             indexMetaData = new IndexMetaDataImpl(table, indexName, ascending, unique, column.isPrimaryKey());
             table.addIndex(indexMetaData);
           }
@@ -262,6 +262,7 @@ public class DatabaseMetaDataInspectorTool
   private void loadTables(final InternalDatabaseMetaData databaseMetaData, final java.sql.DatabaseMetaData metaData) throws SQLException
   {
     LOG.debug("Searching tables in schema " + databaseMetaData.getSchema());
+
     final DatabaseTableFilter tableFilter = _connectorRepository.getConnectorHint(_connectorId, DatabaseTableFilter.class).getValue();
     final ResultSet rs = metaData.getTables(tableFilter.getCatalog(databaseMetaData), tableFilter.getSchemaPattern(databaseMetaData),
             tableFilter.getTableNamePattern(databaseMetaData), tableFilter.getTableTypes(databaseMetaData));
@@ -269,9 +270,8 @@ public class DatabaseMetaDataInspectorTool
     while (rs.next())
     {
       final String tableName = rs.getString("TABLE_NAME");
-//      final String schemaName = rs.getString("TABLE_SCHEM");
-//      final String catalogName = rs.getString("TABLE_CAT");
-      final InternalTableMetaData tableMetaData = new TableMetaDataImpl(tableName, databaseMetaData);
+      final String tableType = rs.getString("TABLE_TYPE");
+      final InternalTableMetaData tableMetaData = new TableMetaDataImpl(tableName, databaseMetaData, tableType);
 
       if (tableFilter.accept(tableMetaData))
       {
@@ -279,7 +279,7 @@ public class DatabaseMetaDataInspectorTool
       }
     }
 
-    LOG.info("Found tables: " + databaseMetaData.getTableMetaData());
+    LOG.info("Filtered tables: " + databaseMetaData.getTableMetaData());
   }
 
   // Some drivers such as JdbcOdbcBridge do not support this
