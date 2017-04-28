@@ -1,11 +1,9 @@
 package de.akquinet.jbosscc.guttenbase.tools;
 
-import de.akquinet.jbosscc.guttenbase.hints.ColumnNameMapperHint;
 import de.akquinet.jbosscc.guttenbase.hints.TableOrderHint;
 import de.akquinet.jbosscc.guttenbase.repository.ConnectorRepository;
 import de.akquinet.jbosscc.guttenbase.tools.schema.comparison.SchemaComparatorTool;
 import de.akquinet.jbosscc.guttenbase.tools.schema.comparison.SchemaCompatibilityIssues;
-
 import java.sql.SQLException;
 
 /**

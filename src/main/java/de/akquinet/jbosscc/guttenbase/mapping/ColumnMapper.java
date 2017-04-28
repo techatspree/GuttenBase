@@ -21,6 +21,13 @@ public interface ColumnMapper
    */
   ColumnMapperResult map(ColumnMetaData source, TableMetaData targetTableMetaData) throws SQLException;
 
+  /**
+   * Map the way column names are used in statements. Usually you won't need that, but sometimes you want to map the names, e.g. to add `name`
+   * backticks, in order to escape special characters such as white space.
+   */
+  String mapColumnName(ColumnMetaData source, TableMetaData targetTableMetaData) throws SQLException;
+
+
   class ColumnMapperResult
   {
     private final List<ColumnMetaData> _columns;

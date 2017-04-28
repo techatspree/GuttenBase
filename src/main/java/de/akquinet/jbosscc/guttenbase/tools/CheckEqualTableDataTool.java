@@ -8,13 +8,11 @@ import de.akquinet.jbosscc.guttenbase.exceptions.IncompatibleColumnsException;
 import de.akquinet.jbosscc.guttenbase.exceptions.TableConfigurationException;
 import de.akquinet.jbosscc.guttenbase.exceptions.UnequalDataException;
 import de.akquinet.jbosscc.guttenbase.exceptions.UnequalNumberOfRowsException;
-import de.akquinet.jbosscc.guttenbase.hints.ColumnNameMapperHint;
 import de.akquinet.jbosscc.guttenbase.hints.ColumnOrderHint;
 import de.akquinet.jbosscc.guttenbase.hints.NumberOfCheckedTableDataHint;
 import de.akquinet.jbosscc.guttenbase.hints.TableOrderHint;
 import de.akquinet.jbosscc.guttenbase.mapping.ColumnMapper;
 import de.akquinet.jbosscc.guttenbase.mapping.ColumnMapper.ColumnMapperResult;
-import de.akquinet.jbosscc.guttenbase.mapping.ColumnNameMapper;
 import de.akquinet.jbosscc.guttenbase.mapping.ColumnTypeMapping;
 import de.akquinet.jbosscc.guttenbase.mapping.TableMapper;
 import de.akquinet.jbosscc.guttenbase.meta.ColumnMetaData;
@@ -102,10 +100,8 @@ public class CheckEqualTableDataTool {
     final String tableName2 = _connectorRepository.getConnectorHint(targetConnectorId, TableMapper.class).getValue()
       .fullyQualifiedTableName(targetTableMetaData, targetTableMetaData.getDatabaseMetaData());
     final CommonColumnTypeResolverTool commonColumnTypeResolver = new CommonColumnTypeResolverTool(_connectorRepository);
-    final ColumnNameMapper sourceColumnNameMapper = _connectorRepository.getConnectorHint(sourceConnectorId,
-      ColumnNameMapper.class).getValue();
-    final ColumnNameMapper targetColumnNameMapper = _connectorRepository.getConnectorHint(targetConnectorId,
-      ColumnNameMapper.class).getValue();
+    final ColumnMapper sourceColumnNameMapper = _connectorRepository.getConnectorHint(sourceConnectorId, ColumnMapper.class).getValue();
+    final ColumnMapper targetColumnNameMapper = _connectorRepository.getConnectorHint(targetConnectorId, ColumnMapper.class).getValue();
 
     checkRowCount(sourceTableMetaData, targetTableMetaData, tableName1, tableName2);
 
@@ -139,17 +135,17 @@ public class CheckEqualTableDataTool {
           final ColumnMetaData sourceColumn = orderedSourceColumns.get(sourceColumnIndex - 1);
           final ColumnMapperResult mapping = columnMapper.map(sourceColumn, targetTableMetaData);
 
-          for (final ColumnMetaData columnMetaData2 : mapping.getColumns()) {
+          for (final ColumnMetaData targetColumn : mapping.getColumns()) {
             final ColumnTypeMapping columnTypeMapping = commonColumnTypeResolver.getCommonColumnTypeMapping(sourceConnectorId,
-              sourceColumn, targetConnectorId, columnMetaData2);
-            final String columnName1 = sourceColumnNameMapper.mapColumnName(sourceColumn);
-            final String columnName2 = targetColumnNameMapper.mapColumnName(columnMetaData2);
+              sourceColumn, targetConnectorId, targetColumn);
+            final String columnName1 = sourceColumnNameMapper.mapColumnName(sourceColumn, targetTableMetaData);
+            final String columnName2 = targetColumnNameMapper.mapColumnName(targetColumn, targetTableMetaData);
 
-            checkColumnTypeMapping(tableName1, sourceColumn, columnMetaData2, columnTypeMapping, columnName1, columnName2);
+            checkColumnTypeMapping(tableName1, sourceColumn, targetColumn, columnTypeMapping, columnName1, columnName2);
 
             final ColumnType sourceColumnType = columnTypeMapping.getSourceColumnType();
 
-            checkData(sourceConnectorId, targetConnectorId, tableName1, resultSet1, resultSet2, rowIndex, targetColumnIndex, sourceColumnIndex, sourceColumn, columnMetaData2, columnTypeMapping, columnName1, sourceColumnType);
+            checkData(sourceConnectorId, targetConnectorId, tableName1, resultSet1, resultSet2, rowIndex, targetColumnIndex, sourceColumnIndex, sourceColumn, targetColumn, columnTypeMapping, columnName1, sourceColumnType);
           }
 
           targetColumnIndex += mapping.getColumns().size();
