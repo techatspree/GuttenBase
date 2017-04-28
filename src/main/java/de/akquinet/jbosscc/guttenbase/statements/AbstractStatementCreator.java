@@ -1,20 +1,16 @@
 package de.akquinet.jbosscc.guttenbase.statements;
 
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
-
-import org.apache.log4j.Logger;
-
 import de.akquinet.jbosscc.guttenbase.hints.ColumnMapperHint;
-import de.akquinet.jbosscc.guttenbase.hints.ColumnNameMapperHint;
 import de.akquinet.jbosscc.guttenbase.hints.ColumnOrderHint;
 import de.akquinet.jbosscc.guttenbase.mapping.ColumnMapper;
 import de.akquinet.jbosscc.guttenbase.mapping.ColumnMapper.ColumnMapperResult;
-import de.akquinet.jbosscc.guttenbase.mapping.ColumnNameMapper;
 import de.akquinet.jbosscc.guttenbase.meta.ColumnMetaData;
 import de.akquinet.jbosscc.guttenbase.meta.TableMetaData;
 import de.akquinet.jbosscc.guttenbase.repository.ConnectorRepository;
+import org.apache.log4j.Logger;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Contains some helper methods for implementing classes.
@@ -22,35 +18,31 @@ import de.akquinet.jbosscc.guttenbase.repository.ConnectorRepository;
  * &copy; 2012-2020 akquinet tech@spree
  * </p>
  *
+ * @author M. Dahm
  * @gb.UsesHint {@link ColumnNameMapperHint} to map column names
  * @gb.UsesHint {@link ColumnMapperHint} to map column names
  * @gb.UsesHint {@link ColumnOrderHint} to determine column order
- * @author M. Dahm
  */
-public abstract class AbstractStatementCreator
-{
+public abstract class AbstractStatementCreator {
   protected static final Logger LOG = Logger.getLogger(AbstractStatementCreator.class);
 
   protected final ConnectorRepository _connectorRepository;
   protected final String _connectorId;
-  protected final ColumnNameMapper _columnNameMapper;
+  protected final ColumnMapper _columnMapper;
 
-  public AbstractStatementCreator(final ConnectorRepository connectorRepository, final String connectorId)
-  {
+  public AbstractStatementCreator(final ConnectorRepository connectorRepository, final String connectorId) {
     assert connectorRepository != null : "connectorRepository != null";
     assert connectorId != null : "connectorId != null";
     _connectorId = connectorId;
     _connectorRepository = connectorRepository;
-    _columnNameMapper = _connectorRepository.getConnectorHint(connectorId, ColumnNameMapper.class).getValue();
+    _columnMapper = _connectorRepository.getConnectorHint(connectorId, ColumnMapper.class).getValue();
   }
 
-  protected String createColumnClause(final List<ColumnMetaData> columns) throws SQLException
-  {
+  protected String createColumnClause(final List<ColumnMetaData> columns) throws SQLException {
     final StringBuilder columnBuf = new StringBuilder();
 
-    for (final ColumnMetaData columnMetaData : columns)
-    {
-      columnBuf.append(_columnNameMapper.mapColumnName(columnMetaData)).append(", ");
+    for (final ColumnMetaData columnMetaData : columns) {
+      columnBuf.append(_columnMapper.mapColumnName(columnMetaData, columnMetaData.getTableMetaData())).append(", ");
     }
 
     columnBuf.setLength(columnBuf.length() - 2);
@@ -58,8 +50,7 @@ public abstract class AbstractStatementCreator
     return columnBuf.toString();
   }
 
-  protected String createWhereClause(final TableMetaData tableMetaData) throws SQLException
-  {
+  protected String createWhereClause(final TableMetaData tableMetaData) throws SQLException {
     return "";
   }
 
@@ -67,16 +58,14 @@ public abstract class AbstractStatementCreator
    * Get the list of target columns with appropriate mappings as defined by {@link ColumnMapperHint}
    */
   public List<ColumnMetaData> getMappedTargetColumns(final TableMetaData sourceTableMetaData,
-      final TableMetaData targetTableMetaData, final String sourceConnectorId) throws SQLException
-  {
+                                                     final TableMetaData targetTableMetaData, final String sourceConnectorId) throws SQLException {
     // Use same order as in SELECT clause
     final List<ColumnMetaData> sourceColumns = ColumnOrderHint.getSortedColumns(_connectorRepository, sourceConnectorId,
-        sourceTableMetaData);
+      sourceTableMetaData);
     final List<ColumnMetaData> columns = new ArrayList<>();
     final ColumnMapper columnMapper = _connectorRepository.getConnectorHint(_connectorId, ColumnMapper.class).getValue();
 
-    for (final ColumnMetaData sourceColumnMetaData : sourceColumns)
-    {
+    for (final ColumnMetaData sourceColumnMetaData : sourceColumns) {
       final ColumnMapperResult mapping = columnMapper.map(sourceColumnMetaData, targetTableMetaData);
       columns.addAll(mapping.getColumns());
     }

@@ -312,7 +312,6 @@ public class ConnectorRepositoryImpl implements ConnectorRepository {
     addConnectorHint(connectorId, new DefaultMaxNumberOfDataItemsHint());
     addConnectorHint(connectorId, new DefaultSplitColumnHint());
     addConnectorHint(connectorId, new DefaultColumnTypeResolverListHint());
-    addConnectorHint(connectorId, new DefaultColumnNameMapperHint());
     addConnectorHint(connectorId, new DefaultEntityTableCheckerHint());
     addConnectorHint(connectorId, new DefaultExporterFactoryHint());
     addConnectorHint(connectorId, new DefaultImporterFactoryHint());
