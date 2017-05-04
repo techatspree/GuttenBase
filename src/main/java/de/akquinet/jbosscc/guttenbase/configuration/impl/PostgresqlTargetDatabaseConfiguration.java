@@ -22,28 +22,10 @@ import java.util.List;
  * @gb.UsesHint {@link TableNameMapperHint}
  */
 public class PostgresqlTargetDatabaseConfiguration extends DefaultTargetDatabaseConfiguration {
-  private final boolean _vacuumAfterCopy;
-
   public PostgresqlTargetDatabaseConfiguration(final ConnectorRepository connectorRepository) {
-    this(connectorRepository, true);
-  }
-
-  /**
-   * @param connectorRepository
-   * @param vacuumAfterCopy     "Defragment" and optimize target table after copying
-   */
-  @SuppressWarnings("JavaDoc")
-  public PostgresqlTargetDatabaseConfiguration(final ConnectorRepository connectorRepository, final boolean vacuumAfterCopy) {
     super(connectorRepository);
-    _vacuumAfterCopy = vacuumAfterCopy;
   }
 
-  @Override
-  public void afterTableCopy(final Connection connection, final String connectorId, final TableMetaData table) throws SQLException {
-    if (_vacuumAfterCopy) {
-      new PostgresqlVacuumTablesTool(_connectorRepository).executeOnTable(connectorId, false, false, table);
-    }
-  }
 
   /**
    * {@inheritDoc}
