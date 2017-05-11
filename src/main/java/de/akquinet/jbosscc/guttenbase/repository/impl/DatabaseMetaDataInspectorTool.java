@@ -29,7 +29,9 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
- * Get table meta data from connection. (C) 2012 by akquinet tech@spree
+ * Get table meta data from connection.
+ *
+ * (C) 2012 by akquinet tech@spree
  *
  * @author M. Dahm
  */
