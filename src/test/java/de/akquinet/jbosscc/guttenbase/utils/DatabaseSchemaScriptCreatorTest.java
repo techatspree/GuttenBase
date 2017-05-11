@@ -28,6 +28,7 @@ public class DatabaseSchemaScriptCreatorTest {
     final TableMetaDataBuilder tableBuilder1 = createTable(1, databaseMetaDataBuilder);
     final TableMetaDataBuilder tableBuilder2 = createTable(2, databaseMetaDataBuilder);
 
+
     final ForeignKeyMetaDataBuilder foreignKeyMetaDataBuilder1 = new ForeignKeyMetaDataBuilder(tableBuilder1)
       .setForeignKeyName("FK_Name").setReferencingColumn(tableBuilder1.getColumn("Name"))
       .setReferencedColumn(tableBuilder2.getColumn("Name"));
@@ -38,11 +39,9 @@ public class DatabaseSchemaScriptCreatorTest {
     tableBuilder1.addImportedForeignKey(foreignKeyMetaDataBuilder1);
     tableBuilder2.addExportedForeignKey(foreignKeyMetaDataBuilder2);
 
-    databaseMetaDataBuilder.addTable(tableBuilder1);
-    databaseMetaDataBuilder.addTable(tableBuilder2);
-    databaseMetaDataBuilder.setSchema("schemaName");
-
-    return databaseMetaDataBuilder.build();
+    return databaseMetaDataBuilder.addTable(tableBuilder1).addTable(tableBuilder2)
+      .setSchema("schemaName").addDatabaseProperty("getMaxColumnNameLength", 42)
+      .addDatabaseProperty("getDatabaseProductName", "GuttenBaseDB").build();
   }
 
   private TableMetaDataBuilder createTable(final int index, final DatabaseMetaDataBuilder databaseMetaDataBuilder) {
@@ -60,6 +59,12 @@ public class DatabaseSchemaScriptCreatorTest {
         new IndexMetaDataBuilder(tableMetaDataBuilder).setAscending(true).setIndexName("Name_IDX" + index).setUnique(true)
           .addColumn(nameBuilder));
     return tableMetaDataBuilder;
+  }
+
+  @Test
+  public void testMetaData() throws Exception {
+    assertEquals("GuttenBaseDB", _databaseMetaData.getDatabaseMetaData().getDatabaseProductName());
+    assertEquals(42, _databaseMetaData.getDatabaseMetaData().getMaxColumnNameLength());
   }
 
   @Test

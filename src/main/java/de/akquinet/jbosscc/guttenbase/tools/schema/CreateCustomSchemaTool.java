@@ -2,7 +2,6 @@ package de.akquinet.jbosscc.guttenbase.tools.schema;
 
 import de.akquinet.jbosscc.guttenbase.repository.ConnectorRepository;
 import de.akquinet.jbosscc.guttenbase.tools.ScriptExecutorTool;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,41 +14,37 @@ import java.util.List;
 public class CreateCustomSchemaTool
 
 {
-    private final ConnectorRepository _connectorRepository;
-    private final int _maxIdLength;
+  private final ConnectorRepository _connectorRepository;
+  private final int _maxIdLength;
 
 
-    public CreateCustomSchemaTool(final ConnectorRepository connectorRepository, final int maxIdLength)
-    {
-        assert connectorRepository != null : "connectorRepository != null";
+  public CreateCustomSchemaTool(final ConnectorRepository connectorRepository, final int maxIdLength) {
+    assert connectorRepository != null : "connectorRepository != null";
 
-        _connectorRepository = connectorRepository;
-        _maxIdLength = maxIdLength;
-    }
+    _connectorRepository = connectorRepository;
+    _maxIdLength = maxIdLength;
+  }
 
-    public CreateCustomSchemaTool(final ConnectorRepository connectorRepository)
-    {
-        this(connectorRepository, DatabaseSchemaScriptCreator.MAX_ID_LENGTH);
-    }
+  public CreateCustomSchemaTool(final ConnectorRepository connectorRepository) {
+    this(connectorRepository, DatabaseSchemaScriptCreator.MAX_ID_LENGTH);
+  }
 
-    public List<String> createDDLScript(final String connectorId, final String targetConnectorId) throws Exception
-    {
-        final List<String> result = new ArrayList<>();
-        final DatabaseCustomSchemaScriptCreator databaseCustomSchemaScriptCreator = new DatabaseCustomSchemaScriptCreator(_connectorRepository, connectorId,
-                targetConnectorId, _maxIdLength);
+  public List<String> createDDLScript(final String connectorId, final String targetConnectorId) throws Exception {
+    final List<String> result = new ArrayList<>();
+    final DatabaseCustomSchemaScriptCreator databaseCustomSchemaScriptCreator = new DatabaseCustomSchemaScriptCreator(_connectorRepository, connectorId,
+      targetConnectorId, _maxIdLength);
 
-        result.addAll( databaseCustomSchemaScriptCreator.createTableStatements());
-        result.addAll( databaseCustomSchemaScriptCreator.createPrimaryKeyStatements());
-        result.addAll( databaseCustomSchemaScriptCreator.createForeignKeyStatements());
-        result.addAll( databaseCustomSchemaScriptCreator.createIndexStatements());
+    result.addAll(databaseCustomSchemaScriptCreator.createTableStatements());
+    result.addAll(databaseCustomSchemaScriptCreator.createPrimaryKeyStatements());
+    result.addAll(databaseCustomSchemaScriptCreator.createForeignKeyStatements());
+    result.addAll(databaseCustomSchemaScriptCreator.createIndexStatements());
 
-        return result;
-    }
+    return result;
+  }
 
-    public void copySchema(final String sourceConnectorId, final String targetConnectorId) throws Exception
-    {
-        final List<String> ddlScript = createDDLScript(sourceConnectorId, targetConnectorId);
-        new ScriptExecutorTool(_connectorRepository).executeScript(targetConnectorId, ddlScript);
-    }
+  public void copySchema(final String sourceConnectorId, final String targetConnectorId) throws Exception {
+    final List<String> ddlScript = createDDLScript(sourceConnectorId, targetConnectorId);
+    new ScriptExecutorTool(_connectorRepository).executeScript(targetConnectorId, ddlScript);
+  }
 }
 

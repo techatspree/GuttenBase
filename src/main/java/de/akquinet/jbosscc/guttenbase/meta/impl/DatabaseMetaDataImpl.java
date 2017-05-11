@@ -4,6 +4,7 @@ import de.akquinet.jbosscc.guttenbase.connector.DatabaseType;
 import de.akquinet.jbosscc.guttenbase.meta.DatabaseMetaData;
 import de.akquinet.jbosscc.guttenbase.meta.InternalDatabaseMetaData;
 import de.akquinet.jbosscc.guttenbase.meta.TableMetaData;
+import java.lang.reflect.Proxy;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -19,94 +20,93 @@ import java.util.Map;
  * @author M. Dahm
  */
 public class DatabaseMetaDataImpl implements InternalDatabaseMetaData {
-    private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
-    private final String _schema;
-    private final String _databaseName;
-    private final int _majorVersion;
-    private final int _minorVersion;
-    private final DatabaseType _databaseType;
-    private final Map<String, TableMetaData> _tableMetaDataMap = new LinkedHashMap<>();
+  private final String _schema;
+  private final Map<String, TableMetaData> _tableMetaDataMap = new LinkedHashMap<>();
+  private final DatabaseType _databaseType;
+  private transient java.sql.DatabaseMetaData _databaseMetaData;
+  private final Map<String, Object> _databaseProperties;
 
-    public DatabaseMetaDataImpl(final String schema, final String databaseName, final int majorVersion, final int minorVersion,
-                                final DatabaseType databaseType) {
-        assert databaseName != null : "databaseName != null";
-        assert schema != null : "schema != null";
-        assert databaseType != null : "databaseType != null";
+  public DatabaseMetaDataImpl(final String schema, final Map<String, Object> databaseProperties,
+                              final DatabaseType databaseType) {
+    assert databaseProperties != null : "databaseProperties != null";
+    assert schema != null : "schema != null";
+    assert databaseType != null : "d != null";
 
-        _schema = schema.trim();
-        _databaseName = databaseName;
-        _majorVersion = majorVersion;
-        _minorVersion = minorVersion;
-        _databaseType = databaseType;
+    _databaseProperties = databaseProperties;
+    _databaseType = databaseType;
+    _schema = schema.trim();
+  }
+
+  @Override
+  public java.sql.DatabaseMetaData getDatabaseMetaData() {
+    if (_databaseMetaData == null) {
+      _databaseMetaData = createMetaDataProxy(_databaseProperties);
     }
 
-    @Override
-    public DatabaseType getDatabaseType() {
-        return _databaseType;
-    }
+    return _databaseMetaData;
+  }
 
-    @Override
-    public String getSchema() {
-        return _schema;
-    }
+  @Override
+  public DatabaseType getDatabaseType() {
+    return _databaseType;
+  }
 
-    @Override
-    public String getSchemaPrefix() {
-        return !"".equals(getSchema()) ? getSchema() + "." : "";
-    }
+  @Override
+  public String getSchema() {
+    return _schema;
+  }
 
-    @Override
-    public String getDatabaseName() {
-        return _databaseName;
-    }
+  @Override
+  public String getSchemaPrefix() {
+    return !"".equals(getSchema()) ? getSchema() + "." : "";
+  }
 
-    @Override
-    public int getMajorVersion() {
-        return _majorVersion;
-    }
 
-    @Override
-    public int getMinorVersion() {
-        return _minorVersion;
-    }
+  @Override
+  public List<TableMetaData> getTableMetaData() {
+    return new ArrayList<>(_tableMetaDataMap.values());
+  }
 
-    @Override
-    public List<TableMetaData> getTableMetaData() {
-        return new ArrayList<>(_tableMetaDataMap.values());
-    }
+  @Override
+  public TableMetaData getTableMetaData(final String tableName) {
+    assert tableName != null : "tableName != null";
+    return _tableMetaDataMap.get(tableName.toUpperCase());
+  }
 
-    @Override
-    public TableMetaData getTableMetaData(final String tableName) {
-        assert tableName != null : "tableName != null";
-        return _tableMetaDataMap.get(tableName.toUpperCase());
-    }
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public void addTableMetaData(final TableMetaData tableMetaData) {
+    _tableMetaDataMap.put(tableMetaData.getTableName().toUpperCase(), tableMetaData);
+  }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void addTableMetaData(final TableMetaData tableMetaData) {
-        _tableMetaDataMap.put(tableMetaData.getTableName().toUpperCase(), tableMetaData);
-    }
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public void removeTableMetaData(final TableMetaData tableMetaData) {
+    _tableMetaDataMap.remove(tableMetaData.getTableName().toUpperCase());
+  }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void removeTableMetaData(final TableMetaData tableMetaData) {
-        _tableMetaDataMap.remove(tableMetaData.getTableName().toUpperCase());
-    }
+  @Override
+  public int hashCode() {
+    return getDatabaseType().hashCode() + getSchema().toUpperCase().hashCode();
+  }
 
-    @Override
-    public int hashCode() {
-        return getDatabaseName().toUpperCase().hashCode() + getSchema().toUpperCase().hashCode();
-    }
+  @Override
+  public boolean equals(final Object obj) {
+    final DatabaseMetaData that = (DatabaseMetaData) obj;
 
-    @Override
-    public boolean equals(final Object obj) {
-        final DatabaseMetaData that = (DatabaseMetaData) obj;
+    return this.getDatabaseType().equals(that.getDatabaseType()) && this.getSchema().equalsIgnoreCase(that.getSchema());
+  }
 
-        return this.getDatabaseName().equalsIgnoreCase(that.getDatabaseName()) && this.getSchema().equalsIgnoreCase(that.getSchema());
-    }
+  private java.sql.DatabaseMetaData createMetaDataProxy(final Map<String, Object> properties) {
+    return (java.sql.DatabaseMetaData) Proxy.newProxyInstance(getClass().getClassLoader(),
+      new Class[]{java.sql.DatabaseMetaData.class},
+      (proxy, method, args) -> properties.get(method.getName())
+    );
+  }
 }

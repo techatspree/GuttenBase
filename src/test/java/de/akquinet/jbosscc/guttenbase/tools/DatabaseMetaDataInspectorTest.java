@@ -1,21 +1,19 @@
 package de.akquinet.jbosscc.guttenbase.tools;
 
-import static java.util.Collections.*;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-
-import java.util.List;
-
-import org.junit.Before;
-import org.junit.Test;
-
 import de.akquinet.jbosscc.guttenbase.configuration.TestDerbyConnectionInfo;
 import de.akquinet.jbosscc.guttenbase.meta.ColumnMetaData;
 import de.akquinet.jbosscc.guttenbase.meta.DatabaseMetaData;
 import de.akquinet.jbosscc.guttenbase.meta.IndexMetaData;
 import de.akquinet.jbosscc.guttenbase.meta.TableMetaData;
+import org.junit.Before;
+import org.junit.Test;
+import java.util.List;
+
+import static java.util.Collections.singletonList;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 public class DatabaseMetaDataInspectorTest extends AbstractGuttenBaseTest {
 	private static final String CONNECTOR_ID = "derby";
@@ -31,7 +29,8 @@ public class DatabaseMetaDataInspectorTest extends AbstractGuttenBaseTest {
 	public void testMetaData() throws Exception {
 		final DatabaseMetaData databaseMetaData = _connectorRepository.getDatabaseMetaData(CONNECTOR_ID);
 		assertNotNull(databaseMetaData);
-		assertEquals("Apache Derby", databaseMetaData.getDatabaseName());
+		assertEquals("Apache Derby", databaseMetaData.getDatabaseMetaData().getDatabaseProductName());
+		assertEquals(128, databaseMetaData.getDatabaseMetaData().getMaxColumnNameLength());
 
 		assertEquals(6, databaseMetaData.getTableMetaData().size());
 		final TableMetaData userTableMetaData = databaseMetaData.getTableMetaData("FOO_USER");
