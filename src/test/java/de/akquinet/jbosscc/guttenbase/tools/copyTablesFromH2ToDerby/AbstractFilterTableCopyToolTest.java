@@ -4,17 +4,28 @@ package de.akquinet.jbosscc.guttenbase.tools.copyTablesFromH2ToDerby;
 import de.akquinet.jbosscc.guttenbase.configuration.TestDerbyConnectionInfo;
 import de.akquinet.jbosscc.guttenbase.configuration.TestH2ConnectionInfo;
 import de.akquinet.jbosscc.guttenbase.exceptions.TableConfigurationException;
-import de.akquinet.jbosscc.guttenbase.hints.*;
+import de.akquinet.jbosscc.guttenbase.hints.ColumnMapperHint;
+import de.akquinet.jbosscc.guttenbase.hints.NumberOfRowsPerBatchHint;
+import de.akquinet.jbosscc.guttenbase.hints.RefreshTargetConnectionHint;
+import de.akquinet.jbosscc.guttenbase.hints.TableMapperHint;
+import de.akquinet.jbosscc.guttenbase.hints.TestColumnNameFilterHint;
+import de.akquinet.jbosscc.guttenbase.hints.TestColumnRenameNameMapper;
+import de.akquinet.jbosscc.guttenbase.hints.TestTableNameFilterHint;
+import de.akquinet.jbosscc.guttenbase.hints.TestTableRenameNameMapper;
 import de.akquinet.jbosscc.guttenbase.mapping.ColumnMapper;
 import de.akquinet.jbosscc.guttenbase.mapping.TableMapper;
 import de.akquinet.jbosscc.guttenbase.meta.TableMetaData;
-import de.akquinet.jbosscc.guttenbase.tools.*;
+import de.akquinet.jbosscc.guttenbase.tools.AbstractGuttenBaseTest;
+import de.akquinet.jbosscc.guttenbase.tools.AbstractTableCopyTool;
+import de.akquinet.jbosscc.guttenbase.tools.CheckEqualTableDataTool;
+import de.akquinet.jbosscc.guttenbase.tools.NumberOfRowsPerBatch;
+import de.akquinet.jbosscc.guttenbase.tools.RefreshTargetConnection;
+import de.akquinet.jbosscc.guttenbase.tools.ScriptExecutorTool;
 import org.junit.Before;
 import org.junit.Test;
-
 import java.sql.SQLException;
 
-public abstract class AbstractCustomWithFilternTableCopyToolTest extends AbstractGuttenBaseTest {
+public abstract class AbstractFilterTableCopyToolTest extends AbstractGuttenBaseTest {
   public static final String CONNECTOR_SOURCE = "hsqldb";
   public static final String CONNECTOR_TARGET = "derby";
 
@@ -23,17 +34,17 @@ public abstract class AbstractCustomWithFilternTableCopyToolTest extends Abstrac
     _connectorRepository.addConnectionInfo(CONNECTOR_TARGET, new TestH2ConnectionInfo());
     _connectorRepository.addConnectionInfo(CONNECTOR_SOURCE, new TestDerbyConnectionInfo());
 
-    _connectorRepository.addConnectorHint(CONNECTOR_SOURCE, new CustomTableNameFilterTest());
-    _connectorRepository.addConnectorHint(CONNECTOR_SOURCE, new CustomColumnNameFilterTest());
+    _connectorRepository.addConnectorHint(CONNECTOR_SOURCE, new TestTableNameFilterHint());
+    _connectorRepository.addConnectorHint(CONNECTOR_SOURCE, new TestColumnNameFilterHint());
 
-    _connectorRepository.addConnectorHint(CONNECTOR_TARGET, new CustomTableNameFilterTest());
-    _connectorRepository.addConnectorHint(CONNECTOR_TARGET, new CustomColumnNameFilterTest());
+    _connectorRepository.addConnectorHint(CONNECTOR_TARGET, new TestTableNameFilterHint());
+    _connectorRepository.addConnectorHint(CONNECTOR_TARGET, new TestColumnNameFilterHint());
 
 
     _connectorRepository.addConnectorHint(CONNECTOR_TARGET, new TableMapperHint() {
       @Override
       public TableMapper getValue() {
-        return new CustomTableRenameNameTest()
+        return new TestTableRenameNameMapper()
                 .addReplacement("OFFICES", "TAB_OFFICES")
                 .addReplacement("ORDERS", "TAB_ORDERS");
       }
@@ -42,7 +53,7 @@ public abstract class AbstractCustomWithFilternTableCopyToolTest extends Abstrac
     _connectorRepository.addConnectorHint(CONNECTOR_TARGET, new ColumnMapperHint() {
       @Override
       public ColumnMapper getValue() {
-        return new CustomColumnRenameNameTest()
+        return new TestColumnRenameNameMapper()
                 .addReplacement("PHONE", "ID_PHONE")
                 .addReplacement("CITY", "ID_CITY");
       }

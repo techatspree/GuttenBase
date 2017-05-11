@@ -5,9 +5,7 @@ import de.akquinet.jbosscc.guttenbase.repository.RepositoryColumnFilter;
 /**
  * Created by mfehler on 26.04.17.
  */
-public class CustomColumnNameFilterTest extends RepositoryColumnFilterHint {
-
-
+public class TestColumnNameFilterHint extends RepositoryColumnFilterHint {
     @Override
     public RepositoryColumnFilter getValue() {
         return column -> {

@@ -4,7 +4,6 @@ package de.akquinet.jbosscc.guttenbase.hints;
 import de.akquinet.jbosscc.guttenbase.mapping.ColumnMapper;
 import de.akquinet.jbosscc.guttenbase.meta.ColumnMetaData;
 import de.akquinet.jbosscc.guttenbase.meta.TableMetaData;
-
 import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -17,9 +16,7 @@ import java.util.Map;
  * Created by Marynasuprun on 26.03.2017.
  *
  */
-
-public class CustomColumnRenameNameTest implements ColumnMapper{
-
+public class TestColumnRenameNameMapper implements ColumnMapper {
     private final Map<String, String> replacementsColumns = new HashMap<>();
 
     @Override
@@ -47,7 +44,7 @@ public class CustomColumnRenameNameTest implements ColumnMapper{
             return columnName;
     }
 
-    public CustomColumnRenameNameTest addReplacement(final String sourceComn, final String targetColumn){
+    public TestColumnRenameNameMapper addReplacement(final String sourceComn, final String targetColumn) {
         replacementsColumns.put(sourceComn, targetColumn);
         return this;
     }
