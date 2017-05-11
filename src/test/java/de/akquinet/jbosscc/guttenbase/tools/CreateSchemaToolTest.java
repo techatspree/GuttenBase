@@ -2,7 +2,7 @@ package de.akquinet.jbosscc.guttenbase.tools;
 
 import de.akquinet.jbosscc.guttenbase.configuration.TestH2ConnectionInfo;
 import de.akquinet.jbosscc.guttenbase.sql.SQLLexer;
-import de.akquinet.jbosscc.guttenbase.tools.schema.CreateCustomSchemaTool;
+import de.akquinet.jbosscc.guttenbase.tools.schema.CopySchemaTool;
 import org.junit.Before;
 import org.junit.Test;
 import java.util.List;
@@ -13,7 +13,7 @@ public class CreateSchemaToolTest extends AbstractGuttenBaseTest {
   private static final String CONNECTOR_ID = "hsqldb";
   private static final String TARGET = "jens";
 
-  private final CreateCustomSchemaTool _objectUnderTest = new CreateCustomSchemaTool(_connectorRepository);
+  private final CopySchemaTool _objectUnderTest = new CopySchemaTool(_connectorRepository);
 
   @Before
   public void setup() throws Exception {

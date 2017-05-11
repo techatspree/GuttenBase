@@ -10,7 +10,7 @@ import de.akquinet.jbosscc.guttenbase.mapping.ColumnMapper;
 import de.akquinet.jbosscc.guttenbase.mapping.TableMapper;
 import de.akquinet.jbosscc.guttenbase.tools.AbstractGuttenBaseTest;
 import de.akquinet.jbosscc.guttenbase.tools.ScriptExecutorTool;
-import de.akquinet.jbosscc.guttenbase.tools.schema.CreateCustomSchemaTool;
+import de.akquinet.jbosscc.guttenbase.tools.schema.CopySchemaTool;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -21,7 +21,7 @@ public class CreateCustomSchemaWithRenameToolTest extends AbstractGuttenBaseTest
   private static final String SOURCE_CONNECTOR_ID = "hsqldb";
   private static final String TARGET_CONNECTOR_ID = "derby";
 
-  private final CreateCustomSchemaTool _objectUnderTest = new CreateCustomSchemaTool(_connectorRepository);
+  private final CopySchemaTool _objectUnderTest = new CopySchemaTool(_connectorRepository);
 
   @Before
   public void setup() throws Exception {

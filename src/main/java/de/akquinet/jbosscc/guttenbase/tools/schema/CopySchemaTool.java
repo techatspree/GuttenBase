@@ -12,33 +12,32 @@ import java.util.List;
  * @copyright akquinet tech@spree GmbH, 2002-2020
  */
 @SuppressWarnings("SameParameterValue")
-public class CreateCustomSchemaTool
-
+public class CopySchemaTool
 {
   private final ConnectorRepository _connectorRepository;
   private final int _maxIdLength;
 
 
-  public CreateCustomSchemaTool(final ConnectorRepository connectorRepository, final int maxIdLength) {
+  public CopySchemaTool(final ConnectorRepository connectorRepository, final int maxIdLength) {
     assert connectorRepository != null : "connectorRepository != null";
 
     _connectorRepository = connectorRepository;
     _maxIdLength = maxIdLength;
   }
 
-  public CreateCustomSchemaTool(final ConnectorRepository connectorRepository) {
-    this(connectorRepository, DatabaseSchemaScriptCreator.MAX_ID_LENGTH);
+  public CopySchemaTool(final ConnectorRepository connectorRepository) {
+    this(connectorRepository, SchemaScriptCreatorTool.MAX_ID_LENGTH);
   }
 
   public List<String> createDDLScript(final String sourceConnectorId, final String targetConnectorId) throws SQLException {
     final List<String> result = new ArrayList<>();
-    final DatabaseCustomSchemaScriptCreator databaseCustomSchemaScriptCreator = new DatabaseCustomSchemaScriptCreator(_connectorRepository, sourceConnectorId,
+    final SchemaScriptCreatorTool schemaScriptCreatorTool = new SchemaScriptCreatorTool(_connectorRepository, sourceConnectorId,
       targetConnectorId, _maxIdLength);
 
-    result.addAll(databaseCustomSchemaScriptCreator.createTableStatements());
-    result.addAll(databaseCustomSchemaScriptCreator.createPrimaryKeyStatements());
-    result.addAll(databaseCustomSchemaScriptCreator.createForeignKeyStatements());
-    result.addAll(databaseCustomSchemaScriptCreator.createIndexStatements());
+    result.addAll(schemaScriptCreatorTool.createTableStatements());
+    result.addAll(schemaScriptCreatorTool.createPrimaryKeyStatements());
+    result.addAll(schemaScriptCreatorTool.createForeignKeyStatements());
+    result.addAll(schemaScriptCreatorTool.createIndexStatements());
 
     return result;
   }

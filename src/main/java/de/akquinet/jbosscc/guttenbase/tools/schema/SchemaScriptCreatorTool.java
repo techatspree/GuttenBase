@@ -28,48 +28,38 @@ import java.util.Random;
  *
  * @author M. Dahm
  */
-
-
-public class DatabaseCustomSchemaScriptCreator {
-
+public class SchemaScriptCreatorTool {
   private static final Random RANDOM = new Random();
   public static final int MAX_ID_LENGTH = 64;
 
   private final DatabaseType sourceType = DatabaseType.H2DB;
   private final DatabaseType targetType = DatabaseType.DERBY;
-  private final DatabaseMetaData _sourceDatabaseMetaData;
   private final String _targetConnectorId;
   private final int _maxIdLength;
   private final ConnectorRepository _connectorRepository;
   private final String _sourceConnectorId;
 
-
-  public DatabaseCustomSchemaScriptCreator(
+  public SchemaScriptCreatorTool(
     final ConnectorRepository connectorRepository,
     final String sourceConnectorId,
     final String targetConnectorId,
-    final int maxIdLength) throws SQLException {
+    final int maxIdLength) {
+    assert connectorRepository != null : "connectorRepository != null";
     assert sourceConnectorId != null : "sourceConnectorId != null";
     assert targetConnectorId != null : "targetConnectorId != null";
 
     _sourceConnectorId = sourceConnectorId;
     _connectorRepository = connectorRepository;
-    _sourceDatabaseMetaData = connectorRepository.getDatabaseMetaData(sourceConnectorId);
     _targetConnectorId = targetConnectorId;
     _maxIdLength = maxIdLength;
   }
 
-
-  public DatabaseCustomSchemaScriptCreator(final ConnectorRepository connectorRepository, final String source, final String schema) throws SQLException {
-    this(connectorRepository, source, schema, MAX_ID_LENGTH);
-  }
-
-  public DatabaseCustomSchemaScriptCreator(final ConnectorRepository connectorRepository, final String source) throws SQLException {
-    this(connectorRepository, source, connectorRepository.getDatabaseMetaData(source).getSchema().trim());
+  public SchemaScriptCreatorTool(final ConnectorRepository connectorRepository, final String source, final String target) {
+    this(connectorRepository, source, target, MAX_ID_LENGTH);
   }
 
   public List<String> createTableStatements() throws SQLException {
-    final List<TableMetaData> tables = new TableOrderTool().getOrderedTables(_sourceDatabaseMetaData.getTableMetaData(), true);
+    final List<TableMetaData> tables = new TableOrderTool().getOrderedTables(getDatabaseMetaData().getTableMetaData(), true);
     return createTableStatements(tables);
   }
 
@@ -83,8 +73,12 @@ public class DatabaseCustomSchemaScriptCreator {
   }
 
   public List<String> createPrimaryKeyStatements() throws SQLException {
-    final List<TableMetaData> tables = _sourceDatabaseMetaData.getTableMetaData();
+    final List<TableMetaData> tables = getDatabaseMetaData().getTableMetaData();
     return createPrimaryKeyStatements(tables);
+  }
+
+  private DatabaseMetaData getDatabaseMetaData() throws SQLException {
+    return _connectorRepository.getDatabaseMetaData(_sourceConnectorId);
   }
 
   public List<String> createPrimaryKeyStatements(final List<TableMetaData> tables) throws SQLException {
@@ -102,7 +96,7 @@ public class DatabaseCustomSchemaScriptCreator {
   }
 
   public List<String> createIndexStatements() throws SQLException {
-    final List<TableMetaData> tables = _sourceDatabaseMetaData.getTableMetaData();
+    final List<TableMetaData> tables = getDatabaseMetaData().getTableMetaData();
     return createIndexStatements(tables);
   }
 
@@ -121,7 +115,7 @@ public class DatabaseCustomSchemaScriptCreator {
   }
 
   public List<String> createForeignKeyStatements() throws SQLException {
-    final List<TableMetaData> tables = _sourceDatabaseMetaData.getTableMetaData();
+    final List<TableMetaData> tables = getDatabaseMetaData().getTableMetaData();
     return createForeignKeyStatements(tables);
   }
 
@@ -188,9 +182,12 @@ public class DatabaseCustomSchemaScriptCreator {
 
   private String createIndex(final IndexMetaData indexMetaData, final int counter) throws SQLException {
     final TableMetaData tableMetaData = indexMetaData.getTableMetaData();
+    final TableMapper tableMapper = _connectorRepository.getConnectorHint(_targetConnectorId, TableMapper.class).getValue();
+    final DatabaseMetaData targetDatabaseMetaData = _connectorRepository.getDatabaseMetaData(_targetConnectorId);
+    final String tableName = tableMapper.mapTableName(tableMetaData, targetDatabaseMetaData);
     final String indexName = createConstraintName("IDX_", CaseConversionMode.UPPER.convert(indexMetaData.getIndexName())
         + "_"
-        + tableMetaData.getTableName()
+        + tableName
         + "_",
       counter);
     return createIndex(indexMetaData, indexName);
@@ -235,8 +232,8 @@ public class DatabaseCustomSchemaScriptCreator {
     final DatabaseMetaData targetDatabaseMetaData = _connectorRepository.getDatabaseMetaData(_targetConnectorId);
     final TableMetaData tableMetaData = referencingColumn.getTableMetaData();
     final ColumnMetaData referencedColumn = referencingColumn.getReferencedColumn();
-
     final String tablename = tableMapper.mapTableName(tableMetaData, targetDatabaseMetaData);
+
     String fkName = createConstraintName("FK_", tablename + "_"
       + columnMapper.mapColumnName(referencingColumn, referencedColumn.getTableMetaData())
       + "_"

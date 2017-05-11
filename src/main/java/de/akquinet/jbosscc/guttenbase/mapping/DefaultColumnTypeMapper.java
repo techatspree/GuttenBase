@@ -73,16 +73,13 @@ public class DefaultColumnTypeMapper implements ColumnTypeMapper {
     return null;
   }
 
-  public final void addMapping(DatabaseType sourceDB, DatabaseType targetDB, String sourceTypeName, String targetTypeName) {
-
-    Map<DatabaseType, Map<String, String>> databaseMatrix = _mappings.computeIfAbsent(sourceDB, k -> new HashMap<>());
-
-
-    Map<String, String> mapping = databaseMatrix.computeIfAbsent(targetDB, k -> new HashMap<>());
+  public final DefaultColumnTypeMapper addMapping(DatabaseType sourceDB, DatabaseType targetDB, String sourceTypeName, String targetTypeName) {
+    final Map<DatabaseType, Map<String, String>> databaseMatrix = _mappings.computeIfAbsent(sourceDB, k -> new HashMap<>());
+    final Map<String, String> mapping = databaseMatrix.computeIfAbsent(targetDB, k -> new HashMap<>());
 
     mapping.put(sourceTypeName, targetTypeName);
+    return this;
   }
-
 
   private void createPostgresToMysqlMapping() {
 

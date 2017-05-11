@@ -1,5 +1,17 @@
 package de.akquinet.jbosscc.guttenbase.utils;
 
+import de.akquinet.jbosscc.guttenbase.configuration.EasymockConnectionInfo;
+import de.akquinet.jbosscc.guttenbase.connector.DatabaseType;
+import de.akquinet.jbosscc.guttenbase.defaults.impl.DefaultColumnMapper;
+import de.akquinet.jbosscc.guttenbase.defaults.impl.DefaultTableMapper;
+import de.akquinet.jbosscc.guttenbase.hints.CaseConversionMode;
+import de.akquinet.jbosscc.guttenbase.hints.ColumnMapperHint;
+import de.akquinet.jbosscc.guttenbase.hints.ColumnTypeMapperHint;
+import de.akquinet.jbosscc.guttenbase.hints.TableMapperHint;
+import de.akquinet.jbosscc.guttenbase.mapping.ColumnMapper;
+import de.akquinet.jbosscc.guttenbase.mapping.ColumnTypeMapper;
+import de.akquinet.jbosscc.guttenbase.mapping.DefaultColumnTypeMapper;
+import de.akquinet.jbosscc.guttenbase.mapping.TableMapper;
 import de.akquinet.jbosscc.guttenbase.meta.ColumnMetaData;
 import de.akquinet.jbosscc.guttenbase.meta.DatabaseMetaData;
 import de.akquinet.jbosscc.guttenbase.meta.ForeignKeyMetaData;
@@ -9,9 +21,11 @@ import de.akquinet.jbosscc.guttenbase.meta.builder.DatabaseMetaDataBuilder;
 import de.akquinet.jbosscc.guttenbase.meta.builder.ForeignKeyMetaDataBuilder;
 import de.akquinet.jbosscc.guttenbase.meta.builder.IndexMetaDataBuilder;
 import de.akquinet.jbosscc.guttenbase.meta.builder.TableMetaDataBuilder;
-import de.akquinet.jbosscc.guttenbase.tools.schema.DatabaseSchemaScriptCreator;
-import de.akquinet.jbosscc.guttenbase.tools.schema.DefaultSchemaColumnTypeMapper;
+import de.akquinet.jbosscc.guttenbase.repository.ConnectorRepository;
+import de.akquinet.jbosscc.guttenbase.repository.impl.ConnectorRepositoryImpl;
+import de.akquinet.jbosscc.guttenbase.tools.schema.SchemaScriptCreatorTool;
 import org.junit.Test;
+import java.sql.SQLException;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
@@ -19,15 +33,47 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 public class DatabaseSchemaScriptCreatorTest {
+  public static final String SOURCE = "source";
+  public static final String TARGET = "source";
   private final DatabaseMetaData _databaseMetaData = createDatabaseMetaData();
-  private final DatabaseSchemaScriptCreator _objectUnderTest = new DatabaseSchemaScriptCreator(_databaseMetaData,
-    _databaseMetaData, DatabaseSchemaScriptCreator.MAX_ID_LENGTH);
+
+  private final ConnectorRepository _connectorRepository = createRepository();
+
+  private ConnectorRepository createRepository() {
+    final ConnectorRepository repository = new ConnectorRepositoryImpl() {
+      @Override
+      public DatabaseMetaData getDatabaseMetaData(final String connectorId) throws SQLException {
+        return _databaseMetaData;
+      }
+    };
+
+    repository.addConnectionInfo(SOURCE, new EasymockConnectionInfo());
+    repository.addConnectionInfo(TARGET, new EasymockConnectionInfo());
+
+    repository.addConnectorHint(SOURCE, new TableMapperHint() {
+
+      @Override
+      public TableMapper getValue() {
+        return new DefaultTableMapper(CaseConversionMode.UPPER);
+      }
+    });
+    repository.addConnectorHint(SOURCE, new ColumnMapperHint() {
+
+      @Override
+      public ColumnMapper getValue() {
+        return new DefaultColumnMapper(CaseConversionMode.UPPER);
+      }
+    });
+
+    return repository;
+  }
+
+  private final SchemaScriptCreatorTool _objectUnderTest = new SchemaScriptCreatorTool(_connectorRepository, SOURCE, TARGET);
 
   private DatabaseMetaData createDatabaseMetaData() {
     final DatabaseMetaDataBuilder databaseMetaDataBuilder = new DatabaseMetaDataBuilder();
     final TableMetaDataBuilder tableBuilder1 = createTable(1, databaseMetaDataBuilder);
     final TableMetaDataBuilder tableBuilder2 = createTable(2, databaseMetaDataBuilder);
-
 
     final ForeignKeyMetaDataBuilder foreignKeyMetaDataBuilder1 = new ForeignKeyMetaDataBuilder(tableBuilder1)
       .setForeignKeyName("FK_Name").setReferencingColumn(tableBuilder1.getColumn("Name"))
@@ -94,16 +140,14 @@ public class DatabaseSchemaScriptCreatorTest {
 
   @Test
   public void testSchemaColumnTypeMapper() throws Exception {
-    _objectUnderTest.setColumnTypeMapper(new DefaultSchemaColumnTypeMapper() {
+    _connectorRepository.addConnectorHint(TARGET, new ColumnTypeMapperHint() {
       @Override
-      public String getColumnType(final ColumnMetaData columnMetaData) {
-        if ("BIGINT".equalsIgnoreCase(columnMetaData.getColumnTypeName())) {
-          return "INTEGER";
-        } else {
-          return super.getColumnType(columnMetaData);
-        }
+      public ColumnTypeMapper getValue() {
+        return new DefaultColumnTypeMapper()
+          .addMapping(DatabaseType.H2DB, DatabaseType.DERBY, "BIGINT", "INTEGER");
       }
     });
+
     final List<String> tableStatements = _objectUnderTest.createTableStatements();
     assertEquals(2, tableStatements.size());
 
@@ -120,7 +164,7 @@ public class DatabaseSchemaScriptCreatorTest {
     final String constraintName = _objectUnderTest.createConstraintName("FK_", "AUFTRAG_STELLUNGNAHME_HALTUNGSTELLUNGNAHME_ZU_HALTUNG_ID_PARENT_ID__ID_", 1);
 
     assertFalse("FK_AUFTRAG_STELLUNGNAHME_HALTUNGSTELLUNGNAHME_ZU_HALTUNG_ID_PARENT_ID__ID_1".equals(constraintName));
-    assertEquals(DatabaseSchemaScriptCreator.MAX_ID_LENGTH, constraintName.length());
+    assertEquals(SchemaScriptCreatorTool.MAX_ID_LENGTH, constraintName.length());
   }
 
   @Test
