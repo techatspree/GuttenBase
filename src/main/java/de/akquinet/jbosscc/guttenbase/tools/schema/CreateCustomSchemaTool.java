@@ -2,6 +2,7 @@ package de.akquinet.jbosscc.guttenbase.tools.schema;
 
 import de.akquinet.jbosscc.guttenbase.repository.ConnectorRepository;
 import de.akquinet.jbosscc.guttenbase.tools.ScriptExecutorTool;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,9 +30,9 @@ public class CreateCustomSchemaTool
     this(connectorRepository, DatabaseSchemaScriptCreator.MAX_ID_LENGTH);
   }
 
-  public List<String> createDDLScript(final String connectorId, final String targetConnectorId) throws Exception {
+  public List<String> createDDLScript(final String sourceConnectorId, final String targetConnectorId) throws SQLException {
     final List<String> result = new ArrayList<>();
-    final DatabaseCustomSchemaScriptCreator databaseCustomSchemaScriptCreator = new DatabaseCustomSchemaScriptCreator(_connectorRepository, connectorId,
+    final DatabaseCustomSchemaScriptCreator databaseCustomSchemaScriptCreator = new DatabaseCustomSchemaScriptCreator(_connectorRepository, sourceConnectorId,
       targetConnectorId, _maxIdLength);
 
     result.addAll(databaseCustomSchemaScriptCreator.createTableStatements());
@@ -42,7 +43,7 @@ public class CreateCustomSchemaTool
     return result;
   }
 
-  public void copySchema(final String sourceConnectorId, final String targetConnectorId) throws Exception {
+  public void copySchema(final String sourceConnectorId, final String targetConnectorId) throws SQLException {
     final List<String> ddlScript = createDDLScript(sourceConnectorId, targetConnectorId);
     new ScriptExecutorTool(_connectorRepository).executeScript(targetConnectorId, ddlScript);
   }

@@ -326,5 +326,6 @@ public class ConnectorRepositoryImpl implements ConnectorRepository {
     addConnectorHint(connectorId, new DefaultTableCopyProgressIndicatorHint());
     addConnectorHint(connectorId, new DefaultScriptExecutorProgressIndicatorHint());
     addConnectorHint(connectorId, new DefaultRefreshTargetConnectionHint());
+    addConnectorHint(connectorId, new DefaultColumnTypeMapperHint());
   }
 }

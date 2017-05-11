@@ -30,7 +30,7 @@ import java.util.stream.Collectors;
 
 /**
  * Get table meta data from connection.
- *
+ * <p/>
  * (C) 2012 by akquinet tech@spree
  *
  * @author M. Dahm
@@ -102,7 +102,7 @@ public class DatabaseMetaDataInspectorTool {
         };
       }
     } catch (final Exception e) {
-      LOG.warn("Could not get meta data property:" + name, e);
+      LOG.warn("Could not get meta data property:" + name + "->" + e.getMessage());
     }
 
     return null;

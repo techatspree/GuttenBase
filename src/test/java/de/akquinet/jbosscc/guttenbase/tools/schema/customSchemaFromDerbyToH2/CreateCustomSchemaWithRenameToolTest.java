@@ -3,11 +3,11 @@ package de.akquinet.jbosscc.guttenbase.tools.schema.customSchemaFromDerbyToH2;
 
 import de.akquinet.jbosscc.guttenbase.configuration.TestDerbyConnectionInfo;
 import de.akquinet.jbosscc.guttenbase.configuration.TestH2ConnectionInfo;
-import de.akquinet.jbosscc.guttenbase.connector.DatabaseType;
-import de.akquinet.jbosscc.guttenbase.hints.*;
+import de.akquinet.jbosscc.guttenbase.hints.ColumnMapperHint;
+import de.akquinet.jbosscc.guttenbase.hints.CustomColumnRenameNameTest;
+import de.akquinet.jbosscc.guttenbase.hints.CustomTableRenameNameTest;
+import de.akquinet.jbosscc.guttenbase.hints.TableMapperHint;
 import de.akquinet.jbosscc.guttenbase.mapping.ColumnMapper;
-import de.akquinet.jbosscc.guttenbase.mapping.CustomColumnTypeMapper;
-import de.akquinet.jbosscc.guttenbase.mapping.CustomDefaultColumnTypeMapper;
 import de.akquinet.jbosscc.guttenbase.mapping.TableMapper;
 import de.akquinet.jbosscc.guttenbase.tools.AbstractGuttenBaseTest;
 import de.akquinet.jbosscc.guttenbase.tools.ScriptExecutorTool;
@@ -52,12 +52,12 @@ public class CreateCustomSchemaWithRenameToolTest extends AbstractGuttenBaseTest
       }
     });
 
-    _connectorRepository.addConnectorHint(SOURCE_CONNECTOR_ID, new CustomColumnTypeMapperHint() {
-      @Override
-      public CustomColumnTypeMapper getValue() {
-        return new CustomDefaultColumnTypeMapper(DatabaseType.DERBY, DatabaseType.H2DB);
-      }
-    });
+//    _connectorRepository.addConnectorHint(SOURCE_CONNECTOR_ID, new ColumnTypeMapperHint() {
+//      @Override
+//      public ColumnTypeMapper getValue() {
+//        return new DefaultColumnTypeMapper(DatabaseType.DERBY, DatabaseType.H2DB);
+//      }
+//    });
 
   }
 
