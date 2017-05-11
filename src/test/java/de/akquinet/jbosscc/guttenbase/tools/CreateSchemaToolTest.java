@@ -2,7 +2,7 @@ package de.akquinet.jbosscc.guttenbase.tools;
 
 import de.akquinet.jbosscc.guttenbase.configuration.TestH2ConnectionInfo;
 import de.akquinet.jbosscc.guttenbase.sql.SQLLexer;
-import de.akquinet.jbosscc.guttenbase.tools.schema.CreateSchemaTool;
+import de.akquinet.jbosscc.guttenbase.tools.schema.CopySchemaTool;
 import org.junit.Before;
 import org.junit.Test;
 import java.util.List;
@@ -13,7 +13,7 @@ public class CreateSchemaToolTest extends AbstractGuttenBaseTest {
   private static final String CONNECTOR_ID = "hsqldb";
   private static final String TARGET = "jens";
 
-  private final CreateSchemaTool _objectUnderTest = new CreateSchemaTool(_connectorRepository);
+  private final CopySchemaTool _objectUnderTest = new CopySchemaTool(_connectorRepository);
 
   @Before
   public void setup() throws Exception {
@@ -24,7 +24,7 @@ public class CreateSchemaToolTest extends AbstractGuttenBaseTest {
 
   @Test
   public void testScript() throws Exception {
-    final List<String> script = _objectUnderTest.createDDLScript(CONNECTOR_ID, _connectorRepository.getDatabaseMetaData(TARGET));
+    final List<String> script = _objectUnderTest.createDDLScript(CONNECTOR_ID, TARGET);
     final List<String> parsedScript = new SQLLexer(script).parse();
 
     assertTrue(parsedScript

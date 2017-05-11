@@ -14,8 +14,15 @@ import de.akquinet.jbosscc.guttenbase.repository.ConnectorRepository;
 import de.akquinet.jbosscc.guttenbase.utils.Util;
 import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
-
-import java.io.*;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.ObjectOutputStream;
+import java.io.PrintStream;
+import java.io.Serializable;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.Map;
@@ -26,7 +33,7 @@ import java.util.zip.ZipOutputStream;
 /**
  * Export schema information and data into executable JAR file. Since it is in ZIP file format the resulting file may as well be
  * inspected with a ZIP tool. The structure of the ZIP is based on the structure of a data base.
- *
+ * <p/>
  * <p>
  * &copy; 2012-2020 akquinet tech@spree
  * </p>
@@ -36,8 +43,7 @@ import java.util.zip.ZipOutputStream;
  * META-INF/MANIFEST.MF Main-Class entry
  * @gb.UsesHint {@link ExportDumpExtraInformationHint} to add custom information to the generated JAR
  */
-public class ZipExporter implements Exporter
-{
+public class ZipExporter implements Exporter {
   private static final Logger LOG = Logger.getLogger(ZipExporter.class);
 
   private ZipOutputStream _zipOutputStream;
@@ -52,8 +58,7 @@ public class ZipExporter implements Exporter
    */
   @Override
   public void initializeExport(final ConnectorRepository connectorRepository, final String connectorId,
-                               final ExportDumpConnectorInfo exportDumpConnectionInfo) throws IOException
-  {
+                               final ExportDumpConnectorInfo exportDumpConnectionInfo) throws IOException {
     assert exportDumpConnectionInfo != null : "exportDumpConnectionInfo != null";
     assert connectorId != null : "connectorId != null";
     assert connectorRepository != null : "connectorRepository != null";
@@ -67,7 +72,7 @@ public class ZipExporter implements Exporter
     _zipOutputStream = new ZipOutputStream(fos);
 
     final ZipExporterClassResources zipExporterClassResources = connectorRepository.getConnectorHint(connectorId,
-            ZipExporterClassResources.class).getValue();
+      ZipExporterClassResources.class).getValue();
     addClassesToJar(connectorRepository, connectorId, zipExporterClassResources);
 
     writeManifestEntry(zipExporterClassResources);
@@ -77,12 +82,11 @@ public class ZipExporter implements Exporter
    * {@inheritDoc}
    */
   @Override
-  public void finishExport() throws Exception
-  {
+  public void finishExport() throws Exception {
     writeExtraInformation();
 
     final ZipExporterClassResources zipExporterClassResources = _connectorRepository.getConnectorHint(_connectorId,
-            ZipExporterClassResources.class).getValue();
+      ZipExporterClassResources.class).getValue();
     addResourcesToJar(zipExporterClassResources);
     _zipOutputStream.close();
     _zipOutputStream = null;
@@ -92,12 +96,10 @@ public class ZipExporter implements Exporter
    * {@inheritDoc}
    */
   @Override
-  public void writeDatabaseMetaData(final DatabaseMetaData databaseMetaData) throws IOException
-  {
+  public void writeDatabaseMetaData(final DatabaseMetaData databaseMetaData) throws IOException, SQLException {
     writeDatabaseEntry(databaseMetaData);
 
-    for (final TableMetaData tableMetaData : databaseMetaData.getTableMetaData())
-    {
+    for (final TableMetaData tableMetaData : databaseMetaData.getTableMetaData()) {
       writeTableEntry(tableMetaData);
       writeColumnEntries(tableMetaData);
       writeIndexEntries(tableMetaData);
@@ -106,22 +108,20 @@ public class ZipExporter implements Exporter
 
   /**
    * {@inheritDoc}
-   *
+   * <p/>
    * Does nothing.
    */
   @Override
-  public void writeTableHeader(final ExportTableHeader exportTableHeader) throws IOException
-  {
+  public void writeTableHeader(final ExportTableHeader exportTableHeader) throws IOException, SQLException {
   }
 
   /**
    * {@inheritDoc}
-   *
+   * <p/>
    * Open new ZIP entry. Data will be written to a temporary file first, because otherwise it may exceed the memory.
    */
   @Override
-  public void initializeWriteTableData(final TableMetaData tableMetaData) throws IOException
-  {
+  public void initializeWriteTableData(final TableMetaData tableMetaData) throws IOException {
     newEntry(ZipConstants.PREFIX + tableMetaData.getTableName() + ZipConstants.PATH_SEPARATOR + ZipConstants.TABLE_DATA_NAME);
 
     _tempFile = File.createTempFile("GB-JAR-", null);
@@ -132,12 +132,11 @@ public class ZipExporter implements Exporter
 
   /**
    * {@inheritDoc}
-   *
+   * <p/>
    * Close current ZIP entry.
    */
   @Override
-  public void finalizeWriteTableData(final TableMetaData table) throws IOException
-  {
+  public void finalizeWriteTableData(final TableMetaData table) throws IOException {
     _objectOutputStream.close();
 
     final FileInputStream fis = new FileInputStream(_tempFile);
@@ -152,78 +151,67 @@ public class ZipExporter implements Exporter
 
   /**
    * {@inheritDoc}
-   *
+   * <p/>
    * Does nothing.
    */
   @Override
-  public void initializeWriteRowData(final TableMetaData table)
-  {
+  public void initializeWriteRowData(final TableMetaData table) {
   }
 
   /**
    * {@inheritDoc}
-   *
+   * <p/>
    * Does nothing.
    */
   @Override
-  public void finalizeWriteRowData(final TableMetaData table)
-  {
+  public void finalizeWriteRowData(final TableMetaData table) {
   }
 
   /**
    * Resets the output stream which reduces memory foot print drastically. See {@link ObjectOutputStream#reset()} for details.
    */
   @Override
-  public void flush() throws IOException
-  {
-    if (_objectOutputStream != null)
-    {
+  public void flush() throws IOException {
+    if (_objectOutputStream != null) {
       _objectOutputStream.reset();
       _objectOutputStream.flush();
     }
   }
 
   @Override
-  public void writeObject(final Object obj) throws IOException
-  {
+  public void writeObject(final Object obj) throws IOException {
     _objectOutputStream.writeObject(obj);
   }
 
-  private void writeIndexEntries(final TableMetaData tableMetaData) throws IOException
-  {
+  private void writeIndexEntries(final TableMetaData tableMetaData) throws IOException {
     final String indexPath = ZipConstants.PREFIX + tableMetaData.getTableName() + ZipConstants.PATH_SEPARATOR
-            + ZipConstants.INDEX_NAME + ZipConstants.PATH_SEPARATOR;
+      + ZipConstants.INDEX_NAME + ZipConstants.PATH_SEPARATOR;
 
-    for (final IndexMetaData indexMetaData : tableMetaData.getIndexes())
-    {
+    for (final IndexMetaData indexMetaData : tableMetaData.getIndexes()) {
       newEntry(indexPath + indexMetaData.getIndexName() + ".txt");
       new ZipIndexMetaDataWriter().writeIndexMetaDataEntry(indexMetaData).store("Index meta data", _zipOutputStream);
       closeEntry();
     }
   }
 
-  private void writeColumnEntries(final TableMetaData tableMetaData) throws IOException
-  {
+  private void writeColumnEntries(final TableMetaData tableMetaData) throws IOException {
     final String columnPath = ZipConstants.PREFIX + tableMetaData.getTableName() + ZipConstants.PATH_SEPARATOR
-            + ZipConstants.COLUMN_NAME + ZipConstants.PATH_SEPARATOR;
+      + ZipConstants.COLUMN_NAME + ZipConstants.PATH_SEPARATOR;
 
-    for (final ColumnMetaData columnMetaData : tableMetaData.getColumnMetaData())
-    {
+    for (final ColumnMetaData columnMetaData : tableMetaData.getColumnMetaData()) {
       newEntry(columnPath + columnMetaData.getColumnName() + ".txt");
       new ZipColumnMetaDataWriter().writeColumnMetaDataEntry(columnMetaData).store("Column meta data", _zipOutputStream);
       closeEntry();
     }
   }
 
-  private void writeTableEntry(final TableMetaData tableMetaData) throws IOException
-  {
+  private void writeTableEntry(final TableMetaData tableMetaData) throws IOException {
     newEntry(ZipConstants.PREFIX + tableMetaData.getTableName() + ZipConstants.PATH_SEPARATOR + ZipConstants.TABLE_INFO_NAME);
     new ZipTableMetaDataWriter().writeTableMetaDataEntry(tableMetaData).store("Table meta data", _zipOutputStream);
     closeEntry();
   }
 
-  private void writeDatabaseEntry(final DatabaseMetaData databaseMetaData) throws IOException
-  {
+  private void writeDatabaseEntry(final DatabaseMetaData databaseMetaData) throws IOException, SQLException {
     newEntry(ZipConstants.PREFIX + ZipConstants.DBINFO_NAME);
     new ZipDatabaseMetaDataWriter().writeDatabaseMetaDataEntry(databaseMetaData).store("Database meta data", _zipOutputStream);
     closeEntry();
@@ -233,51 +221,41 @@ public class ZipExporter implements Exporter
     closeEntry();
   }
 
-  private void newEntry(final String name) throws IOException
-  {
+  private void newEntry(final String name) throws IOException {
     _zipOutputStream.putNextEntry(new ZipEntry(name));
   }
 
-  private void closeEntry() throws IOException
-  {
+  private void closeEntry() throws IOException {
     _zipOutputStream.closeEntry();
   }
 
   private void addClassesToJar(final ConnectorRepository connectorRepository, final String connectorId,
-                               final ZipExporterClassResources zipExporterClassResources) throws IOException
-  {
+                               final ZipExporterClassResources zipExporterClassResources) throws IOException {
     final ZipClassesFromClassResourceExporter zipClassesFromClassResourceExporter = new ZipClassesFromClassResourceExporter(
-            _zipOutputStream);
+      _zipOutputStream);
 
-    for (final Class<?> clazz : zipExporterClassResources.getClassResources())
-    {
+    for (final Class<?> clazz : zipExporterClassResources.getClassResources()) {
       zipClassesFromClassResourceExporter.copyClassesToZip(clazz);
     }
   }
 
-  private void addResourcesToJar(final ZipExporterClassResources zipExporterClassResources) throws IOException
-  {
+  private void addResourcesToJar(final ZipExporterClassResources zipExporterClassResources) throws IOException {
     final ZipResourceExporter zipResourceExporter = new ZipResourceExporter(_zipOutputStream);
 
-    for (final Entry<String, URL> entry : zipExporterClassResources.getUrlResources().entrySet())
-    {
+    for (final Entry<String, URL> entry : zipExporterClassResources.getUrlResources().entrySet()) {
       final URL url = entry.getValue();
       final String key = entry.getKey();
 
-      if (url != null)
-      {
+      if (url != null) {
         final InputStream stream = url.openStream();
         zipResourceExporter.addEntry(key, stream);
-      }
-      else
-      {
+      } else {
         LOG.warn("Could not add null URL content for " + key);
       }
     }
   }
 
-  private void writeManifestEntry(final ZipExporterClassResources zipExporterClassResources) throws IOException
-  {
+  private void writeManifestEntry(final ZipExporterClassResources zipExporterClassResources) throws IOException {
     newEntry(ZipConstants.MANIFEST_NAME);
     final ByteArrayOutputStream bos = new ByteArrayOutputStream();
     final PrintStream printStream = new PrintStream(bos);
@@ -289,16 +267,14 @@ public class ZipExporter implements Exporter
     closeEntry();
   }
 
-  private void writeExtraInformation() throws SQLException, IOException
-  {
+  private void writeExtraInformation() throws SQLException, IOException {
     final ExportDumpExtraInformation exportDumpExtraInformation = _connectorRepository.getConnectorHint(_connectorId,
-            ExportDumpExtraInformation.class).getValue();
+      ExportDumpExtraInformation.class).getValue();
 
     final Map<String, Serializable> extraInformation = exportDumpExtraInformation.getExtraInformation(_connectorRepository,
-            _connectorId, _exportDumpConnectionInfo);
+      _connectorId, _exportDumpConnectionInfo);
 
-    for (final Entry<String, Serializable> entry : extraInformation.entrySet())
-    {
+    for (final Entry<String, Serializable> entry : extraInformation.entrySet()) {
       newEntry(ZipConstants.EXTRA_INFO + ZipConstants.PATH_SEPARATOR + entry.getKey());
       final byte[] byteArray = Util.toByteArray(entry.getValue());
       _zipOutputStream.write(byteArray);

@@ -3,25 +3,27 @@ package de.akquinet.jbosscc.guttenbase.tools.schema.customSchemaFromH2ToDerby;
 
 import de.akquinet.jbosscc.guttenbase.configuration.TestDerbyConnectionInfo;
 import de.akquinet.jbosscc.guttenbase.configuration.TestH2ConnectionInfo;
-import de.akquinet.jbosscc.guttenbase.connector.DatabaseType;
-import de.akquinet.jbosscc.guttenbase.hints.*;
+import de.akquinet.jbosscc.guttenbase.hints.ColumnMapperHint;
+import de.akquinet.jbosscc.guttenbase.hints.TableMapperHint;
+import de.akquinet.jbosscc.guttenbase.hints.TestColumnNameFilterHint;
+import de.akquinet.jbosscc.guttenbase.hints.TestColumnRenameNameMapper;
+import de.akquinet.jbosscc.guttenbase.hints.TestTableNameFilterHint;
+import de.akquinet.jbosscc.guttenbase.hints.TestTableRenameNameMapper;
 import de.akquinet.jbosscc.guttenbase.mapping.ColumnMapper;
-import de.akquinet.jbosscc.guttenbase.mapping.CustomColumnTypeMapper;
-import de.akquinet.jbosscc.guttenbase.mapping.CustomDefaultColumnTypeMapper;
 import de.akquinet.jbosscc.guttenbase.mapping.TableMapper;
 import de.akquinet.jbosscc.guttenbase.tools.AbstractGuttenBaseTest;
 import de.akquinet.jbosscc.guttenbase.tools.ScriptExecutorTool;
-import de.akquinet.jbosscc.guttenbase.tools.schema.CreateCustomSchemaTool;
+import de.akquinet.jbosscc.guttenbase.tools.schema.CopySchemaTool;
 import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 
-public class CreateCustomSchemaWithAllFilternToolTest extends AbstractGuttenBaseTest {
+public class CreateSchemaWithAllFiltersToolTest extends AbstractGuttenBaseTest {
     private static final String SOURCE_CONNECTOR_ID = "hsqldb";
     private static final String TARGET_CONNECTOR_ID = "derby";
 
-    private final CreateCustomSchemaTool _objectUnderTest = new CreateCustomSchemaTool(_connectorRepository);
+  private final CopySchemaTool _objectUnderTest = new CopySchemaTool(_connectorRepository);
 
     @Before
     public void setup() throws Exception {
@@ -33,7 +35,7 @@ public class CreateCustomSchemaWithAllFilternToolTest extends AbstractGuttenBase
         _connectorRepository.addConnectorHint(TARGET_CONNECTOR_ID, new TableMapperHint() {
             @Override
             public TableMapper getValue() {
-                return new CustomTableRenameNameTest()
+              return new TestTableRenameNameMapper()
                         .addReplacement("OFFICES", "TAB_OFFICES")
                         .addReplacement("ORDERS", "TAB_ORDERS");
             }
@@ -42,7 +44,7 @@ public class CreateCustomSchemaWithAllFilternToolTest extends AbstractGuttenBase
         _connectorRepository.addConnectorHint(TARGET_CONNECTOR_ID, new ColumnMapperHint() {
             @Override
             public ColumnMapper getValue() {
-                return new CustomColumnRenameNameTest()
+              return new TestColumnRenameNameMapper()
                         .addReplacement("OFFICECODE", "ID_OFFICECODE")
                         .addReplacement("ORDERNUMBER", "ID_ORDERNUMBER")
                         .addReplacement("PHONE", "ID_PHONE")
@@ -50,13 +52,13 @@ public class CreateCustomSchemaWithAllFilternToolTest extends AbstractGuttenBase
             }
         });
 
-        //ConnectionHint for Mapping ColumnType
-        _connectorRepository.addConnectorHint(SOURCE_CONNECTOR_ID, new CustomColumnTypeMapperHint() {
-            @Override
-            public CustomColumnTypeMapper getValue() {
-                return new CustomDefaultColumnTypeMapper(DatabaseType.H2DB, DatabaseType.DERBY);
-            }
-        });
+//        //ConnectionHint for Mapping ColumnType
+//        _connectorRepository.addConnectorHint(SOURCE_CONNECTOR_ID, new ColumnTypeMapperHint() {
+//            @Override
+//            public ColumnTypeMapper getValue() {
+//                return new DefaultColumnTypeMapper(DatabaseType.H2DB, DatabaseType.DERBY);
+//            }
+//        });
 
     }
 
@@ -82,8 +84,8 @@ public class CreateCustomSchemaWithAllFilternToolTest extends AbstractGuttenBase
         assertEquals("Before", 13, _connectorRepository.getDatabaseMetaData(SOURCE_CONNECTOR_ID).getTableMetaData("CUSTOMERS").getColumnCount());
         assertEquals("Before", 8, _connectorRepository.getDatabaseMetaData(SOURCE_CONNECTOR_ID).getTableMetaData("EMPLOYEES").getColumnCount());
 
-        _connectorRepository.addConnectorHint(SOURCE_CONNECTOR_ID, new CustomTableNameFilterTest());
-        _connectorRepository.addConnectorHint(SOURCE_CONNECTOR_ID, new CustomColumnNameFilterTest());
+      _connectorRepository.addConnectorHint(SOURCE_CONNECTOR_ID, new TestTableNameFilterHint());
+      _connectorRepository.addConnectorHint(SOURCE_CONNECTOR_ID, new TestColumnNameFilterHint());
         _connectorRepository.refreshDatabaseMetaData(SOURCE_CONNECTOR_ID);
 
         assertEquals("After", 9, _connectorRepository.getDatabaseMetaData(SOURCE_CONNECTOR_ID).getTableMetaData().size());

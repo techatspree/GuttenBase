@@ -1,13 +1,12 @@
 package de.akquinet.jbosscc.guttenbase.tools;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-
+import de.akquinet.jbosscc.guttenbase.configuration.TestH2DataSourceConnectionInfo;
+import de.akquinet.jbosscc.guttenbase.meta.DatabaseMetaData;
 import org.junit.Before;
 import org.junit.Test;
 
-import de.akquinet.jbosscc.guttenbase.configuration.TestH2DataSourceConnectionInfo;
-import de.akquinet.jbosscc.guttenbase.meta.DatabaseMetaData;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 public class DatabaseSourceConnectorTest extends AbstractGuttenBaseTest {
   private static final String CONNECTOR_ID = "h2";
@@ -23,6 +22,6 @@ public class DatabaseSourceConnectorTest extends AbstractGuttenBaseTest {
   public void testMetaData() throws Exception {
     final DatabaseMetaData databaseMetaData = _connectorRepository.getDatabaseMetaData(CONNECTOR_ID);
     assertNotNull(databaseMetaData);
-    assertEquals("H2", databaseMetaData.getDatabaseName());
+    assertEquals("H2", databaseMetaData.getDatabaseMetaData().getDatabaseProductName());
   }
 }

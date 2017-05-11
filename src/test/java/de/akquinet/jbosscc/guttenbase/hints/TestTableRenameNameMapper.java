@@ -3,7 +3,6 @@ package de.akquinet.jbosscc.guttenbase.hints;
 import de.akquinet.jbosscc.guttenbase.mapping.TableMapper;
 import de.akquinet.jbosscc.guttenbase.meta.DatabaseMetaData;
 import de.akquinet.jbosscc.guttenbase.meta.TableMetaData;
-
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
@@ -17,14 +16,12 @@ import java.util.Map;
  *
  * @author M. Dahm
  */
-public class CustomTableRenameNameTest implements TableMapper {
-
-
+public class TestTableRenameNameMapper implements TableMapper {
     private final Map<String, String> replacementsTables = new HashMap<>();
     private final CaseConversionMode _caseConversionMode;
     private final boolean _addSchema;
 
-    public CustomTableRenameNameTest(final CaseConversionMode caseConversionMode, final boolean addSchema) {
+    public TestTableRenameNameMapper(final CaseConversionMode caseConversionMode, final boolean addSchema) {
         assert caseConversionMode != null : "caseConversionMode != null";
         _caseConversionMode = caseConversionMode;
         _addSchema = addSchema;
@@ -34,7 +31,7 @@ public class CustomTableRenameNameTest implements TableMapper {
         // addReplacement("orderdetails", "tab_ordersdetails");
     }
 
-    public CustomTableRenameNameTest() {
+    public TestTableRenameNameMapper() {
         this(CaseConversionMode.NONE, true);
     }
 
@@ -66,7 +63,7 @@ public class CustomTableRenameNameTest implements TableMapper {
         }
     }
 
-    public CustomTableRenameNameTest addReplacement(final String sourceTable, final String targetTable) {
+    public TestTableRenameNameMapper addReplacement(final String sourceTable, final String targetTable) {
         replacementsTables.put(sourceTable, targetTable);
 
         return this;

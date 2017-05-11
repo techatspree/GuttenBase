@@ -35,9 +35,9 @@ public class DefaultTableMapper implements TableMapper {
   @Override
   public String fullyQualifiedTableName(final TableMetaData source, final DatabaseMetaData targetDatabaseMetaData)
     throws SQLException {
-    final String schema = targetDatabaseMetaData.getSchemaPrefix();
+    final String schemaPrefix = targetDatabaseMetaData.getSchemaPrefix();
 
-    return schema + mapTableName(source, targetDatabaseMetaData);
+    return schemaPrefix + mapTableName(source, targetDatabaseMetaData);
   }
 
   @Override
