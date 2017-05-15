@@ -1,18 +1,17 @@
 package de.akquinet.jbosscc.guttenbase.configuration.impl;
 
+import de.akquinet.jbosscc.guttenbase.meta.DatabaseMetaData;
+import de.akquinet.jbosscc.guttenbase.repository.ConnectorRepository;
 import java.sql.Connection;
 import java.sql.SQLException;
 
-import de.akquinet.jbosscc.guttenbase.meta.DatabaseMetaData;
-import de.akquinet.jbosscc.guttenbase.repository.ConnectorRepository;
-
 /**
  * Implementation for HSQLDB data base.
- * 
+ *
  * <p>
  * &copy; 2012-2020 akquinet tech@spree
  * </p>
- * 
+ *
  * @author M. Dahm
  */
 public class HsqldbTargetDatabaseConfiguration extends DefaultTargetDatabaseConfiguration {
@@ -42,7 +41,7 @@ public class HsqldbTargetDatabaseConfiguration extends DefaultTargetDatabaseConf
 
   private void setReferentialIntegrity(final Connection connection, final boolean enable, final DatabaseMetaData databaseMetaData)
       throws SQLException {
-    final int databaseMajorVersion = databaseMetaData.getMajorVersion();
+    final int databaseMajorVersion = databaseMetaData.getDatabaseMetaData().getDatabaseMajorVersion();
     final String referentialIntegrity = enable ? "TRUE" : "FALSE";
 
     final String command = databaseMajorVersion < 2 ? "SET REFERENTIAL_INTEGRITY " : "SET DATABASE REFERENTIAL INTEGRITY ";

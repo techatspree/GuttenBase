@@ -1,16 +1,5 @@
 package de.akquinet.jbosscc.guttenbase.tools;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-
-import java.io.File;
-import java.io.Serializable;
-import java.util.HashMap;
-import java.util.Map;
-
-import org.junit.Before;
-import org.junit.Test;
-
 import de.akquinet.jbosscc.guttenbase.configuration.TestDerbyConnectionInfo;
 import de.akquinet.jbosscc.guttenbase.configuration.TestHsqlConnectionInfo;
 import de.akquinet.jbosscc.guttenbase.export.ExportDumpConnectorInfo;
@@ -19,6 +8,17 @@ import de.akquinet.jbosscc.guttenbase.export.ImportDumpConnectionInfo;
 import de.akquinet.jbosscc.guttenbase.export.ImportDumpExtraInformation;
 import de.akquinet.jbosscc.guttenbase.hints.ExportDumpExtraInformationHint;
 import de.akquinet.jbosscc.guttenbase.hints.ImportDumpExtraInformationHint;
+import de.akquinet.jbosscc.guttenbase.tools.schema.comparison.SchemaComparatorTool;
+import org.junit.Before;
+import org.junit.Test;
+import java.io.File;
+import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Map;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
 
 @SuppressWarnings("deprecation")
 public abstract class AbstractExportImportDumpTest extends AbstractGuttenBaseTest {
@@ -71,8 +71,8 @@ public abstract class AbstractExportImportDumpTest extends AbstractGuttenBaseTes
       insertBinaryData(CONNECTOR_ID1, i);
     }
 
-    new CheckSchemaCompatibilityTool(_connectorRepository).checkTableConfiguration(CONNECTOR_ID1, EXPORT);
-    new CheckSchemaCompatibilityTool(_connectorRepository).checkTableConfiguration(CONNECTOR_ID1, CONNECTOR_ID2);
+    assertFalse(new SchemaComparatorTool(_connectorRepository).check(CONNECTOR_ID1, EXPORT).isSevere());
+    assertFalse(new SchemaComparatorTool(_connectorRepository).check(CONNECTOR_ID1, CONNECTOR_ID2).isSevere());
 
     new DefaultTableCopyTool(_connectorRepository).copyTables(CONNECTOR_ID1, EXPORT);
     new DefaultTableCopyTool(_connectorRepository).copyTables(IMPORT, CONNECTOR_ID2);

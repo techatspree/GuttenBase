@@ -1,18 +1,18 @@
 package de.akquinet.jbosscc.guttenbase.export.zip;
 
-import java.io.IOException;
-import java.util.Iterator;
-
 import de.akquinet.jbosscc.guttenbase.meta.DatabaseMetaData;
 import de.akquinet.jbosscc.guttenbase.meta.TableMetaData;
+import java.io.IOException;
+import java.sql.SQLException;
+import java.util.Iterator;
 
 /**
  * Write ZIP file entry containing information about data base such as schema or version.
- * 
+ * <p/>
  * <p>
  * &copy; 2012-2020 akquinet tech@spree
  * </p>
- * 
+ *
  * @author M. Dahm
  */
 @SuppressWarnings("RedundantThrows")
@@ -24,11 +24,11 @@ public class ZipDatabaseMetaDataWriter extends ZipAbstractMetaDataWriter {
   public static final String DATABASE_SCHEMA = "Database-Schema";
   public static final String TABLE_NAME = "Table-Name";
 
-  public ZipDatabaseMetaDataWriter writeDatabaseMetaDataEntry(final DatabaseMetaData databaseMetaData) throws IOException {
+  public ZipDatabaseMetaDataWriter writeDatabaseMetaDataEntry(final DatabaseMetaData databaseMetaData) throws IOException, SQLException {
     setProperty(DATABASE_SCHEMA, databaseMetaData.getSchema());
-    setProperty(DATABASE_NAME, databaseMetaData.getDatabaseName());
-    setProperty(DATABASE_MAJOR_VERSION, String.valueOf(databaseMetaData.getMajorVersion()));
-    setProperty(DATABASE_MINOR_VERSION, String.valueOf(databaseMetaData.getMinorVersion()));
+    setProperty(DATABASE_NAME, databaseMetaData.getDatabaseMetaData().getDatabaseProductName());
+    setProperty(DATABASE_MAJOR_VERSION, String.valueOf(databaseMetaData.getDatabaseMetaData().getDatabaseMajorVersion()));
+    setProperty(DATABASE_MINOR_VERSION, String.valueOf(databaseMetaData.getDatabaseMetaData().getDatabaseMinorVersion()));
     setProperty(DATABASE_TYPE, databaseMetaData.getDatabaseType().name());
 
     int i = 1;

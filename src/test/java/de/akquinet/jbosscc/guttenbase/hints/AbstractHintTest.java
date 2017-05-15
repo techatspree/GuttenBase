@@ -1,15 +1,16 @@
 package de.akquinet.jbosscc.guttenbase.hints;
 
-import org.junit.Before;
-import org.junit.Test;
-
 import de.akquinet.jbosscc.guttenbase.configuration.TestDerbyConnectionInfo;
 import de.akquinet.jbosscc.guttenbase.configuration.TestH2ConnectionInfo;
 import de.akquinet.jbosscc.guttenbase.tools.AbstractGuttenBaseTest;
 import de.akquinet.jbosscc.guttenbase.tools.CheckEqualTableDataTool;
-import de.akquinet.jbosscc.guttenbase.tools.CheckSchemaCompatibilityTool;
 import de.akquinet.jbosscc.guttenbase.tools.DefaultTableCopyTool;
 import de.akquinet.jbosscc.guttenbase.tools.ScriptExecutorTool;
+import de.akquinet.jbosscc.guttenbase.tools.schema.comparison.SchemaComparatorTool;
+import org.junit.Before;
+import org.junit.Test;
+
+import static org.junit.Assert.assertFalse;
 
 /**
  * Super class for Hint tests
@@ -46,9 +47,11 @@ public abstract class AbstractHintTest extends AbstractGuttenBaseTest {
 
   @Test
   public void testTableCopy() throws Exception {
-    new CheckSchemaCompatibilityTool(_connectorRepository).checkTableConfiguration(SOURCE, TARGET);
+    assertFalse(new SchemaComparatorTool(_connectorRepository).check(SOURCE, TARGET).isSevere());
+
     new DefaultTableCopyTool(_connectorRepository).copyTables(SOURCE, TARGET);
     new CheckEqualTableDataTool(_connectorRepository).checkTableData(SOURCE, TARGET);
+
     executeChecks();
   }
 

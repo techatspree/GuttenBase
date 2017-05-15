@@ -2,8 +2,7 @@ package de.akquinet.jbosscc.guttenbase.exceptions;
 
 import de.akquinet.jbosscc.guttenbase.statements.InsertStatementFiller;
 import de.akquinet.jbosscc.guttenbase.tools.CheckEqualTableDataTool;
-import de.akquinet.jbosscc.guttenbase.tools.CheckSchemaCompatibilityTool;
-
+import de.akquinet.jbosscc.guttenbase.tools.schema.comparison.SchemaComparatorTool;
 import java.sql.SQLException;
 
 /**
@@ -14,7 +13,7 @@ import java.sql.SQLException;
  * </p>
  *
  * @see InsertStatementFiller
- * @see CheckSchemaCompatibilityTool
+ * @see SchemaComparatorTool
  * @see CheckEqualTableDataTool
  *
  * @author M. Dahm

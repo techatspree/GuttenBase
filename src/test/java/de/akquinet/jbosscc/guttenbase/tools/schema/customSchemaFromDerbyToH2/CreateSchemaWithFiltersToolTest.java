@@ -2,8 +2,8 @@ package de.akquinet.jbosscc.guttenbase.tools.schema.customSchemaFromDerbyToH2;
 
 
 import de.akquinet.jbosscc.guttenbase.configuration.TestDerbyConnectionInfo;
-import de.akquinet.jbosscc.guttenbase.hints.CustomColumnNameFilterTest;
-import de.akquinet.jbosscc.guttenbase.hints.CustomTableNameFilterTest;
+import de.akquinet.jbosscc.guttenbase.hints.TestColumnNameFilterHint;
+import de.akquinet.jbosscc.guttenbase.hints.TestTableNameFilterHint;
 import de.akquinet.jbosscc.guttenbase.tools.AbstractGuttenBaseTest;
 import de.akquinet.jbosscc.guttenbase.tools.ScriptExecutorTool;
 import org.junit.Before;
@@ -11,7 +11,7 @@ import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 
-public class CreateCustomSchemaWithFilternToolTest extends AbstractGuttenBaseTest
+public class CreateSchemaWithFiltersToolTest extends AbstractGuttenBaseTest
 {
   private static final String SOURCE_CONNECTOR_ID = "derby";
 
@@ -31,8 +31,8 @@ public class CreateCustomSchemaWithFilternToolTest extends AbstractGuttenBaseTes
     assertEquals("Before", 13, _connectorRepository.getDatabaseMetaData(SOURCE_CONNECTOR_ID).getTableMetaData("CUSTOMERS").getColumnCount());
     assertEquals("Before", 8, _connectorRepository.getDatabaseMetaData(SOURCE_CONNECTOR_ID).getTableMetaData("EMPLOYEES").getColumnCount());
 
-    _connectorRepository.addConnectorHint(SOURCE_CONNECTOR_ID, new CustomTableNameFilterTest());
-    _connectorRepository.addConnectorHint(SOURCE_CONNECTOR_ID, new CustomColumnNameFilterTest());
+    _connectorRepository.addConnectorHint(SOURCE_CONNECTOR_ID, new TestTableNameFilterHint());
+    _connectorRepository.addConnectorHint(SOURCE_CONNECTOR_ID, new TestColumnNameFilterHint());
     _connectorRepository.refreshDatabaseMetaData(SOURCE_CONNECTOR_ID);
 
     assertEquals("After", 9, _connectorRepository.getDatabaseMetaData(SOURCE_CONNECTOR_ID).getTableMetaData().size());

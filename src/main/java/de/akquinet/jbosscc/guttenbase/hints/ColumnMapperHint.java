@@ -3,7 +3,6 @@ package de.akquinet.jbosscc.guttenbase.hints;
 import de.akquinet.jbosscc.guttenbase.mapping.ColumnMapper;
 import de.akquinet.jbosscc.guttenbase.statements.AbstractStatementCreator;
 import de.akquinet.jbosscc.guttenbase.tools.AbstractTableCopyTool;
-import de.akquinet.jbosscc.guttenbase.tools.CheckSchemaCompatibilityTool;
 import de.akquinet.jbosscc.guttenbase.tools.CheckEqualTableDataTool;
 
 /**
@@ -18,7 +17,7 @@ import de.akquinet.jbosscc.guttenbase.tools.CheckEqualTableDataTool;
  *
  * @gb.ApplicableForTarget
  * @gb.HintUsedBy {@link CheckEqualTableDataTool} to map columns
- * @gb.HintUsedBy {@link CheckSchemaCompatibilityTool} to map columns
+ * @gb.HintUsedBy {@link de.akquinet.jbosscc.guttenbase.tools.schema.comparison.SchemaComparatorTool} to map columns
  * @gb.HintUsedBy {@link AbstractTableCopyTool} to map columns
  * @gb.HintUsedBy {@link AbstractStatementCreator} to map columns
  *

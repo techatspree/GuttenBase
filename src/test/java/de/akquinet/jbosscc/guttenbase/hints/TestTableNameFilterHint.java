@@ -5,9 +5,7 @@ import de.akquinet.jbosscc.guttenbase.repository.RepositoryTableFilter;
 /**
  * Created by mfehler on 26.04.17.
  */
-public class CustomTableNameFilterTest extends RepositoryTableFilterHint {
-
-
+public class TestTableNameFilterHint extends RepositoryTableFilterHint {
     @Override
     public RepositoryTableFilter getValue() {
         return table -> {
