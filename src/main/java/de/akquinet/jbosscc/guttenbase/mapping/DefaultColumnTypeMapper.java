@@ -1,10 +1,11 @@
 package de.akquinet.jbosscc.guttenbase.mapping;
 
-import de.akquinet.jbosscc.guttenbase.connector.DatabaseType;
-import de.akquinet.jbosscc.guttenbase.meta.ColumnMetaData;
 import java.sql.Types;
 import java.util.HashMap;
 import java.util.Map;
+
+import de.akquinet.jbosscc.guttenbase.connector.DatabaseType;
+import de.akquinet.jbosscc.guttenbase.meta.ColumnMetaData;
 
 /**
  * Default uses same data type as source
@@ -28,8 +29,7 @@ public class DefaultColumnTypeMapper implements ColumnTypeMapper {
   public String mapColumnType(final ColumnMetaData columnMetaData,
                               final DatabaseType sourceDatabaseType, final DatabaseType targetDatabaseType) {
     final String columnType = columnMetaData.getColumnTypeName().toUpperCase();
-
-    String targetColumnType = getMapping(sourceDatabaseType, targetDatabaseType, columnType);
+    final String targetColumnType = getMapping(sourceDatabaseType, targetDatabaseType, columnType);
 
     if (targetColumnType != null) {
       return targetColumnType;
@@ -57,8 +57,7 @@ public class DefaultColumnTypeMapper implements ColumnTypeMapper {
     }
   }
 
-
-  public String getMapping(DatabaseType sourceDB, DatabaseType targetDB, String columnType) {
+  public String getMapping(final DatabaseType sourceDB, final DatabaseType targetDB, final String columnType) {
 
     final Map<DatabaseType, Map<String, String>> databaseMatrix = _mappings.get(sourceDB);
 
@@ -73,7 +72,7 @@ public class DefaultColumnTypeMapper implements ColumnTypeMapper {
     return null;
   }
 
-  public final DefaultColumnTypeMapper addMapping(DatabaseType sourceDB, DatabaseType targetDB, String sourceTypeName, String targetTypeName) {
+  public final DefaultColumnTypeMapper addMapping(final DatabaseType sourceDB, final DatabaseType targetDB, final String sourceTypeName, String targetTypeName) {
     final Map<DatabaseType, Map<String, String>> databaseMatrix = _mappings.computeIfAbsent(sourceDB, k -> new HashMap<>());
     final Map<String, String> mapping = databaseMatrix.computeIfAbsent(targetDB, k -> new HashMap<>());
 
@@ -82,7 +81,6 @@ public class DefaultColumnTypeMapper implements ColumnTypeMapper {
   }
 
   private void createPostgresToMysqlMapping() {
-
     addMapping(DatabaseType.POSTGRESQL, DatabaseType.MYSQL, "ARRAY", "LONGTEXT");
     addMapping(DatabaseType.POSTGRESQL, DatabaseType.MYSQL, "BIGSERIAL", "BIGINT");
     addMapping(DatabaseType.POSTGRESQL, DatabaseType.MYSQL, "BOOLEAN", "TINYINT(1)");
@@ -231,7 +229,6 @@ public class DefaultColumnTypeMapper implements ColumnTypeMapper {
     addMapping(DatabaseType.MSSQL, DatabaseType.ORACLE, "UNIQUEIDENTIFIER", "CHAR(36)");
     addMapping(DatabaseType.MSSQL, DatabaseType.ORACLE, "VARBINARY", "RAW");
     addMapping(DatabaseType.MSSQL, DatabaseType.ORACLE, "VARCHAR", "VARCHAR2");
-
   }
 
 }
