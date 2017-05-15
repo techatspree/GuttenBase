@@ -28,8 +28,6 @@ public class DefaultColumnTypeMapper implements ColumnTypeMapper {
     createMysqltoDB2Mapping();
     createPostgrestoDB2Mapping();
 
-
-
   }
 
   @Override
