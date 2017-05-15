@@ -23,6 +23,13 @@ public class DefaultColumnTypeMapper implements ColumnTypeMapper {
     createMSSQLToOracle();
     createH2ToDerbyMapping();
     createDerbyToH2Mapping();
+    createDB2ToMysqlMapping();
+    createDB2ToPostgresMapping();
+    createMysqltoDB2Mapping();
+    createPostgrestoDB2Mapping();
+
+
+
   }
 
   @Override
@@ -126,6 +133,50 @@ public class DefaultColumnTypeMapper implements ColumnTypeMapper {
     addMapping(DatabaseType.DERBY, DatabaseType.H2DB, "LONGBLOB", "BLOB");
 
   }
+
+  private void createMysqltoDB2Mapping() {
+
+    //TODO - ergänzen
+    https://www.ibm.com/developerworks/data/library/techarticle/dm-0606khatri/
+
+    addMapping(DatabaseType.MYSQL, DatabaseType.DB2, "LONGTEXT", "VARCHAR(40000)"); //CHAR(254)
+    addMapping(DatabaseType.MYSQL, DatabaseType.DB2, "LONGBLOB", "BLOB"); //CLOB (2G)
+    addMapping(DatabaseType.MYSQL, DatabaseType.DB2, "DECIMAL", "DECIMAL(16)"); //CLOB (2G)
+
+  }
+
+  private void createPostgrestoDB2Mapping() {
+
+    //TODO - ergänzen
+    https://www.ibm.com/developerworks/data/library/techarticle/dm-0606khatri/
+
+    addMapping(DatabaseType.POSTGRESQL, DatabaseType.DB2, "TEXT", "VARCHAR(40000)"); //CHAR(254)
+    addMapping(DatabaseType.POSTGRESQL, DatabaseType.DB2, "BYTEA", "BLOB"); //CLOB (2G)
+    addMapping(DatabaseType.POSTGRESQL, DatabaseType.DB2, "NUMERIC", "DECIMAL(16)");
+    addMapping(DatabaseType.POSTGRESQL, DatabaseType.DB2, "INT(2)", "DECIMAL(16)");
+    addMapping(DatabaseType.POSTGRESQL, DatabaseType.DB2, "INT(4)", "DECIMAL(16)");
+
+  }
+
+  private void createDB2ToMysqlMapping() {
+
+    //TODO - ergänzen
+    addMapping(DatabaseType.DB2, DatabaseType.MYSQL, "CHAR", "VARCHAR(40000)"); //CHAR(254)
+    addMapping(DatabaseType.DB2, DatabaseType.MYSQL, "CLOB", "LONGBLOB"); //CLOB (2G)
+    addMapping(DatabaseType.DB2, DatabaseType.MYSQL, "INTEGER", "INT(11)");
+
+
+  }
+
+  private void createDB2ToPostgresMapping() {
+
+    //TODO - ergänzen
+    addMapping(DatabaseType.DB2, DatabaseType.POSTGRESQL, "BLOB", "BYTEA");
+
+
+
+  }
+
 
   private void createMysqlToPostresMapping() {
 

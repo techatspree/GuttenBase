@@ -184,10 +184,10 @@ public class SchemaScriptCreatorTool {
     final TableMetaData tableMetaData = indexMetaData.getTableMetaData();
     final TableMapper tableMapper = _connectorRepository.getConnectorHint(_targetConnectorId, TableMapper.class).getValue();
     final DatabaseMetaData targetDatabaseMetaData = _connectorRepository.getDatabaseMetaData(_targetConnectorId);
-    final String tableName = tableMapper.mapTableName(tableMetaData, targetDatabaseMetaData);
+    //final String tableName = tableMapper.mapTableName(tableMetaData, targetDatabaseMetaData);
     final String indexName = createConstraintName("IDX_", CaseConversionMode.UPPER.convert(indexMetaData.getIndexName())
         + "_"
-        + tableName
+        + tableMetaData.getTableName()   //tableName
         + "_",
       counter);
     return createIndex(indexMetaData, indexName);
