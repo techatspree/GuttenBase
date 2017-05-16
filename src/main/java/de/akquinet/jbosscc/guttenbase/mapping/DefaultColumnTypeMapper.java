@@ -29,8 +29,9 @@ public class DefaultColumnTypeMapper implements ColumnTypeMapper {
     createDB2ToPostgresMapping();
     createMysqltoDB2Mapping();
     createPostgrestoDB2Mapping();
-    createMysqlToMssql();
-    createMysqlToPostgres();
+    createMysqlToMssqlMapping();
+    createPostgresToMssqlMapping();
+    createDB2ToMssqlMapping();
 
   }
 
@@ -142,7 +143,7 @@ public class DefaultColumnTypeMapper implements ColumnTypeMapper {
     //TODO - ergänzen
     https://www.ibm.com/developerworks/data/library/techarticle/dm-0606khatri/
 
-    addMapping(DatabaseType.MYSQL, DatabaseType.DB2, "LONGTEXT", "VARCHAR(40000)"); //CHAR(254)
+    addMapping(DatabaseType.MYSQL, DatabaseType.DB2, "LONGTEXT", "VARCHAR(4000)"); //CHAR(254)
     addMapping(DatabaseType.MYSQL, DatabaseType.DB2, "LONGBLOB", "BLOB"); //CLOB (2G)
     addMapping(DatabaseType.MYSQL, DatabaseType.DB2, "DECIMAL", "DECIMAL(16)"); //CLOB (2G)
 
@@ -164,7 +165,7 @@ public class DefaultColumnTypeMapper implements ColumnTypeMapper {
   private void createDB2ToMysqlMapping() {
 
     //TODO - ergänzen
-    addMapping(DatabaseType.DB2, DatabaseType.MYSQL, "CHAR", "VARCHAR(40000)"); //CHAR(254)
+    addMapping(DatabaseType.DB2, DatabaseType.MYSQL, "CHAR", "VARCHAR(4000)"); //CHAR(254)
     addMapping(DatabaseType.DB2, DatabaseType.MYSQL, "CLOB", "LONGBLOB"); //CLOB (2G)
     addMapping(DatabaseType.DB2, DatabaseType.MYSQL, "INTEGER", "INT(11)");
 
@@ -176,7 +177,13 @@ public class DefaultColumnTypeMapper implements ColumnTypeMapper {
     //TODO - ergänzen
     addMapping(DatabaseType.DB2, DatabaseType.POSTGRESQL, "BLOB", "BYTEA");
 
+  }
 
+  private void createDB2ToMssqlMapping() {
+
+    //TODO-ergänzen
+    addMapping(DatabaseType.DB2, DatabaseType.MSSQL, "BLOB", "VARBINARY");
+    // addMapping(DatabaseType.DB2, DatabaseType.MSSQL, "INT4", "INT");
 
   }
 
@@ -286,7 +293,7 @@ public class DefaultColumnTypeMapper implements ColumnTypeMapper {
     addMapping(DatabaseType.MSSQL, DatabaseType.ORACLE, "VARCHAR", "VARCHAR2");
   }
 
-  private void createMysqlToMssql() {
+  private void createMysqlToMssqlMapping() {
 
     //TODO-ergänzen
 
@@ -297,10 +304,9 @@ public class DefaultColumnTypeMapper implements ColumnTypeMapper {
 
   }
 
-  private void createMysqlToPostgres() {
+  private void createPostgresToMssqlMapping() {
 
     //TODO-ergänzen
-
     addMapping(DatabaseType.POSTGRESQL, DatabaseType.MSSQL, "TEXT", "NVARCHAR(4000)");
     addMapping(DatabaseType.POSTGRESQL, DatabaseType.MSSQL, "BYTEA", "BINARY");
     addMapping(DatabaseType.POSTGRESQL, DatabaseType.MSSQL, "INT4", "INT");
