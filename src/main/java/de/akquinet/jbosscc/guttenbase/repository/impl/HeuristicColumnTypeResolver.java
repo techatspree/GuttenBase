@@ -43,7 +43,7 @@ public class HeuristicColumnTypeResolver implements ColumnTypeResolver {
       } else if (columnType.equals("BIT") || columnType.startsWith("BOOL")) {
         return ColumnType.CLASS_BOOLEAN;
       } else if (columnType.equals("BYTEA")) {
-        return ColumnType.CLASS_OBJECT;
+        return ColumnType.CLASS_BLOB;
       } else {
         return ColumnType.valueForClass(columnMetaData.getColumnClassName());
       }
