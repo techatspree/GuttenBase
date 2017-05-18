@@ -136,7 +136,7 @@ public class CheckEqualTableDataTool {
           final ColumnMapperResult mapping = columnMapper.map(sourceColumn, targetTableMetaData);
 
           for (final ColumnMetaData targetColumn : mapping.getColumns()) {
-            final ColumnTypeMapping columnTypeMapping = commonColumnTypeResolver.getCommonColumnTypeMapping(sourceConnectorId,
+            final ColumnTypeMapping columnTypeMapping = commonColumnTypeResolver.getCommonColumnTypeMapping(
               sourceColumn, targetConnectorId, targetColumn);
             final String columnName1 = sourceColumnNameMapper.mapColumnName(sourceColumn, targetTableMetaData);
             final String columnName2 = targetColumnNameMapper.mapColumnName(targetColumn, targetTableMetaData);

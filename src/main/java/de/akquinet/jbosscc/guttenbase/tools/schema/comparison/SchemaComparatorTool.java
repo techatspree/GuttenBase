@@ -192,7 +192,7 @@ public class SchemaComparatorTool {
 
       for (final ColumnMetaData targetColumn : targetColumns) {
         final String targetColumnName = targetColumnNameMapper.mapColumnName(targetColumn, tableMetaData2);
-        final ColumnTypeMapping columnTypeMapping = commonColumnTypeResolver.getCommonColumnTypeMapping(sourceConnectorId,
+        final ColumnTypeMapping columnTypeMapping = commonColumnTypeResolver.getCommonColumnTypeMapping(
           sourceColumn, targetConnectorId, targetColumn);
 
         if (columnTypeMapping == null) {

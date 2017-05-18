@@ -144,7 +144,7 @@ public class DatabaseSchemaScriptCreatorTest {
       @Override
       public ColumnTypeMapper getValue() {
         return new DefaultColumnTypeMapper()
-          .addMapping(DatabaseType.H2DB, DatabaseType.DERBY, "BIGINT", "INTEGER");
+          .addMapping(DatabaseType.GENERIC, DatabaseType.GENERIC, "BIGINT", "INTEGER");
       }
     });
 
@@ -164,7 +164,8 @@ public class DatabaseSchemaScriptCreatorTest {
     final String constraintName = _objectUnderTest.createConstraintName("FK_", "AUFTRAG_STELLUNGNAHME_HALTUNGSTELLUNGNAHME_ZU_HALTUNG_ID_PARENT_ID__ID_", 1);
 
     assertFalse("FK_AUFTRAG_STELLUNGNAHME_HALTUNGSTELLUNGNAHME_ZU_HALTUNG_ID_PARENT_ID__ID_1".equals(constraintName));
-    assertEquals(SchemaScriptCreatorTool.MAX_ID_LENGTH, constraintName.length());
+    assertEquals(42, constraintName.length());
+    assertEquals(42, _objectUnderTest.computeMaxConstraintNameLength());
   }
 
   @Test

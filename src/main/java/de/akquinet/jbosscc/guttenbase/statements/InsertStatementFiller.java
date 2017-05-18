@@ -13,7 +13,6 @@ import de.akquinet.jbosscc.guttenbase.meta.TableMetaData;
 import de.akquinet.jbosscc.guttenbase.repository.ConnectorRepository;
 import de.akquinet.jbosscc.guttenbase.tools.CommonColumnTypeResolverTool;
 import org.apache.log4j.Logger;
-
 import java.io.Closeable;
 import java.io.IOException;
 import java.sql.Connection;
@@ -133,8 +132,8 @@ public class InsertStatementFiller
                                         final CommonColumnTypeResolverTool commonColumnTypeResolver, final ColumnMetaData columnMetaData1,
                                         final ColumnMetaData columnMetaData2) throws SQLException
   {
-    final ColumnTypeMapping columnTypeMapping = commonColumnTypeResolver.getCommonColumnTypeMapping(sourceConnectorId,
-            columnMetaData1, targetConnectorId, columnMetaData2);
+    final ColumnTypeMapping columnTypeMapping = commonColumnTypeResolver.getCommonColumnTypeMapping(
+      columnMetaData1, targetConnectorId, columnMetaData2);
 
     if (columnTypeMapping == null)
     {
