@@ -79,7 +79,7 @@ public class DatabaseMetaDataInspectorTest extends AbstractGuttenBaseTest {
 		final ColumnMetaData indexedColumn = indexMetaData.getColumnMetaData().get(0);
 		assertEquals("USERNAME", indexedColumn.getColumnName());
 
-		final List<IndexMetaData> indexesForColumn = userTableMetaData.getIndexesForColumn(indexedColumn);
+		final List<IndexMetaData> indexesForColumn = userTableMetaData.getIndexesContainingColumn(indexedColumn);
 		assertEquals(singletonList(indexMetaData), indexesForColumn);
 	}
 }

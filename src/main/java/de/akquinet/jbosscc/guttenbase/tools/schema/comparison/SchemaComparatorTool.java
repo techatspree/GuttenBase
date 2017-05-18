@@ -15,8 +15,11 @@ import de.akquinet.jbosscc.guttenbase.repository.ConnectorRepository;
 import de.akquinet.jbosscc.guttenbase.tools.CommonColumnTypeResolverTool;
 import java.sql.SQLException;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Will check two schemas for compatibility and report found issues.
@@ -62,11 +65,16 @@ public class SchemaComparatorTool {
         checkEqualColumns(sourceConnectorId, targetConnectorId, sourceTable, targetTable);
         checkEqualForeignKeys(sourceTable, targetTable);
         checkEqualIndexes(sourceTable, targetTable);
+        checkDuplicateIndexes(sourceTable);
+        checkForeignKeys(sourceTable);
+        checkDuplicateIndexes(targetTable);
+        checkForeignKeys(targetTable);
       }
     }
 
     return _schemaCompatibilityIssues;
   }
+
 
   public SchemaCompatibilityIssues checkEqualForeignKeys(final TableMetaData sourceTable, final TableMetaData targetTable) throws SQLException {
     for (final ForeignKeyMetaData sourceFK : sourceTable.getImportedForeignKeys()) {
@@ -102,10 +110,57 @@ public class SchemaComparatorTool {
       if (matchingIndex == null) {
         _schemaCompatibilityIssues.addIssue(new MissingIndexIssue("Missing index " + sourceIndex, sourceIndex));
       }
+
     }
 
 
     return _schemaCompatibilityIssues;
+  }
+
+
+  public SchemaCompatibilityIssues checkDuplicateIndexes(final TableMetaData table) {
+    final Map<String, IndexMetaData> indexMetaDataMap = new LinkedHashMap<>();
+
+    for (final IndexMetaData index : table.getIndexes()) {
+      final String sortedColumnNames = index.getColumnMetaData().stream().map(ColumnMetaData::getColumnName)
+        .sorted().collect(Collectors.toList()).toString();
+
+      if (indexMetaDataMap.containsKey(sortedColumnNames)) {
+        final IndexMetaData conflictingIndex = indexMetaDataMap.get(sortedColumnNames);
+
+        _schemaCompatibilityIssues.addIssue(new DuplicateIndexIssue("Duplicate index " + conflictingIndex + "vs." + index,
+          index));
+
+      } else {
+        indexMetaDataMap.put(sortedColumnNames, index);
+      }
+    }
+
+    return _schemaCompatibilityIssues;
+  }
+
+  public SchemaCompatibilityIssues checkForeignKeys(final TableMetaData table) {
+    final Map<String, ForeignKeyMetaData> fkMetaDataMap = new LinkedHashMap<>();
+
+    for (final ForeignKeyMetaData foreignKey : table.getExportedForeignKeys()) {
+      final String columNames = getFullyQualifiedColumnName(foreignKey.getReferencingColumn()) + ":" +
+        getFullyQualifiedColumnName(foreignKey.getReferencingColumn());
+
+      if (fkMetaDataMap.containsKey(columNames)) {
+        final ForeignKeyMetaData conflictingKey = fkMetaDataMap.get(columNames);
+
+        _schemaCompatibilityIssues.addIssue(new DuplicateForeignKeyIssue("Duplicate foreignKey " + conflictingKey
+          + "vs." + foreignKey, foreignKey));
+      } else {
+        fkMetaDataMap.put(columNames, foreignKey);
+      }
+    }
+
+    return _schemaCompatibilityIssues;
+  }
+
+  private static String getFullyQualifiedColumnName(final ColumnMetaData columnMetaData) {
+    return columnMetaData.getTableMetaData().getTableName() + "." + columnMetaData.getColumnName();
   }
 
   public SchemaCompatibilityIssues checkEqualColumns(final String sourceConnectorId, final String targetConnectorId,

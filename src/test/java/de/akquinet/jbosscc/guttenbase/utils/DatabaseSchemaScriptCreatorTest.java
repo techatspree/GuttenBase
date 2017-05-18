@@ -178,7 +178,7 @@ public class DatabaseSchemaScriptCreatorTest {
   @Test
   public void testIndex() throws Exception {
     final ColumnMetaData columnMetaData = _databaseMetaData.getTableMetaData().get(0).getColumnMetaData("name");
-    final IndexMetaData index = _databaseMetaData.getTableMetaData().get(0).getIndexesForColumn(columnMetaData).get(0);
+    final IndexMetaData index = _databaseMetaData.getTableMetaData().get(0).getIndexesContainingColumn(columnMetaData).get(0);
     final String sql = _objectUnderTest.createIndex(index);
 
     assertEquals("CREATE UNIQUE INDEX Name_IDX1 ON schemaName.MY_TABLE1(NAME);", sql);

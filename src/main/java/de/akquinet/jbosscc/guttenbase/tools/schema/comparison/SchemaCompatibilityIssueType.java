@@ -16,6 +16,8 @@ public enum SchemaCompatibilityIssueType {
   ADDITIONAL_NONNULL_COLUMN(Level.SEVERE),
   ADDITIONAL_COLUMN(Level.WARNING),
   MISSING_INDEX(Level.INFO),
+  DUPLICATE_INDEX(Level.WARNING),
+  DUPLICATE_FOREIGN_KEY(Level.WARNING),
   MISSING_FOREIGN_KEY(Level.WARNING);
 
   private final Level _severity;
