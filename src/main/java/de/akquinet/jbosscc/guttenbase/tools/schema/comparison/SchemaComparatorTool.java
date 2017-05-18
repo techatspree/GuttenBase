@@ -66,7 +66,9 @@ public class SchemaComparatorTool {
         checkEqualForeignKeys(sourceTable, targetTable);
         checkEqualIndexes(sourceTable, targetTable);
         checkDuplicateIndexes(sourceTable);
+        checkForeignKeys(sourceTable);
         checkDuplicateIndexes(targetTable);
+        checkForeignKeys(targetTable);
       }
     }
 
@@ -135,6 +137,30 @@ public class SchemaComparatorTool {
     }
 
     return _schemaCompatibilityIssues;
+  }
+
+  public SchemaCompatibilityIssues checkForeignKeys(final TableMetaData table) {
+    final Map<String, ForeignKeyMetaData> fkMetaDataMap = new LinkedHashMap<>();
+
+    for (final ForeignKeyMetaData foreignKey : table.getExportedForeignKeys()) {
+      final String columNames = getFullyQualifiedColumnName(foreignKey.getReferencingColumn()) + ":" +
+        getFullyQualifiedColumnName(foreignKey.getReferencingColumn());
+
+      if (fkMetaDataMap.containsKey(columNames)) {
+        final ForeignKeyMetaData conflictingKey = fkMetaDataMap.get(columNames);
+
+        _schemaCompatibilityIssues.addIssue(new DuplicateForeignKeyIssue("Duplicate foreignKey " + conflictingKey
+          + "vs." + foreignKey, foreignKey));
+      } else {
+        fkMetaDataMap.put(columNames, foreignKey);
+      }
+    }
+
+    return _schemaCompatibilityIssues;
+  }
+
+  private static String getFullyQualifiedColumnName(final ColumnMetaData columnMetaData) {
+    return columnMetaData.getTableMetaData().getTableName() + "." + columnMetaData.getColumnName();
   }
 
   public SchemaCompatibilityIssues checkEqualColumns(final String sourceConnectorId, final String targetConnectorId,

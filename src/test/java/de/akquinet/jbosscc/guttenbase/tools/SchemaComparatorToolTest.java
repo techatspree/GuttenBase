@@ -54,6 +54,17 @@ public class SchemaComparatorToolTest extends AbstractGuttenBaseTest {
     Assert.assertNotNull(compatibilityIssues.contains(SchemaCompatibilityIssueType.DUPLICATE_INDEX));
   }
 
+
+  @Test
+  public void testDuplicateForeignKey() throws Exception {
+    new ScriptExecutorTool(_connectorRepository).executeFileScript(CONNECTOR_ID1, "/ddl/tables.sql");
+    new ScriptExecutorTool(_connectorRepository).executeFileScript(CONNECTOR_ID2, "/ddl/tables-duplicate-foreignkey.sql");
+
+    final SchemaCompatibilityIssues compatibilityIssues = _objectUnderTest.check(CONNECTOR_ID1, CONNECTOR_ID2);
+    Assert.assertFalse(compatibilityIssues.isSevere());
+    Assert.assertNotNull(compatibilityIssues.contains(SchemaCompatibilityIssueType.DUPLICATE_FOREIGN_KEY));
+  }
+
   @Test
   public void testAdditionalColumn() throws Exception {
     new ScriptExecutorTool(_connectorRepository).executeFileScript(CONNECTOR_ID1, "/ddl/tables.sql");
