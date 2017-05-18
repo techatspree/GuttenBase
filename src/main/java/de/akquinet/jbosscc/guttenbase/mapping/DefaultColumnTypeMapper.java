@@ -15,7 +15,9 @@ import de.akquinet.jbosscc.guttenbase.meta.ColumnMetaData;
 public class DefaultColumnTypeMapper implements ColumnTypeMapper {
   private final Map<DatabaseType, Map<DatabaseType, Map<String, String>>> _mappings = new HashMap<>();
 
+
   public DefaultColumnTypeMapper() {
+
     createPostgresToMysqlMapping();
     createMysqlToPostresMapping();
     createMysqlToOracle();
@@ -23,7 +25,16 @@ public class DefaultColumnTypeMapper implements ColumnTypeMapper {
     createMSSQLToOracle();
     createH2ToDerbyMapping();
     createDerbyToH2Mapping();
+    createDB2ToMysqlMapping();
+    createDB2ToPostgresMapping();
+    createMysqltoDB2Mapping();
+    createPostgrestoDB2Mapping();
+    createMysqlToMssqlMapping();
+    createPostgresToMssqlMapping();
+    createDB2ToMssqlMapping();
+
   }
+
 
   @Override
   public String mapColumnType(final ColumnMetaData columnMetaData,
@@ -127,7 +138,58 @@ public class DefaultColumnTypeMapper implements ColumnTypeMapper {
 
   }
 
+  private void createMysqltoDB2Mapping() {
+
+    //TODO - ergänzen
+    https://www.ibm.com/developerworks/data/library/techarticle/dm-0606khatri/
+
+    addMapping(DatabaseType.MYSQL, DatabaseType.DB2, "LONGTEXT", "VARCHAR(4000)"); //CHAR(254)
+    addMapping(DatabaseType.MYSQL, DatabaseType.DB2, "LONGBLOB", "BLOB"); //CLOB (2G)
+    addMapping(DatabaseType.MYSQL, DatabaseType.DB2, "DECIMAL", "DECIMAL(16)"); //CLOB (2G)
+
+  }
+
+  private void createPostgrestoDB2Mapping() {
+
+    //TODO - ergänzen
+    https://www.ibm.com/developerworks/data/library/techarticle/dm-0606khatri/
+
+    addMapping(DatabaseType.POSTGRESQL, DatabaseType.DB2, "TEXT", "VARCHAR(4000)"); //CHAR(254)
+    addMapping(DatabaseType.POSTGRESQL, DatabaseType.DB2, "BYTEA", "BLOB"); //CLOB (2G) LONGBLOB
+    addMapping(DatabaseType.POSTGRESQL, DatabaseType.DB2, "NUMERIC", "DECIMAL(16)");
+    addMapping(DatabaseType.POSTGRESQL, DatabaseType.DB2, "INT(2)", "DECIMAL(16)");
+    addMapping(DatabaseType.POSTGRESQL, DatabaseType.DB2, "INT(4)", "DECIMAL(16)");
+
+  }
+
+  private void createDB2ToMysqlMapping() {
+
+    //TODO - ergänzen
+    addMapping(DatabaseType.DB2, DatabaseType.MYSQL, "CHAR", "VARCHAR(4000)"); //CHAR(254)
+    addMapping(DatabaseType.DB2, DatabaseType.MYSQL, "CLOB", "LONGBLOB"); //CLOB (2G)
+    addMapping(DatabaseType.DB2, DatabaseType.MYSQL, "INTEGER", "INT(11)");
+
+
+  }
+
+  private void createDB2ToPostgresMapping() {
+
+    //TODO - ergänzen
+    addMapping(DatabaseType.DB2, DatabaseType.POSTGRESQL, "BLOB", "BYTEA");
+
+  }
+
+  private void createDB2ToMssqlMapping() {
+
+    //TODO-ergänzen
+    addMapping(DatabaseType.DB2, DatabaseType.MSSQL, "BLOB", "VARBINARY");
+    // addMapping(DatabaseType.DB2, DatabaseType.MSSQL, "INT4", "INT");
+
+  }
+
+
   private void createMysqlToPostresMapping() {
+
 
     addMapping(DatabaseType.MYSQL, DatabaseType.POSTGRESQL, "BIGINT AUTO_INCREMENT", "BIGSERIAL");
     addMapping(DatabaseType.MYSQL, DatabaseType.POSTGRESQL, "BIGINT UNSIGNED", "NUMERIC(20)");
@@ -230,5 +292,27 @@ public class DefaultColumnTypeMapper implements ColumnTypeMapper {
     addMapping(DatabaseType.MSSQL, DatabaseType.ORACLE, "VARBINARY", "RAW");
     addMapping(DatabaseType.MSSQL, DatabaseType.ORACLE, "VARCHAR", "VARCHAR2");
   }
+
+  private void createMysqlToMssqlMapping() {
+
+    //TODO-ergänzen
+
+    addMapping(DatabaseType.MYSQL, DatabaseType.MSSQL, "LONGTEXT", "NVARCHAR(4000)");
+    addMapping(DatabaseType.MYSQL, DatabaseType.MSSQL, "LONGBLOB", "VARBINARY");
+    addMapping(DatabaseType.MYSQL, DatabaseType.MSSQL, "VARCHAR", "NVARCHAR(4000)");
+    addMapping(DatabaseType.MYSQL, DatabaseType.MSSQL, "DECIMAL", "DECIMAL(38)");
+
+  }
+
+  private void createPostgresToMssqlMapping() {
+
+    //TODO-ergänzen
+    addMapping(DatabaseType.POSTGRESQL, DatabaseType.MSSQL, "TEXT", "NVARCHAR(4000)");
+    addMapping(DatabaseType.POSTGRESQL, DatabaseType.MSSQL, "BYTEA", "BINARY");
+    addMapping(DatabaseType.POSTGRESQL, DatabaseType.MSSQL, "INT4", "INT");
+    addMapping(DatabaseType.POSTGRESQL, DatabaseType.MSSQL, "INT2", "INT");
+
+  }
+
 
 }
