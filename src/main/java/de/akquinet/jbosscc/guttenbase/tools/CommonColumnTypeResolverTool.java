@@ -1,8 +1,5 @@
 package de.akquinet.jbosscc.guttenbase.tools;
 
-import java.sql.SQLException;
-import java.util.List;
-
 import de.akquinet.jbosscc.guttenbase.defaults.impl.DefaultColumnDataMapper;
 import de.akquinet.jbosscc.guttenbase.hints.ColumnDataMapperProviderHint;
 import de.akquinet.jbosscc.guttenbase.hints.ColumnTypeResolverListHint;
@@ -14,6 +11,8 @@ import de.akquinet.jbosscc.guttenbase.mapping.ColumnTypeResolverList;
 import de.akquinet.jbosscc.guttenbase.meta.ColumnMetaData;
 import de.akquinet.jbosscc.guttenbase.meta.ColumnType;
 import de.akquinet.jbosscc.guttenbase.repository.ConnectorRepository;
+import java.sql.SQLException;
+import java.util.List;
 
 /**
  * Try to find common type mapping usable for both columns.
@@ -38,8 +37,8 @@ public class CommonColumnTypeResolverTool {
 	/**
 	 * Returns column type usable for both columns or null if none can be found.
 	 */
-	public ColumnTypeMapping getCommonColumnTypeMapping(final String sourceConnectorId, final ColumnMetaData sourceColumnMetaData,
-			final String targetConnectorId, final ColumnMetaData targetColumnMetaData) throws SQLException {
+	public ColumnTypeMapping getCommonColumnTypeMapping(final ColumnMetaData sourceColumnMetaData,
+																											final String targetConnectorId, final ColumnMetaData targetColumnMetaData) throws SQLException {
 		final List<ColumnTypeResolver> columnTypeResolvers = _connectorRepository
 				.getConnectorHint(targetConnectorId, ColumnTypeResolverList.class).getValue().getColumnTypeResolvers();
 
