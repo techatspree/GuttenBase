@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * Information about a table.
@@ -157,33 +158,19 @@ public class TableMetaDataImpl implements InternalTableMetaData
   @Override
   public List<ColumnMetaData> getPrimaryKeyColumns()
   {
-    final List<ColumnMetaData> result = new ArrayList<>();
 
-    for (final ColumnMetaData columnMetaData : getColumnMetaData())
-    {
-      if (columnMetaData.isPrimaryKey())
-      {
-        result.add(columnMetaData);
-      }
-    }
-
-    return result;
+    return getColumnMetaData().stream().filter(ColumnMetaData::isPrimaryKey).collect(Collectors.toList());
   }
 
   @Override
-  public List<IndexMetaData> getIndexesForColumn(final ColumnMetaData columnMetaData)
+  public List<IndexMetaData> getIndexesContainingColumn(final ColumnMetaData columnMetaData)
   {
     final List<IndexMetaData> result = new ArrayList<>();
 
     for (final IndexMetaData index : getIndexes())
     {
-      for (final ColumnMetaData column : index.getColumnMetaData())
-      {
-        if (column.equals(columnMetaData))
-        {
-          result.add(index);
-        }
-      }
+      result.addAll(index.getColumnMetaData().stream().filter(column -> column.equals(columnMetaData))
+        .map(column -> index).collect(Collectors.toList()));
     }
 
     return result;

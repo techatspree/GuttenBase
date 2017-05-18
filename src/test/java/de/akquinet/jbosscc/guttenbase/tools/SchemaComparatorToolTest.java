@@ -3,7 +3,12 @@ package de.akquinet.jbosscc.guttenbase.tools;
 import de.akquinet.jbosscc.guttenbase.configuration.TestDerbyConnectionInfo;
 import de.akquinet.jbosscc.guttenbase.configuration.TestHsqlConnectionInfo;
 import de.akquinet.jbosscc.guttenbase.meta.ForeignKeyMetaData;
-import de.akquinet.jbosscc.guttenbase.tools.schema.comparison.*;
+import de.akquinet.jbosscc.guttenbase.tools.schema.comparison.MissingForeignKeyIssue;
+import de.akquinet.jbosscc.guttenbase.tools.schema.comparison.MissingIndexIssue;
+import de.akquinet.jbosscc.guttenbase.tools.schema.comparison.SchemaComparatorTool;
+import de.akquinet.jbosscc.guttenbase.tools.schema.comparison.SchemaCompatibilityIssue;
+import de.akquinet.jbosscc.guttenbase.tools.schema.comparison.SchemaCompatibilityIssueType;
+import de.akquinet.jbosscc.guttenbase.tools.schema.comparison.SchemaCompatibilityIssues;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -37,6 +42,16 @@ public class SchemaComparatorToolTest extends AbstractGuttenBaseTest {
     final SchemaCompatibilityIssues compatibilityIssues = _objectUnderTest.check(CONNECTOR_ID1, CONNECTOR_ID2);
     Assert.assertTrue(compatibilityIssues.isSevere());
     Assert.assertNotNull(compatibilityIssues.contains(SchemaCompatibilityIssueType.MISSING_TABLE));
+  }
+
+  @Test
+  public void testDuplicateIndex() throws Exception {
+    new ScriptExecutorTool(_connectorRepository).executeFileScript(CONNECTOR_ID1, "/ddl/tables.sql");
+    new ScriptExecutorTool(_connectorRepository).executeFileScript(CONNECTOR_ID2, "/ddl/tables-duplicate-index.sql");
+
+    final SchemaCompatibilityIssues compatibilityIssues = _objectUnderTest.check(CONNECTOR_ID1, CONNECTOR_ID2);
+    Assert.assertFalse(compatibilityIssues.isSevere());
+    Assert.assertNotNull(compatibilityIssues.contains(SchemaCompatibilityIssueType.DUPLICATE_INDEX));
   }
 
   @Test

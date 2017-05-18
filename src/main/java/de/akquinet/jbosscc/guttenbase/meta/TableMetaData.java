@@ -39,7 +39,7 @@ public interface TableMetaData extends Comparable<TableMetaData>, Serializable
 
   List<IndexMetaData> getIndexes();
 
-  List<IndexMetaData> getIndexesForColumn(ColumnMetaData columnMetaData);
+  List<IndexMetaData> getIndexesContainingColumn(ColumnMetaData columnMetaData);
 
   List<ForeignKeyMetaData> getImportedForeignKeys();
 
