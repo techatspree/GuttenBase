@@ -22,7 +22,9 @@ public class DefaultColumnTypeMapper implements ColumnTypeMapper {
     createMysqlToPostresMapping();
     createMysqlToOracle();
     createOracleToMysql();
-    createMSSQLToOracle();
+    createMssqlToOracle();
+    createMssqlToMysql();
+    createMssqlToPostgres();
     createH2ToDerbyMapping();
     createDerbyToH2Mapping();
     createDB2ToMysqlMapping();
@@ -267,7 +269,7 @@ public class DefaultColumnTypeMapper implements ColumnTypeMapper {
 
   }
 
-  private void createMSSQLToOracle() {
+  private void createMssqlToOracle() {
 
     addMapping(DatabaseType.MSSQL, DatabaseType.ORACLE, "BIGINT", "NUMBER(19)");
     addMapping(DatabaseType.MSSQL, DatabaseType.ORACLE, "BINARY", "RAW");
@@ -314,5 +316,22 @@ public class DefaultColumnTypeMapper implements ColumnTypeMapper {
 
   }
 
+  private void createMssqlToMysql() {
+
+    //TODO-ergänzen
+
+    addMapping(DatabaseType.MSSQL, DatabaseType.MYSQL, "NVARCHAR", "VARCHAR(255)");
+    addMapping(DatabaseType.MSSQL, DatabaseType.MYSQL, "VARBINARY", "BLOB");
+
+  }
+
+  private void createMssqlToPostgres() {
+
+    //TODO-ergänzen
+
+    addMapping(DatabaseType.MSSQL, DatabaseType.POSTGRESQL, "NVARCHAR", "TEXT");
+    addMapping(DatabaseType.MSSQL, DatabaseType.POSTGRESQL, "VARBINARY", "BYTEA");
+
+  }
 
 }
