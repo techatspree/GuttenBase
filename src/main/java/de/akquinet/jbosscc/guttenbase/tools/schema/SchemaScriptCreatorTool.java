@@ -14,11 +14,14 @@ import de.akquinet.jbosscc.guttenbase.meta.IndexMetaData;
 import de.akquinet.jbosscc.guttenbase.meta.TableMetaData;
 import de.akquinet.jbosscc.guttenbase.repository.ConnectorRepository;
 import de.akquinet.jbosscc.guttenbase.tools.TableOrderTool;
+import de.akquinet.jbosscc.guttenbase.tools.schema.comparison.*;
+
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 /**
  * Create Custom DDL script from given database meta data.
@@ -36,9 +39,9 @@ public class SchemaScriptCreatorTool {
   private final String _sourceConnectorId;
 
   public SchemaScriptCreatorTool(
-    final ConnectorRepository connectorRepository,
-    final String sourceConnectorId,
-    final String targetConnectorId) {
+          final ConnectorRepository connectorRepository,
+          final String sourceConnectorId,
+          final String targetConnectorId) {
     assert connectorRepository != null : "connectorRepository != null";
     assert sourceConnectorId != null : "sourceConnectorId != null";
     assert targetConnectorId != null : "targetConnectorId != null";
@@ -96,8 +99,19 @@ public class SchemaScriptCreatorTool {
     for (final TableMetaData tableMetaData : tables) {
       int counter = 1;
 
+      final SchemaCompatibilityIssues issues = new SchemaComparatorTool(_connectorRepository).checkDuplicateIndexes(tableMetaData);
+      final List<IndexMetaData> conflictedIndexes = issues.getCompatibilityIssues().stream()
+              .filter(i -> i.getCompatibilityIssueType() == SchemaCompatibilityIssueType.DUPLICATE_INDEX)
+              .map(i -> ((DuplicateIndexIssue) i).getIndexMetaData()).collect(Collectors.toList());
+
       for (final IndexMetaData indexMetaData : tableMetaData.getIndexes()) {
-        result.add(createIndex(indexMetaData, counter++));
+        final List<ColumnMetaData> columns = indexMetaData.getColumnMetaData();
+        final boolean columnsFormPrimaryKey = columns.stream().map(column -> column.isPrimaryKey()).reduce((a, b) -> a && b).orElse(false);
+        final boolean conflictedIndex = conflictedIndexes.contains(indexMetaData);
+
+        if (!columnsFormPrimaryKey && !conflictedIndex) {
+          result.add(createIndex(indexMetaData, counter++));
+        }
       }
     }
 
@@ -130,8 +144,8 @@ public class SchemaScriptCreatorTool {
     final DatabaseMetaData targetDatabaseMetaData = _connectorRepository.getDatabaseMetaData(getTargetConnectorId());
     final TableMapper tableMapper = _connectorRepository.getConnectorHint(getTargetConnectorId(), TableMapper.class).getValue();
     final StringBuilder builder = new StringBuilder("CREATE TABLE "
-      + tableMapper.fullyQualifiedTableName(tableMetaData, targetDatabaseMetaData)
-      + "\n(\n");
+            + tableMapper.fullyQualifiedTableName(tableMetaData, targetDatabaseMetaData)
+            + "\n(\n");
 
     for (final Iterator<ColumnMetaData> iterator = tableMetaData.getColumnMetaData().iterator(); iterator.hasNext(); ) {
       final ColumnMetaData columnMetaData = iterator.next();
@@ -157,10 +171,10 @@ public class SchemaScriptCreatorTool {
     final String qualifiedTableName = tableMapper.fullyQualifiedTableName(tableMetaData, targetDatabaseMetaData);
     final String pkName = "PK_" + tableMetaData.getTableName() + "_" + counter;
     final StringBuilder builder = new StringBuilder("ALTER TABLE "
-      + qualifiedTableName
-      + " ADD CONSTRAINT " +
-      pkName
-      + " PRIMARY KEY (");
+            + qualifiedTableName
+            + " ADD CONSTRAINT " +
+            pkName
+            + " PRIMARY KEY (");
 
     for (final ColumnMetaData columnMetaData : primaryKeyColumns) {
       builder.append(columnMapper.mapColumnName(columnMetaData, tableMetaData)).append(", ");
@@ -176,10 +190,10 @@ public class SchemaScriptCreatorTool {
     final DatabaseMetaData targetDatabaseMetaData = _connectorRepository.getDatabaseMetaData(getTargetConnectorId());
     final String tableName = tableMapper.mapTableName(tableMetaData, targetDatabaseMetaData);
     final String indexName = createConstraintName("IDX_", CaseConversionMode.UPPER.convert(indexMetaData.getIndexName())
-        + "_"
-        + tableName
-        + "_",
-      counter);
+                    + "_"
+                    + tableName
+                    + "_",
+            counter);
     return createIndex(indexMetaData, indexName);
   }
 
@@ -195,11 +209,11 @@ public class SchemaScriptCreatorTool {
     final String unique = indexMetaData.isUnique() ? " UNIQUE " : " ";
 
     final StringBuilder builder = new StringBuilder("CREATE" + unique
-      + "INDEX "
-      + indexName
-      + " ON "
-      + tableMapper.fullyQualifiedTableName(tableMetaData, targetDatabaseMetaData)
-      + "(");
+            + "INDEX "
+            + indexName
+            + " ON "
+            + tableMapper.fullyQualifiedTableName(tableMetaData, targetDatabaseMetaData)
+            + "(");
 
 
     for (final Iterator<ColumnMetaData> iterator = indexMetaData.getColumnMetaData().iterator(); iterator.hasNext(); ) {
@@ -225,9 +239,9 @@ public class SchemaScriptCreatorTool {
     final String tablename = tableMapper.mapTableName(tableMetaData, targetDatabaseMetaData);
 
     String fkName = createConstraintName("FK_", tablename + "_"
-      + columnMapper.mapColumnName(referencingColumn, referencedColumn.getTableMetaData())
-      + "_"
-      + columnMapper.mapColumnName(referencedColumn, referencedColumn.getTableMetaData()) + "_", counter);
+            + columnMapper.mapColumnName(referencingColumn, referencedColumn.getTableMetaData())
+            + "_"
+            + columnMapper.mapColumnName(referencedColumn, referencedColumn.getTableMetaData()) + "_", counter);
 
     return createForeignKey(referencingColumn, fkName);
   }
@@ -241,9 +255,9 @@ public class SchemaScriptCreatorTool {
     final String qualifiedTableName = tableMapper.fullyQualifiedTableName(tableMetaData, targetDatabaseMetaData);
 
     return "ALTER TABLE " + qualifiedTableName + " ADD CONSTRAINT " + fkName +
-      " FOREIGN KEY (" + columnMapper.mapColumnName(referencingColumn, referencingColumn.getTableMetaData()) + ") REFERENCES " +
-      tableMapper.fullyQualifiedTableName(referencedColumn.getTableMetaData(), targetDatabaseMetaData)
-      + "(" + columnMapper.mapColumnName(referencedColumn, referencingColumn.getTableMetaData()) + ");";
+            " FOREIGN KEY (" + columnMapper.mapColumnName(referencingColumn, referencingColumn.getTableMetaData()) + ") REFERENCES " +
+            tableMapper.fullyQualifiedTableName(referencedColumn.getTableMetaData(), targetDatabaseMetaData)
+            + "(" + columnMapper.mapColumnName(referencedColumn, referencingColumn.getTableMetaData()) + ");";
   }
 
   public String createForeignKey(final ForeignKeyMetaData foreignKeyMetaData) throws SQLException {
@@ -258,7 +272,7 @@ public class SchemaScriptCreatorTool {
     final DatabaseType targetType = _connectorRepository.getDatabaseMetaData(getTargetConnectorId()).getDatabaseType();
 
     builder.append(columnMapper.mapColumnName(columnMetaData, columnMetaData.getTableMetaData())).append(" ")
-      .append(columnTypeMapper.mapColumnType(columnMetaData, sourceType, targetType));
+            .append(columnTypeMapper.mapColumnType(columnMetaData, sourceType, targetType));
 
     if (!columnMetaData.isNullable()) {
       builder.append(" NOT NULL");
