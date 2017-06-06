@@ -1,11 +1,11 @@
 package de.akquinet.jbosscc.guttenbase.tools.schema;
 
 import de.akquinet.jbosscc.guttenbase.connector.DatabaseType;
+import de.akquinet.jbosscc.guttenbase.exceptions.IncompatibleColumnsException;
+import de.akquinet.jbosscc.guttenbase.exceptions.IncompatibleTablesException;
 import de.akquinet.jbosscc.guttenbase.hints.CaseConversionMode;
-import de.akquinet.jbosscc.guttenbase.hints.ConnectorHint;
 import de.akquinet.jbosscc.guttenbase.mapping.ColumnMapper;
 import de.akquinet.jbosscc.guttenbase.mapping.ColumnTypeMapper;
-import de.akquinet.jbosscc.guttenbase.mapping.DefaultColumnTypeMapper;
 import de.akquinet.jbosscc.guttenbase.mapping.TableMapper;
 import de.akquinet.jbosscc.guttenbase.meta.ColumnMetaData;
 import de.akquinet.jbosscc.guttenbase.meta.DatabaseMetaData;
@@ -14,8 +14,10 @@ import de.akquinet.jbosscc.guttenbase.meta.IndexMetaData;
 import de.akquinet.jbosscc.guttenbase.meta.TableMetaData;
 import de.akquinet.jbosscc.guttenbase.repository.ConnectorRepository;
 import de.akquinet.jbosscc.guttenbase.tools.TableOrderTool;
-import de.akquinet.jbosscc.guttenbase.tools.schema.comparison.*;
-
+import de.akquinet.jbosscc.guttenbase.tools.schema.comparison.DuplicateIndexIssue;
+import de.akquinet.jbosscc.guttenbase.tools.schema.comparison.SchemaComparatorTool;
+import de.akquinet.jbosscc.guttenbase.tools.schema.comparison.SchemaCompatibilityIssueType;
+import de.akquinet.jbosscc.guttenbase.tools.schema.comparison.SchemaCompatibilityIssues;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -39,9 +41,9 @@ public class SchemaScriptCreatorTool {
   private final String _sourceConnectorId;
 
   public SchemaScriptCreatorTool(
-          final ConnectorRepository connectorRepository,
-          final String sourceConnectorId,
-          final String targetConnectorId) {
+    final ConnectorRepository connectorRepository,
+    final String sourceConnectorId,
+    final String targetConnectorId) {
     assert connectorRepository != null : "connectorRepository != null";
     assert sourceConnectorId != null : "sourceConnectorId != null";
     assert targetConnectorId != null : "targetConnectorId != null";
@@ -101,8 +103,8 @@ public class SchemaScriptCreatorTool {
 
       final SchemaCompatibilityIssues issues = new SchemaComparatorTool(_connectorRepository).checkDuplicateIndexes(tableMetaData);
       final List<IndexMetaData> conflictedIndexes = issues.getCompatibilityIssues().stream()
-              .filter(i -> i.getCompatibilityIssueType() == SchemaCompatibilityIssueType.DUPLICATE_INDEX)
-              .map(i -> ((DuplicateIndexIssue) i).getIndexMetaData()).collect(Collectors.toList());
+        .filter(i -> i.getCompatibilityIssueType() == SchemaCompatibilityIssueType.DUPLICATE_INDEX)
+        .map(i -> ((DuplicateIndexIssue) i).getIndexMetaData()).collect(Collectors.toList());
 
       for (final IndexMetaData indexMetaData : tableMetaData.getIndexes()) {
         final List<ColumnMetaData> columns = indexMetaData.getColumnMetaData();
@@ -143,9 +145,14 @@ public class SchemaScriptCreatorTool {
   public String createTable(final TableMetaData tableMetaData) throws SQLException {
     final DatabaseMetaData targetDatabaseMetaData = _connectorRepository.getDatabaseMetaData(getTargetConnectorId());
     final TableMapper tableMapper = _connectorRepository.getConnectorHint(getTargetConnectorId(), TableMapper.class).getValue();
-    final StringBuilder builder = new StringBuilder("CREATE TABLE "
-            + tableMapper.fullyQualifiedTableName(tableMetaData, targetDatabaseMetaData)
-            + "\n(\n");
+    final String tableName = tableMapper.fullyQualifiedTableName(tableMetaData, targetDatabaseMetaData);
+    final StringBuilder builder = new StringBuilder("CREATE TABLE " + tableName + "\n(\n");
+    final int maxNameLength = getTargetMaxNameLength();
+
+    if (tableName.length() > maxNameLength) {
+      throw new IncompatibleTablesException("Table name " + tableName + " is too long for the targeted data base (Max. "
+        + maxNameLength + "). You will have to provide an appropriate " + TableMapper.class.getName() + " hint");
+    }
 
     for (final Iterator<ColumnMetaData> iterator = tableMetaData.getColumnMetaData().iterator(); iterator.hasNext(); ) {
       final ColumnMetaData columnMetaData = iterator.next();
@@ -171,10 +178,10 @@ public class SchemaScriptCreatorTool {
     final String qualifiedTableName = tableMapper.fullyQualifiedTableName(tableMetaData, targetDatabaseMetaData);
     final String pkName = "PK_" + tableMetaData.getTableName() + "_" + counter;
     final StringBuilder builder = new StringBuilder("ALTER TABLE "
-            + qualifiedTableName
-            + " ADD CONSTRAINT " +
-            pkName
-            + " PRIMARY KEY (");
+      + qualifiedTableName
+      + " ADD CONSTRAINT " +
+      pkName
+      + " PRIMARY KEY (");
 
     for (final ColumnMetaData columnMetaData : primaryKeyColumns) {
       builder.append(columnMapper.mapColumnName(columnMetaData, tableMetaData)).append(", ");
@@ -190,10 +197,10 @@ public class SchemaScriptCreatorTool {
     final DatabaseMetaData targetDatabaseMetaData = _connectorRepository.getDatabaseMetaData(getTargetConnectorId());
     final String tableName = tableMapper.mapTableName(tableMetaData, targetDatabaseMetaData);
     final String indexName = createConstraintName("IDX_", CaseConversionMode.UPPER.convert(indexMetaData.getIndexName())
-                    + "_"
-                    + tableName
-                    + "_",
-            counter);
+        + "_"
+        + tableName
+        + "_",
+      counter);
     return createIndex(indexMetaData, indexName);
   }
 
@@ -209,11 +216,11 @@ public class SchemaScriptCreatorTool {
     final String unique = indexMetaData.isUnique() ? " UNIQUE " : " ";
 
     final StringBuilder builder = new StringBuilder("CREATE" + unique
-            + "INDEX "
-            + indexName
-            + " ON "
-            + tableMapper.fullyQualifiedTableName(tableMetaData, targetDatabaseMetaData)
-            + "(");
+      + "INDEX "
+      + indexName
+      + " ON "
+      + tableMapper.fullyQualifiedTableName(tableMetaData, targetDatabaseMetaData)
+      + "(");
 
 
     for (final Iterator<ColumnMetaData> iterator = indexMetaData.getColumnMetaData().iterator(); iterator.hasNext(); ) {
@@ -239,9 +246,9 @@ public class SchemaScriptCreatorTool {
     final String tablename = tableMapper.mapTableName(tableMetaData, targetDatabaseMetaData);
 
     String fkName = createConstraintName("FK_", tablename + "_"
-            + columnMapper.mapColumnName(referencingColumn, referencedColumn.getTableMetaData())
-            + "_"
-            + columnMapper.mapColumnName(referencedColumn, referencedColumn.getTableMetaData()) + "_", counter);
+      + columnMapper.mapColumnName(referencingColumn, referencedColumn.getTableMetaData())
+      + "_"
+      + columnMapper.mapColumnName(referencedColumn, referencedColumn.getTableMetaData()) + "_", counter);
 
     return createForeignKey(referencingColumn, fkName);
   }
@@ -255,24 +262,31 @@ public class SchemaScriptCreatorTool {
     final String qualifiedTableName = tableMapper.fullyQualifiedTableName(tableMetaData, targetDatabaseMetaData);
 
     return "ALTER TABLE " + qualifiedTableName + " ADD CONSTRAINT " + fkName +
-            " FOREIGN KEY (" + columnMapper.mapColumnName(referencingColumn, referencingColumn.getTableMetaData()) + ") REFERENCES " +
-            tableMapper.fullyQualifiedTableName(referencedColumn.getTableMetaData(), targetDatabaseMetaData)
-            + "(" + columnMapper.mapColumnName(referencedColumn, referencingColumn.getTableMetaData()) + ");";
+      " FOREIGN KEY (" + columnMapper.mapColumnName(referencingColumn, referencingColumn.getTableMetaData()) + ") REFERENCES " +
+      tableMapper.fullyQualifiedTableName(referencedColumn.getTableMetaData(), targetDatabaseMetaData)
+      + "(" + columnMapper.mapColumnName(referencedColumn, referencingColumn.getTableMetaData()) + ");";
   }
 
   public String createForeignKey(final ForeignKeyMetaData foreignKeyMetaData) throws SQLException {
     return createForeignKey(foreignKeyMetaData.getReferencingColumn(), foreignKeyMetaData.getForeignKeyName());
   }
 
-  private String createColumn(final ColumnMetaData columnMetaData) throws SQLException {
+  public String createColumn(final ColumnMetaData columnMetaData) throws SQLException {
     final ColumnMapper columnMapper = _connectorRepository.getConnectorHint(getTargetConnectorId(), ColumnMapper.class).getValue();
-    final ColumnTypeMapper columnTypeMapper = getColumnTypeMapper();
+    final ColumnTypeMapper columnTypeMapper = _connectorRepository.getConnectorHint(getTargetConnectorId(), ColumnTypeMapper.class).getValue();
     final StringBuilder builder = new StringBuilder();
     final DatabaseType sourceType = _connectorRepository.getDatabaseMetaData(_sourceConnectorId).getDatabaseType();
     final DatabaseType targetType = _connectorRepository.getDatabaseMetaData(getTargetConnectorId()).getDatabaseType();
+    final String columnName = columnMapper.mapColumnName(columnMetaData, columnMetaData.getTableMetaData());
+    final String columnType = columnTypeMapper.mapColumnType(columnMetaData, sourceType, targetType);
+    final int maxNameLength = getTargetMaxNameLength();
 
-    builder.append(columnMapper.mapColumnName(columnMetaData, columnMetaData.getTableMetaData())).append(" ")
-            .append(columnTypeMapper.mapColumnType(columnMetaData, sourceType, targetType));
+    if (columnName.length() > maxNameLength) {
+      throw new IncompatibleColumnsException("Column name " + columnName + " is too long for the targeted data base (Max. "
+        + maxNameLength + "). You will have to provide an appropriate " + ColumnMapper.class.getName() + " hint");
+    }
+
+    builder.append(columnName + " " + columnType);
 
     if (!columnMetaData.isNullable()) {
       builder.append(" NOT NULL");
@@ -281,18 +295,9 @@ public class SchemaScriptCreatorTool {
     return builder.toString();
   }
 
-  private ColumnTypeMapper getColumnTypeMapper() {
-    final ConnectorHint<ColumnTypeMapper> hint = _connectorRepository.getConnectorHint(_sourceConnectorId, ColumnTypeMapper.class);
-
-    if (hint == null) {
-      return new DefaultColumnTypeMapper();
-    }
-    return hint.getValue();
-  }
-
   public String createConstraintName(final String prefix, final String preferredName, final int uniqueId) throws SQLException {
     final StringBuilder name = new StringBuilder(preferredName);
-    final int maxLength = computeMaxConstraintNameLength() - prefix.length() - String.valueOf(uniqueId).length();
+    final int maxLength = getTargetMaxNameLength() - prefix.length() - String.valueOf(uniqueId).length();
 
     while (name.length() > maxLength) {
       final int index = Math.abs(RANDOM.nextInt() % name.length());
@@ -302,7 +307,7 @@ public class SchemaScriptCreatorTool {
     return prefix + name + uniqueId;
   }
 
-  public int computeMaxConstraintNameLength() throws SQLException {
+  public int getTargetMaxNameLength() throws SQLException {
     final java.sql.DatabaseMetaData metaData = _connectorRepository.getDatabaseMetaData(getTargetConnectorId()).getDatabaseMetaData();
 
     // Since there is no getMaxConstraintNameLength() ...
