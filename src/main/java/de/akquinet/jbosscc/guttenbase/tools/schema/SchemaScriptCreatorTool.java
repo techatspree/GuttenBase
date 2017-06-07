@@ -141,15 +141,15 @@ public class SchemaScriptCreatorTool {
     return result;
   }
 
-
   public String createTable(final TableMetaData tableMetaData) throws SQLException {
     final DatabaseMetaData targetDatabaseMetaData = _connectorRepository.getDatabaseMetaData(getTargetConnectorId());
     final TableMapper tableMapper = _connectorRepository.getConnectorHint(getTargetConnectorId(), TableMapper.class).getValue();
+    final String rawTableName = tableMapper.mapTableName(tableMetaData, targetDatabaseMetaData);
     final String tableName = tableMapper.fullyQualifiedTableName(tableMetaData, targetDatabaseMetaData);
     final StringBuilder builder = new StringBuilder("CREATE TABLE " + tableName + "\n(\n");
     final int maxNameLength = getTargetMaxNameLength();
 
-    if (tableName.length() > maxNameLength) {
+    if (rawTableName.length() > maxNameLength) {
       throw new IncompatibleTablesException("Table name " + tableName + " is too long for the targeted data base (Max. "
         + maxNameLength + "). You will have to provide an appropriate " + TableMapper.class.getName() + " hint");
     }
