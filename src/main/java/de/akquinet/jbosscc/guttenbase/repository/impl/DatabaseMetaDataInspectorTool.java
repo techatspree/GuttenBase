@@ -286,8 +286,12 @@ public class DatabaseMetaDataInspectorTool {
       tableFilter.getTableNamePattern(databaseMetaData), tableFilter.getTableTypes(databaseMetaData));
 
     while (rs.next()) {
+      final String tableCatalog = rs.getString("TABLE_CAT");
+      final String tableSchema = rs.getString("TABLE_SCHEM");
       final String tableName = rs.getString("TABLE_NAME");
       final String tableType = rs.getString("TABLE_TYPE");
+
+      LOG.debug("Found: " + tableCatalog + "/" + tableSchema + "/" + tableName + "/" + tableType);
       final InternalTableMetaData tableMetaData = new TableMetaDataImpl(tableName, databaseMetaData, tableType);
 
       if (tableFilter.accept(tableMetaData)) {
