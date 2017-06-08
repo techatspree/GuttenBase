@@ -150,7 +150,7 @@ public class SchemaScriptCreatorTool {
     final int maxNameLength = getTargetMaxNameLength();
 
     if (rawTableName.length() > maxNameLength) {
-      throw new IncompatibleTablesException("Table name " + tableName + " is too long for the targeted data base (Max. "
+      throw new IncompatibleTablesException("Table name " + rawTableName + " is too long for the targeted data base (Max. "
         + maxNameLength + "). You will have to provide an appropriate " + TableMapper.class.getName() + " hint");
     }
 
