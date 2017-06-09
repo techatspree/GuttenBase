@@ -19,9 +19,7 @@ import static de.akquinet.jbosscc.guttenbase.connector.DatabaseType.POSTGRESQL;
 public class DefaultColumnTypeMapper implements ColumnTypeMapper {
   private final Map<DatabaseType, Map<DatabaseType, Map<String, String>>> _mappings = new HashMap<>();
 
-
   public DefaultColumnTypeMapper() {
-
     createPostgresToMysqlMapping();
     createMysqlToPostresMapping();
     createMysqlToOracle();
