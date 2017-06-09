@@ -241,8 +241,8 @@ public class SchemaScriptCreatorTool {
   }
 
   private String createForeignKey(final ColumnMetaData referencingColumn, final int counter) throws SQLException {
-    final TableMapper tableMapper = _connectorRepository.getConnectorHint(getSourceConnectorId(), TableMapper.class).getValue();
-    final ColumnMapper columnMapper = _connectorRepository.getConnectorHint(getSourceConnectorId(), ColumnMapper.class).getValue();
+    final TableMapper tableMapper = _connectorRepository.getConnectorHint(getTargetConnectorId(), TableMapper.class).getValue();
+    final ColumnMapper columnMapper = _connectorRepository.getConnectorHint(getTargetConnectorId(), ColumnMapper.class).getValue();
     final DatabaseMetaData targetDatabaseMetaData = _connectorRepository.getDatabaseMetaData(getTargetConnectorId());
     final TableMetaData tableMetaData = referencingColumn.getTableMetaData();
     final ColumnMetaData referencedColumn = referencingColumn.getReferencedColumn();
