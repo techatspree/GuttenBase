@@ -12,10 +12,8 @@ import de.akquinet.jbosscc.guttenbase.mapping.ColumnMapper;
 import de.akquinet.jbosscc.guttenbase.meta.ColumnMetaData;
 import de.akquinet.jbosscc.guttenbase.meta.ColumnType;
 import de.akquinet.jbosscc.guttenbase.meta.TableMetaData;
-
 import org.junit.Before;
 import org.junit.Test;
-
 import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.List;
@@ -116,7 +114,7 @@ public class SplitColumnDataTest extends AbstractGuttenBaseTest {
     final TableMetaData tableMetaData = _connectorRepository
             .getDatabaseMetaData(CONNECTOR_ID2).getTableMetaData("FOO");
 
-    assertEquals(1, tableMetaData.getRowCount());
+    assertEquals(1, tableMetaData.getTotalRowCount());
 
     final List<Map<String, Object>> tableData = new ReadTableDataTool(
             _connectorRepository).readTableData(CONNECTOR_ID2,

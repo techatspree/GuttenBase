@@ -5,12 +5,14 @@ package de.akquinet.jbosscc.guttenbase.meta;
  * <p>
  * &copy; 2012-2020 akquinet tech@spree
  * </p>
- * 
+ *
  * @author M. Dahm
  */
 public interface InternalTableMetaData extends TableMetaData
 {
-  void setRowCount(final int rowCount);
+  void setTotalRowCount(final int rowCount);
+
+  void setFilteredRowCount(final int rowCount);
 
   void addColumn(final ColumnMetaData column);
 

@@ -96,20 +96,19 @@ public class DropTablesTool {
     }
 
     public List<String> createDropTableStatements(final String connectorId) throws SQLException {
-        final List<TableMetaData> tableMetaData = new TableOrderTool().getOrderedTables(
-            TableOrderHint.getSortedTables(_connectorRepository, connectorId), false);
-        final List<String> statements = new ArrayList<>();
-        final TableMapper tableMapper = _connectorRepository.getConnectorHint(connectorId, TableMapper.class).getValue();
+        return createTableStatements(connectorId, "DROP TABLE");
+    }
 
-        for (final TableMetaData table : tableMetaData) {
-            statements.add("DROP TABLE " + tableMapper.fullyQualifiedTableName(table, table.getDatabaseMetaData()) + ";");
-        }
-
-        return statements;
+    public List<String> createDeleteTableStatements(final String connectorId) throws SQLException {
+        return createTableStatements(connectorId, "DELETE FROM");
     }
 
     public void dropTables(final String targetId) throws SQLException {
         new ScriptExecutorTool(_connectorRepository).executeScript(targetId, true, true, createDropTableStatements(targetId));
+    }
+
+    public void clearTables(final String targetId) throws SQLException {
+        new ScriptExecutorTool(_connectorRepository).executeScript(targetId, true, true, createDeleteTableStatements(targetId));
     }
 
     public void dropIndexes(final String targetId) throws SQLException {
@@ -118,5 +117,18 @@ public class DropTablesTool {
 
     public void dropForeignKeys(final String targetId) throws SQLException {
         new ScriptExecutorTool(_connectorRepository).executeScript(targetId, true, false, createDropForeignKeyStatements(targetId));
+    }
+
+    private List<String> createTableStatements(final String connectorId, final String clausePrefix) throws SQLException {
+        final List<TableMetaData> tableMetaData = new TableOrderTool().getOrderedTables(
+          TableOrderHint.getSortedTables(_connectorRepository, connectorId), false);
+        final List<String> statements = new ArrayList<>();
+        final TableMapper tableMapper = _connectorRepository.getConnectorHint(connectorId, TableMapper.class).getValue();
+
+        for (final TableMetaData table : tableMetaData) {
+            statements.add(clausePrefix + " " + tableMapper.fullyQualifiedTableName(table, table.getDatabaseMetaData()) + ";");
+        }
+
+        return statements;
     }
 }

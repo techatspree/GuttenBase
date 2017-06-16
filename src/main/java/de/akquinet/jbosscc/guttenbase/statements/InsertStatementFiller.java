@@ -92,7 +92,7 @@ public class InsertStatementFiller
 
         for (final ColumnMetaData targetColumnMetaData : mapping.getColumns())
         {
-          final ColumnTypeMapping columnTypeMapping = findMapping(sourceConnectorId, targetConnectorId, commonColumnTypeResolver,
+          final ColumnTypeMapping columnTypeMapping = findMapping(targetConnectorId, commonColumnTypeResolver,
                   sourceColumnMetaData, targetColumnMetaData);
 
           Object value = columnTypeMapping.getSourceColumnType().getValue(rs, columnIndex);
@@ -128,7 +128,7 @@ public class InsertStatementFiller
     LOG.debug("Number of data items: " + dataItemsCount);
   }
 
-  private ColumnTypeMapping findMapping(final String sourceConnectorId, final String targetConnectorId,
+  private ColumnTypeMapping findMapping(final String targetConnectorId,
                                         final CommonColumnTypeResolverTool commonColumnTypeResolver, final ColumnMetaData columnMetaData1,
                                         final ColumnMetaData columnMetaData2) throws SQLException
   {

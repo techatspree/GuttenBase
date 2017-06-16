@@ -16,6 +16,7 @@ import de.akquinet.jbosscc.guttenbase.meta.impl.TableMetaDataImpl;
 import de.akquinet.jbosscc.guttenbase.repository.ConnectorRepository;
 import de.akquinet.jbosscc.guttenbase.repository.DatabaseColumnFilter;
 import de.akquinet.jbosscc.guttenbase.repository.DatabaseTableFilter;
+import de.akquinet.jbosscc.guttenbase.tools.SelectWhereClause;
 import de.akquinet.jbosscc.guttenbase.utils.Util;
 import org.apache.log4j.Logger;
 import java.lang.reflect.Method;
@@ -264,18 +265,33 @@ public class DatabaseMetaDataInspectorTool {
     resultSet.close();
   }
 
+  private String createWhereClause(final TableMetaData tableMetaData) throws SQLException {
+    final SelectWhereClause selectWhereClause = _connectorRepository.getConnectorHint(_connectorId, SelectWhereClause.class).getValue();
+    return selectWhereClause.getWhereClause(tableMetaData);
+  }
+
   private void updateTableWithRowCount(final Statement statement, final InternalTableMetaData tableMetaData, final String schemaPrefix)
     throws SQLException {
     final String tableName = escapeTableName(tableMetaData, schemaPrefix);
 
     LOG.debug("Retrieving row count for " + tableName);
 
-    final String countSQL = SELECT_COUNT_STATEMENT.replace(TABLE_PLACEHOLDER, tableName);
-    final ResultSet countResultSet = statement.executeQuery(countSQL);
+    final String countAllSQL = SELECT_COUNT_STATEMENT.replace(TABLE_PLACEHOLDER, tableName);
+    final String filterClause = createWhereClause(tableMetaData).trim();
+    final String countFilteredSQL = SELECT_COUNT_STATEMENT.replace(TABLE_PLACEHOLDER, tableName) + " " + filterClause;
+    final int totalCount = getCount(statement, countAllSQL);
+    final int filteredCount = "".equals(filterClause) ? totalCount : getCount(statement, countFilteredSQL);
+
+    tableMetaData.setTotalRowCount(totalCount);
+    tableMetaData.setFilteredRowCount(filteredCount);
+  }
+
+  private int getCount(final Statement statement, final String countAllSQL) throws SQLException {
+    final ResultSet countResultSet = statement.executeQuery(countAllSQL);
     countResultSet.next();
     final int totalCount = countResultSet.getInt(1);
     countResultSet.close();
-    tableMetaData.setRowCount(totalCount);
+    return totalCount;
   }
 
   private void loadTables(final InternalDatabaseMetaData databaseMetaData, final java.sql.DatabaseMetaData metaData) throws SQLException {

@@ -1,35 +1,20 @@
 package de.akquinet.jbosscc.guttenbase.export;
 
-import java.io.InputStream;
-import java.io.Reader;
-import java.math.BigDecimal;
-import java.net.URL;
-import java.sql.Array;
-import java.sql.Blob;
-import java.sql.Clob;
-import java.sql.Date;
-import java.sql.NClob;
-import java.sql.Ref;
-import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
-import java.sql.RowId;
-import java.sql.SQLException;
-import java.sql.SQLWarning;
-import java.sql.SQLXML;
-import java.sql.Statement;
-import java.sql.Time;
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import de.akquinet.jbosscc.guttenbase.defaults.impl.DefaultColumnComparator;
 import de.akquinet.jbosscc.guttenbase.exceptions.ImportException;
 import de.akquinet.jbosscc.guttenbase.meta.ColumnMetaData;
 import de.akquinet.jbosscc.guttenbase.meta.DatabaseMetaData;
 import de.akquinet.jbosscc.guttenbase.meta.TableMetaData;
+import java.io.InputStream;
+import java.io.Reader;
+import java.math.BigDecimal;
+import java.net.URL;
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Special {@link ResultSet} that reads data from the given stream. Only few inherited getter methods have a meaningful
@@ -37,7 +22,7 @@ import de.akquinet.jbosscc.guttenbase.meta.TableMetaData;
  * <p>
  * &copy; 2012-2020 akquinet tech@spree
  * </p>
- * 
+ *
  * @author M. Dahm
  */
 @SuppressWarnings("RedundantThrows")
@@ -100,7 +85,7 @@ public class ImportDumpResultSet implements ResultSet
   public boolean next() throws SQLException
   {
     _currentRow.clear();
-    final boolean hasNext = _rowCount++ < _tableMetaData.getRowCount();
+    final boolean hasNext = _rowCount++ < _tableMetaData.getTotalRowCount();
 
     if (hasNext) // Prefetch current row
     {

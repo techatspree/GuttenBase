@@ -1,32 +1,15 @@
 package de.akquinet.jbosscc.guttenbase.export;
 
-import java.io.InputStream;
-import java.io.Reader;
-import java.math.BigDecimal;
-import java.net.URL;
-import java.sql.Array;
-import java.sql.Blob;
-import java.sql.Clob;
-import java.sql.Connection;
-import java.sql.Date;
-import java.sql.NClob;
-import java.sql.ParameterMetaData;
-import java.sql.PreparedStatement;
-import java.sql.Ref;
-import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
-import java.sql.RowId;
-import java.sql.SQLException;
-import java.sql.SQLWarning;
-import java.sql.SQLXML;
-import java.sql.Time;
-import java.sql.Timestamp;
-import java.util.Calendar;
-
 import de.akquinet.jbosscc.guttenbase.exceptions.MissingDataException;
 import de.akquinet.jbosscc.guttenbase.meta.DatabaseMetaData;
 import de.akquinet.jbosscc.guttenbase.meta.TableMetaData;
 import de.akquinet.jbosscc.guttenbase.utils.Util;
+import java.io.InputStream;
+import java.io.Reader;
+import java.math.BigDecimal;
+import java.net.URL;
+import java.sql.*;
+import java.util.Calendar;
 
 /**
  * Custom implementation of {@link PreparedStatement} reading data from the given input stream. This done via the custom
@@ -34,7 +17,7 @@ import de.akquinet.jbosscc.guttenbase.utils.Util;
  * <p>
  * &copy; 2012-2020 akquinet tech@spree
  * </p>
- * 
+ *
  * @author M. Dahm
  */
 public class ImportDumpPreparedStatement implements PreparedStatement
@@ -72,7 +55,7 @@ public class ImportDumpPreparedStatement implements PreparedStatement
   {
     assert sql != null : "sql != null";
 
-    if (_tableMetaData.getRowCount() < 0)
+    if (_tableMetaData.getFilteredRowCount() < 0)
     {
       throw new MissingDataException("Invalid number of expected rows");
     }

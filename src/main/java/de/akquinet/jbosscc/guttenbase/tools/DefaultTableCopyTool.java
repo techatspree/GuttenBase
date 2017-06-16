@@ -7,7 +7,6 @@ import de.akquinet.jbosscc.guttenbase.repository.ConnectorRepository;
 import de.akquinet.jbosscc.guttenbase.statements.InsertStatementCreator;
 import de.akquinet.jbosscc.guttenbase.statements.InsertStatementFiller;
 import de.akquinet.jbosscc.guttenbase.statements.SelectStatementCreator;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -42,7 +41,7 @@ public class DefaultTableCopyTool extends AbstractTableCopyTool
       final TargetDatabaseConfiguration targetDatabaseConfiguration, final TableMetaData targetTableMetaData,
       final String targetTableName, final int numberOfRowsPerBatch, final boolean useMultipleValuesClauses) throws SQLException
   {
-    final int sourceRowCount = sourceTableMetaData.getRowCount();
+    final int sourceRowCount = sourceTableMetaData.getFilteredRowCount();
     final PreparedStatement selectStatement = new SelectStatementCreator(_connectorRepository, sourceConnectorId)
         .createSelectStatement(sourceConnection, sourceTableName, sourceTableMetaData);
 

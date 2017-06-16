@@ -13,7 +13,9 @@ import java.util.List;
  */
 public interface TableMetaData extends Comparable<TableMetaData>, Serializable
 {
-  int getRowCount();
+  int getFilteredRowCount();
+
+  int getTotalRowCount();
 
   List<ColumnMetaData> getColumnMetaData();
 
