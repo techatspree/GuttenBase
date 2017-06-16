@@ -1,21 +1,19 @@
 package de.akquinet.jbosscc.guttenbase.tools;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
-
-import org.junit.Before;
-import org.junit.Test;
-
 import de.akquinet.jbosscc.guttenbase.configuration.TestH2ConnectionInfo;
 import de.akquinet.jbosscc.guttenbase.hints.TableOrderHint;
 import de.akquinet.jbosscc.guttenbase.meta.ForeignKeyMetaData;
 import de.akquinet.jbosscc.guttenbase.meta.IndexMetaData;
 import de.akquinet.jbosscc.guttenbase.meta.TableMetaData;
+import org.junit.Before;
+import org.junit.Test;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 public class DropTablesToolTest extends AbstractGuttenBaseTest
 {
@@ -59,7 +57,13 @@ public class DropTablesToolTest extends AbstractGuttenBaseTest
     assertFalse(_connectorRepository.getDatabaseMetaData(CONNECTOR_ID).getTableMetaData().isEmpty());
     _objectUnderTest.dropTables(CONNECTOR_ID);
     assertTrue(_connectorRepository.getDatabaseMetaData(CONNECTOR_ID).getTableMetaData().isEmpty());
+  }
 
+  @Test
+  public void testClearTables() throws Exception {
+    assertEquals(5, _connectorRepository.getDatabaseMetaData(CONNECTOR_ID).getTableMetaData("FOO_USER").getTotalRowCount());
+    _objectUnderTest.clearTables(CONNECTOR_ID);
+    assertEquals(0, _connectorRepository.getDatabaseMetaData(CONNECTOR_ID).getTableMetaData("FOO_USER").getTotalRowCount());
   }
 
   private List<ForeignKeyMetaData> getAllForeignKeys() throws SQLException
