@@ -26,7 +26,8 @@ public class TableMetaDataImpl implements InternalTableMetaData
 
   private final String _tableName;
   private final String _tableType;
-  private int _rowCount;
+  private int _totalRowCount;
+  private int _filteredRowCount;
   private final Map<String, ColumnMetaData> _columns = new LinkedHashMap<>();
   private final Map<String, IndexMetaData> _indexes = new LinkedHashMap<>();
   private final Map<String, ForeignKeyMetaData> _importedForeignKeys = new LinkedHashMap<>();
@@ -48,18 +49,34 @@ public class TableMetaDataImpl implements InternalTableMetaData
    * {@inheritDoc}
    */
   @Override
-  public int getRowCount()
-  {
-    return _rowCount;
+  public int getFilteredRowCount() {
+    return _filteredRowCount;
   }
 
   /**
    * {@inheritDoc}
    */
   @Override
-  public void setRowCount(final int rowCount)
+  public void setFilteredRowCount(final int filteredRowCount) {
+    _filteredRowCount = filteredRowCount;
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public int getTotalRowCount()
   {
-    _rowCount = rowCount;
+    return _totalRowCount;
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public void setTotalRowCount(final int rowCount)
+  {
+    _totalRowCount = rowCount;
   }
 
   /**

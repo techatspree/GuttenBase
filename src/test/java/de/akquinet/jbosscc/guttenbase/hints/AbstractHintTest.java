@@ -24,14 +24,14 @@ import static org.junit.Assert.assertFalse;
 public abstract class AbstractHintTest extends AbstractGuttenBaseTest {
   public static final String SOURCE = "SOURCE";
   public static final String TARGET = "TARGET";
-  private final String _tablesResource1;
-  private final String _tablesResource2;
-  private final String _dataResource1;
+  private final String _sourceTableSchemaScript;
+  private final String _targetTableSchemaScript;
+  private final String _dataScript;
 
-  public AbstractHintTest(final String tablesResource1, final String tablesResource2, final String dataResource1) {
-    _tablesResource1 = tablesResource1;
-    _tablesResource2 = tablesResource2;
-    _dataResource1 = dataResource1;
+  public AbstractHintTest(final String sourceTableSchemaScript, final String targetTableSchemaScript, final String dataScript) {
+    _sourceTableSchemaScript = sourceTableSchemaScript;
+    _targetTableSchemaScript = targetTableSchemaScript;
+    _dataScript = dataScript;
   }
 
   @Before
@@ -40,9 +40,9 @@ public abstract class AbstractHintTest extends AbstractGuttenBaseTest {
     _connectorRepository.addConnectionInfo(TARGET, new TestH2ConnectionInfo());
     final ScriptExecutorTool scriptExecutorTool = new ScriptExecutorTool(_connectorRepository, "UTF-8");
 
-    scriptExecutorTool.executeFileScript(SOURCE, _tablesResource1);
-    scriptExecutorTool.executeFileScript(TARGET, _tablesResource2);
-    scriptExecutorTool.executeFileScript(SOURCE, false, false, _dataResource1);
+    scriptExecutorTool.executeFileScript(SOURCE, _sourceTableSchemaScript);
+    scriptExecutorTool.executeFileScript(TARGET, _targetTableSchemaScript);
+    scriptExecutorTool.executeFileScript(SOURCE, false, false, _dataScript);
   }
 
   @Test

@@ -82,7 +82,7 @@ public abstract class AbstractTableCopyTool {
 
             final String sourceTableName = sourceTableMapper.fullyQualifiedTableName(sourceTableMetaData, sourceDatabaseMetaData);
             final String targetTableName = targetTableMapper.fullyQualifiedTableName(targetTableMetaData, targetDatabaseMetaData);
-            final int targetRowCount = targetTableMetaData.getRowCount();
+            final int targetRowCount = targetTableMetaData.getFilteredRowCount();
 
             if (targetRowCount > 0) {
                 _progressIndicator.warn("Target table " + targetTableMetaData.getTableName() + " is not empty!");
@@ -105,7 +105,7 @@ public abstract class AbstractTableCopyTool {
             sourceDatabaseConfiguration.beforeTableCopy(sourceConnection, sourceConnectorId, sourceTableMetaData);
             targetDatabaseConfiguration.beforeTableCopy(targetConnection, targetConnectorId, targetTableMetaData);
 
-            _progressIndicator.startCopyTable(sourceTableName, sourceTableMetaData.getRowCount(), targetTableName);
+            _progressIndicator.startCopyTable(sourceTableName, sourceTableMetaData.getFilteredRowCount(), targetTableName);
 
             copyTable(sourceConnectorId, sourceConnection, sourceDatabaseConfiguration, sourceTableMetaData, sourceTableName,
               targetConnectorId, targetConnection, targetDatabaseConfiguration, targetTableMetaData, targetTableName,

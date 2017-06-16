@@ -1,12 +1,11 @@
 package de.akquinet.jbosscc.guttenbase.tools;
 
-import static org.junit.Assert.assertEquals;
-
+import de.akquinet.jbosscc.guttenbase.configuration.TestHsqlConnectionInfo;
+import de.akquinet.jbosscc.guttenbase.meta.TableMetaData;
 import org.junit.Before;
 import org.junit.Test;
 
-import de.akquinet.jbosscc.guttenbase.configuration.TestHsqlConnectionInfo;
-import de.akquinet.jbosscc.guttenbase.meta.TableMetaData;
+import static org.junit.Assert.assertEquals;
 
 public class MinMaxIdSelectorTest extends AbstractGuttenBaseTest {
 	public static final String CONNECTOR_ID = "hsql";
@@ -26,7 +25,7 @@ public class MinMaxIdSelectorTest extends AbstractGuttenBaseTest {
 
 		_objectUnderTest.computeMinMax(CONNECTOR_ID, tableMetaData);
 
-		assertEquals(4, tableMetaData.getRowCount());
+		assertEquals(4, tableMetaData.getTotalRowCount());
 		assertEquals(1, _objectUnderTest.getMinValue());
 		assertEquals(7, _objectUnderTest.getMaxValue());
 	}

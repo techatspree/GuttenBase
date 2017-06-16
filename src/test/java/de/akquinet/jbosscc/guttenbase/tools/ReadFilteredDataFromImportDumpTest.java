@@ -12,12 +12,13 @@ import de.akquinet.jbosscc.guttenbase.repository.RepositoryColumnFilter;
 import de.akquinet.jbosscc.guttenbase.repository.RepositoryTableFilter;
 import org.junit.Before;
 import org.junit.Test;
-
 import java.io.File;
 import java.util.List;
 import java.util.Map;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Copy limited set of data from dump source, i.e. just one table (FOO_USER) and only three columns: ID, USERNAME, PASSWORD
@@ -87,7 +88,7 @@ public class ReadFilteredDataFromImportDumpTest extends AbstractGuttenBaseTest
     assertEquals(1, _connectorRepository.getDatabaseMetaData(CONNECTOR_ID2).getTableMetaData().size());
     final TableMetaData tableMetaData = _connectorRepository.getDatabaseMetaData(CONNECTOR_ID2).getTableMetaData("FOO_USER");
 
-    assertEquals(5, tableMetaData.getRowCount());
+    assertEquals(5, tableMetaData.getTotalRowCount());
 
     final List<Map<String, Object>> tableData = new ReadTableDataTool(_connectorRepository).readTableData(CONNECTOR_ID2,
         tableMetaData, 1);

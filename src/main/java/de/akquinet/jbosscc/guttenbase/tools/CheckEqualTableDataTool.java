@@ -200,14 +200,14 @@ public class CheckEqualTableDataTool {
   }
 
   private void checkRowCount(final TableMetaData sourceTableMetaData, final TableMetaData targetTableMetaData, final String tableName1, final String tableName2) throws UnequalNumberOfRowsException {
-    if (sourceTableMetaData.getRowCount() != targetTableMetaData.getRowCount()) {
+    if (sourceTableMetaData.getFilteredRowCount() != targetTableMetaData.getFilteredRowCount()) {
       throw new UnequalNumberOfRowsException("Number of rows is not equal: " + tableName1
         + "="
-        + sourceTableMetaData.getRowCount()
+        + sourceTableMetaData.getFilteredRowCount()
         + " vs. "
         + tableName2
         + "="
-        + targetTableMetaData.getRowCount());
+        + targetTableMetaData.getFilteredRowCount());
     }
 
     LOG.info("Checking data of " + tableName1 + " <--> " + tableName2 + " started");

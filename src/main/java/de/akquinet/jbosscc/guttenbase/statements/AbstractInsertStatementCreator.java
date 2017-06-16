@@ -1,21 +1,20 @@
 package de.akquinet.jbosscc.guttenbase.statements;
 
+import de.akquinet.jbosscc.guttenbase.meta.ColumnMetaData;
+import de.akquinet.jbosscc.guttenbase.meta.TableMetaData;
+import de.akquinet.jbosscc.guttenbase.repository.ConnectorRepository;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.List;
 
-import de.akquinet.jbosscc.guttenbase.meta.ColumnMetaData;
-import de.akquinet.jbosscc.guttenbase.meta.TableMetaData;
-import de.akquinet.jbosscc.guttenbase.repository.ConnectorRepository;
-
 /**
  * Create INSERT statement with multiple VALUES tuples.
- * 
+ *
  * <p>
  * &copy; 2012-2020 akquinet tech@spree
  * </p>
- * 
+ *
  * @author M. Dahm
  */
 public abstract class AbstractInsertStatementCreator extends AbstractStatementCreator {
@@ -68,11 +67,9 @@ public abstract class AbstractInsertStatementCreator extends AbstractStatementCr
 			final TableMetaData targetTableMetaData, final int numberOfValueClauses) throws SQLException {
 		final List<ColumnMetaData> columns = getMappedTargetColumns(sourceTableMetaData, targetTableMetaData, sourceConnectorId);
 
-        String buf = INSERT_INTO + targetTableName + " (" + createColumnClause(columns) +
-                ") VALUES " +
-                createValueTuples(numberOfValueClauses, columns.size()) +
-                createWhereClause(targetTableMetaData);
-
-        return buf;
+		return INSERT_INTO + targetTableName + " (" + createColumnClause(columns) +
+			") VALUES " +
+			createValueTuples(numberOfValueClauses, columns.size()) +
+			" " + createWhereClause(targetTableMetaData);
 	}
 }
