@@ -274,6 +274,8 @@ public class SchemaScriptCreatorTool {
   }
 
   public String createColumn(final ColumnMetaData columnMetaData) throws SQLException {
+    final TableMapper tableMapper = _connectorRepository.getConnectorHint(getTargetConnectorId(), TableMapper.class).getValue();
+    final DatabaseMetaData targetDatabaseMetaData = _connectorRepository.getDatabaseMetaData(getTargetConnectorId());
     final ColumnMapper columnMapper = _connectorRepository.getConnectorHint(getTargetConnectorId(), ColumnMapper.class).getValue();
     final ColumnTypeMapper columnTypeMapper = _connectorRepository.getConnectorHint(getTargetConnectorId(), ColumnTypeMapper.class).getValue();
     final StringBuilder builder = new StringBuilder();
@@ -282,10 +284,12 @@ public class SchemaScriptCreatorTool {
     final String columnName = columnMapper.mapColumnName(columnMetaData, columnMetaData.getTableMetaData());
     final String columnType = columnTypeMapper.mapColumnType(columnMetaData, sourceType, targetType);
     final int maxNameLength = getTargetMaxNameLength();
+    final String rawTableName = tableMapper.mapTableName(columnMetaData.getTableMetaData(), targetDatabaseMetaData);
 
     if (columnName.length() > maxNameLength) {
-      throw new IncompatibleColumnsException("Column name " + columnName + " is too long for the targeted data base (Max. "
-        + maxNameLength + "). You will have to provide an appropriate " + ColumnMapper.class.getName() + " hint");
+      throw new IncompatibleColumnsException("Table " + rawTableName + ": Column name " + columnName + " is too long for " +
+        "the targeted data base (Max. " + maxNameLength + ")." +
+        " You will have to provide an appropriate " + ColumnMapper.class.getName() + " hint");
     }
 
     builder.append(columnName + " " + columnType);
