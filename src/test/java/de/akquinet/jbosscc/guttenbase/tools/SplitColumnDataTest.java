@@ -36,20 +36,20 @@ public class SplitColumnDataTest extends AbstractGuttenBaseTest {
   @Before
   public final void setup() throws Exception {
     _connectorRepository.addConnectionInfo(CONNECTOR_ID1,
-            new TestHsqlConnectionInfo());
+      new TestHsqlConnectionInfo());
     _connectorRepository.addConnectionInfo(CONNECTOR_ID2,
-            new TestDerbyConnectionInfo());
+      new TestDerbyConnectionInfo());
 
     new ScriptExecutorTool(_connectorRepository)
-            .executeScript(CONNECTOR_ID1,
-                    "CREATE TABLE FOO(ID bigint PRIMARY KEY, STUPID varchar(255));");
+      .executeScript(CONNECTOR_ID1,
+        "CREATE TABLE FOO(ID bigint PRIMARY KEY, STUPID varchar(255));");
     new ScriptExecutorTool(_connectorRepository)
-            .executeScript(CONNECTOR_ID2,
-                    "CREATE TABLE FOO(ID bigint PRIMARY KEY, SMART1 varchar(100), SMART2 varchar(100));");
+      .executeScript(CONNECTOR_ID2,
+        "CREATE TABLE FOO(ID bigint PRIMARY KEY, SMART1 varchar(100), SMART2 varchar(100));");
 
     new ScriptExecutorTool(_connectorRepository).executeScript(
-            CONNECTOR_ID1, false, false,
-            "INSERT INTO FOO(ID, STUPID) VALUES(1, 'A|B');");
+      CONNECTOR_ID1, false, false,
+      "INSERT INTO FOO(ID, STUPID) VALUES(1, 'A|B');");
   }
 
   @Test
@@ -61,11 +61,10 @@ public class SplitColumnDataTest extends AbstractGuttenBaseTest {
           @Override
           public ColumnMapperResult map(ColumnMetaData source,
                                         TableMetaData targetTableMetaData)
-                  throws SQLException {
+            throws SQLException {
             if (source.getColumnName().equalsIgnoreCase("STUPID")) {
               return new ColumnMapperResult(Arrays.asList(targetTableMetaData.getColumnMetaData("SMART1"), targetTableMetaData.getColumnMetaData("SMART2")));
-            }
-            else {
+            } else {
               return super.map(source, targetTableMetaData);
             }
           }
@@ -90,15 +89,13 @@ public class SplitColumnDataTest extends AbstractGuttenBaseTest {
               final String text = value.toString();
               final String[] strings = text.split("\\|");
 
-              if ("SMART1".equalsIgnoreCase(columnName)) {
+              if ("SMART1".equalsIgnoreCase(columnName) || strings.length == 1) {
                 return strings[0];
-              }
-              else {
+              } else {
                 return strings[1];
               }
 
-            }
-            else {
+            } else {
               return null;
             }
           }
@@ -112,14 +109,16 @@ public class SplitColumnDataTest extends AbstractGuttenBaseTest {
     new DefaultTableCopyTool(_connectorRepository).copyTables(CONNECTOR_ID1, CONNECTOR_ID2);
 
     final TableMetaData tableMetaData = _connectorRepository
-            .getDatabaseMetaData(CONNECTOR_ID2).getTableMetaData("FOO");
+      .getDatabaseMetaData(CONNECTOR_ID2).getTableMetaData("FOO");
 
     assertEquals(1, tableMetaData.getTotalRowCount());
 
-    final List<Map<String, Object>> tableData = new ReadTableDataTool(
-            _connectorRepository).readTableData(CONNECTOR_ID2,
-            tableMetaData, 1);
+    final ReadTableDataTool tool = new ReadTableDataTool(_connectorRepository, CONNECTOR_ID2, tableMetaData);
+    tool.start();
+    final List<Map<String, Object>> tableData = tool.readTableData(1);
     final Map<String, Object> row = tableData.get(0);
+    tool.end();
+
 
     assertEquals(1L, row.get("ID"));
     assertEquals("A", row.get("SMART1"));

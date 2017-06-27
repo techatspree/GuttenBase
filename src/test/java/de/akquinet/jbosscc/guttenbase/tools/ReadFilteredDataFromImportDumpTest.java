@@ -28,8 +28,7 @@ import static org.junit.Assert.assertTrue;
  *
  * @author M. Dahm
  */
-public class ReadFilteredDataFromImportDumpTest extends AbstractGuttenBaseTest
-{
+public class ReadFilteredDataFromImportDumpTest extends AbstractGuttenBaseTest {
   public static final String DATA_JAR = "./data.jar";
   public static final String IMPORT = "import";
   public static final String EXPORT = "export";
@@ -37,8 +36,7 @@ public class ReadFilteredDataFromImportDumpTest extends AbstractGuttenBaseTest
   public static final String CONNECTOR_ID2 = "h2";
 
   @Before
-  public final void setup() throws Exception
-  {
+  public final void setup() throws Exception {
     new File(DATA_JAR).delete();
 
     _connectorRepository.addConnectionInfo(CONNECTOR_ID1, new TestHsqlConnectionInfo());
@@ -49,33 +47,28 @@ public class ReadFilteredDataFromImportDumpTest extends AbstractGuttenBaseTest
 
     new ScriptExecutorTool(_connectorRepository).executeFileScript(CONNECTOR_ID1, "/ddl/tables.sql");
     new ScriptExecutorTool(_connectorRepository).executeScript(CONNECTOR_ID2,
-        "CREATE TABLE FOO_USER(ID bigint PRIMARY KEY, USERNAME varchar(100), NAME varchar(100), PASSWORD varchar(255));");
+      "CREATE TABLE FOO_USER(ID bigint PRIMARY KEY, USERNAME varchar(100), NAME varchar(100), PASSWORD varchar(255));");
 
     new ScriptExecutorTool(_connectorRepository).executeFileScript(CONNECTOR_ID1, false, false, "/data/test-data.sql");
     new DefaultTableCopyTool(_connectorRepository).copyTables(CONNECTOR_ID1, EXPORT);
   }
 
   @Test
-  public void testFilteredImport() throws Exception
-  {
-    final RepositoryTableFilterHint tableFilterHint = new RepositoryTableFilterHint()
-    {
+  public void testFilteredImport() throws Exception {
+    final RepositoryTableFilterHint tableFilterHint = new RepositoryTableFilterHint() {
       @Override
-      public RepositoryTableFilter getValue()
-      {
+      public RepositoryTableFilter getValue() {
         return table -> table.getTableName().equalsIgnoreCase("FOO_USER");
       }
     };
 
-    final RepositoryColumnFilterHint columnFilterHint = new RepositoryColumnFilterHint()
-    {
+    final RepositoryColumnFilterHint columnFilterHint = new RepositoryColumnFilterHint() {
       @Override
-      public RepositoryColumnFilter getValue()
-      {
+      public RepositoryColumnFilter getValue() {
         return column -> {
           final String columnName = column.getColumnName();
           return columnName.equalsIgnoreCase("ID") || columnName.equalsIgnoreCase("USERNAME")
-              || columnName.equalsIgnoreCase("PASSWORD");
+            || columnName.equalsIgnoreCase("PASSWORD");
         };
       }
     };
@@ -90,9 +83,11 @@ public class ReadFilteredDataFromImportDumpTest extends AbstractGuttenBaseTest
 
     assertEquals(5, tableMetaData.getTotalRowCount());
 
-    final List<Map<String, Object>> tableData = new ReadTableDataTool(_connectorRepository).readTableData(CONNECTOR_ID2,
-        tableMetaData, 1);
+    final ReadTableDataTool tool = new ReadTableDataTool(_connectorRepository, CONNECTOR_ID2, tableMetaData);
+    tool.start();
+    final List<Map<String, Object>> tableData = tool.readTableData(1);
     final Map<String, Object> row = tableData.get(0);
+    tool.end();
 
     assertEquals(1L, row.get("ID"));
     assertEquals("User_1", row.get("USERNAME"));
