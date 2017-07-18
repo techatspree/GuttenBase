@@ -16,6 +16,7 @@ import de.akquinet.jbosscc.guttenbase.meta.impl.TableMetaDataImpl;
 import de.akquinet.jbosscc.guttenbase.repository.ConnectorRepository;
 import de.akquinet.jbosscc.guttenbase.repository.DatabaseColumnFilter;
 import de.akquinet.jbosscc.guttenbase.repository.DatabaseTableFilter;
+import de.akquinet.jbosscc.guttenbase.repository.TableRowCountFilter;
 import de.akquinet.jbosscc.guttenbase.tools.SelectWhereClause;
 import de.akquinet.jbosscc.guttenbase.utils.Util;
 import org.apache.log4j.Logger;
@@ -266,24 +267,32 @@ public class DatabaseMetaDataInspectorTool {
   }
 
   private String createWhereClause(final TableMetaData tableMetaData) throws SQLException {
-    final SelectWhereClause selectWhereClause = _connectorRepository.getConnectorHint(_connectorId, SelectWhereClause.class).getValue();
-    return selectWhereClause.getWhereClause(tableMetaData);
+    return _connectorRepository.getConnectorHint(_connectorId, SelectWhereClause.class)
+      .getValue().getWhereClause(tableMetaData);
   }
 
   private void updateTableWithRowCount(final Statement statement, final InternalTableMetaData tableMetaData, final String schemaPrefix)
     throws SQLException {
-    final String tableName = escapeTableName(tableMetaData, schemaPrefix);
 
-    LOG.debug("Retrieving row count for " + tableName);
+    final TableRowCountFilter filter = _connectorRepository.getConnectorHint(_connectorId, TableRowCountFilter.class).getValue();
 
-    final String countAllSQL = SELECT_COUNT_STATEMENT.replace(TABLE_PLACEHOLDER, tableName);
-    final String filterClause = createWhereClause(tableMetaData).trim();
-    final String countFilteredSQL = SELECT_COUNT_STATEMENT.replace(TABLE_PLACEHOLDER, tableName) + " " + filterClause;
-    final int totalCount = getCount(statement, countAllSQL);
-    final int filteredCount = "".equals(filterClause) ? totalCount : getCount(statement, countFilteredSQL);
+    if (filter.accept(tableMetaData)) {
+      final String tableName = escapeTableName(tableMetaData, schemaPrefix);
 
-    tableMetaData.setTotalRowCount(totalCount);
-    tableMetaData.setFilteredRowCount(filteredCount);
+      LOG.debug("Retrieving row count for " + tableName);
+
+      final String countAllSQL = SELECT_COUNT_STATEMENT.replace(TABLE_PLACEHOLDER, tableName);
+      final String filterClause = createWhereClause(tableMetaData).trim();
+      final String countFilteredSQL = SELECT_COUNT_STATEMENT.replace(TABLE_PLACEHOLDER, tableName) + " " + filterClause;
+      final int totalCount = getCount(statement, countAllSQL);
+      final int filteredCount = "".equals(filterClause) ? totalCount : getCount(statement, countFilteredSQL);
+
+      tableMetaData.setTotalRowCount(totalCount);
+      tableMetaData.setFilteredRowCount(filteredCount);
+    } else {
+      tableMetaData.setTotalRowCount(filter.defaultRowCount(tableMetaData));
+      tableMetaData.setFilteredRowCount(filter.defaultRowCount(tableMetaData));
+    }
   }
 
   private int getCount(final Statement statement, final String countAllSQL) throws SQLException {
