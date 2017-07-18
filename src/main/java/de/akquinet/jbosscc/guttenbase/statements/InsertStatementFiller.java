@@ -31,15 +31,13 @@ import java.util.List;
  * @author M. Dahm
  * @gb.UsesHint {@link ColumnOrderHint} to determine column order
  */
-public class InsertStatementFiller
-{
+public class InsertStatementFiller {
   private static final Logger LOG = Logger.getLogger(InsertStatementFiller.class);
 
   private final ConnectorRepository _connectorRepository;
   private final List<Closeable> _closeableObjects = new ArrayList<>();
 
-  public InsertStatementFiller(final ConnectorRepository connectorRepository)
-  {
+  public InsertStatementFiller(final ConnectorRepository connectorRepository) {
     assert connectorRepository != null : "connectorRepository != null";
     _connectorRepository = connectorRepository;
   }
@@ -48,60 +46,51 @@ public class InsertStatementFiller
                                                final String targetConnectorId, final TableMetaData targetTableMetaData,
                                                final TargetDatabaseConfiguration targetDatabaseConfiguration, final Connection targetConnection, final ResultSet rs,
                                                final PreparedStatement insertStatement, final int numberOfRowsPerBatch, final boolean useMultipleValuesClauses)
-          throws SQLException
-  {
+    throws SQLException {
     final CommonColumnTypeResolverTool commonColumnTypeResolver = new CommonColumnTypeResolverTool(_connectorRepository);
     final List<ColumnMetaData> sourceColumns = ColumnOrderHint.getSortedColumns(_connectorRepository, sourceConnectorId,
-            sourceTableMetaData);
+      sourceTableMetaData);
     final ColumnMapper columnMapper = _connectorRepository.getConnectorHint(targetConnectorId, ColumnMapper.class).getValue();
     final DatabaseType targetDatabaseType = targetTableMetaData.getDatabaseMetaData().getDatabaseType();
     int targetColumnIndex = 1;
     int dataItemsCount = 0;
 
-    for (int currentRow = 0; currentRow < numberOfRowsPerBatch; currentRow++)
-    {
+    for (int currentRow = 0; currentRow < numberOfRowsPerBatch; currentRow++) {
       final boolean ok = rs.next();
 
-      if (!ok)
-      {
-        throw new MissingDataException("No more data in row " + currentRow + "/" + numberOfRowsPerBatch);
+      if (!ok) {
+        throw new MissingDataException("No more data in row " + currentRow + "/" + numberOfRowsPerBatch + " in " +
+          sourceTableMetaData.getTableName());
       }
 
       targetDatabaseConfiguration.beforeNewRow(targetConnection, targetConnectorId, targetTableMetaData);
 
-      for (int columnIndex = 1; columnIndex <= sourceColumns.size(); columnIndex++)
-      {
+      for (int columnIndex = 1; columnIndex <= sourceColumns.size(); columnIndex++) {
         final ColumnMetaData sourceColumnMetaData = sourceColumns.get(columnIndex - 1);
         final ColumnMapperResult mapping = columnMapper.map(sourceColumnMetaData, targetTableMetaData);
 
-        if (mapping.getColumns().isEmpty())
-        {
-          if (mapping.isEmptyColumnListOk())
-          {
+        if (mapping.getColumns().isEmpty()) {
+          if (mapping.isEmptyColumnListOk()) {
             // Unused result, but we may have to skip the next data item from an underlying stream implementation
             rs.getObject(columnIndex);
-          }
-          else
-          {
+          } else {
             throw new IncompatibleColumnsException("Cannot map column " + targetTableMetaData
-                    + ":"
-                    + sourceColumnMetaData
-                    + ": Target column list empty");
+              + ":"
+              + sourceColumnMetaData
+              + ": Target column list empty");
           }
         }
 
-        for (final ColumnMetaData targetColumnMetaData : mapping.getColumns())
-        {
+        for (final ColumnMetaData targetColumnMetaData : mapping.getColumns()) {
           final ColumnTypeMapping columnTypeMapping = findMapping(targetConnectorId, commonColumnTypeResolver,
-                  sourceColumnMetaData, targetColumnMetaData);
+            sourceColumnMetaData, targetColumnMetaData);
 
           Object value = columnTypeMapping.getSourceColumnType().getValue(rs, columnIndex);
           value = columnTypeMapping.getColumnDataMapper().map(sourceColumnMetaData, targetColumnMetaData, value);
           Closeable optionalCloseableObject = columnTypeMapping.getTargetColumnType().setValue(insertStatement, targetColumnIndex++, value, targetDatabaseType,
-                  targetColumnMetaData.getColumnType());
+            targetColumnMetaData.getColumnType());
 
-          if (optionalCloseableObject != null)
-          {
+          if (optionalCloseableObject != null) {
             _closeableObjects.add(optionalCloseableObject);
           }
 
@@ -110,8 +99,7 @@ public class InsertStatementFiller
       }
 
       // Add another INSERT with one VALUES clause to BATCH
-      if (!useMultipleValuesClauses)
-      {
+      if (!useMultipleValuesClauses) {
         insertStatement.addBatch();
         targetColumnIndex = 1;
       }
@@ -120,8 +108,7 @@ public class InsertStatementFiller
     }
 
     // Add single INSERT with many VALUES clauses to BATCH
-    if (useMultipleValuesClauses)
-    {
+    if (useMultipleValuesClauses) {
       insertStatement.addBatch();
     }
 
@@ -130,20 +117,18 @@ public class InsertStatementFiller
 
   private ColumnTypeMapping findMapping(final String targetConnectorId,
                                         final CommonColumnTypeResolverTool commonColumnTypeResolver, final ColumnMetaData columnMetaData1,
-                                        final ColumnMetaData columnMetaData2) throws SQLException
-  {
+                                        final ColumnMetaData columnMetaData2) throws SQLException {
     final ColumnTypeMapping columnTypeMapping = commonColumnTypeResolver.getCommonColumnTypeMapping(
       columnMetaData1, targetConnectorId, columnMetaData2);
 
-    if (columnTypeMapping == null)
-    {
+    if (columnTypeMapping == null) {
       throw new IncompatibleColumnsException("Columns have incompatible types: " + columnMetaData1.getColumnName()
-              + "/"
-              + columnMetaData1.getColumnTypeName()
-              + " vs. "
-              + columnMetaData2.getColumnName()
-              + "/"
-              + columnMetaData2.getColumnTypeName());
+        + "/"
+        + columnMetaData1.getColumnTypeName()
+        + " vs. "
+        + columnMetaData2.getColumnName()
+        + "/"
+        + columnMetaData2.getColumnTypeName());
     }
 
     return columnTypeMapping;
@@ -152,16 +137,11 @@ public class InsertStatementFiller
   /**
    * Clear any resources associated with this commit, open BLOBs in particular.
    */
-  public void clear()
-  {
-    for (Closeable closeableObject : _closeableObjects)
-    {
-      try
-      {
+  public void clear() {
+    for (Closeable closeableObject : _closeableObjects) {
+      try {
         closeableObject.close();
-      }
-      catch (IOException e)
-      {
+      } catch (IOException e) {
         LOG.warn("While closing " + closeableObject, e);
       }
     }

@@ -328,5 +328,6 @@ public class ConnectorRepositoryImpl implements ConnectorRepository {
     addConnectorHint(connectorId, new DefaultRefreshTargetConnectionHint());
     addConnectorHint(connectorId, new DefaultColumnTypeMapperHint());
     addConnectorHint(connectorId, new DefaultSelectWhereClauseHint());
+    addConnectorHint(connectorId, new DefaultTableRowCountFilterHint());
   }
 }
