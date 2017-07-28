@@ -5,7 +5,7 @@ package de.akquinet.jbosscc.guttenbase.utils;
  * <p>
  * &copy; 2013-2020 akquinet tech@spree
  * </p>
- * 
+ *
  * @author M. Dahm
  */
 public class TimingProgressIndicator implements TableCopyProgressIndicator
@@ -179,9 +179,11 @@ public class TimingProgressIndicator implements TableCopyProgressIndicator
   @Override
   public final void updateTimers()
   {
-    setElapsedExecutionTime(System.currentTimeMillis() - getStartExecutionTime());
-    setElapsedTotalTime(System.currentTimeMillis() - getStartTotalTime());
-    setElapsedProcessTime(System.currentTimeMillis() - getStartProcessTime());
+    final long millis = System.currentTimeMillis();
+
+    setElapsedExecutionTime(millis - getStartExecutionTime());
+    setElapsedTotalTime(millis - getStartTotalTime());
+    setElapsedProcessTime(millis - getStartProcessTime());
   }
 
   private void setElapsedTotalTime(final long elapsedTotalTime)
