@@ -1,3 +1,11 @@
+What's new in Version 2.0
+============================
+- Many fixes and API changes
+- Clarifications
+- Support for Java 8
+- Newly developed schema copying tool
+- Getting started guide
+
 What's new in Version 1.3
 ============================
 - Handling case in table names, etc. improved
