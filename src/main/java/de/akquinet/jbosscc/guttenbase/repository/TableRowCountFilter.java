@@ -6,7 +6,7 @@ import java.sql.SQLException;
 
 /**
  * Some tables are really big and computing the row count may take too long for the data base.
- * <p/>
+ * <p></p>
  * Using this hint the @see {@link DatabaseMetaDataInspectorTool} will compute the row count only
  * for the given tables.
  */

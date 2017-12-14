@@ -16,7 +16,7 @@ import java.util.List;
  * </p>
  *
  * @author M. Dahm
- * @gb.UsesHint {@link de.akquinet.jbosscc.guttenbase.hints.TableMapperHint}
+ * Hint is used by {@link de.akquinet.jbosscc.guttenbase.hints.TableMapperHint}
  */
 public abstract class AbstractTablesOperationTool {
     public static final String TABLE_PLACEHOLDER = "@TABLE@";

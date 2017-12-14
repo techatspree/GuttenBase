@@ -9,8 +9,8 @@ import de.akquinet.jbosscc.guttenbase.utils.TableCopyProgressIndicator;
  * &copy; 2012-2020 akquinet tech@spree
  * </p>
  *
- * @gb.ApplicableForTarget
- * @gb.HintUsedBy {@link AbstractTableCopyTool}
+ *
+ * Hint is used by {@link AbstractTableCopyTool}
  * @author M. Dahm
  */
 public abstract class TableCopyProgressIndicatorHint implements ConnectorHint<TableCopyProgressIndicator>

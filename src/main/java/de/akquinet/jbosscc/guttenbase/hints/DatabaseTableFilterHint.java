@@ -1,10 +1,9 @@
 package de.akquinet.jbosscc.guttenbase.hints;
 
-import java.sql.DatabaseMetaData;
-
 import de.akquinet.jbosscc.guttenbase.connector.impl.AbstractConnector;
 import de.akquinet.jbosscc.guttenbase.repository.DatabaseTableFilter;
 import de.akquinet.jbosscc.guttenbase.repository.impl.DatabaseMetaDataInspectorTool;
+import java.sql.DatabaseMetaData;
 
 /**
  * Regard which tables when {@link DatabaseMetaDataInspectorTool} is looking for tables in the given data base. The
@@ -14,8 +13,8 @@ import de.akquinet.jbosscc.guttenbase.repository.impl.DatabaseMetaDataInspectorT
  * &copy; 2012-2020 akquinet tech@spree
  * </p>
  *
- * @gb.ApplicableForSource
- * @gb.HintUsedBy {@link DatabaseMetaDataInspectorTool} when reading tables from {@link DatabaseMetaData}
+ *
+ * Hint is used by {@link DatabaseMetaDataInspectorTool} when reading tables from {@link DatabaseMetaData}
  * @author M. Dahm
  */
 public abstract class DatabaseTableFilterHint implements ConnectorHint<DatabaseTableFilter> {

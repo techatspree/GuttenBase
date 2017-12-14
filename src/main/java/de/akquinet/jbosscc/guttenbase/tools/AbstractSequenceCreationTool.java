@@ -10,14 +10,15 @@ import java.util.List;
 
 /**
  * Create auto-increment sequences for table IDs.
- * <p/>
+ * <p></p>
  * <p>
  * &copy; 2012-2020 akquinet tech@spree
  * </p>
  *
  * @author M. Dahm
- * @gb.UsesHint {@link de.akquinet.jbosscc.guttenbase.hints.TableNameMapperHint}
- * @gb.UsesHint {@link de.akquinet.jbosscc.guttenbase.hints.EntityTableCheckerHint} to look for entity classes, i.e. classes that may use an ID sequence
+ * Uses {@link de.akquinet.jbosscc.guttenbase.hints.TableMapperHint}
+ * Uses {@link de.akquinet.jbosscc.guttenbase.hints.EntityTableCheckerHint} to look for entity classes, i.e. classes that may use
+ * an ID sequence
  */
 @SuppressWarnings("RedundantThrows")
 public abstract class AbstractSequenceCreationTool {

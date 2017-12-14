@@ -21,8 +21,8 @@ import java.util.List;
  * &copy; 2012-2020 akquinet tech@spree
  * </p>
  *
- * @gb.UsesHint {@link ColumnDataMapperProviderHint} to determine mapping between different column types
- * @gb.UsesHint {@link ColumnTypeResolverListHint} to determine mapping strategies between different column types
+ * Hint is used by {@link ColumnDataMapperProviderHint} to determine mapping between different column types
+ * Hint is used by {@link ColumnTypeResolverListHint} to determine mapping strategies between different column types
  *
  * @author M. Dahm
  */

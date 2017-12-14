@@ -11,16 +11,15 @@ import java.util.List;
 
 /**
  * Update auto-increment sequences for table IDs.
- * <p/>
+ * <p></p>
  * By default the sequence is updated to SELECT(MAX(ID) + 1) FROM table
- * <p/>
+ * <p></p>
  * <p>
  * &copy; 2012-2020 akquinet tech@spree
  * </p>
  *
  * @author M. Dahm
- * @gb.UsesHint {@link TableNameMapperHint}
- * @gb.UsesHint {@link EntityTableCheckerHint} to look for entity classes, i.e. classes that may use an ID sequence
+ * Uses {@link EntityTableCheckerHint} to look for entity classes, i.e. classes that may use an ID sequence
  */
 @SuppressWarnings("RedundantThrows")
 public abstract class AbstractSequenceUpdateTool {

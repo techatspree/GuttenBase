@@ -12,7 +12,7 @@ import java.util.Map;
 
 /**
  * Information about a data base/schema.
- * <p/>
+ * <p></p>
  * <p>
  * &copy; 2012-2020 akquinet tech@spree
  * </p>

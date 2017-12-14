@@ -19,7 +19,7 @@ import java.util.List;
  * </p>
  *
  * @author M. Dahm
- * @gb.UsesHint {@link TableOrderHint} to determine order of tables
+ * Hint is used by {@link TableOrderHint} to determine order of tables
  */
 public class DropTablesTool {
     private static final String DEFAULT_INDEX_DROP = "DROP INDEX @@FULL_INDEX_NAME@@;";

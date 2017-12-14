@@ -11,8 +11,8 @@ import de.akquinet.jbosscc.guttenbase.export.ImporterFactory;
  * &copy; 2012-2020 akquinet tech@spree
  * </p>
  *
- * @gb.ApplicableForSource
- * @gb.HintUsedBy {@link ImportDumpConnector} to determine importer implementation
+ *
+ * Hint is used by {@link ImportDumpConnector} to determine importer implementation
  * @author M. Dahm
  */
 public abstract class ImporterFactoryHint implements ConnectorHint<ImporterFactory> {

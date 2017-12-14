@@ -12,10 +12,10 @@ import de.akquinet.jbosscc.guttenbase.tools.schema.comparison.SchemaComparatorTo
  * &copy; 2012-2020 akquinet tech@spree
  * </p>
  *
- * @gb.ApplicableForTarget
- * @gb.HintUsedBy {@link CheckEqualTableDataTool} to get according table
- * @gb.HintUsedBy {@link SchemaComparatorTool} to get according table
- * @gb.HintUsedBy {@link AbstractTableCopyTool} to get according table
+ *
+ * Hint is used by {@link CheckEqualTableDataTool} to get according table
+ * Hint is used by {@link SchemaComparatorTool} to get according table
+ * Hint is used by {@link AbstractTableCopyTool} to get according table
  *
  * @author M. Dahm
  */

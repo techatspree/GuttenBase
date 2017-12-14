@@ -11,9 +11,9 @@ import de.akquinet.jbosscc.guttenbase.tools.EntityTableChecker;
  * &copy; 2012-2020 akquinet tech@spree
  * </p>
  *
- * @gb.ApplicableForSource
- * @gb.ApplicableForTarget
- * @gb.HintUsedBy {@link AbstractSequenceUpdateTool} to look for entity classes, i.e. classes that may use an ID sequence
+ *
+ *
+ * Hint is used by {@link AbstractSequenceUpdateTool} to look for entity classes, i.e. classes that may use an ID sequence
  * @author M. Dahm
  */
 public abstract class EntityTableCheckerHint implements ConnectorHint<EntityTableChecker> {

@@ -4,7 +4,7 @@ import de.akquinet.jbosscc.guttenbase.meta.TableMetaData;
 
 /**
  * Optionally configure the SELECT statement created to read data from source tables with a WHERE clause.
- * <p/>
+ * <p></p>
  * <p>&copy; 2012-2020 akquinet tech@spree</p>
  *
  * @author M. Dahm

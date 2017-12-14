@@ -1,9 +1,8 @@
 package de.akquinet.jbosscc.guttenbase.hints;
 
-import java.sql.DatabaseMetaData;
-
 import de.akquinet.jbosscc.guttenbase.repository.DatabaseColumnFilter;
 import de.akquinet.jbosscc.guttenbase.repository.impl.DatabaseMetaDataInspectorTool;
+import java.sql.DatabaseMetaData;
 
 /**
  * Regard which columns when @see {@link DatabaseMetaDataInspectorTool} is inquiring the database for columns?
@@ -11,8 +10,8 @@ import de.akquinet.jbosscc.guttenbase.repository.impl.DatabaseMetaDataInspectorT
  * &copy; 2012-2020 akquinet tech@spree
  * </p>
  *
- * @gb.ApplicableForSource
- * @gb.HintUsedBy {@link DatabaseMetaDataInspectorTool} when reading tables from {@link DatabaseMetaData}
+ *
+ * Hint is used by {@link DatabaseMetaDataInspectorTool} when reading tables from {@link DatabaseMetaData}
  * @author M. Dahm
  */
 public abstract class DatabaseColumnFilterHint implements ConnectorHint<DatabaseColumnFilter>

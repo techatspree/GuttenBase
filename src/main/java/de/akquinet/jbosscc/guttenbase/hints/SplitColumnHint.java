@@ -16,11 +16,11 @@ import de.akquinet.jbosscc.guttenbase.tools.SplitColumn;
  * &copy; 2012-2020 akquinet tech@spree
  * </p>
  *
- * @gb.ApplicableForSource
- * @gb.HintUsedBy {@link SplitByColumnSelectCountStatementCreator}
- * @gb.HintUsedBy {@link SplitByColumnSelectMinMaxStatementCreator}
- * @gb.HintUsedBy {@link SplitByColumnSelectStatementCreator}
- * @gb.HintUsedBy {@link SplitByRangeTableCopyTool}
+ *
+ * Hint is used by {@link SplitByColumnSelectCountStatementCreator}
+ * Hint is used by {@link SplitByColumnSelectMinMaxStatementCreator}
+ * Hint is used by {@link SplitByColumnSelectStatementCreator}
+ * Hint is used by {@link SplitByRangeTableCopyTool}
  *
  * @author M. Dahm
  */

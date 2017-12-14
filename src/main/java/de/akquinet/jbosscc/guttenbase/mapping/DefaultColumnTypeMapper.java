@@ -14,7 +14,9 @@ import static de.akquinet.jbosscc.guttenbase.connector.DatabaseType.POSTGRESQL;
 /**
  * Default uses same data type as source
  *
- * @copyright akquinet tech@spree GmbH, 2002-2020
+ * <p>
+ * &copy; 2012-2020 akquinet tech@spree
+ * </p>
  */
 public class DefaultColumnTypeMapper implements ColumnTypeMapper {
   private final Map<DatabaseType, Map<DatabaseType, Map<String, String>>> _mappings = new HashMap<>();

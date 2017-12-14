@@ -11,8 +11,8 @@ import de.akquinet.jbosscc.guttenbase.tools.ResultSetParameters;
  * </p>
  *
  * @author M. Dahm
- * @gb.ApplicableForTarget
- * @gb.HintUsedBy {@link AbstractTableCopyTool} to determine number of VALUES clauses in INSERT statement or statements in batch update
+ *
+ * Hint is used by {@link AbstractTableCopyTool} to determine number of VALUES clauses in INSERT statement or statements in batch update
  */
 public abstract class ResultSetParametersHint implements ConnectorHint<ResultSetParameters> {
   @Override

@@ -36,12 +36,10 @@ import java.util.List;
  * </p>
  *
  * @author M. Dahm
- * @gb.UsesHint {@link TableNameMapperHint} to map table names
- * @gb.UsesHint {@link NumberOfCheckedTableDataHint} How many rows of tables shall be regarded when checking that data has been
+ * Hint is used by {@link NumberOfCheckedTableDataHint} How many rows of tables shall be regarded when checking that data has been
  * transferred correctly.
- * @gb.UsesHint {@link ColumnNameMapperHint} to map column names
- * @gb.UsesHint {@link ColumnOrderHint} to determine column order
- * @gb.UsesHint {@link TableOrderHint} to determine order of tables
+ * Hint is used by {@link ColumnOrderHint} to determine column order
+ * Hint is used by {@link TableOrderHint} to determine order of tables
  */
 public class CheckEqualTableDataTool {
   private static final Logger LOG = Logger.getLogger(CheckEqualTableDataTool.class);

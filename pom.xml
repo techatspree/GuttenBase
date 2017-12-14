@@ -230,37 +230,11 @@
                 <version>2.9.1</version>
 
                 <configuration>
-                    <failOnError>false</failOnError>
                     <stylesheetfile>${basedir}/src/main/javadoc/stylesheet.css</stylesheetfile>
                     <docfilessubdirs>true</docfilessubdirs>
-                    <bottom><![CDATA[Copyright 2012, <a href="http://www.akquinet.de">akquinet tech@spree<a>]]>
+                    <bottom><![CDATA[Copyright 2018, <a href="http://www.akquinet.de">akquinet tech@spree<a>]]>
                     </bottom>
 
-                    <tags>
-                        <tag>
-                            <name>gb.HintUsedBy</name>
-                            <placement>a</placement>
-                            <head>Hint is used by</head>
-                        </tag>
-
-                        <tag>
-                            <name>gb.UsesHint</name>
-                            <placement>a</placement>
-                            <head>Uses hints</head>
-                        </tag>
-
-                        <tag>
-                            <name>gb.ApplicableForSource</name>
-                            <placement>a</placement>
-                            <head>This hint is applicable for the source connector</head>
-                        </tag>
-
-                        <tag>
-                            <name>gb.ApplicableForTarget</name>
-                            <placement>a</placement>
-                            <head>This hint is applicable for the target connector</head>
-                        </tag>
-                    </tags>
                 </configuration>
 
                 <executions>

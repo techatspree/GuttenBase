@@ -5,7 +5,9 @@ import java.util.logging.Level;
 /**
  * Type of compatibility issue
  *
- * @copyright akquinet tech@spree GmbH, 2002-2040
+ * <p>
+ * &copy; 2012-2020 akquinet tech@spree
+ * </p>
  */
 public enum SchemaCompatibilityIssueType {
   MISSING_TABLE(Level.SEVERE),

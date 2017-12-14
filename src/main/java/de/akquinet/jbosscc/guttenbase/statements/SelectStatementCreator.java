@@ -9,7 +9,7 @@ import java.sql.Types;
 
 /**
  * Create SELECT statement for copying data.
- * <p/>
+ * <p></p>
  * <p>
  * &copy; 2012-2020 akquinet tech@spree
  * </p>

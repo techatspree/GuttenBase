@@ -23,10 +23,9 @@ import java.util.List;
  * </p>
  *
  * @author M. Dahm
- * @gb.UsesHint {@link TableNameMapperHint} to filter tables not to be regarded
- * @gb.UsesHint {@link NumberOfRowsPerBatchHint} to determine number of VALUES clauses in INSERT statement
- * @gb.UsesHint {@link MaxNumberOfDataItemsHint} to determine maximum number of data items in INSERT statement
- * @gb.UsesHint {@link TableOrderHint} to determine order of tables
+ * Hint is used by {@link NumberOfRowsPerBatchHint} to determine number of VALUES clauses in INSERT statement
+ * Hint is used by {@link MaxNumberOfDataItemsHint} to determine maximum number of data items in INSERT statement
+ * Hint is used by {@link TableOrderHint} to determine order of tables
  */
 public abstract class AbstractTableCopyTool {
     protected final ConnectorRepository _connectorRepository;

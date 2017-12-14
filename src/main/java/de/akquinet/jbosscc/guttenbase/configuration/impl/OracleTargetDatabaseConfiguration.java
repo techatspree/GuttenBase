@@ -17,7 +17,6 @@ import java.util.Map;
  * &copy; 2012-2020 akquinet tech@spree
  * </p>
  *
- * @gb.UsesHint {@link TableNameMapperHint}
  * @author M. Dahm
  */
 public class OracleTargetDatabaseConfiguration extends DefaultTargetDatabaseConfiguration {

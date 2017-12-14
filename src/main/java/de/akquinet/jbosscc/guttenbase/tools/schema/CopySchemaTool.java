@@ -9,7 +9,9 @@ import java.util.List;
 /**
  * Create Custom DDL from existing schema
  *
- * @copyright akquinet tech@spree GmbH, 2002-2020
+ * <p>
+ * &copy; 2012-2020 akquinet tech@spree
+ * </p>
  */
 @SuppressWarnings("SameParameterValue")
 public class CopySchemaTool {

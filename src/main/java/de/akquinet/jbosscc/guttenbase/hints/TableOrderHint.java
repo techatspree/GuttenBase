@@ -17,10 +17,10 @@ import java.util.List;
  * &copy; 2012-2020 akquinet tech@spree
  * </p>
  *
- * @gb.ApplicableForSource
- * @gb.HintUsedBy {@link SchemaComparatorTool} to determine table order
- * @gb.HintUsedBy {@link AbstractTableCopyTool} to determine table order
- * @gb.HintUsedBy {@link CheckEqualTableDataTool} to determine table order
+ *
+ * Hint is used by {@link SchemaComparatorTool} to determine table order
+ * Hint is used by {@link AbstractTableCopyTool} to determine table order
+ * Hint is used by {@link CheckEqualTableDataTool} to determine table order
  * @author M. Dahm
  */
 @SuppressWarnings("deprecation")

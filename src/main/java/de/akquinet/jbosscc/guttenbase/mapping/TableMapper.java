@@ -6,7 +6,7 @@ import java.sql.SQLException;
 
 /**
  * Select target table for given source table.
- * <p/>
+ * <p></p>
  * <p>
  * &copy; 2012-2020 akquinet tech@spree
  * </p>

@@ -18,7 +18,7 @@ import java.util.Properties;
 
 /**
  * Default tool to start when "executing" the JAR file. It simply displays the file structure.
- * <p/>
+ * <p></p>
  * <p>
  * &copy; 2012-2020 akquinet tech@spree
  * </p>
