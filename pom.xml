@@ -35,21 +35,6 @@
         <url>http://www.akquinet.de</url>
     </organization>
 
-    <distributionManagement>
-        <!-- Repository for snapshots -->
-        <snapshotRepository>
-            <id>sonatype-nexus-snapshots</id>
-            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
-        </snapshotRepository>
-
-        <!-- Repository for releases -->
-        <repository>
-            <id>nexus-releases</id>
-            <name>Nexus Release Repository</name>
-            <url>http://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
-        </repository>
-    </distributionManagement>
-
     <issueManagement>
         <system>Github Issues</system>
         <url>https://github.com/akquinet/GuttenBase/issues</url>
