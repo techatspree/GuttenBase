@@ -1,7 +1,7 @@
 package de.akquinet.jbosscc.guttenbase.hints;
 
-import de.akquinet.jbosscc.guttenbase.tools.NumberOfCheckedTableData;
 import de.akquinet.jbosscc.guttenbase.tools.CheckEqualTableDataTool;
+import de.akquinet.jbosscc.guttenbase.tools.NumberOfCheckedTableData;
 
 /**
  * How many rows of the copied tables shall be regarded when checking that data has been transferred correctly with the
@@ -11,8 +11,8 @@ import de.akquinet.jbosscc.guttenbase.tools.CheckEqualTableDataTool;
  * &copy; 2012-2020 akquinet tech@spree
  * </p>
  *
- * @gb.ApplicableForTarget
- * @gb.HintUsedBy {@link CheckEqualTableDataTool} How many rows of tables shall be regarded when checking that data has been transferred correctly.
+ *
+ * Hint is used by {@link CheckEqualTableDataTool} How many rows of tables shall be regarded when checking that data has been transferred correctly.
  * @author M. Dahm
  */
 public abstract class NumberOfCheckedTableDataHint implements ConnectorHint<NumberOfCheckedTableData> {

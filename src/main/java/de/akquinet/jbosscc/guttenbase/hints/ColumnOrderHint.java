@@ -1,9 +1,5 @@
 package de.akquinet.jbosscc.guttenbase.hints;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-
 import de.akquinet.jbosscc.guttenbase.mapping.ColumnOrderComparatorFactory;
 import de.akquinet.jbosscc.guttenbase.meta.ColumnMetaData;
 import de.akquinet.jbosscc.guttenbase.meta.TableMetaData;
@@ -11,6 +7,9 @@ import de.akquinet.jbosscc.guttenbase.repository.ConnectorRepository;
 import de.akquinet.jbosscc.guttenbase.statements.AbstractStatementCreator;
 import de.akquinet.jbosscc.guttenbase.statements.InsertStatementFiller;
 import de.akquinet.jbosscc.guttenbase.tools.CheckEqualTableDataTool;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
 
 /**
  * Determine order of columns in SELECT statement. This will of course also influence the ordering of the resulting INSERT statement.
@@ -19,10 +18,10 @@ import de.akquinet.jbosscc.guttenbase.tools.CheckEqualTableDataTool;
  * &copy; 2012-2020 akquinet tech@spree
  * </p>
  *
- * @gb.ApplicableForSource
- * @gb.HintUsedBy {@link AbstractStatementCreator} to determine column order
- * @gb.HintUsedBy {@link InsertStatementFiller} to determine column order
- * @gb.HintUsedBy {@link CheckEqualTableDataTool} to determine column order
+ *
+ * Hint is used by {@link AbstractStatementCreator} to determine column order
+ * Hint is used by {@link InsertStatementFiller} to determine column order
+ * Hint is used by {@link CheckEqualTableDataTool} to determine column order
  *
  * @author M. Dahm
  */

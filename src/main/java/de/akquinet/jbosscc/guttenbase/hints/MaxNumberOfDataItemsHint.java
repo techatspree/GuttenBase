@@ -11,8 +11,8 @@ import de.akquinet.jbosscc.guttenbase.tools.MaxNumberOfDataItems;
  * &copy; 2012-2020 akquinet tech@spree
  * </p>
  *
- * @gb.ApplicableForTarget
- * @gb.HintUsedBy {@link AbstractTableCopyTool} to determine maximum number of data items in INSERT statement
+ *
+ * Hint is used by {@link AbstractTableCopyTool} to determine maximum number of data items in INSERT statement
  * @author M. Dahm
  */
 public abstract class MaxNumberOfDataItemsHint implements ConnectorHint<MaxNumberOfDataItems> {

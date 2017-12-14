@@ -11,9 +11,9 @@ import de.akquinet.jbosscc.guttenbase.export.zip.ZipImporter;
  * &copy; 2012-2020 akquinet tech@spree
  * </p>
  *
- * @gb.ApplicableForTarget
- * @gb.HintUsedBy {@link ZipImporter} to add custom informations to the dump
- * @gb.HintUsedBy {@link PlainGzipImporter} to add custom informations to the dump
+ *
+ * Hint is used by {@link ZipImporter} to add custom informations to the dump
+ * Hint is used by {@link PlainGzipImporter} to add custom informations to the dump
  * @author M. Dahm
  */
 public abstract class ImportDumpExtraInformationHint implements ConnectorHint<ImportDumpExtraInformation> {

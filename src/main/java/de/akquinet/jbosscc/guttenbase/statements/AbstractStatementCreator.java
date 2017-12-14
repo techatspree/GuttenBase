@@ -19,9 +19,8 @@ import java.util.List;
  * </p>
  *
  * @author M. Dahm
- * @gb.UsesHint {@link ColumnNameMapperHint} to map column names
- * @gb.UsesHint {@link ColumnMapperHint} to map column names
- * @gb.UsesHint {@link ColumnOrderHint} to determine column order
+ * Hint is used by {@link ColumnMapperHint} to map column names
+ * Hint is used by {@link ColumnOrderHint} to determine column order
  */
 public abstract class AbstractStatementCreator {
   protected static final Logger LOG = Logger.getLogger(AbstractStatementCreator.class);

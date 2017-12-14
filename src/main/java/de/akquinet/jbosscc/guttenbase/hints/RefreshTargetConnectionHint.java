@@ -13,8 +13,8 @@ import de.akquinet.jbosscc.guttenbase.tools.RefreshTargetConnection;
  * </p>
  *
  * @author M. Dahm
- * @gb.ApplicableForSource
- * @gb.HintUsedBy {@link AbstractTableCopyTool} to determine table order
+ *
+ * Hint is used by {@link AbstractTableCopyTool} to determine table order
  */
 public abstract class RefreshTargetConnectionHint implements ConnectorHint<RefreshTargetConnection> {
   @Override

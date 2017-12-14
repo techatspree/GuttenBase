@@ -15,11 +15,11 @@ import de.akquinet.jbosscc.guttenbase.tools.CheckEqualTableDataTool;
  * &copy; 2012-2020 akquinet tech@spree
  * </p>
  *
- * @gb.ApplicableForTarget
- * @gb.HintUsedBy {@link CheckEqualTableDataTool} to map columns
- * @gb.HintUsedBy {@link de.akquinet.jbosscc.guttenbase.tools.schema.comparison.SchemaComparatorTool} to map columns
- * @gb.HintUsedBy {@link AbstractTableCopyTool} to map columns
- * @gb.HintUsedBy {@link AbstractStatementCreator} to map columns
+ *
+ * Hint is used by {@link CheckEqualTableDataTool} to map columns
+ * Hint is used by {@link de.akquinet.jbosscc.guttenbase.tools.schema.comparison.SchemaComparatorTool} to map columns
+ * Hint is used by {@link AbstractTableCopyTool} to map columns
+ * Hint is used by {@link AbstractStatementCreator} to map columns
  *
  * @author M. Dahm
  */

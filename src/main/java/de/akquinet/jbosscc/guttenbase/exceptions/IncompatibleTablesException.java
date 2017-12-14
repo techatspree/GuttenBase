@@ -4,7 +4,7 @@ import java.sql.SQLException;
 
 /**
  * Thrown when tables do not match.
- * <p/>
+ * <p></p>
  * <p>
  * &copy; 2012-2020 akquinet tech@spree
  * </p>

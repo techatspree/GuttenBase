@@ -12,8 +12,8 @@ import de.akquinet.jbosscc.guttenbase.export.zip.ZipExporterClassResources;
  * &copy; 2012-2020 akquinet tech@spree
  * </p>
  *
- * @gb.ApplicableForTarget
- * @gb.HintUsedBy {@link ZipExporter} to add custom classes to the generated JAR and configure the META-INF/MANIFEST.MF Main-Class entry
+ *
+ * Hint is used by {@link ZipExporter} to add custom classes to the generated JAR and configure the META-INF/MANIFEST.MF Main-Class entry
  * @author M. Dahm
  */
 public abstract class ZipExporterClassResourcesHint implements ConnectorHint<ZipExporterClassResources> {

@@ -13,8 +13,8 @@ import de.akquinet.jbosscc.guttenbase.tools.CommonColumnTypeResolverTool;
  * &copy; 2012-2020 akquinet tech@spree
  * </p>
  *
- * @gb.ApplicableForTarget
- * @gb.HintUsedBy {@link CommonColumnTypeResolverTool} to determine mapping strategies between different column types
+ *
+ * Hint is used by {@link CommonColumnTypeResolverTool} to determine mapping strategies between different column types
  *
  * @see ClassNameColumnTypeResolver
  * @see HeuristicColumnTypeResolver

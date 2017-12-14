@@ -18,7 +18,7 @@ import java.sql.SQLException;
  * &copy; 2012-2020 akquinet tech@spree
  * </p>
  *
- * @gb.UsesHint {@link ExporterFactoryHint} to determine exporter implementation
+ * Hint is used by {@link ExporterFactoryHint} to determine exporter implementation
  * @author M. Dahm
  */
 public class ExportDumpConnector extends AbstractConnector {

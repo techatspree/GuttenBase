@@ -4,22 +4,20 @@ import de.akquinet.jbosscc.guttenbase.hints.TableOrderHint;
 import de.akquinet.jbosscc.guttenbase.mapping.TableMapper;
 import de.akquinet.jbosscc.guttenbase.meta.TableMetaData;
 import de.akquinet.jbosscc.guttenbase.repository.ConnectorRepository;
-import de.akquinet.jbosscc.guttenbase.tools.postgresql.PostgresqlVacuumTablesTool;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
 
 /**
  * Implementation for PostgreSQL data base.
- * <p/>
+ * <p></p>
  * Running ANALYZE after insertions is recommended: http://www.postgresql.org/docs/7.4/static/populate.html
- * <p/>
+ * <p></p>
  * <p>
  * &copy; 2012-2020 akquinet tech@spree
  * </p>
  *
  * @author M. Dahm
- * @gb.UsesHint {@link TableNameMapperHint}
  */
 public class PostgresqlTargetDatabaseConfiguration extends DefaultTargetDatabaseConfiguration {
   public PostgresqlTargetDatabaseConfiguration(final ConnectorRepository connectorRepository) {

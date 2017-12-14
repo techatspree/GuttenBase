@@ -1,13 +1,12 @@
 package de.akquinet.jbosscc.guttenbase.statements;
 
-import java.sql.SQLException;
-import java.util.List;
-
 import de.akquinet.jbosscc.guttenbase.hints.SplitColumnHint;
 import de.akquinet.jbosscc.guttenbase.meta.ColumnMetaData;
 import de.akquinet.jbosscc.guttenbase.meta.TableMetaData;
 import de.akquinet.jbosscc.guttenbase.repository.ConnectorRepository;
 import de.akquinet.jbosscc.guttenbase.tools.SplitColumn;
+import java.sql.SQLException;
+import java.util.List;
 
 /**
  * Sometimes the amount of data exceeds any buffer. In these cases we need to split the data by some given range, usually the primary key.
@@ -19,7 +18,7 @@ import de.akquinet.jbosscc.guttenbase.tools.SplitColumn;
  * &copy; 2012-2020 akquinet tech@spree
  * </p>
  *
- * @gb.UsesHint {@link SplitColumnHint}
+ * Hint is used by {@link SplitColumnHint}
  * @author M. Dahm
  */
 public class SplitByColumnSelectMinMaxStatementCreator extends AbstractSelectStatementCreator {

@@ -25,7 +25,9 @@ import java.util.Map;
  * Execute given SQL script or single statements separated by given delimiter. Delimiter is ';' by default.
  *
  * @author M. Dahm
- * @copyright 2013 by akquinet tech@spree
+ * <p>
+ * &copy; 2012-2020 akquinet tech@spree
+ * </p>
  */
 public class ScriptExecutorTool {
     public static final String DEFAULT_ENCODING = Charset.defaultCharset().name();

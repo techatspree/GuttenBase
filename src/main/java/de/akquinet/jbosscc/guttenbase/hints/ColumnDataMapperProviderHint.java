@@ -10,8 +10,8 @@ import de.akquinet.jbosscc.guttenbase.tools.CommonColumnTypeResolverTool;
  * &copy; 2012-2020 akquinet tech@spree
  * </p>
  *
- * @gb.HintUsedBy {@link CommonColumnTypeResolverTool} to determine mapping between different column types
- * @gb.ApplicableForTarget
+ * Hint is used by {@link CommonColumnTypeResolverTool} to determine mapping between different column types
+ *
  * @author M. Dahm
  */
 public abstract class ColumnDataMapperProviderHint implements ConnectorHint<ColumnDataMapperProvider> {

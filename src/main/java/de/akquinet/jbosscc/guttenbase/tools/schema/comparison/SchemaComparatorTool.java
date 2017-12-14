@@ -28,8 +28,7 @@ import java.util.stream.Collectors;
  * </p>
  *
  * @author M. Dahm
- * @gb.UsesHint {@link ColumnNameMapperHint} to map column names
- * @gb.UsesHint {@link TableOrderHint} to determine order of tables
+ * Hint is used by {@link TableOrderHint} to determine order of tables
  */
 @SuppressWarnings("RedundantThrows")
 public class SchemaComparatorTool {

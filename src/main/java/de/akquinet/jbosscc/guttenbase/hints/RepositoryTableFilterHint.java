@@ -10,8 +10,8 @@ import de.akquinet.jbosscc.guttenbase.repository.RepositoryTableFilter;
  * &copy; 2012-2020 akquinet tech@spree
  * </p>
  *
- * @gb.ApplicableForSource
- * @gb.HintUsedBy {@link ConnectorRepository#getDatabaseMetaData(String)} when returning table meta data
+ *
+ * Hint is used by {@link ConnectorRepository#getDatabaseMetaData(String)} when returning table meta data
  * @author M. Dahm
  */
 public abstract class RepositoryTableFilterHint implements ConnectorHint<RepositoryTableFilter> {

@@ -10,7 +10,7 @@ import java.util.Map;
 
 /**
  * Builder class for DatabaseMetaData.
- * <p/>
+ * <p></p>
  * <p>
  * &copy; 2012-2020 akquinet tech@spree
  * </p>

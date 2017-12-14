@@ -29,7 +29,7 @@ import java.util.List;
  * </p>
  *
  * @author M. Dahm
- * @gb.UsesHint {@link ColumnOrderHint} to determine column order
+ * Hint is used by {@link ColumnOrderHint} to determine column order
  */
 public class InsertStatementFiller {
   private static final Logger LOG = Logger.getLogger(InsertStatementFiller.class);

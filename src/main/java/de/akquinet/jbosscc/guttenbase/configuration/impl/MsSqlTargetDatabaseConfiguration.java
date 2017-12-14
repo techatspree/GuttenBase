@@ -10,13 +10,13 @@ import java.util.List;
 
 /**
  * Implementation for MS Server SQL data base.
- * <p/>
+ * <p></p>
  * <p>
  * &copy; 2012-2020 akquinet tech@spree
  * </p>
  *
  * @author M. Dahm
- * @gb.UsesHint {@link TableNameMapperHint}
+ * Hint is used by {@link de.akquinet.jbosscc.guttenbase.hints.TableMapperHint}
  */
 public class MsSqlTargetDatabaseConfiguration extends DefaultTargetDatabaseConfiguration {
   public MsSqlTargetDatabaseConfiguration(final ConnectorRepository connectorRepository) {

@@ -10,8 +10,8 @@ import de.akquinet.jbosscc.guttenbase.repository.RepositoryColumnFilter;
  * &copy; 2012-2020 akquinet tech@spree
  * </p>
  *
- * @gb.ApplicableForSource
- * @gb.HintUsedBy {@link ConnectorRepository#getDatabaseMetaData(String)} when returning table meta data and their respective columns
+ *
+ * Hint is used by {@link ConnectorRepository#getDatabaseMetaData(String)} when returning table meta data and their respective columns
  * @author M. Dahm
  */
 public abstract class RepositoryColumnFilterHint implements ConnectorHint<RepositoryColumnFilter> {

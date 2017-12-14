@@ -17,7 +17,6 @@ import java.util.Map.Entry;
  * Implementation for IBM DB2 data base.
  *
  * @author M. Dahm
- * @gb.UsesHint {@link TableNameMapperHint}
  * @see <a href="http://stackoverflow.com/questions/421518/is-there-a-way-to-enable-disable-constraints-in-db2-v7">http://stackoverflow.com/questions/421518/is-there-a-way-to-enable-disable-constraints-in-db2-v7</a>
  * <p>
  * &copy; 2012-2020 akquinet tech@spree

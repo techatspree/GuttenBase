@@ -5,7 +5,7 @@ import de.akquinet.jbosscc.guttenbase.tools.SelectWhereClause;
 
 /**
  * Default is no WHERE clause.
- * <p/>
+ * <p></p>
  * <p>
  * &copy; 2012-2020 akquinet tech@spree
  * </p>

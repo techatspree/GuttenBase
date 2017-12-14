@@ -9,8 +9,8 @@ import de.akquinet.jbosscc.guttenbase.utils.ScriptExecutorProgressIndicator;
  * &copy; 2012-2020 akquinet tech@spree
  * </p>
  *
- * @gb.ApplicableForTarget
- * @gb.HintUsedBy {@link ScriptExecutorTool}
+ *
+ * Hint is used by {@link ScriptExecutorTool}
  * @author M. Dahm
  */
 public abstract class ScriptExecutorProgressIndicatorHint implements ConnectorHint<ScriptExecutorProgressIndicator>

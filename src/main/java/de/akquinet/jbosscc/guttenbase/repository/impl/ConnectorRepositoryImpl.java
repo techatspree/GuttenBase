@@ -34,7 +34,7 @@ import java.util.TreeMap;
  * </p>
  *
  * @author M. Dahm
- * @gb.UsesHint {@link RepositoryTableFilterHint} when returning table meta data
+ * Hint is used by {@link RepositoryTableFilterHint} when returning table meta data
  */
 public class ConnectorRepositoryImpl implements ConnectorRepository {
   private static final long serialVersionUID = 1L;
