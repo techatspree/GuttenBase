@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <artifactId>GuttenBase</artifactId>
     <groupId>de.akquinet.jbosscc.guttenbase</groupId>
-    <version>2.0</version>
+    <version>2.0.0-SNAPSHOT</version>
     <name>GuttenBase - The database copying and migration framework</name>
     <url>http://guttenbase.spree.de</url>
     <description>Copying done right...</description>
@@ -48,22 +48,6 @@
         <developerConnection>scm:git:git@github.com:akquinet/GuttenBase.git</developerConnection>
         <tag>GuttenBase-2.0</tag>
     </scm>
-
-    <!--
-    <distributionManagement>
-        <repository>
-            <id>atsrepo</id>
-            <name>repo.spree.de.guttenbaseReleases</name>
-            <url>https://repo.spree.de/nexus/content/repositories/ext-releases</url>
-        </repository>
-
-        <snapshotRepository>
-            <id>atsrepo</id>
-            <name>repo.spree.de.guttenbaseSnapshots</name>
-            <url>https://repo.spree.de/nexus/content/repositories/ext-snapshots</url>
-        </snapshotRepository>
-    </distributionManagement>
-     -->
 
 
     <properties>
@@ -145,14 +129,6 @@
         </pluginManagement>
 
         <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-gpg-plugin</artifactId>
-                <configuration>
-                    <skip>true</skip>
-                </configuration>
-            </plugin>
-
             <plugin>
                 <artifactId>maven-release-plugin</artifactId>
                 <version>2.5.3</version>
@@ -294,5 +270,43 @@
         </plugins>
     </build>
 
+    <!--
+        Release from SNAPSHOT version
+
+        mvn clean install deploy -DperformRelease=true
+
+        http://central.sonatype.org/pages/releasing-the-deployment.html
+    -->
+    <profiles>
+        <profile>
+            <id>release-sign-artifacts</id>
+            <activation>
+                <property>
+                    <name>performRelease</name>
+                    <value>true</value>
+                </property>
+            </activation>
+
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-gpg-plugin</artifactId>
+                        <version>1.5</version>
+
+                        <executions>
+                            <execution>
+                                <id>sign-artifacts</id>
+                                <phase>verify</phase>
+                                <goals>
+                                    <goal>sign</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
     <!-- mvn site javadoc:javadoc -->
 </project>
