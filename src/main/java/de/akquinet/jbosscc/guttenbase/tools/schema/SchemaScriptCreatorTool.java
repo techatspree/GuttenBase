@@ -331,7 +331,7 @@ public class SchemaScriptCreatorTool {
 
 
   public String createTableColumn(final ColumnMetaData columnMetaData) throws SQLException {
-    return "ALTER TABLE " + getTableName(columnMetaData.getTableMetaData()) + " ADD " + createColumn(columnMetaData);
+    return "ALTER TABLE " + getTableName(columnMetaData.getTableMetaData()) + " ADD " + createColumn(columnMetaData)+";";
   }
 
   public String getTargetConnectorId() {

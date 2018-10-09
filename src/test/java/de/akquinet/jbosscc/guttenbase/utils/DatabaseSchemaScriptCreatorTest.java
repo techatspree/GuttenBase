@@ -202,7 +202,7 @@ public class DatabaseSchemaScriptCreatorTest {
   public void createColumn() throws SQLException {
     final String sql = _objectUnderTest.createTableColumn(_databaseMetaData.getTableMetaData().get(0).getColumnMetaData().get(1));
 
-    assertEquals("ALTER TABLE schemaName.MY_TABLE1 ADD NAME VARCHAR(100) NOT NULL",sql);
+    assertEquals("ALTER TABLE schemaName.MY_TABLE1 ADD NAME VARCHAR(100) NOT NULL;",sql);
   }
 
   @Test
