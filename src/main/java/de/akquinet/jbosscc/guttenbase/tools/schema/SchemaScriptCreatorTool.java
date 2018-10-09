@@ -146,17 +146,8 @@ public class SchemaScriptCreatorTool {
   }
 
   public String createTable(final TableMetaData tableMetaData) throws SQLException {
-    final DatabaseMetaData targetDatabaseMetaData = _connectorRepository.getDatabaseMetaData(getTargetConnectorId());
-    final TableMapper tableMapper = _connectorRepository.getConnectorHint(getTargetConnectorId(), TableMapper.class).getValue();
-    final String rawTableName = tableMapper.mapTableName(tableMetaData, targetDatabaseMetaData);
-    final String tableName = tableMapper.fullyQualifiedTableName(tableMetaData, targetDatabaseMetaData);
+    final String tableName = getTableName(tableMetaData);
     final StringBuilder builder = new StringBuilder("CREATE TABLE " + tableName + "\n(\n");
-    final int maxNameLength = getTargetMaxNameLength();
-
-    if (rawTableName.length() > maxNameLength) {
-      throw new IncompatibleTablesException("Table name " + rawTableName + " is too long for the targeted data base (Max. "
-        + maxNameLength + "). You will have to provide an appropriate " + TableMapper.class.getName() + " hint");
-    }
 
     for (final Iterator<ColumnMetaData> iterator = tableMetaData.getColumnMetaData().iterator(); iterator.hasNext(); ) {
       final ColumnMetaData columnMetaData = iterator.next();
@@ -171,6 +162,21 @@ public class SchemaScriptCreatorTool {
     return builder.append("\n);").toString();
   }
 
+  private String getTableName(final TableMetaData tableMetaData) throws SQLException
+  {
+    final DatabaseMetaData targetDatabaseMetaData = _connectorRepository.getDatabaseMetaData(getTargetConnectorId());
+    final TableMapper tableMapper = _connectorRepository.getConnectorHint(getTargetConnectorId(), TableMapper.class).getValue();
+    final String rawTableName = tableMapper.mapTableName(tableMetaData, targetDatabaseMetaData);
+    final String tableName = tableMapper.fullyQualifiedTableName(tableMetaData, targetDatabaseMetaData);
+
+    final int maxNameLength = getTargetMaxNameLength();
+
+    if (rawTableName.length() > maxNameLength) {
+      throw new IncompatibleTablesException("Table name " + rawTableName + " is too long for the targeted data base (Max. "
+        + maxNameLength + "). You will have to provide an appropriate " + TableMapper.class.getName() + " hint");
+    }
+    return tableName;
+  }
 
   private String createPrimaryKeyStatement(final TableMetaData tableMetaData, final List<ColumnMetaData> primaryKeyColumns,
                                            final int counter) throws SQLException {
@@ -321,6 +327,11 @@ public class SchemaScriptCreatorTool {
 
     // Return reasonable default if value is not known or unlimited
     return nameLength <= 0 ? 64 : nameLength;
+  }
+
+
+  public String createTableColumn(final ColumnMetaData columnMetaData) throws SQLException {
+    return "ALTER TABLE " + getTableName(columnMetaData.getTableMetaData()) + " ADD COLUMN " + createColumn(columnMetaData);
   }
 
   public String getTargetConnectorId() {
