@@ -1,8 +1,5 @@
 package de.akquinet.jbosscc.guttenbase.statements;
 
-import java.sql.SQLException;
-import java.sql.Types;
-
 import de.akquinet.jbosscc.guttenbase.connector.DatabaseType;
 import de.akquinet.jbosscc.guttenbase.meta.ColumnMetaData;
 import de.akquinet.jbosscc.guttenbase.meta.TableMetaData;
