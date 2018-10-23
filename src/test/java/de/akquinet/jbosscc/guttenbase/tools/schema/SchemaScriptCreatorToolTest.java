@@ -1,4 +1,4 @@
-package de.akquinet.jbosscc.guttenbase.utils;
+package de.akquinet.jbosscc.guttenbase.tools.schema;
 
 import de.akquinet.jbosscc.guttenbase.configuration.EasymockConnectionInfo;
 import de.akquinet.jbosscc.guttenbase.connector.DatabaseType;
@@ -26,7 +26,6 @@ import de.akquinet.jbosscc.guttenbase.meta.builder.IndexMetaDataBuilder;
 import de.akquinet.jbosscc.guttenbase.meta.builder.TableMetaDataBuilder;
 import de.akquinet.jbosscc.guttenbase.repository.ConnectorRepository;
 import de.akquinet.jbosscc.guttenbase.repository.impl.ConnectorRepositoryImpl;
-import de.akquinet.jbosscc.guttenbase.tools.schema.SchemaScriptCreatorTool;
 import org.junit.Test;
 import java.sql.SQLException;
 import java.util.List;
@@ -35,7 +34,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-public class DatabaseSchemaScriptCreatorTest {
+public class SchemaScriptCreatorToolTest {
   public static final String SOURCE = "source";
   public static final String TARGET = "target";
 
