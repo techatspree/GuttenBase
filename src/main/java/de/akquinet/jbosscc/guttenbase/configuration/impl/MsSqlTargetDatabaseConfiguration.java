@@ -96,11 +96,16 @@ public class MsSqlTargetDatabaseConfiguration extends DefaultTargetDatabaseConfi
 
   private boolean hasIdentityColumn(final TableMetaData tableMetaData) {
     for (final ColumnMetaData columnMetaData : tableMetaData.getColumnMetaData()) {
-      if (columnMetaData.getColumnTypeName().contains("IDENTITY")) {
+      if (isIdentityColumn(columnMetaData)) {
         return true;
       }
     }
 
     return false;
+  }
+
+  private boolean isIdentityColumn(ColumnMetaData columnMetaData) {
+    return columnMetaData.getColumnTypeName().toUpperCase().contains("IDENTITY")
+      || (columnMetaData.isPrimaryKey() && columnMetaData.isAutoIncrement() && columnMetaData.getTableMetaData().getPrimaryKeyColumns().size() == 1);
   }
 }
