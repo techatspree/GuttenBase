@@ -111,7 +111,7 @@ public class SchemaScriptCreatorTool {
 
       for (final IndexMetaData indexMetaData : tableMetaData.getIndexes()) {
         final List<ColumnMetaData> columns = indexMetaData.getColumnMetaData();
-        final boolean columnsFormPrimaryKey = columns.stream().map(column -> column.isPrimaryKey()).reduce((a, b) -> a && b).orElse(false);
+        final boolean columnsFormPrimaryKey = columns.stream().map(ColumnMetaData::isPrimaryKey).reduce((a, b) -> a && b).orElse(false);
         final boolean conflictedIndex = conflictedIndexes.contains(indexMetaData);
 
         if (!columnsFormPrimaryKey && !conflictedIndex) {
