@@ -198,6 +198,13 @@ public class SchemaScriptCreatorToolTest {
   }
 
   @Test
+  public void createColumn() throws SQLException {
+    final String sql = _objectUnderTest.createTableColumn(_databaseMetaData.getTableMetaData().get(0).getColumnMetaData().get(1));
+
+    assertEquals("ALTER TABLE schemaName.MY_TABLE1 ADD NAME VARCHAR(100) NOT NULL;",sql);
+  }
+
+  @Test
   public void testIndex() throws Exception {
     final ColumnMetaData columnMetaData = _databaseMetaData.getTableMetaData().get(0).getColumnMetaData("name");
     final IndexMetaData index = _databaseMetaData.getTableMetaData().get(0).getIndexesContainingColumn(columnMetaData).get(0);
