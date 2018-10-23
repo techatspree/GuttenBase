@@ -29,10 +29,11 @@ public class SelectStatementCreator extends AbstractSelectStatementCreator {
     final StringBuilder buf = new StringBuilder("ORDER BY ");
     int columnsAdded = 0;
 
-    // No BLOB or the like for ordering
-    final boolean isOracle = DatabaseType.ORACLE.equals(tableMetaData.getDatabaseMetaData().getDatabaseType());
-    final int rangeFrom = isOracle ? Types.NULL : Types.LONGNVARCHAR; // Doesn't like LONG e.g.
-    final int rangeTo = Types.JAVA_OBJECT;
+		// No BLOB or the like for ordering
+		final boolean isOracleOrMssql = DatabaseType.ORACLE.equals(tableMetaData.getDatabaseMetaData().getDatabaseType())
+				|| DatabaseType.MSSQL.equals(tableMetaData.getDatabaseMetaData().getDatabaseType());
+		final int rangeFrom = isOracleOrMssql ? Types.NULL : Types.LONGNVARCHAR; // Doesn't like LONG e.g.
+		final int rangeTo = Types.JAVA_OBJECT;
 
     for (int i = 0; i < tableMetaData.getColumnCount(); i++) {
       final ColumnMetaData columnMetaData = tableMetaData.getColumnMetaData().get(i);
