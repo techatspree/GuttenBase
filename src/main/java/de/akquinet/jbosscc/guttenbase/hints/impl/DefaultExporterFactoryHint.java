@@ -6,16 +6,16 @@ import de.akquinet.jbosscc.guttenbase.hints.ExporterFactoryHint;
 
 /**
  * Default implementation uses {@link ZipExporter}.
- * 
+ *
  * <p>
- * &copy; 2012-2020 akquinet tech@spree
+ * &copy; 2012-2034 akquinet tech@spree
  * </p>
- * 
+ *
  * @author M. Dahm
  */
 public class DefaultExporterFactoryHint extends ExporterFactoryHint {
-	@Override
-	public ExporterFactory getValue() {
-		return ZipExporter::new;
-	}
+  @Override
+  public ExporterFactory getValue() {
+    return ZipExporter::new;
+  }
 }

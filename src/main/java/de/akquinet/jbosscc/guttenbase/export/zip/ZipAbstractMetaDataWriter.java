@@ -11,18 +11,18 @@ import java.util.zip.ZipOutputStream;
 
 /**
  * Base implementation the gathers all properties and stores them into a file of the ZIP.
- * 
+ *
  * <p>
- * &copy; 2012-2020 akquinet tech@spree
+ * &copy; 2012-2034 akquinet tech@spree
  * </p>
- * 
+ *
  * @author M. Dahm
  */
 public abstract class ZipAbstractMetaDataWriter {
   private final Properties _properties = new Properties() {
     private static final long serialVersionUID = 1L;
 
-    @SuppressWarnings({ "unchecked", "rawtypes" })
+    @SuppressWarnings({"unchecked", "rawtypes"})
     @Override
     public Enumeration keys() {
       final Enumeration keysEnum = super.keys();

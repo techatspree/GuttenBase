@@ -2,6 +2,7 @@ package de.akquinet.jbosscc.guttenbase.defaults.impl;
 
 import de.akquinet.jbosscc.guttenbase.meta.TableMetaData;
 import de.akquinet.jbosscc.guttenbase.repository.TableRowCountFilter;
+
 import java.sql.SQLException;
 
 /**

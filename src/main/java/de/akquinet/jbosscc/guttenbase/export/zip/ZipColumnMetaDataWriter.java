@@ -1,16 +1,18 @@
 package de.akquinet.jbosscc.guttenbase.export.zip;
 
-import java.io.IOException;
-import java.util.Iterator;
-
 import de.akquinet.jbosscc.guttenbase.meta.ColumnMetaData;
 import de.akquinet.jbosscc.guttenbase.meta.InternalColumnMetaData;
+
+import java.io.IOException;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * Write ZIP file entry containing information about a table column such as type and name.
  *
  * <p>
- * &copy; 2012-2020 akquinet tech@spree
+ * &copy; 2012-2034 akquinet tech@spree
  * </p>
  *
  * @author M. Dahm
@@ -24,10 +26,10 @@ public class ZipColumnMetaDataWriter extends ZipAbstractMetaDataWriter {
   public static final String COLUMN_TYPE = "JDBC-Type";
   public static final String COLUMN_PRECISION = "Precision";
   public static final String COLUMN_SCALE = "Scale";
-  public static final String COLUMN_REFERENCES_ID = "References-Id";
-  public static final String COLUMN_REFERENCES = "References";
-  public static final String COLUMN_REFERENCED_BY_ID = "Referenced-By-Id";
-  public static final String COLUMN_REFERENCED_BY = "Referenced-By";
+  public static final String COLUMN_FK_REFERENCES_IDS_SUFFIX = ".References-Ids";
+  public static final String COLUMN_FK_REFERENCES_SUFFIX = "References";
+  public static final String COLUMN_FK_REFERENCED_BY_IDS_SUFFIX = "Referenced-By-Ids";
+  public static final String COLUMN_FK_REFERENCED_BY_SUFFIX = "Referenced-By";
   public static final String PRIMARY_KEY = "Primary-Key";
   public static final String NULLABLE = "Nullable";
   public static final String AUTO_INCREMENT = "Auto-Increment";
@@ -45,20 +47,36 @@ public class ZipColumnMetaDataWriter extends ZipAbstractMetaDataWriter {
     setProperty(AUTO_INCREMENT, String.valueOf(columnMetaData.isAutoIncrement()));
     setProperty(COLUMN_ID, String.valueOf(((InternalColumnMetaData) columnMetaData).getColumnId()));
 
-    final InternalColumnMetaData referencedColumn = (InternalColumnMetaData) columnMetaData.getReferencedColumn();
-
-    if (referencedColumn != null) {
-      setProperty(COLUMN_REFERENCES_ID, String.valueOf(referencedColumn.getColumnId()));
-      setProperty(COLUMN_REFERENCES, referencedColumn.getColumnName() + " (" + referencedColumn.getTableMetaData().getTableName() + ")");
-    }
-
-    int i = 1;
-    for (final Iterator<ColumnMetaData> iterator = columnMetaData.getReferencedByColumn().iterator(); iterator.hasNext(); i++) {
-      final InternalColumnMetaData referencedByColumn = (InternalColumnMetaData) iterator.next();
-      setProperty(COLUMN_REFERENCED_BY_ID + i, String.valueOf(referencedByColumn.getColumnId()));
-      setProperty(COLUMN_REFERENCED_BY + i, referencedByColumn.getColumnName() + " (" + referencedByColumn.getTableMetaData().getTableName() + ")");
-    }
+    setFkProperties(columnMetaData.getReferencedColumns(), COLUMN_FK_REFERENCES_IDS_SUFFIX, COLUMN_FK_REFERENCES_SUFFIX);
+    setFkProperties(columnMetaData.getReferencingColumns(), COLUMN_FK_REFERENCED_BY_IDS_SUFFIX, COLUMN_FK_REFERENCED_BY_SUFFIX);
 
     return this;
+  }
+
+  private void setFkProperties(final Map<String, List<ColumnMetaData>> fkColumns, final String columnFkReferencesIdsSuffix,
+                               final String columnFkReferencesSuffix) {
+    for (final Map.Entry<String, List<ColumnMetaData>> entry : fkColumns.entrySet()) {
+      final List<ColumnMetaData> columns = entry.getValue();
+      final String ids = mapToIds(columns);
+      final String names = mapToNames(columns);
+
+      setProperty(entry.getKey() + "." + columnFkReferencesIdsSuffix, ids);
+      setProperty(entry.getKey() + "." + columnFkReferencesSuffix, names);
+    }
+  }
+
+  private static String mapToNames(final List<ColumnMetaData> columns) {
+    return columns.stream()
+        .map(referencedColumn -> referencedColumn.getColumnName()
+            + " ("
+            + referencedColumn.getTableMetaData().getTableName()
+            + ")")
+        .collect(Collectors.joining(", "));
+  }
+
+  private static String mapToIds(final List<ColumnMetaData> columns) {
+    return columns.stream()
+        .map(referencedColumn -> String.valueOf(((InternalColumnMetaData) referencedColumn).getColumnId()))
+        .collect(Collectors.joining(", "));
   }
 }

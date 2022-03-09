@@ -4,15 +4,15 @@ import de.akquinet.jbosscc.guttenbase.repository.ConnectorRepository;
 
 /**
  * Implementation for PostgreSQL data base.
- * 
+ *
  * <p>
- * &copy; 2012-2020 akquinet tech@spree
+ * &copy; 2012-2034 akquinet tech@spree
  * </p>
- * 
+ *
  * @author M. Dahm
  */
 public class PostgresqlSourceDatabaseConfiguration extends DefaultSourceDatabaseConfiguration {
-	public PostgresqlSourceDatabaseConfiguration(final ConnectorRepository connectorRepository) {
-		super(connectorRepository);
-	}
+  public PostgresqlSourceDatabaseConfiguration(final ConnectorRepository connectorRepository) {
+    super(connectorRepository);
+  }
 }

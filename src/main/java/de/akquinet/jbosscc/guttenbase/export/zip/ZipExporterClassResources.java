@@ -6,13 +6,13 @@ import java.util.Map;
 
 /**
  * When exporting to e JAR/ZIP file we allow to add custom classes and resources to the resultiung JAR.
- * 
- * This allows to create a self-contained executable JAR that will startup with a Main class customizable by the framework user.
- * 
  * <p>
- * &copy; 2012-2020 akquinet tech@spree
+ * This allows to create a self-contained executable JAR that will startup with a Main class customizable by the framework user.
+ *
+ * <p>
+ * &copy; 2012-2034 akquinet tech@spree
  * </p>
- * 
+ *
  * @author M. Dahm
  */
 public interface ZipExporterClassResources {

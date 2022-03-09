@@ -14,25 +14,16 @@ import de.akquinet.jbosscc.guttenbase.mapping.ColumnMapper;
 import de.akquinet.jbosscc.guttenbase.mapping.ColumnTypeMapper;
 import de.akquinet.jbosscc.guttenbase.mapping.DefaultColumnTypeMapper;
 import de.akquinet.jbosscc.guttenbase.mapping.TableMapper;
-import de.akquinet.jbosscc.guttenbase.meta.ColumnMetaData;
-import de.akquinet.jbosscc.guttenbase.meta.DatabaseMetaData;
-import de.akquinet.jbosscc.guttenbase.meta.ForeignKeyMetaData;
-import de.akquinet.jbosscc.guttenbase.meta.IndexMetaData;
-import de.akquinet.jbosscc.guttenbase.meta.TableMetaData;
-import de.akquinet.jbosscc.guttenbase.meta.builder.ColumnMetaDataBuilder;
-import de.akquinet.jbosscc.guttenbase.meta.builder.DatabaseMetaDataBuilder;
-import de.akquinet.jbosscc.guttenbase.meta.builder.ForeignKeyMetaDataBuilder;
-import de.akquinet.jbosscc.guttenbase.meta.builder.IndexMetaDataBuilder;
-import de.akquinet.jbosscc.guttenbase.meta.builder.TableMetaDataBuilder;
+import de.akquinet.jbosscc.guttenbase.meta.*;
+import de.akquinet.jbosscc.guttenbase.meta.builder.*;
 import de.akquinet.jbosscc.guttenbase.repository.ConnectorRepository;
 import de.akquinet.jbosscc.guttenbase.repository.impl.ConnectorRepositoryImpl;
 import org.junit.Test;
+
 import java.sql.SQLException;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 public class SchemaScriptCreatorToolTest {
   public static final String SOURCE = "source";
@@ -79,34 +70,34 @@ public class SchemaScriptCreatorToolTest {
     final TableMetaDataBuilder tableBuilder2 = createTable(2, databaseMetaDataBuilder);
 
     final ForeignKeyMetaDataBuilder foreignKeyMetaDataBuilder1 = new ForeignKeyMetaDataBuilder(tableBuilder1)
-      .setForeignKeyName("FK_Name").setReferencingColumn(tableBuilder1.getColumn("Name"))
-      .setReferencedColumn(tableBuilder2.getColumn("Name"));
+        .setForeignKeyName("FK_Name").setReferencingColumn(tableBuilder1.getColumn("Name"))
+        .setReferencedColumn(tableBuilder2.getColumn("Name"));
     final ForeignKeyMetaDataBuilder foreignKeyMetaDataBuilder2 = new ForeignKeyMetaDataBuilder(tableBuilder2)
-      .setForeignKeyName("FK_Name").setReferencingColumn(tableBuilder1.getColumn("Name"))
-      .setReferencedColumn(tableBuilder2.getColumn("Name"));
+        .setForeignKeyName("FK_Name").setReferencingColumn(tableBuilder1.getColumn("Name"))
+        .setReferencedColumn(tableBuilder2.getColumn("Name"));
 
     tableBuilder1.addImportedForeignKey(foreignKeyMetaDataBuilder1);
     tableBuilder2.addExportedForeignKey(foreignKeyMetaDataBuilder2);
 
     return databaseMetaDataBuilder.addTable(tableBuilder1).addTable(tableBuilder2)
-      .setSchema("schemaName").addDatabaseProperty("getMaxColumnNameLength", 42)
-      .addDatabaseProperty("getDatabaseProductName", "GuttenBaseDB");
+        .setSchema("schemaName").addDatabaseProperty("getMaxColumnNameLength", 42)
+        .addDatabaseProperty("getDatabaseProductName", "GuttenBaseDB");
   }
 
   private TableMetaDataBuilder createTable(final int index, final DatabaseMetaDataBuilder databaseMetaDataBuilder) {
     final TableMetaDataBuilder tableMetaDataBuilder = new TableMetaDataBuilder(databaseMetaDataBuilder)
-      .setTableName("My_Table" + index);
+        .setTableName("My_Table" + index);
     final ColumnMetaDataBuilder primaryKeyBuilder = new ColumnMetaDataBuilder(tableMetaDataBuilder).setColumnName("Id")
-      .setColumnTypeName("BIGINT").setNullable(false).setPrimaryKey(true);
+        .setColumnTypeName("BIGINT").setNullable(false).setPrimaryKey(true);
     final ColumnMetaDataBuilder nameBuilder = new ColumnMetaDataBuilder(tableMetaDataBuilder).setColumnName("Name")
-      .setColumnTypeName("VARCHAR(100)").setNullable(false);
+        .setColumnTypeName("VARCHAR(100)").setNullable(false);
 
     tableMetaDataBuilder
-      .addColumn(primaryKeyBuilder)
-      .addColumn(nameBuilder)
-      .addIndex(
-        new IndexMetaDataBuilder(tableMetaDataBuilder).setAscending(true).setIndexName("Name_IDX" + index).setUnique(true)
-          .addColumn(nameBuilder));
+        .addColumn(primaryKeyBuilder)
+        .addColumn(nameBuilder)
+        .addIndex(
+            new IndexMetaDataBuilder(tableMetaDataBuilder).setAscending(true).setIndexName("Name_IDX" + index).setUnique(true)
+                .addColumn(nameBuilder));
     return tableMetaDataBuilder;
   }
 
@@ -120,7 +111,7 @@ public class SchemaScriptCreatorToolTest {
   public void testTableNameLength() throws Exception {
     final DatabaseMetaDataBuilder metaDataBuilder = createDatabaseMetaData();
     final TableMetaData table = createTable(3, metaDataBuilder)
-      .setTableName("SomeTableNameThatIsMuchLongerThanFortyTwoCharactersSupportedByDB").build();
+        .setTableName("SomeTableNameThatIsMuchLongerThanFortyTwoCharactersSupportedByDB").build();
 
     _objectUnderTest.createTable(table);
   }
@@ -130,7 +121,7 @@ public class SchemaScriptCreatorToolTest {
     final DatabaseMetaDataBuilder metaDataBuilder = createDatabaseMetaData();
     final TableMetaDataBuilder tableBuilder = createTable(3, metaDataBuilder);
     final ColumnMetaData columnMetaData = new ColumnMetaDataBuilder(tableBuilder)
-      .setColumnName("SomeColumnNameThatIsMuchLongerThanFortyTwoCharactersSupportedByDB").build();
+        .setColumnName("SomeColumnNameThatIsMuchLongerThanFortyTwoCharactersSupportedByDB").build();
 
     _objectUnderTest.createColumn(columnMetaData);
   }
@@ -156,7 +147,8 @@ public class SchemaScriptCreatorToolTest {
     assertEquals(1, foreignKeyStatements.size());
     final String foreignKeyStatement = foreignKeyStatements.get(0).toUpperCase();
 
-    assertTrue(foreignKeyStatement, foreignKeyStatement.startsWith("ALTER TABLE SCHEMANAME.MY_TABLE1 ADD CONSTRAINT FK_MY_TABLE1_NAME_NAME_1 FOREIGN KEY"));
+    assertTrue(foreignKeyStatement, foreignKeyStatement.startsWith("ALTER TABLE SCHEMANAME.MY_TABLE1 ADD CONSTRAINT FK_"));
+    assertTrue(foreignKeyStatement, foreignKeyStatement.endsWith("REFERENCES SCHEMANAME.MY_TABLE2(NAME);"));
   }
 
   @Test
@@ -165,7 +157,7 @@ public class SchemaScriptCreatorToolTest {
       @Override
       public ColumnTypeMapper getValue() {
         return new DefaultColumnTypeMapper()
-          .addMapping(DatabaseType.GENERIC, DatabaseType.GENERIC, "BIGINT", "INTEGER");
+            .addMapping(DatabaseType.GENERIC, DatabaseType.GENERIC, "BIGINT", "INTEGER");
       }
     });
 
@@ -201,7 +193,7 @@ public class SchemaScriptCreatorToolTest {
   public void createColumn() throws SQLException {
     final String sql = _objectUnderTest.createTableColumn(_databaseMetaData.getTableMetaData().get(0).getColumnMetaData().get(1));
 
-    assertEquals("ALTER TABLE schemaName.MY_TABLE1 ADD NAME VARCHAR(100) NOT NULL;",sql);
+    assertEquals("ALTER TABLE schemaName.MY_TABLE1 ADD NAME VARCHAR(100) NOT NULL;", sql);
   }
 
   @Test

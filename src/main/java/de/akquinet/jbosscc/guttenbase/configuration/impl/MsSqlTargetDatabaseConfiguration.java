@@ -4,6 +4,7 @@ import de.akquinet.jbosscc.guttenbase.mapping.TableMapper;
 import de.akquinet.jbosscc.guttenbase.meta.ColumnMetaData;
 import de.akquinet.jbosscc.guttenbase.meta.TableMetaData;
 import de.akquinet.jbosscc.guttenbase.repository.ConnectorRepository;
+
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
@@ -12,7 +13,7 @@ import java.util.List;
  * Implementation for MS Server SQL data base.
  * <p></p>
  * <p>
- * &copy; 2012-2020 akquinet tech@spree
+ * &copy; 2012-2034 akquinet tech@spree
  * </p>
  *
  * @author M. Dahm
@@ -64,12 +65,12 @@ public class MsSqlTargetDatabaseConfiguration extends DefaultTargetDatabaseConfi
   }
 
   private void disableTableForeignKeys(final Connection connection, final String connectorId, final List<TableMetaData> tableMetaData)
-    throws SQLException {
+      throws SQLException {
     setTableForeignKeys(connection, connectorId, tableMetaData, false);
   }
 
   private void enableTableForeignKeys(final Connection connection, final String connectorId, final List<TableMetaData> tableMetaData)
-    throws SQLException {
+      throws SQLException {
     setTableForeignKeys(connection, connectorId, tableMetaData, true);
   }
 
@@ -106,6 +107,6 @@ public class MsSqlTargetDatabaseConfiguration extends DefaultTargetDatabaseConfi
 
   private boolean isIdentityColumn(ColumnMetaData columnMetaData) {
     return columnMetaData.getColumnTypeName().toUpperCase().contains("IDENTITY")
-      || (columnMetaData.isPrimaryKey() && columnMetaData.isAutoIncrement() && columnMetaData.getTableMetaData().getPrimaryKeyColumns().size() == 1);
+        || (columnMetaData.isPrimaryKey() && columnMetaData.isAutoIncrement() && columnMetaData.getTableMetaData().getPrimaryKeyColumns().size() == 1);
   }
 }

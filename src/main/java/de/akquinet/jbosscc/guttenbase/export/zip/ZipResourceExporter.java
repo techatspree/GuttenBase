@@ -1,5 +1,8 @@
 package de.akquinet.jbosscc.guttenbase.export.zip;
 
+import de.akquinet.jbosscc.guttenbase.utils.Util;
+import org.apache.log4j.Logger;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashSet;
@@ -7,17 +10,13 @@ import java.util.Set;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
-import org.apache.log4j.Logger;
-
-import de.akquinet.jbosscc.guttenbase.utils.Util;
-
 /**
  * Helper class to add resources to ZIP file.
- * 
+ *
  * <p>
- * &copy; 2012-2020 akquinet tech@spree
+ * &copy; 2012-2034 akquinet tech@spree
  * </p>
- * 
+ *
  * @author M. Dahm
  */
 public class ZipResourceExporter {

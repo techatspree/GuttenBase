@@ -1,22 +1,11 @@
 package de.akquinet.jbosscc.guttenbase.utils;
 
-import java.awt.BorderLayout;
-import java.awt.Font;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.Insets;
-
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JProgressBar;
-import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
-import javax.swing.JTextField;
+import javax.swing.*;
 import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
+import java.awt.*;
 
-public class ScriptExecutorProgressIndicatorPanel extends JPanel
-{
+public class ScriptExecutorProgressIndicatorPanel extends JPanel {
   private static final long serialVersionUID = 1L;
   private final JTextField _totalTime;
   private final JTextField _scriptTime;
@@ -26,13 +15,12 @@ public class ScriptExecutorProgressIndicatorPanel extends JPanel
   /**
    * Create the panel.
    */
-  public ScriptExecutorProgressIndicatorPanel()
-  {
+  public ScriptExecutorProgressIndicatorPanel() {
     final GridBagLayout gridBagLayout = new GridBagLayout();
-    gridBagLayout.columnWidths = new int[] { 0, 0, 0, 0, 0, 0, 0 };
-    gridBagLayout.rowHeights = new int[] { 0, 0, 0, 0, 0, 0 };
-    gridBagLayout.columnWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 0, 0.0, Double.MIN_VALUE };
-    gridBagLayout.rowWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 1.0, Double.MIN_VALUE };
+    gridBagLayout.columnWidths = new int[]{0, 0, 0, 0, 0, 0, 0};
+    gridBagLayout.rowHeights = new int[]{0, 0, 0, 0, 0, 0};
+    gridBagLayout.columnWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0, 0.0, Double.MIN_VALUE};
+    gridBagLayout.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 1.0, Double.MIN_VALUE};
     setLayout(gridBagLayout);
 
     final JLabel lblTotalTimeElapsed = new JLabel("Total time elapsed");
@@ -119,23 +107,19 @@ public class ScriptExecutorProgressIndicatorPanel extends JPanel
     scrollPane.setViewportView(_messages);
   }
 
-  public final JTextField getTotalTime()
-  {
+  public final JTextField getTotalTime() {
     return _totalTime;
   }
 
-  public final JTextField getScriptTime()
-  {
+  public final JTextField getScriptTime() {
     return _scriptTime;
   }
 
-  public final JProgressBar getTotalProgress()
-  {
+  public final JProgressBar getTotalProgress() {
     return _totalProgress;
   }
 
-  public final JTextArea getMessages()
-  {
+  public final JTextArea getMessages() {
     return _messages;
   }
 }

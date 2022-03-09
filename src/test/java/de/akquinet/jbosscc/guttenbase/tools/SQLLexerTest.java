@@ -1,19 +1,16 @@
 package de.akquinet.jbosscc.guttenbase.tools;
 
-import static org.junit.Assert.assertEquals;
+import de.akquinet.jbosscc.guttenbase.sql.SQLLexer;
+import org.junit.Test;
 
 import java.util.Arrays;
 import java.util.List;
 
-import org.junit.Test;
+import static org.junit.Assert.assertEquals;
 
-import de.akquinet.jbosscc.guttenbase.sql.SQLLexer;
-
-public class SQLLexerTest
-{
+public class SQLLexerTest {
   @Test
-  public void testCreateStatement() throws Exception
-  {
+  public void testCreateStatement() throws Exception {
     final SQLLexer objectUnderTest = new SQLLexer(Arrays.asList("CREATE TABLE FOO_USER_COMPANY(", "USER_ID bigint,",
         " ASSIGNED_COMPANY_ID bigint,", "CONSTRAINT PK_FOO_USER_COMPANY PRIMARY KEY (USER_ID, ASSIGNED_COMPANY_ID));"));
 
@@ -25,8 +22,7 @@ public class SQLLexerTest
   }
 
   @Test
-  public void testDelimiter() throws Exception
-  {
+  public void testDelimiter() throws Exception {
     final SQLLexer objectUnderTest = new SQLLexer(Arrays.asList("CREATE TABLE FOO(", "USER_ID bigint", ")@", "CREATE TABLE BAR(",
         "USER_ID bigint", ")@"), '@');
 

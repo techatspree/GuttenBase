@@ -1,27 +1,24 @@
 package de.akquinet.jbosscc.guttenbase.tools;
 
-import static org.junit.Assert.assertTrue;
-
-import java.sql.SQLException;
-import java.util.List;
-
-import org.junit.Before;
-import org.junit.Test;
-
 import de.akquinet.jbosscc.guttenbase.configuration.TestDerbyConnectionInfo;
 import de.akquinet.jbosscc.guttenbase.hints.RandomTableOrderHint;
 import de.akquinet.jbosscc.guttenbase.hints.TableOrderHint;
 import de.akquinet.jbosscc.guttenbase.meta.TableMetaData;
+import org.junit.Before;
+import org.junit.Test;
 
-public class TableOrderTool_Test extends AbstractGuttenBaseTest
-{
+import java.sql.SQLException;
+import java.util.List;
+
+import static org.junit.Assert.assertTrue;
+
+public class TableOrderTool_Test extends AbstractGuttenBaseTest {
   private static final String DB = "db";
   private final TableOrderTool _objectUnderTest = new TableOrderTool();
   private List<TableMetaData> _tableMetaData;
 
   @Before
-  public void setup() throws SQLException
-  {
+  public void setup() throws SQLException {
     _connectorRepository.addConnectionInfo(DB, new TestDerbyConnectionInfo());
     _connectorRepository.addConnectorHint(DB, new RandomTableOrderHint());
 
@@ -31,8 +28,7 @@ public class TableOrderTool_Test extends AbstractGuttenBaseTest
   }
 
   @Test
-  public void testTopDown() throws Exception
-  {
+  public void testTopDown() throws Exception {
     final String tables = _objectUnderTest.getOrderedTables(_tableMetaData, true).toString().replace('[', '|').replace(']', '|')
         .replaceAll(", ", "|");
 
@@ -44,8 +40,7 @@ public class TableOrderTool_Test extends AbstractGuttenBaseTest
   }
 
   @Test
-  public void testBottomUp() throws Exception
-  {
+  public void testBottomUp() throws Exception {
     final String tables = _objectUnderTest.getOrderedTables(_tableMetaData, false).toString().replace('[', '|').replace(']', '|')
         .replaceAll(", ", "|");
 

@@ -34,18 +34,19 @@ public class CreateSchemaWithRenameToolTest extends AbstractGuttenBaseTest {
       @Override
       public TableMapper getValue() {
         return new TestTableRenameNameMapper()
-                .addReplacement("OFFICES", "TAB_OFFICES")
-                .addReplacement("ORDERS","TAB_ORDERS");}
+            .addReplacement("OFFICES", "TAB_OFFICES")
+            .addReplacement("ORDERS", "TAB_ORDERS");
+      }
     });
 
-     _connectorRepository.addConnectorHint(TARGET_CONNECTOR_ID, new ColumnMapperHint() {
+    _connectorRepository.addConnectorHint(TARGET_CONNECTOR_ID, new ColumnMapperHint() {
       @Override
       public ColumnMapper getValue() {
         return new TestColumnRenameNameMapper()
-                .addReplacement("OFFICECODE", "ID_OFFICECODE")
-                .addReplacement("ORDERNUMBER", "ID_ORDERNUMBER")
-                .addReplacement("PHONE", "ID_PHONE")
-                .addReplacement("CITY", "ID_CITY");
+            .addReplacement("OFFICECODE", "ID_OFFICECODE")
+            .addReplacement("ORDERNUMBER", "ID_ORDERNUMBER")
+            .addReplacement("PHONE", "ID_PHONE")
+            .addReplacement("CITY", "ID_CITY");
       }
     });
 
@@ -65,15 +66,15 @@ public class CreateSchemaWithRenameToolTest extends AbstractGuttenBaseTest {
     _objectUnderTest.copySchema(SOURCE_CONNECTOR_ID, TARGET_CONNECTOR_ID);
 
     assertEquals("After", "TAB_OFFICES", _connectorRepository.getDatabaseMetaData(TARGET_CONNECTOR_ID).
-            getTableMetaData("TAB_OFFICES").getTableName());
+        getTableMetaData("TAB_OFFICES").getTableName());
 
     assertEquals("After", "TAB_ORDERS", _connectorRepository.getDatabaseMetaData(TARGET_CONNECTOR_ID).
-            getTableMetaData("TAB_ORDERS").getTableName());
+        getTableMetaData("TAB_ORDERS").getTableName());
 
-   assertEquals("After", "ID_CITY", _connectorRepository.getDatabaseMetaData(TARGET_CONNECTOR_ID)
-           .getTableMetaData("CUSTOMERS").getColumnMetaData("ID_CITY").getColumnName());
+    assertEquals("After", "ID_CITY", _connectorRepository.getDatabaseMetaData(TARGET_CONNECTOR_ID)
+        .getTableMetaData("CUSTOMERS").getColumnMetaData("ID_CITY").getColumnName());
 
     assertEquals("After", "ID_ORDERNUMBER", _connectorRepository.getDatabaseMetaData(TARGET_CONNECTOR_ID)
-            .getTableMetaData("ORDERDETAILS").getColumnMetaData("ID_ORDERNUMBER").getColumnName());
+        .getTableMetaData("ORDERDETAILS").getColumnMetaData("ID_ORDERNUMBER").getColumnName());
   }
 }

@@ -4,25 +4,14 @@ package de.akquinet.jbosscc.guttenbase.tools.copyTablesFromH2ToDerby;
 import de.akquinet.jbosscc.guttenbase.configuration.TestDerbyConnectionInfo;
 import de.akquinet.jbosscc.guttenbase.configuration.TestH2ConnectionInfo;
 import de.akquinet.jbosscc.guttenbase.exceptions.TableConfigurationException;
-import de.akquinet.jbosscc.guttenbase.hints.ColumnMapperHint;
-import de.akquinet.jbosscc.guttenbase.hints.NumberOfRowsPerBatchHint;
-import de.akquinet.jbosscc.guttenbase.hints.RefreshTargetConnectionHint;
-import de.akquinet.jbosscc.guttenbase.hints.TableMapperHint;
-import de.akquinet.jbosscc.guttenbase.hints.TestColumnNameFilterHint;
-import de.akquinet.jbosscc.guttenbase.hints.TestColumnRenameNameMapper;
-import de.akquinet.jbosscc.guttenbase.hints.TestTableNameFilterHint;
-import de.akquinet.jbosscc.guttenbase.hints.TestTableRenameNameMapper;
+import de.akquinet.jbosscc.guttenbase.hints.*;
 import de.akquinet.jbosscc.guttenbase.mapping.ColumnMapper;
 import de.akquinet.jbosscc.guttenbase.mapping.TableMapper;
 import de.akquinet.jbosscc.guttenbase.meta.TableMetaData;
-import de.akquinet.jbosscc.guttenbase.tools.AbstractGuttenBaseTest;
-import de.akquinet.jbosscc.guttenbase.tools.AbstractTableCopyTool;
-import de.akquinet.jbosscc.guttenbase.tools.CheckEqualTableDataTool;
-import de.akquinet.jbosscc.guttenbase.tools.NumberOfRowsPerBatch;
-import de.akquinet.jbosscc.guttenbase.tools.RefreshTargetConnection;
-import de.akquinet.jbosscc.guttenbase.tools.ScriptExecutorTool;
+import de.akquinet.jbosscc.guttenbase.tools.*;
 import org.junit.Before;
 import org.junit.Test;
+
 import java.sql.SQLException;
 
 public abstract class AbstractFilterTableCopyToolTest extends AbstractGuttenBaseTest {
@@ -45,8 +34,8 @@ public abstract class AbstractFilterTableCopyToolTest extends AbstractGuttenBase
       @Override
       public TableMapper getValue() {
         return new TestTableRenameNameMapper()
-                .addReplacement("OFFICES", "TAB_OFFICES")
-                .addReplacement("ORDERS", "TAB_ORDERS");
+            .addReplacement("OFFICES", "TAB_OFFICES")
+            .addReplacement("ORDERS", "TAB_ORDERS");
       }
     });
 
@@ -54,8 +43,8 @@ public abstract class AbstractFilterTableCopyToolTest extends AbstractGuttenBase
       @Override
       public ColumnMapper getValue() {
         return new TestColumnRenameNameMapper()
-                .addReplacement("PHONE", "ID_PHONE")
-                .addReplacement("CITY", "ID_CITY");
+            .addReplacement("PHONE", "ID_PHONE")
+            .addReplacement("CITY", "ID_CITY");
       }
     });
   }

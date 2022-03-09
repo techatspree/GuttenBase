@@ -3,6 +3,7 @@ package de.akquinet.jbosscc.guttenbase.meta.builder;
 import de.akquinet.jbosscc.guttenbase.connector.DatabaseType;
 import de.akquinet.jbosscc.guttenbase.meta.InternalDatabaseMetaData;
 import de.akquinet.jbosscc.guttenbase.meta.impl.DatabaseMetaDataImpl;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -12,7 +13,7 @@ import java.util.Map;
  * Builder class for DatabaseMetaData.
  * <p></p>
  * <p>
- * &copy; 2012-2020 akquinet tech@spree
+ * &copy; 2012-2034 akquinet tech@spree
  * </p>
  *
  * @author M. Dahm

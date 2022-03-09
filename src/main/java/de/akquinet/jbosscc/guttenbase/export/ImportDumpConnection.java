@@ -14,7 +14,7 @@ import java.util.concurrent.Executor;
 /**
  * Special "{@link Connection}" that supports reading data from a stream.
  * <p>
- * &copy; 2012-2020 akquinet tech@spree
+ * &copy; 2012-2034 akquinet tech@spree
  * </p>
  *
  * @author M. Dahm
@@ -178,13 +178,13 @@ public class ImportDumpConnection implements Connection {
 
   @Override
   public PreparedStatement prepareStatement(final String sql, final int resultSetType, final int resultSetConcurrency)
-          throws SQLException {
+      throws SQLException {
     return prepareStatement(sql);
   }
 
   @Override
   public CallableStatement prepareCall(final String sql, final int resultSetType, final int resultSetConcurrency)
-          throws SQLException {
+      throws SQLException {
 
     throw new UnsupportedOperationException();
   }
@@ -235,7 +235,7 @@ public class ImportDumpConnection implements Connection {
 
   @Override
   public Statement createStatement(final int resultSetType, final int resultSetConcurrency, final int resultSetHoldability)
-          throws SQLException {
+      throws SQLException {
 
     throw new UnsupportedOperationException();
   }

@@ -7,16 +7,14 @@ import de.akquinet.jbosscc.guttenbase.utils.TableCopyProgressIndicator;
 /**
  * Use UI to show progress.
  * <p>
- * &copy; 2012-2020 akquinet tech@spree
+ * &copy; 2012-2034 akquinet tech@spree
  * </p>
- * 
+ *
  * @author M. Dahm
  */
-public final class SwingTableCopyProgressIndicatorHint extends TableCopyProgressIndicatorHint
-{
+public final class SwingTableCopyProgressIndicatorHint extends TableCopyProgressIndicatorHint {
   @Override
-  public TableCopyProgressIndicator getValue()
-  {
+  public TableCopyProgressIndicator getValue() {
     return new SwingTableCopyProgressIndicator();
   }
 }

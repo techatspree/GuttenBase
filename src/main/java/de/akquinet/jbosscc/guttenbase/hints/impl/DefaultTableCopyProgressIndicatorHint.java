@@ -7,16 +7,14 @@ import de.akquinet.jbosscc.guttenbase.utils.TableCopyProgressIndicator;
 /**
  * By default return logging implementation.
  * <p>
- * &copy; 2012-2020 akquinet tech@spree
+ * &copy; 2012-2034 akquinet tech@spree
  * </p>
- * 
+ *
  * @author M. Dahm
  */
-public class DefaultTableCopyProgressIndicatorHint extends TableCopyProgressIndicatorHint
-{
+public class DefaultTableCopyProgressIndicatorHint extends TableCopyProgressIndicatorHint {
   @Override
-  public TableCopyProgressIndicator getValue()
-  {
+  public TableCopyProgressIndicator getValue() {
     return new LoggingTableCopyProgressIndicator();
   }
 }

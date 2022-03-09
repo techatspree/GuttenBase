@@ -8,14 +8,14 @@ import de.akquinet.jbosscc.guttenbase.mapping.TableMapper;
  * By default return table with same name ignoring case.
  *
  * <p>
- * &copy; 2012-2020 akquinet tech@spree
+ * &copy; 2012-2034 akquinet tech@spree
  * </p>
  *
  * @author M. Dahm
  */
 public class DefaultTableMapperHint extends TableMapperHint {
-	@Override
-	public TableMapper getValue() {
-		return new DefaultTableMapper();
-	}
+  @Override
+  public TableMapper getValue() {
+    return new DefaultTableMapper();
+  }
 }

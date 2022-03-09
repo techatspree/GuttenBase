@@ -1,8 +1,15 @@
 package de.akquinet.jbosscc.guttenbase.tools;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import de.akquinet.jbosscc.guttenbase.defaults.impl.DefaultZipExporterClassResources;
+import de.akquinet.jbosscc.guttenbase.export.zip.ZipConstants;
+import de.akquinet.jbosscc.guttenbase.export.zip.ZipExporter;
+import de.akquinet.jbosscc.guttenbase.export.zip.ZipExporterClassResources;
+import de.akquinet.jbosscc.guttenbase.hints.ZipExporterClassResourcesHint;
+import de.akquinet.jbosscc.guttenbase.meta.DatabaseMetaData;
+import de.akquinet.jbosscc.guttenbase.meta.TableMetaData;
+import de.akquinet.jbosscc.guttenbase.utils.Util;
+import org.apache.commons.io.IOUtils;
+import org.junit.Before;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -14,25 +21,15 @@ import java.util.Map;
 import java.util.jar.JarFile;
 import java.util.zip.ZipEntry;
 
-import org.apache.commons.io.IOUtils;
-import org.junit.Before;
-
-import de.akquinet.jbosscc.guttenbase.defaults.impl.DefaultZipExporterClassResources;
-import de.akquinet.jbosscc.guttenbase.export.zip.ZipConstants;
-import de.akquinet.jbosscc.guttenbase.export.zip.ZipExporter;
-import de.akquinet.jbosscc.guttenbase.export.zip.ZipExporterClassResources;
-import de.akquinet.jbosscc.guttenbase.hints.ZipExporterClassResourcesHint;
-import de.akquinet.jbosscc.guttenbase.meta.DatabaseMetaData;
-import de.akquinet.jbosscc.guttenbase.meta.TableMetaData;
-import de.akquinet.jbosscc.guttenbase.utils.Util;
+import static org.junit.Assert.*;
 
 /**
  * The ZIP exporter also allows you to specify a startup class for the resulting JAR.
- * 
+ *
  * <p>
- * &copy; 2012-2020 akquinet tech@spree
+ * &copy; 2012-2034 akquinet tech@spree
  * </p>
- * 
+ *
  * @author M. Dahm
  */
 public class ZipExportImportDumpTest extends AbstractExportImportDumpTest {

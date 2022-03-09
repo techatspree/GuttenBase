@@ -1,37 +1,33 @@
 package de.akquinet.jbosscc.guttenbase.configuration.impl;
 
+import de.akquinet.jbosscc.guttenbase.repository.ConnectorRepository;
+
 import java.sql.Connection;
 import java.sql.SQLException;
-
-import de.akquinet.jbosscc.guttenbase.repository.ConnectorRepository;
 
 /**
  * Implementation for MYSQL data base.
  * <p>
- * &copy; 2012-2020 akquinet tech@spree
+ * &copy; 2012-2034 akquinet tech@spree
  * </p>
  *
  * @author M. Dahm
  */
 @SuppressWarnings("JavaDoc")
-public class MySqlTargetDatabaseConfiguration extends DefaultTargetDatabaseConfiguration
-{
+public class MySqlTargetDatabaseConfiguration extends DefaultTargetDatabaseConfiguration {
   private final boolean _disableUniqueChecks;
 
   /**
    * @param connectorRepository
-   * @param disableUniqueChecks
-   * disable unique checks, too. Not just foreign key constraints.
+   * @param disableUniqueChecks disable unique checks, too. Not just foreign key constraints.
    */
-  public MySqlTargetDatabaseConfiguration(final ConnectorRepository connectorRepository, final boolean disableUniqueChecks)
-  {
+  public MySqlTargetDatabaseConfiguration(final ConnectorRepository connectorRepository, final boolean disableUniqueChecks) {
     super(connectorRepository);
 
     _disableUniqueChecks = disableUniqueChecks;
   }
 
-  public MySqlTargetDatabaseConfiguration(final ConnectorRepository connectorRepository)
-  {
+  public MySqlTargetDatabaseConfiguration(final ConnectorRepository connectorRepository) {
     this(connectorRepository, false);
   }
 
@@ -39,17 +35,14 @@ public class MySqlTargetDatabaseConfiguration extends DefaultTargetDatabaseConfi
    * {@inheritDoc}
    */
   @Override
-  public void initializeTargetConnection(final Connection connection, final String connectorId) throws SQLException
-  {
-    if (connection.getAutoCommit())
-    {
+  public void initializeTargetConnection(final Connection connection, final String connectorId) throws SQLException {
+    if (connection.getAutoCommit()) {
       connection.setAutoCommit(false);
     }
 
     setReferentialIntegrity(connection, false);
 
-    if (_disableUniqueChecks)
-    {
+    if (_disableUniqueChecks) {
       setUniqueChecks(connection, false);
     }
   }
@@ -58,23 +51,19 @@ public class MySqlTargetDatabaseConfiguration extends DefaultTargetDatabaseConfi
    * {@inheritDoc}
    */
   @Override
-  public void finalizeTargetConnection(final Connection connection, final String connectorId) throws SQLException
-  {
+  public void finalizeTargetConnection(final Connection connection, final String connectorId) throws SQLException {
     setReferentialIntegrity(connection, true);
 
-    if (_disableUniqueChecks)
-    {
+    if (_disableUniqueChecks) {
       setUniqueChecks(connection, true);
     }
   }
 
-  private void setReferentialIntegrity(final Connection connection, final boolean enable) throws SQLException
-  {
+  private void setReferentialIntegrity(final Connection connection, final boolean enable) throws SQLException {
     executeSQL(connection, "SET FOREIGN_KEY_CHECKS = " + (enable ? "1" : "0") + ";");
   }
 
-  private void setUniqueChecks(final Connection connection, final boolean enable) throws SQLException
-  {
+  private void setUniqueChecks(final Connection connection, final boolean enable) throws SQLException {
     executeSQL(connection, "SET UNIQUE_CHECKS = " + (enable ? "1" : "0") + ";");
   }
 

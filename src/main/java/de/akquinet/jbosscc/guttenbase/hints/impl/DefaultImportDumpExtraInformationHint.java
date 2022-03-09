@@ -5,17 +5,17 @@ import de.akquinet.jbosscc.guttenbase.hints.ImportDumpExtraInformationHint;
 
 /**
  * By default do nothing.
- * 
+ *
  * <p>
- * &copy; 2012-2020 akquinet tech@spree
+ * &copy; 2012-2034 akquinet tech@spree
  * </p>
- * 
+ *
  * @author M. Dahm
  */
 public class DefaultImportDumpExtraInformationHint extends ImportDumpExtraInformationHint {
-	@Override
-	public ImportDumpExtraInformation getValue() {
-		return extraInformation -> {
-        };
-	}
+  @Override
+  public ImportDumpExtraInformation getValue() {
+    return extraInformation -> {
+    };
+  }
 }

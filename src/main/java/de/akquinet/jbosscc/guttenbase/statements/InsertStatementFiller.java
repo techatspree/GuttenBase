@@ -13,6 +13,7 @@ import de.akquinet.jbosscc.guttenbase.meta.TableMetaData;
 import de.akquinet.jbosscc.guttenbase.repository.ConnectorRepository;
 import de.akquinet.jbosscc.guttenbase.tools.CommonColumnTypeResolverTool;
 import org.apache.log4j.Logger;
+
 import java.io.Closeable;
 import java.io.IOException;
 import java.sql.Connection;
@@ -25,7 +26,7 @@ import java.util.List;
 /**
  * Fill previously created INSERT statement with data from source connector.
  * <p>
- * &copy; 2012-2020 akquinet tech@spree
+ * &copy; 2012-2034 akquinet tech@spree
  * </p>
  *
  * @author M. Dahm
@@ -46,10 +47,10 @@ public class InsertStatementFiller {
                                                final String targetConnectorId, final TableMetaData targetTableMetaData,
                                                final TargetDatabaseConfiguration targetDatabaseConfiguration, final Connection targetConnection, final ResultSet rs,
                                                final PreparedStatement insertStatement, final int numberOfRowsPerBatch, final boolean useMultipleValuesClauses)
-    throws SQLException {
+      throws SQLException {
     final CommonColumnTypeResolverTool commonColumnTypeResolver = new CommonColumnTypeResolverTool(_connectorRepository);
     final List<ColumnMetaData> sourceColumns = ColumnOrderHint.getSortedColumns(_connectorRepository, sourceConnectorId,
-      sourceTableMetaData);
+        sourceTableMetaData);
     final ColumnMapper columnMapper = _connectorRepository.getConnectorHint(targetConnectorId, ColumnMapper.class).getValue();
     final DatabaseType targetDatabaseType = targetTableMetaData.getDatabaseMetaData().getDatabaseType();
     int targetColumnIndex = 1;
@@ -60,7 +61,7 @@ public class InsertStatementFiller {
 
       if (!ok) {
         throw new MissingDataException("No more data in row " + currentRow + "/" + numberOfRowsPerBatch + " in " +
-          sourceTableMetaData.getTableName());
+            sourceTableMetaData.getTableName());
       }
 
       targetDatabaseConfiguration.beforeNewRow(targetConnection, targetConnectorId, targetTableMetaData);
@@ -75,20 +76,20 @@ public class InsertStatementFiller {
             rs.getObject(columnIndex);
           } else {
             throw new IncompatibleColumnsException("Cannot map column " + targetTableMetaData
-              + ":"
-              + sourceColumnMetaData
-              + ": Target column list empty");
+                + ":"
+                + sourceColumnMetaData
+                + ": Target column list empty");
           }
         }
 
         for (final ColumnMetaData targetColumnMetaData : mapping.getColumns()) {
           final ColumnTypeMapping columnTypeMapping = findMapping(targetConnectorId, commonColumnTypeResolver,
-            sourceColumnMetaData, targetColumnMetaData);
+              sourceColumnMetaData, targetColumnMetaData);
 
           Object value = columnTypeMapping.getSourceColumnType().getValue(rs, columnIndex);
           value = columnTypeMapping.getColumnDataMapper().map(sourceColumnMetaData, targetColumnMetaData, value);
           Closeable optionalCloseableObject = columnTypeMapping.getTargetColumnType().setValue(insertStatement, targetColumnIndex++, value, targetDatabaseType,
-            targetColumnMetaData.getColumnType());
+              targetColumnMetaData.getColumnType());
 
           if (optionalCloseableObject != null) {
             _closeableObjects.add(optionalCloseableObject);
@@ -119,16 +120,16 @@ public class InsertStatementFiller {
                                         final CommonColumnTypeResolverTool commonColumnTypeResolver, final ColumnMetaData columnMetaData1,
                                         final ColumnMetaData columnMetaData2) throws SQLException {
     final ColumnTypeMapping columnTypeMapping = commonColumnTypeResolver.getCommonColumnTypeMapping(
-      columnMetaData1, targetConnectorId, columnMetaData2);
+        columnMetaData1, targetConnectorId, columnMetaData2);
 
     if (columnTypeMapping == null) {
       throw new IncompatibleColumnsException("Columns have incompatible types: " + columnMetaData1.getColumnName()
-        + "/"
-        + columnMetaData1.getColumnTypeName()
-        + " vs. "
-        + columnMetaData2.getColumnName()
-        + "/"
-        + columnMetaData2.getColumnTypeName());
+          + "/"
+          + columnMetaData1.getColumnTypeName()
+          + " vs. "
+          + columnMetaData2.getColumnName()
+          + "/"
+          + columnMetaData2.getColumnTypeName());
     }
 
     return columnTypeMapping;

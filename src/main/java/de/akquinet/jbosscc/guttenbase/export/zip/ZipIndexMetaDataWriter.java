@@ -1,19 +1,19 @@
 package de.akquinet.jbosscc.guttenbase.export.zip;
 
-import java.io.IOException;
-import java.util.Iterator;
-
 import de.akquinet.jbosscc.guttenbase.meta.ColumnMetaData;
 import de.akquinet.jbosscc.guttenbase.meta.IndexMetaData;
 import de.akquinet.jbosscc.guttenbase.meta.InternalColumnMetaData;
 
+import java.io.IOException;
+import java.util.Iterator;
+
 /**
  * Write ZIP file entry containing information about a table column index such as name and columns.
- * 
+ *
  * <p>
- * &copy; 2012-2020 akquinet tech@spree
+ * &copy; 2012-2034 akquinet tech@spree
  * </p>
- * 
+ *
  * @author M. Dahm
  */
 @SuppressWarnings("RedundantThrows")

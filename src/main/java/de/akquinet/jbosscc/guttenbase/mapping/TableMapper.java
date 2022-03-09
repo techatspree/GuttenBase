@@ -2,13 +2,14 @@ package de.akquinet.jbosscc.guttenbase.mapping;
 
 import de.akquinet.jbosscc.guttenbase.meta.DatabaseMetaData;
 import de.akquinet.jbosscc.guttenbase.meta.TableMetaData;
+
 import java.sql.SQLException;
 
 /**
  * Select target table for given source table.
  * <p></p>
  * <p>
- * &copy; 2012-2020 akquinet tech@spree
+ * &copy; 2012-2034 akquinet tech@spree
  * </p>
  *
  * @author M. Dahm

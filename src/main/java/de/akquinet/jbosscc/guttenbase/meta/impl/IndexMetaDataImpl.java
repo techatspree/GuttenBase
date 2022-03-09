@@ -11,7 +11,7 @@ import java.util.List;
 /**
  * Information about index in table.
  * <p>
- * &copy; 2012-2020 akquinet tech@spree
+ * &copy; 2012-2034 akquinet tech@spree
  * </p>
  *
  * @author M. Dahm
@@ -27,11 +27,11 @@ public class IndexMetaDataImpl implements InternalIndexMetaData {
   private final boolean _primaryKeyIndex;
 
   public IndexMetaDataImpl(
-          final TableMetaData tableMetaData,
-          final String indexName,
-          final boolean ascending,
-          final boolean unique,
-          final boolean primaryKeyIndex) {
+      final TableMetaData tableMetaData,
+      final String indexName,
+      final boolean ascending,
+      final boolean unique,
+      final boolean primaryKeyIndex) {
     assert indexName != null : "indexName != null";
     assert tableMetaData != null : "tableMetaData != null";
 

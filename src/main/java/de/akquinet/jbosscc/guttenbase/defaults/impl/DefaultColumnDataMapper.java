@@ -5,11 +5,11 @@ import de.akquinet.jbosscc.guttenbase.meta.ColumnMetaData;
 
 /**
  * By default always just return the same object.
- * 
+ *
  * <p>
- * &copy; 2012-2020 akquinet tech@spree
+ * &copy; 2012-2034 akquinet tech@spree
  * </p>
- * 
+ *
  * @author M. Dahm
  */
 public class DefaultColumnDataMapper implements ColumnDataMapper {

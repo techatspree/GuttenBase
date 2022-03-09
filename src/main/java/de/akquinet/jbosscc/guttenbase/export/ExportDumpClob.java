@@ -1,21 +1,17 @@
 package de.akquinet.jbosscc.guttenbase.export;
 
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.Reader;
-import java.io.Writer;
+import java.io.*;
 import java.sql.Clob;
 import java.sql.SQLException;
 
 /**
  * Since CLOBs may be quite big. we do not load them into memory completely, but read them in chunks and write the data to the output stream
  * in a loop.
- * 
+ *
  * <p>
- * &copy; 2012-2020 akquinet tech@spree
+ * &copy; 2012-2034 akquinet tech@spree
  * </p>
- * 
+ *
  * @author M. Dahm
  */
 public class ExportDumpClob extends AbstractExportDumpObject implements Clob {

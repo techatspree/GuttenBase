@@ -7,16 +7,14 @@ import de.akquinet.jbosscc.guttenbase.utils.ScriptExecutorProgressIndicator;
 /**
  * By default return logging implementation.
  * <p>
- * &copy; 2012-2020 akquinet tech@spree
+ * &copy; 2012-2034 akquinet tech@spree
  * </p>
- * 
+ *
  * @author M. Dahm
  */
-public class DefaultScriptExecutorProgressIndicatorHint extends ScriptExecutorProgressIndicatorHint
-{
+public class DefaultScriptExecutorProgressIndicatorHint extends ScriptExecutorProgressIndicatorHint {
   @Override
-  public ScriptExecutorProgressIndicator getValue()
-  {
+  public ScriptExecutorProgressIndicator getValue() {
     return new LoggingScriptExecutorProgressIndicator();
   }
 }

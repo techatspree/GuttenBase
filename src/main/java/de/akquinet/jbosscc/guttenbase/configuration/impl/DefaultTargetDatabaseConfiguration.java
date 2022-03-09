@@ -9,9 +9,9 @@ import java.sql.SQLException;
 
 /**
  * (Almost) empty implementation
-*
+ *
  * <p>
- * &copy; 2012-2020 akquinet tech@spree
+ * &copy; 2012-2034 akquinet tech@spree
  * </p>
  *
  * @author M. Dahm
@@ -23,7 +23,7 @@ public abstract class DefaultTargetDatabaseConfiguration extends AbstractDatabas
 
   /**
    * {@inheritDoc}
-  *
+   * <p>
    * true by default
    */
   @Override
@@ -33,7 +33,7 @@ public abstract class DefaultTargetDatabaseConfiguration extends AbstractDatabas
 
   /**
    * Connection is set autocommit false.
-  *
+   * <p>
    * {@inheritDoc}
    */
   @Override

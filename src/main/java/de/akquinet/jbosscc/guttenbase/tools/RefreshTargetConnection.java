@@ -8,7 +8,7 @@ import de.akquinet.jbosscc.guttenbase.meta.TableMetaData;
  * To avoid this the connection can be flushed, closed and re-established periodically using this hint.
  *
  * <p>
- * &copy; 2012-2020 akquinet tech@spree
+ * &copy; 2012-2034 akquinet tech@spree
  * </p>
  *
  * @author M. Dahm

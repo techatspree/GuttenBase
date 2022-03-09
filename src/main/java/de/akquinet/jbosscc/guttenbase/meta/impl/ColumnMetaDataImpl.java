@@ -5,14 +5,15 @@ import de.akquinet.jbosscc.guttenbase.meta.ForeignKeyMetaData;
 import de.akquinet.jbosscc.guttenbase.meta.InternalColumnMetaData;
 import de.akquinet.jbosscc.guttenbase.meta.TableMetaData;
 
-import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 /**
  * Information about a table column.
  * <p>
- * &copy; 2012-2020 akquinet tech@spree
+ * &copy; 2012-2034 akquinet tech@spree
  * </p>
  *
  * @author M. Dahm
@@ -34,15 +35,15 @@ public class ColumnMetaDataImpl implements InternalColumnMetaData {
   private final UUID _columnId = UUID.randomUUID();
 
   public ColumnMetaDataImpl(
-          final int columnType,
-          final String columnName,
-          final String columnTypeName,
-          final String columnClassName,
-          final boolean isNullable,
-          final boolean isAutoIncrement,
-          final int precision,
-          final int scale,
-          final TableMetaData tableMetaData) {
+      final int columnType,
+      final String columnName,
+      final String columnTypeName,
+      final String columnClassName,
+      final boolean isNullable,
+      final boolean isAutoIncrement,
+      final int precision,
+      final int scale,
+      final TableMetaData tableMetaData) {
     assert columnClassName != null : "columnClassName != null";
     assert columnTypeName != null : "columnTypeName != null";
     assert columnName != null : "columnName != null";
@@ -114,23 +115,25 @@ public class ColumnMetaDataImpl implements InternalColumnMetaData {
   }
 
   @Override
-  public ColumnMetaData getReferencedColumn() {
+  public Map<String, List<ColumnMetaData>> getReferencedColumns() {
+    final Map<String, List<ColumnMetaData>> result = new LinkedHashMap<>();
+
     for (final ForeignKeyMetaData foreignKey : getTableMetaData().getImportedForeignKeys()) {
-      if (foreignKey.getReferencingColumn() == this) {
-        return foreignKey.getReferencedColumn();
+      if (foreignKey.getReferencingColumns().contains(this)) {
+        result.put(foreignKey.getForeignKeyName(), foreignKey.getReferencedColumns());
       }
     }
 
-    return null;
+    return result;
   }
 
   @Override
-  public List<ColumnMetaData> getReferencedByColumn() {
-    final List<ColumnMetaData> result = new ArrayList<>();
+  public Map<String, List<ColumnMetaData>> getReferencingColumns() {
+    final Map<String, List<ColumnMetaData>> result = new LinkedHashMap<>();
 
     for (final ForeignKeyMetaData foreignKey : getTableMetaData().getExportedForeignKeys()) {
-      if (foreignKey.getReferencedColumn() == this) {
-        result.add(foreignKey.getReferencingColumn());
+      if (foreignKey.getReferencedColumns().contains(this)) {
+        result.put(foreignKey.getForeignKeyName(), foreignKey.getReferencingColumns());
       }
     }
 

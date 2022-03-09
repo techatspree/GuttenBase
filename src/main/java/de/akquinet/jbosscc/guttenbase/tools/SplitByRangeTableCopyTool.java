@@ -20,14 +20,11 @@ import java.sql.SQLException;
  * from one connection to the other splitting the input with the given column. If the number range is populated sparsely the
  * copying may take much longer than the {@link DefaultTableCopyTool}.
  * <p>
- * &copy; 2012-2020 akquinet tech@spree
+ * &copy; 2012-2034 akquinet tech@spree
  * </p>
- *
  */
-public class SplitByRangeTableCopyTool extends AbstractTableCopyTool
-{
-  public SplitByRangeTableCopyTool(final ConnectorRepository connectorRepository)
-  {
+public class SplitByRangeTableCopyTool extends AbstractTableCopyTool {
+  public SplitByRangeTableCopyTool(final ConnectorRepository connectorRepository) {
     super(connectorRepository);
   }
 
@@ -40,11 +37,10 @@ public class SplitByRangeTableCopyTool extends AbstractTableCopyTool
   @SuppressWarnings("JavaDoc")
   @Override
   protected void copyTable(final String sourceConnectorId, final Connection sourceConnection,
-      final SourceDatabaseConfiguration sourceDatabaseConfiguration, final TableMetaData sourceTableMetaData,
-      final String sourceTableName, final String targetConnectorId, final Connection targetConnection,
-      final TargetDatabaseConfiguration targetDatabaseConfiguration, final TableMetaData targetTableMetaData,
-      final String targetTableName, final int numberOfRowsPerBatch, final boolean useMultipleValuesClauses) throws SQLException
-  {
+                           final SourceDatabaseConfiguration sourceDatabaseConfiguration, final TableMetaData sourceTableMetaData,
+                           final String sourceTableName, final String targetConnectorId, final Connection targetConnection,
+                           final TargetDatabaseConfiguration targetDatabaseConfiguration, final TableMetaData targetTableMetaData,
+                           final String targetTableName, final int numberOfRowsPerBatch, final boolean useMultipleValuesClauses) throws SQLException {
     final InsertStatementCreator insertStatementCreator = new InsertStatementCreator(_connectorRepository, targetConnectorId);
     final InsertStatementFiller insertStatementFiller = new InsertStatementFiller(_connectorRepository);
 
@@ -61,8 +57,7 @@ public class SplitByRangeTableCopyTool extends AbstractTableCopyTool
     selectStatement.setFetchSize(Math.min(numberOfRowsPerBatch, selectStatement.getMaxRows()));
 
     int totalWritten = 0;
-    for (long splitColumnValue = minValue; splitColumnValue <= maxValue; splitColumnValue += numberOfRowsPerBatch + 1)
-    {
+    for (long splitColumnValue = minValue; splitColumnValue <= maxValue; splitColumnValue += numberOfRowsPerBatch + 1) {
       final long start = splitColumnValue;
       final long end = splitColumnValue + numberOfRowsPerBatch;
 
@@ -70,8 +65,7 @@ public class SplitByRangeTableCopyTool extends AbstractTableCopyTool
       final long countData = getCurrentCount(countStatement, start, end);
       sourceDatabaseConfiguration.afterSelect(sourceConnection, sourceConnectorId, sourceTableMetaData);
 
-      if (countData > 0)
-      {
+      if (countData > 0) {
         _progressIndicator.startExecution();
         selectStatement.setLong(1, start);
         selectStatement.setLong(2, end);
@@ -89,8 +83,7 @@ public class SplitByRangeTableCopyTool extends AbstractTableCopyTool
             useMultipleValuesClauses);
         bulkInsert.executeBatch();
 
-        if (targetDatabaseConfiguration.isMayCommit())
-        {
+        if (targetDatabaseConfiguration.isMayCommit()) {
           targetConnection.commit();
         }
 
@@ -99,8 +92,7 @@ public class SplitByRangeTableCopyTool extends AbstractTableCopyTool
         totalWritten += countData;
         _progressIndicator.endExecution(totalWritten);
 
-        if (resultSet.next())
-        {
+        if (resultSet.next()) {
           _progressIndicator.warn("Uncopied data!!!");
         }
 
@@ -115,8 +107,7 @@ public class SplitByRangeTableCopyTool extends AbstractTableCopyTool
     selectStatement.close();
   }
 
-  private long getCurrentCount(final PreparedStatement countStatement, final long start, final long end) throws SQLException
-  {
+  private long getCurrentCount(final PreparedStatement countStatement, final long start, final long end) throws SQLException {
     countStatement.setLong(1, start);
     countStatement.setLong(2, end);
 

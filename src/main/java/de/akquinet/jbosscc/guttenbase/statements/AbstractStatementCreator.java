@@ -8,6 +8,7 @@ import de.akquinet.jbosscc.guttenbase.meta.ColumnMetaData;
 import de.akquinet.jbosscc.guttenbase.meta.TableMetaData;
 import de.akquinet.jbosscc.guttenbase.repository.ConnectorRepository;
 import org.apache.log4j.Logger;
+
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,7 +16,7 @@ import java.util.List;
 /**
  * Contains some helper methods for implementing classes.
  * <p>
- * &copy; 2012-2020 akquinet tech@spree
+ * &copy; 2012-2034 akquinet tech@spree
  * </p>
  *
  * @author M. Dahm
@@ -60,7 +61,7 @@ public abstract class AbstractStatementCreator {
                                                      final TableMetaData targetTableMetaData, final String sourceConnectorId) throws SQLException {
     // Use same order as in SELECT clause
     final List<ColumnMetaData> sourceColumns = ColumnOrderHint.getSortedColumns(_connectorRepository, sourceConnectorId,
-      sourceTableMetaData);
+        sourceTableMetaData);
     final List<ColumnMetaData> columns = new ArrayList<>();
     final ColumnMapper columnMapper = _connectorRepository.getConnectorHint(_connectorId, ColumnMapper.class).getValue();
 

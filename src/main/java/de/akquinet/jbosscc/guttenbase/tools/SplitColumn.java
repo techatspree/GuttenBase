@@ -1,18 +1,18 @@
 package de.akquinet.jbosscc.guttenbase.tools;
 
-import java.sql.SQLException;
-
 import de.akquinet.jbosscc.guttenbase.meta.ColumnMetaData;
 import de.akquinet.jbosscc.guttenbase.meta.TableMetaData;
+
+import java.sql.SQLException;
 
 /**
  * Sometimes the amount of data exceeds any buffer. In these cases we need to split the data by some given range, usually the primary key.
  * I.e., the data is read in chunks where these chunks are split using the ID column range of values.
- * 
+ *
  * <p>
- * &copy; 2012-2020 akquinet tech@spree
+ * &copy; 2012-2034 akquinet tech@spree
  * </p>
- * 
+ *
  * @author M. Dahm
  */
 public interface SplitColumn {

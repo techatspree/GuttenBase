@@ -15,7 +15,7 @@ import static org.junit.Assert.assertFalse;
 /**
  * Super class for Hint tests
  * <p>
- * &copy; 2012-2020 akquinet tech@spree
+ * &copy; 2012-2034 akquinet tech@spree
  * </p>
  *
  * @author M. Dahm

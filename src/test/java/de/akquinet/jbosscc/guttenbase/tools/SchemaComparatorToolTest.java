@@ -3,12 +3,7 @@ package de.akquinet.jbosscc.guttenbase.tools;
 import de.akquinet.jbosscc.guttenbase.configuration.TestDerbyConnectionInfo;
 import de.akquinet.jbosscc.guttenbase.configuration.TestHsqlConnectionInfo;
 import de.akquinet.jbosscc.guttenbase.meta.ForeignKeyMetaData;
-import de.akquinet.jbosscc.guttenbase.tools.schema.comparison.MissingForeignKeyIssue;
-import de.akquinet.jbosscc.guttenbase.tools.schema.comparison.MissingIndexIssue;
-import de.akquinet.jbosscc.guttenbase.tools.schema.comparison.SchemaComparatorTool;
-import de.akquinet.jbosscc.guttenbase.tools.schema.comparison.SchemaCompatibilityIssue;
-import de.akquinet.jbosscc.guttenbase.tools.schema.comparison.SchemaCompatibilityIssueType;
-import de.akquinet.jbosscc.guttenbase.tools.schema.comparison.SchemaCompatibilityIssues;
+import de.akquinet.jbosscc.guttenbase.tools.schema.comparison.*;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -88,7 +83,7 @@ public class SchemaComparatorToolTest extends AbstractGuttenBaseTest {
     Assert.assertNotNull(missingForeignKeyIssue);
 
     final ForeignKeyMetaData foreignKeyMetaData = ((MissingForeignKeyIssue) missingForeignKeyIssue).getForeignKeyMetaData();
-    Assert.assertEquals("ASSIGNED_COMPANY_ID", foreignKeyMetaData.getReferencingColumn().getColumnName());
+    Assert.assertEquals("ASSIGNED_COMPANY_ID", foreignKeyMetaData.getReferencingColumns().get(0).getColumnName());
 
     final SchemaCompatibilityIssue missingIndexIssue = compatibilityIssues.contains(SchemaCompatibilityIssueType.MISSING_INDEX);
     Assert.assertNotNull(missingIndexIssue);

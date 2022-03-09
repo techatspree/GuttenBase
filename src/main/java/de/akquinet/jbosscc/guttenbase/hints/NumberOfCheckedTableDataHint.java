@@ -8,16 +8,17 @@ import de.akquinet.jbosscc.guttenbase.tools.NumberOfCheckedTableData;
  * {@link CheckEqualTableDataTool} tool.
  *
  * <p>
- * &copy; 2012-2020 akquinet tech@spree
+ * &copy; 2012-2034 akquinet tech@spree
  * </p>
- *
- *
+ * <p>
+ * <p>
  * Hint is used by {@link CheckEqualTableDataTool} How many rows of tables shall be regarded when checking that data has been transferred correctly.
+ *
  * @author M. Dahm
  */
 public abstract class NumberOfCheckedTableDataHint implements ConnectorHint<NumberOfCheckedTableData> {
-	@Override
-	public final Class<NumberOfCheckedTableData> getConnectorHintType() {
-		return NumberOfCheckedTableData.class;
-	}
+  @Override
+  public final Class<NumberOfCheckedTableData> getConnectorHintType() {
+    return NumberOfCheckedTableData.class;
+  }
 }

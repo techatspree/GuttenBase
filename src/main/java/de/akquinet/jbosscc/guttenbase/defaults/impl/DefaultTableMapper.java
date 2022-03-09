@@ -4,12 +4,13 @@ import de.akquinet.jbosscc.guttenbase.hints.CaseConversionMode;
 import de.akquinet.jbosscc.guttenbase.mapping.TableMapper;
 import de.akquinet.jbosscc.guttenbase.meta.DatabaseMetaData;
 import de.akquinet.jbosscc.guttenbase.meta.TableMetaData;
+
 import java.sql.SQLException;
 
 /**
  * By default prepend schema name.
  * <p>
- * &copy; 2012-2020 akquinet tech@spree
+ * &copy; 2012-2034 akquinet tech@spree
  * </p>
  *
  * @author M. Dahm
@@ -34,7 +35,7 @@ public class DefaultTableMapper implements TableMapper {
 
   @Override
   public String fullyQualifiedTableName(final TableMetaData source, final DatabaseMetaData targetDatabaseMetaData)
-    throws SQLException {
+      throws SQLException {
     final String schemaPrefix = targetDatabaseMetaData.getSchemaPrefix();
 
     return schemaPrefix + mapTableName(source, targetDatabaseMetaData);

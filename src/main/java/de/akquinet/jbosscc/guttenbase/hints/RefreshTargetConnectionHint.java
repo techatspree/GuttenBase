@@ -9,11 +9,11 @@ import de.akquinet.jbosscc.guttenbase.tools.RefreshTargetConnection;
  * To avoid this the connection can be flushed, closed and re-established periodically using this hint.
  *
  * <p>
- * &copy; 2012-2020 akquinet tech@spree
+ * &copy; 2012-2034 akquinet tech@spree
  * </p>
  *
  * @author M. Dahm
- *
+ * <p>
  * Hint is used by {@link AbstractTableCopyTool} to determine table order
  */
 public abstract class RefreshTargetConnectionHint implements ConnectorHint<RefreshTargetConnection> {

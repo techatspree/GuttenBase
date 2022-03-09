@@ -6,13 +6,11 @@ import org.junit.Test;
 import java.io.File;
 import java.io.IOException;
 
-public class ResourceUtilTest
-{
+public class ResourceUtilTest {
   private final ResourceUtil _objectUnderTest = new ResourceUtil();
 
   @Test
-  public void testResource() throws IOException
-  {
+  public void testResource() throws IOException {
     final ResourceUtil.ResourceInfo resourceInfoJar = _objectUnderTest.getResourceInfo(Test.class);
     Assert.assertTrue(resourceInfoJar.isJarFile());
     Assert.assertTrue(resourceInfoJar.getJarFileOrFolder().getAbsolutePath().endsWith("junit-dep-4.8.1.jar"));

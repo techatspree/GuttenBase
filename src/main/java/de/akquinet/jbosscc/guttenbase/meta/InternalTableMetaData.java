@@ -3,13 +3,12 @@ package de.akquinet.jbosscc.guttenbase.meta;
 /**
  * Extension for internal access.
  * <p>
- * &copy; 2012-2020 akquinet tech@spree
+ * &copy; 2012-2034 akquinet tech@spree
  * </p>
  *
  * @author M. Dahm
  */
-public interface InternalTableMetaData extends TableMetaData
-{
+public interface InternalTableMetaData extends TableMetaData {
   void setTotalRowCount(final int rowCount);
 
   void setFilteredRowCount(final int rowCount);
@@ -19,6 +18,10 @@ public interface InternalTableMetaData extends TableMetaData
   void removeColumn(ColumnMetaData columnMetaData);
 
   void addIndex(IndexMetaData indexMetaData);
+
+  ForeignKeyMetaData getExportedForeignKey(String foreignKeyname);
+
+  ForeignKeyMetaData getImportedForeignKey(String foreignKeyname);
 
   void addImportedForeignKey(ForeignKeyMetaData fkMetaData);
 

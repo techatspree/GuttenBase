@@ -3,12 +3,7 @@ package de.akquinet.jbosscc.guttenbase.tools.schema.customSchemaFromH2ToDerby;
 
 import de.akquinet.jbosscc.guttenbase.configuration.TestDerbyConnectionInfo;
 import de.akquinet.jbosscc.guttenbase.configuration.TestH2ConnectionInfo;
-import de.akquinet.jbosscc.guttenbase.hints.ColumnMapperHint;
-import de.akquinet.jbosscc.guttenbase.hints.TableMapperHint;
-import de.akquinet.jbosscc.guttenbase.hints.TestColumnNameFilterHint;
-import de.akquinet.jbosscc.guttenbase.hints.TestColumnRenameNameMapper;
-import de.akquinet.jbosscc.guttenbase.hints.TestTableNameFilterHint;
-import de.akquinet.jbosscc.guttenbase.hints.TestTableRenameNameMapper;
+import de.akquinet.jbosscc.guttenbase.hints.*;
 import de.akquinet.jbosscc.guttenbase.mapping.ColumnMapper;
 import de.akquinet.jbosscc.guttenbase.mapping.TableMapper;
 import de.akquinet.jbosscc.guttenbase.tools.AbstractGuttenBaseTest;
@@ -20,37 +15,37 @@ import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 
 public class CreateSchemaWithAllFiltersToolTest extends AbstractGuttenBaseTest {
-    private static final String SOURCE_CONNECTOR_ID = "hsqldb";
-    private static final String TARGET_CONNECTOR_ID = "derby";
+  private static final String SOURCE_CONNECTOR_ID = "hsqldb";
+  private static final String TARGET_CONNECTOR_ID = "derby";
 
   private final CopySchemaTool _objectUnderTest = new CopySchemaTool(_connectorRepository);
 
-    @Before
-    public void setup() throws Exception {
-        _connectorRepository.addConnectionInfo(SOURCE_CONNECTOR_ID, new TestH2ConnectionInfo());
-        _connectorRepository.addConnectionInfo(TARGET_CONNECTOR_ID, new TestDerbyConnectionInfo());
+  @Before
+  public void setup() throws Exception {
+    _connectorRepository.addConnectionInfo(SOURCE_CONNECTOR_ID, new TestH2ConnectionInfo());
+    _connectorRepository.addConnectionInfo(TARGET_CONNECTOR_ID, new TestDerbyConnectionInfo());
 
-        new ScriptExecutorTool(_connectorRepository).executeFileScript(SOURCE_CONNECTOR_ID, "/ddl/h2/script-allshop-h2-raw.sql");
+    new ScriptExecutorTool(_connectorRepository).executeFileScript(SOURCE_CONNECTOR_ID, "/ddl/h2/script-allshop-h2-raw.sql");
 
-        _connectorRepository.addConnectorHint(TARGET_CONNECTOR_ID, new TableMapperHint() {
-            @Override
-            public TableMapper getValue() {
-              return new TestTableRenameNameMapper()
-                        .addReplacement("OFFICES", "TAB_OFFICES")
-                        .addReplacement("ORDERS", "TAB_ORDERS");
-            }
-        });
+    _connectorRepository.addConnectorHint(TARGET_CONNECTOR_ID, new TableMapperHint() {
+      @Override
+      public TableMapper getValue() {
+        return new TestTableRenameNameMapper()
+            .addReplacement("OFFICES", "TAB_OFFICES")
+            .addReplacement("ORDERS", "TAB_ORDERS");
+      }
+    });
 
-        _connectorRepository.addConnectorHint(TARGET_CONNECTOR_ID, new ColumnMapperHint() {
-            @Override
-            public ColumnMapper getValue() {
-              return new TestColumnRenameNameMapper()
-                        .addReplacement("OFFICECODE", "ID_OFFICECODE")
-                        .addReplacement("ORDERNUMBER", "ID_ORDERNUMBER")
-                        .addReplacement("PHONE", "ID_PHONE")
-                        .addReplacement("CITY", "ID_CITY");
-            }
-        });
+    _connectorRepository.addConnectorHint(TARGET_CONNECTOR_ID, new ColumnMapperHint() {
+      @Override
+      public ColumnMapper getValue() {
+        return new TestColumnRenameNameMapper()
+            .addReplacement("OFFICECODE", "ID_OFFICECODE")
+            .addReplacement("ORDERNUMBER", "ID_ORDERNUMBER")
+            .addReplacement("PHONE", "ID_PHONE")
+            .addReplacement("CITY", "ID_CITY");
+      }
+    });
 
 //        //ConnectionHint for Mapping ColumnType
 //        _connectorRepository.addConnectorHint(SOURCE_CONNECTOR_ID, new ColumnTypeMapperHint() {
@@ -60,36 +55,36 @@ public class CreateSchemaWithAllFiltersToolTest extends AbstractGuttenBaseTest {
 //            }
 //        });
 
-    }
+  }
 
-    @Test
-    public void testScript() throws Exception {
+  @Test
+  public void testScript() throws Exception {
 
-        _objectUnderTest.copySchema(SOURCE_CONNECTOR_ID, TARGET_CONNECTOR_ID);
+    _objectUnderTest.copySchema(SOURCE_CONNECTOR_ID, TARGET_CONNECTOR_ID);
 
-        assertEquals("After", "TAB_OFFICES", _connectorRepository.getDatabaseMetaData(TARGET_CONNECTOR_ID).
-                getTableMetaData("TAB_OFFICES").getTableName());
+    assertEquals("After", "TAB_OFFICES", _connectorRepository.getDatabaseMetaData(TARGET_CONNECTOR_ID).
+        getTableMetaData("TAB_OFFICES").getTableName());
 
-        assertEquals("After", "TAB_ORDERS", _connectorRepository.getDatabaseMetaData(TARGET_CONNECTOR_ID).
-                getTableMetaData("TAB_ORDERS").getTableName());
+    assertEquals("After", "TAB_ORDERS", _connectorRepository.getDatabaseMetaData(TARGET_CONNECTOR_ID).
+        getTableMetaData("TAB_ORDERS").getTableName());
 
-        assertEquals("After", "ID_CITY", _connectorRepository.getDatabaseMetaData(TARGET_CONNECTOR_ID)
-                .getTableMetaData("CUSTOMERS").getColumnMetaData("ID_CITY").getColumnName());
+    assertEquals("After", "ID_CITY", _connectorRepository.getDatabaseMetaData(TARGET_CONNECTOR_ID)
+        .getTableMetaData("CUSTOMERS").getColumnMetaData("ID_CITY").getColumnName());
 
-        assertEquals("After", "ID_ORDERNUMBER", _connectorRepository.getDatabaseMetaData(TARGET_CONNECTOR_ID)
-                .getTableMetaData("ORDERDETAILS").getColumnMetaData("ID_ORDERNUMBER").getColumnName());
+    assertEquals("After", "ID_ORDERNUMBER", _connectorRepository.getDatabaseMetaData(TARGET_CONNECTOR_ID)
+        .getTableMetaData("ORDERDETAILS").getColumnMetaData("ID_ORDERNUMBER").getColumnName());
 
 
-        assertEquals("Before", 10, _connectorRepository.getDatabaseMetaData(SOURCE_CONNECTOR_ID).getTableMetaData().size());
-        assertEquals("Before", 13, _connectorRepository.getDatabaseMetaData(SOURCE_CONNECTOR_ID).getTableMetaData("CUSTOMERS").getColumnCount());
-        assertEquals("Before", 8, _connectorRepository.getDatabaseMetaData(SOURCE_CONNECTOR_ID).getTableMetaData("EMPLOYEES").getColumnCount());
+    assertEquals("Before", 10, _connectorRepository.getDatabaseMetaData(SOURCE_CONNECTOR_ID).getTableMetaData().size());
+    assertEquals("Before", 13, _connectorRepository.getDatabaseMetaData(SOURCE_CONNECTOR_ID).getTableMetaData("CUSTOMERS").getColumnCount());
+    assertEquals("Before", 8, _connectorRepository.getDatabaseMetaData(SOURCE_CONNECTOR_ID).getTableMetaData("EMPLOYEES").getColumnCount());
 
-      _connectorRepository.addConnectorHint(SOURCE_CONNECTOR_ID, new TestTableNameFilterHint());
-      _connectorRepository.addConnectorHint(SOURCE_CONNECTOR_ID, new TestColumnNameFilterHint());
-        _connectorRepository.refreshDatabaseMetaData(SOURCE_CONNECTOR_ID);
+    _connectorRepository.addConnectorHint(SOURCE_CONNECTOR_ID, new TestTableNameFilterHint());
+    _connectorRepository.addConnectorHint(SOURCE_CONNECTOR_ID, new TestColumnNameFilterHint());
+    _connectorRepository.refreshDatabaseMetaData(SOURCE_CONNECTOR_ID);
 
-        assertEquals("After", 9, _connectorRepository.getDatabaseMetaData(SOURCE_CONNECTOR_ID).getTableMetaData().size());
-        assertEquals("After", 10, _connectorRepository.getDatabaseMetaData(SOURCE_CONNECTOR_ID).getTableMetaData("CUSTOMERS").getColumnCount());
-        assertEquals("Before", 5, _connectorRepository.getDatabaseMetaData(SOURCE_CONNECTOR_ID).getTableMetaData("EMPLOYEES").getColumnCount());
-    }
+    assertEquals("After", 9, _connectorRepository.getDatabaseMetaData(SOURCE_CONNECTOR_ID).getTableMetaData().size());
+    assertEquals("After", 10, _connectorRepository.getDatabaseMetaData(SOURCE_CONNECTOR_ID).getTableMetaData("CUSTOMERS").getColumnCount());
+    assertEquals("Before", 5, _connectorRepository.getDatabaseMetaData(SOURCE_CONNECTOR_ID).getTableMetaData("EMPLOYEES").getColumnCount());
+  }
 }

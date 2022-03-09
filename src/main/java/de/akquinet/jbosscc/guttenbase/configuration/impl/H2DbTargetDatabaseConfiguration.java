@@ -1,17 +1,17 @@
 package de.akquinet.jbosscc.guttenbase.configuration.impl;
 
+import de.akquinet.jbosscc.guttenbase.repository.ConnectorRepository;
+
 import java.sql.Connection;
 import java.sql.SQLException;
 
-import de.akquinet.jbosscc.guttenbase.repository.ConnectorRepository;
-
 /**
  * Implementation for H2DB data base.
- * 
+ *
  * <p>
- * &copy; 2012-2020 akquinet tech@spree
+ * &copy; 2012-2034 akquinet tech@spree
  * </p>
- * 
+ *
  * @author M. Dahm
  */
 public class H2DbTargetDatabaseConfiguration extends DefaultTargetDatabaseConfiguration {

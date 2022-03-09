@@ -6,13 +6,12 @@ import java.util.List;
 /**
  * Information about a table.
  * <p>
- * &copy; 2012-2020 akquinet tech@spree
+ * &copy; 2012-2034 akquinet tech@spree
  * </p>
  *
  * @author M. Dahm
  */
-public interface TableMetaData extends Comparable<TableMetaData>, Serializable
-{
+public interface TableMetaData extends Comparable<TableMetaData>, Serializable {
   int getFilteredRowCount();
 
   int getTotalRowCount();

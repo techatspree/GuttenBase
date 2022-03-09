@@ -5,16 +5,16 @@ import de.akquinet.jbosscc.guttenbase.mapping.TableOrderComparatorFactory;
 
 /**
  * By default order by natural order of table names.
- * 
+ *
  * <p>
- * &copy; 2012-2020 akquinet tech@spree
+ * &copy; 2012-2034 akquinet tech@spree
  * </p>
- * 
+ *
  * @author M. Dahm
  */
 public class DefaultTableOrderHint extends TableOrderHint {
-	@Override
-	public TableOrderComparatorFactory getValue() {
-		return () -> Comparable::compareTo;
-	}
+  @Override
+  public TableOrderComparatorFactory getValue() {
+    return () -> Comparable::compareTo;
+  }
 }

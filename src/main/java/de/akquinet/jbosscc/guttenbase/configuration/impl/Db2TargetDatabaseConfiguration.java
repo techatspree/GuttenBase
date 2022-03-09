@@ -5,6 +5,7 @@ import de.akquinet.jbosscc.guttenbase.meta.DatabaseMetaData;
 import de.akquinet.jbosscc.guttenbase.meta.TableMetaData;
 import de.akquinet.jbosscc.guttenbase.repository.ConnectorRepository;
 import de.akquinet.jbosscc.guttenbase.tools.ScriptExecutorTool;
+
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -19,7 +20,7 @@ import java.util.Map.Entry;
  * @author M. Dahm
  * @see <a href="http://stackoverflow.com/questions/421518/is-there-a-way-to-enable-disable-constraints-in-db2-v7">http://stackoverflow.com/questions/421518/is-there-a-way-to-enable-disable-constraints-in-db2-v7</a>
  * <p>
- * &copy; 2012-2020 akquinet tech@spree
+ * &copy; 2012-2034 akquinet tech@spree
  * </p>
  */
 public class Db2TargetDatabaseConfiguration extends DefaultTargetDatabaseConfiguration {
@@ -89,11 +90,11 @@ public class Db2TargetDatabaseConfiguration extends DefaultTargetDatabaseConfigu
 
       for (final String constraintName : entry.getValue()) {
         executeSQL(connection, "ALTER TABLE " + _schema
-                + "."
-                + tableName
-                + " ALTER FOREIGN KEY "
-                + constraintName
-                + (enable ? " ENFORCED" : " NOT ENFORCED"));
+            + "."
+            + tableName
+            + " ALTER FOREIGN KEY "
+            + constraintName
+            + (enable ? " ENFORCED" : " NOT ENFORCED"));
       }
     }
   }
@@ -101,7 +102,7 @@ public class Db2TargetDatabaseConfiguration extends DefaultTargetDatabaseConfigu
   private void loadConstraints(final Connection connection) throws SQLException {
     final ScriptExecutorTool scriptExecutorTool = new ScriptExecutorTool(_connectorRepository);
     final List<Map<String, Object>> queryResult = scriptExecutorTool.executeQuery(connection,
-            "SELECT DISTINCT CONSTNAME, TABNAME FROM SYSCAT.TABCONST WHERE TABSCHEMA='" + _schema + "' AND TYPE='F' ORDER BY TABNAME");
+        "SELECT DISTINCT CONSTNAME, TABNAME FROM SYSCAT.TABCONST WHERE TABSCHEMA='" + _schema + "' AND TYPE='F' ORDER BY TABNAME");
 
     for (final Map<String, Object> map : queryResult) {
       final String constraintName = String.valueOf(map.get("CONSTNAME"));

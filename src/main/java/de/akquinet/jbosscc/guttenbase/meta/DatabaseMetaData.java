@@ -2,6 +2,7 @@ package de.akquinet.jbosscc.guttenbase.meta;
 
 import de.akquinet.jbosscc.guttenbase.connector.DatabaseType;
 import de.akquinet.jbosscc.guttenbase.repository.RepositoryTableFilter;
+
 import java.io.Serializable;
 import java.util.List;
 
@@ -9,7 +10,7 @@ import java.util.List;
  * Information about data base such as schema name.
  *
  * <p>
- * &copy; 2012-2020 akquinet tech@spree
+ * &copy; 2012-2034 akquinet tech@spree
  * </p>
  *
  * @author M. Dahm

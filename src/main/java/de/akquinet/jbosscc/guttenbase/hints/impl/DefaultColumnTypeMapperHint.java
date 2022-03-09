@@ -8,7 +8,7 @@ import de.akquinet.jbosscc.guttenbase.mapping.DefaultColumnTypeMapper;
  * By default use customized mapping since database column types are sometimes different.
  * <p></p>
  * <p>
- * &copy; 2012-2020 akquinet tech@spree
+ * &copy; 2012-2034 akquinet tech@spree
  * </p>
  *
  * @author M. Dahm

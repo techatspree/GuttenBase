@@ -2,20 +2,18 @@ package de.akquinet.jbosscc.guttenbase.mapping;
 
 import de.akquinet.jbosscc.guttenbase.connector.DatabaseType;
 import de.akquinet.jbosscc.guttenbase.meta.ColumnMetaData;
+
 import java.sql.Types;
 import java.util.HashMap;
 import java.util.Map;
 
-import static de.akquinet.jbosscc.guttenbase.connector.DatabaseType.MSSQL;
-import static de.akquinet.jbosscc.guttenbase.connector.DatabaseType.MYSQL;
-import static de.akquinet.jbosscc.guttenbase.connector.DatabaseType.ORACLE;
-import static de.akquinet.jbosscc.guttenbase.connector.DatabaseType.POSTGRESQL;
+import static de.akquinet.jbosscc.guttenbase.connector.DatabaseType.*;
 
 /**
  * Default uses same data type as source
  *
  * <p>
- * &copy; 2012-2020 akquinet tech@spree
+ * &copy; 2012-2034 akquinet tech@spree
  * </p>
  */
 public class DefaultColumnTypeMapper implements ColumnTypeMapper {

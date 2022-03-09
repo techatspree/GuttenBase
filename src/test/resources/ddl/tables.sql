@@ -1,11 +1,11 @@
 CREATE TABLE FOO_USER
 (
-   ID bigint PRIMARY KEY,
-   PERSONAL_NUMBER SMALLINT,
-   USERNAME varchar(100),
-   NAME varchar(100),
-   PASSWORD varchar(255),
-   COMPANY_ID bigint
+    ID              bigint PRIMARY KEY,
+    PERSONAL_NUMBER SMALLINT,
+    USERNAME        varchar(100) NOT NULL,
+    NAME            varchar(100) NOT NULL,
+    PASSWORD        varchar(255) NOT NULL,
+    COMPANY_ID      bigint
 );
 
 CREATE TABLE FOO_USER_COMPANY
@@ -24,16 +24,16 @@ CREATE TABLE FOO_USER_ROLES
 
 CREATE TABLE FOO_COMPANY
 (
-   ID bigint PRIMARY KEY,
-   SUPPLIER char(1),
-   NAME varchar(100)
+    ID bigint PRIMARY KEY,
+    SUPPLIER char(1),
+    NAME varchar(100) NOT NULL
 );
 
 CREATE TABLE FOO_ROLE
 (
-   ID bigint PRIMARY KEY,
-   FIXED_ROLE char(1),
-   ROLE_NAME varchar(100)
+    ID bigint PRIMARY KEY,
+    FIXED_ROLE char(1),
+    ROLE_NAME varchar(100) NOT NULL
 );
 
 CREATE TABLE FOO_DATA

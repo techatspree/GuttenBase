@@ -22,17 +22,14 @@ import de.akquinet.jbosscc.guttenbase.meta.TableMetaData;
 import de.akquinet.jbosscc.guttenbase.repository.ConnectorRepository;
 import de.akquinet.jbosscc.guttenbase.statements.SelectStatementCreator;
 import org.apache.log4j.Logger;
-import java.sql.Blob;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+
+import java.sql.*;
 import java.util.List;
 
 /**
  * Check two schemas for equal data where the tool takes a configurable number of sample data from each table.
  * <p>
- * &copy; 2012-2020 akquinet tech@spree
+ * &copy; 2012-2034 akquinet tech@spree
  * </p>
  *
  * @author M. Dahm
@@ -54,15 +51,15 @@ public class CheckEqualTableDataTool {
   public void checkTableData(final String sourceConnectorId, final String targetConnectorId) throws SQLException {
     final List<TableMetaData> tableSourceMetaDatas = TableOrderHint.getSortedTables(_connectorRepository, sourceConnectorId);
     final int numberOfCheckData = _connectorRepository.getConnectorHint(sourceConnectorId, NumberOfCheckedTableData.class)
-      .getValue().getNumberOfCheckedTableData();
+        .getValue().getNumberOfCheckedTableData();
 
     final TableMapper tableMapper = _connectorRepository.getConnectorHint(targetConnectorId, TableMapper.class).getValue();
     final DatabaseMetaData targetDatabaseMetaData = _connectorRepository.getDatabaseMetaData(targetConnectorId);
 
     final SourceDatabaseConfiguration sourceDatabaseConfiguration1 = _connectorRepository
-      .getSourceDatabaseConfiguration(sourceConnectorId);
+        .getSourceDatabaseConfiguration(sourceConnectorId);
     final SourceDatabaseConfiguration sourceDatabaseConfiguration2 = _connectorRepository
-      .getSourceDatabaseConfiguration(targetConnectorId);
+        .getSourceDatabaseConfiguration(targetConnectorId);
     final Connector connector1 = _connectorRepository.createConnector(sourceConnectorId);
     final Connector connector2 = _connectorRepository.createConnector(targetConnectorId);
     final Connection connection1 = connector1.openConnection();
@@ -79,7 +76,7 @@ public class CheckEqualTableDataTool {
       }
 
       checkTableData(sourceConnectorId, connection1, sourceDatabaseConfiguration1, tableSourceMetaData, targetConnectorId,
-        connection2, sourceDatabaseConfiguration2, tableDestMetaData, numberOfCheckData);
+          connection2, sourceDatabaseConfiguration2, tableDestMetaData, numberOfCheckData);
     }
 
     sourceDatabaseConfiguration1.finalizeSourceConnection(connection1, sourceConnectorId);
@@ -94,9 +91,9 @@ public class CheckEqualTableDataTool {
                               final String targetConnectorId, final Connection targetConnection, final SourceDatabaseConfiguration targetConfiguration,
                               final TableMetaData targetTableMetaData, final int numberOfCheckData) throws SQLException {
     final String tableName1 = _connectorRepository.getConnectorHint(sourceConnectorId, TableMapper.class).getValue()
-      .fullyQualifiedTableName(sourceTableMetaData, sourceTableMetaData.getDatabaseMetaData());
+        .fullyQualifiedTableName(sourceTableMetaData, sourceTableMetaData.getDatabaseMetaData());
     final String tableName2 = _connectorRepository.getConnectorHint(targetConnectorId, TableMapper.class).getValue()
-      .fullyQualifiedTableName(targetTableMetaData, targetTableMetaData.getDatabaseMetaData());
+        .fullyQualifiedTableName(targetTableMetaData, targetTableMetaData.getDatabaseMetaData());
     final CommonColumnTypeResolverTool commonColumnTypeResolver = new CommonColumnTypeResolverTool(_connectorRepository);
     final ColumnMapper sourceColumnNameMapper = _connectorRepository.getConnectorHint(sourceConnectorId, ColumnMapper.class).getValue();
     final ColumnMapper targetColumnNameMapper = _connectorRepository.getConnectorHint(targetConnectorId, ColumnMapper.class).getValue();
@@ -104,7 +101,7 @@ public class CheckEqualTableDataTool {
     checkRowCount(sourceTableMetaData, targetTableMetaData, tableName1, tableName2);
 
     final PreparedStatement selectStatement1 = new SelectStatementCreator(_connectorRepository, sourceConnectorId)
-      .createSelectStatement(sourceConnection, tableName1, sourceTableMetaData);
+        .createSelectStatement(sourceConnection, tableName1, sourceTableMetaData);
     selectStatement1.setFetchSize(numberOfCheckData);
 
     sourceConfiguration.beforeSelect(sourceConnection, sourceConnectorId, sourceTableMetaData);
@@ -112,7 +109,7 @@ public class CheckEqualTableDataTool {
     sourceConfiguration.afterSelect(sourceConnection, sourceConnectorId, sourceTableMetaData);
 
     final PreparedStatement selectStatement2 = new SelectStatementCreator(_connectorRepository, targetConnectorId)
-      .createMappedSelectStatement(targetConnection, sourceTableMetaData, tableName2, targetTableMetaData, sourceConnectorId);
+        .createMappedSelectStatement(targetConnection, sourceTableMetaData, tableName2, targetTableMetaData, sourceConnectorId);
     selectStatement2.setFetchSize(numberOfCheckData);
 
     targetConfiguration.beforeSelect(targetConnection, targetConnectorId, targetTableMetaData);
@@ -120,7 +117,7 @@ public class CheckEqualTableDataTool {
     targetConfiguration.afterSelect(targetConnection, targetConnectorId, targetTableMetaData);
 
     final List<ColumnMetaData> orderedSourceColumns = ColumnOrderHint.getSortedColumns(_connectorRepository, sourceConnectorId,
-      sourceTableMetaData);
+        sourceTableMetaData);
     final ColumnMapper columnMapper = _connectorRepository.getConnectorHint(targetConnectorId, ColumnMapper.class).getValue();
 
     int rowIndex = 1;
@@ -135,7 +132,7 @@ public class CheckEqualTableDataTool {
 
           for (final ColumnMetaData targetColumn : mapping.getColumns()) {
             final ColumnTypeMapping columnTypeMapping = commonColumnTypeResolver.getCommonColumnTypeMapping(
-              sourceColumn, targetConnectorId, targetColumn);
+                sourceColumn, targetConnectorId, targetColumn);
             final String columnName1 = sourceColumnNameMapper.mapColumnName(sourceColumn, targetTableMetaData);
             final String columnName2 = targetColumnNameMapper.mapColumnName(targetColumn, targetTableMetaData);
 
@@ -172,7 +169,7 @@ public class CheckEqualTableDataTool {
 
         // See http://www.postgresql.org/docs/8.3/static/datatype-character.html
         if (DatabaseType.POSTGRESQL.equals(connectionInfo1.getDatabaseType()) || DatabaseType.POSTGRESQL
-          .equals(connectionInfo2.getDatabaseType())) {
+            .equals(connectionInfo2.getDatabaseType())) {
           data1 = trim((String) data1);
           data2 = trim((String) data2);
         }
@@ -200,12 +197,12 @@ public class CheckEqualTableDataTool {
   private void checkRowCount(final TableMetaData sourceTableMetaData, final TableMetaData targetTableMetaData, final String tableName1, final String tableName2) throws UnequalNumberOfRowsException {
     if (sourceTableMetaData.getFilteredRowCount() != targetTableMetaData.getFilteredRowCount()) {
       throw new UnequalNumberOfRowsException("Number of rows is not equal: " + tableName1
-        + "="
-        + sourceTableMetaData.getFilteredRowCount()
-        + " vs. "
-        + tableName2
-        + "="
-        + targetTableMetaData.getFilteredRowCount());
+          + "="
+          + sourceTableMetaData.getFilteredRowCount()
+          + " vs. "
+          + tableName2
+          + "="
+          + targetTableMetaData.getFilteredRowCount());
     }
 
     LOG.info("Checking data of " + tableName1 + " <--> " + tableName2 + " started");
@@ -214,13 +211,13 @@ public class CheckEqualTableDataTool {
   private void checkColumnTypeMapping(final String tableName1, final ColumnMetaData sourceColumn, final ColumnMetaData columnMetaData2, final ColumnTypeMapping columnTypeMapping, final String columnName1, final String columnName2) throws IncompatibleColumnsException {
     if (columnTypeMapping == null) {
       throw new IncompatibleColumnsException(tableName1 + ": Columns have incompatible types: "
-        + columnName1
-        + "/"
-        + sourceColumn.getColumnTypeName()
-        + " vs. "
-        + columnName2
-        + "/"
-        + columnMetaData2.getColumnTypeName());
+          + columnName1
+          + "/"
+          + sourceColumn.getColumnTypeName()
+          + " vs. "
+          + columnName2
+          + "/"
+          + columnMetaData2.getColumnTypeName());
     }
   }
 
@@ -247,14 +244,14 @@ public class CheckEqualTableDataTool {
   private static SQLException createIncompatibleDataException(final String tableName, final int index,
                                                               final ColumnType columnType, final String columnName, final Object data1, final Object data2) {
     return new UnequalDataException(tableName + ": Row "
-      + index
-      + ": Data not equal on column "
-      + columnName
-      + ": \n'"
-      + data1
-      + "'\n vs. \n'"
-      + data2
-      + "'\n, column class = "
-      + columnType.getColumnClasses());
+        + index
+        + ": Data not equal on column "
+        + columnName
+        + ": \n'"
+        + data1
+        + "'\n vs. \n'"
+        + data2
+        + "'\n, column class = "
+        + columnType.getColumnClasses());
   }
 }

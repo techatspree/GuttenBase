@@ -6,16 +6,16 @@ import de.akquinet.jbosscc.guttenbase.mapping.ColumnOrderComparatorFactory;
 
 /**
  * By default order by natural order of column names.
- * 
+ *
  * <p>
- * &copy; 2012-2020 akquinet tech@spree
+ * &copy; 2012-2034 akquinet tech@spree
  * </p>
- * 
+ *
  * @author M. Dahm
  */
 public class DefaultColumnOrderHint extends ColumnOrderHint {
-	@Override
-	public ColumnOrderComparatorFactory getValue() {
-		return DefaultColumnComparator::new;
-	}
+  @Override
+  public ColumnOrderComparatorFactory getValue() {
+    return DefaultColumnComparator::new;
+  }
 }

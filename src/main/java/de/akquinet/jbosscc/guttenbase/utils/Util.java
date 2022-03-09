@@ -1,16 +1,8 @@
 package de.akquinet.jbosscc.guttenbase.utils;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.LineNumberReader;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutput;
-import java.io.ObjectOutputStream;
-import java.io.OutputStream;
+import org.apache.log4j.Logger;
+
+import java.io.*;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.sql.SQLException;
@@ -18,14 +10,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
 
-import org.apache.log4j.Logger;
-
 /**
  * Collection of utility methods.
  * <p>
- * &copy; 2012-2020 akquinet tech@spree
+ * &copy; 2012-2034 akquinet tech@spree
  * </p>
- * 
+ *
  * @author M. Dahm
  */
 public abstract class Util {
@@ -36,9 +26,8 @@ public abstract class Util {
 
   /**
    * Read all non-empty lines for File and remove and trim them.
-   * 
-   * @param resourceName
-   *          Text file in CLASSPATH
+   *
+   * @param resourceName Text file in CLASSPATH
    * @return array of strings
    */
   public static List<String> readLinesFromFile(final String resourceName, final String encoding) {
@@ -56,7 +45,7 @@ public abstract class Util {
   public static InputStream getResourceAsStream(final String resource) {
     final String stripped = resource.startsWith("/") ? resource.substring(1) : resource;
     final ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
-    URL url =  getResourceFromClassloader(resource, stripped, classLoader);
+    URL url = getResourceFromClassloader(resource, stripped, classLoader);
 
     if (url == null) {
       url = getResourceFromClassloader(resource, stripped, Util.class.getClassLoader());
@@ -112,9 +101,8 @@ public abstract class Util {
 
   /**
    * Read all non-empty lines and remove and trim them.
-   * 
-   * @param inputStream
-   *          UTF8-encoded stream to read data from
+   *
+   * @param inputStream UTF8-encoded stream to read data from
    * @return list of strings
    */
   public static List<String> readLinesFromStream(final InputStream inputStream, final String encoding) {
@@ -172,7 +160,7 @@ public abstract class Util {
 
   /**
    * Deserialize from byte array
-   * 
+   *
    * @throws Exception
    */
   @SuppressWarnings("JavaDoc")
@@ -187,7 +175,7 @@ public abstract class Util {
 
   /**
    * Deserialize from input stream
-   * 
+   *
    * @throws Exception
    */
   @SuppressWarnings("JavaDoc")

@@ -12,18 +12,17 @@ import de.akquinet.jbosscc.guttenbase.repository.RepositoryColumnFilter;
 import de.akquinet.jbosscc.guttenbase.repository.RepositoryTableFilter;
 import org.junit.Before;
 import org.junit.Test;
+
 import java.io.File;
 import java.util.List;
 import java.util.Map;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 /**
  * Copy limited set of data from dump source, i.e. just one table (FOO_USER) and only three columns: ID, USERNAME, PASSWORD
  * <p>
- * &copy; 2012-2020 akquinet tech@spree
+ * &copy; 2012-2034 akquinet tech@spree
  * </p>
  *
  * @author M. Dahm
@@ -47,7 +46,7 @@ public class ReadFilteredDataFromImportDumpTest extends AbstractGuttenBaseTest {
 
     new ScriptExecutorTool(_connectorRepository).executeFileScript(CONNECTOR_ID1, "/ddl/tables.sql");
     new ScriptExecutorTool(_connectorRepository).executeScript(CONNECTOR_ID2,
-      "CREATE TABLE FOO_USER(ID bigint PRIMARY KEY, USERNAME varchar(100), NAME varchar(100), PASSWORD varchar(255));");
+        "CREATE TABLE FOO_USER(ID bigint PRIMARY KEY, USERNAME varchar(100), NAME varchar(100), PASSWORD varchar(255));");
 
     new ScriptExecutorTool(_connectorRepository).executeFileScript(CONNECTOR_ID1, false, false, "/data/test-data.sql");
     new DefaultTableCopyTool(_connectorRepository).copyTables(CONNECTOR_ID1, EXPORT);
@@ -68,7 +67,7 @@ public class ReadFilteredDataFromImportDumpTest extends AbstractGuttenBaseTest {
         return column -> {
           final String columnName = column.getColumnName();
           return columnName.equalsIgnoreCase("ID") || columnName.equalsIgnoreCase("USERNAME")
-            || columnName.equalsIgnoreCase("PASSWORD");
+              || columnName.equalsIgnoreCase("PASSWORD");
         };
       }
     };

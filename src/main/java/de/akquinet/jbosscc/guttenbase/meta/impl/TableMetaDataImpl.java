@@ -1,11 +1,7 @@
 package de.akquinet.jbosscc.guttenbase.meta.impl;
 
-import de.akquinet.jbosscc.guttenbase.meta.ColumnMetaData;
-import de.akquinet.jbosscc.guttenbase.meta.DatabaseMetaData;
-import de.akquinet.jbosscc.guttenbase.meta.ForeignKeyMetaData;
-import de.akquinet.jbosscc.guttenbase.meta.IndexMetaData;
-import de.akquinet.jbosscc.guttenbase.meta.InternalTableMetaData;
-import de.akquinet.jbosscc.guttenbase.meta.TableMetaData;
+import de.akquinet.jbosscc.guttenbase.meta.*;
+
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -15,13 +11,12 @@ import java.util.stream.Collectors;
 /**
  * Information about a table.
  * <p>
- * &copy; 2012-2020 akquinet tech@spree
+ * &copy; 2012-2034 akquinet tech@spree
  * </p>
  *
  * @author M. Dahm
  */
-public class TableMetaDataImpl implements InternalTableMetaData
-{
+public class TableMetaDataImpl implements InternalTableMetaData {
   private static final long serialVersionUID = 1L;
 
   private final String _tableName;
@@ -34,8 +29,7 @@ public class TableMetaDataImpl implements InternalTableMetaData
   private final Map<String, ForeignKeyMetaData> _exportedForeignKeys = new LinkedHashMap<>();
   private final DatabaseMetaData _databaseMetaData;
 
-  public TableMetaDataImpl(final String tableName, final DatabaseMetaData databaseMetaData, final String tableType)
-  {
+  public TableMetaDataImpl(final String tableName, final DatabaseMetaData databaseMetaData, final String tableType) {
     assert tableName != null : "tableName != null";
     assert databaseMetaData != null : "databaseMetaData != null";
     assert tableType != null : "tableType != null";
@@ -65,8 +59,7 @@ public class TableMetaDataImpl implements InternalTableMetaData
    * {@inheritDoc}
    */
   @Override
-  public int getTotalRowCount()
-  {
+  public int getTotalRowCount() {
     return _totalRowCount;
   }
 
@@ -74,8 +67,7 @@ public class TableMetaDataImpl implements InternalTableMetaData
    * {@inheritDoc}
    */
   @Override
-  public void setTotalRowCount(final int rowCount)
-  {
+  public void setTotalRowCount(final int rowCount) {
     _totalRowCount = rowCount;
   }
 
@@ -83,8 +75,7 @@ public class TableMetaDataImpl implements InternalTableMetaData
    * {@inheritDoc}
    */
   @Override
-  public List<ColumnMetaData> getColumnMetaData()
-  {
+  public List<ColumnMetaData> getColumnMetaData() {
     return new ArrayList<>(_columns.values());
   }
 
@@ -92,8 +83,7 @@ public class TableMetaDataImpl implements InternalTableMetaData
    * {@inheritDoc}
    */
   @Override
-  public ColumnMetaData getColumnMetaData(final String columnName)
-  {
+  public ColumnMetaData getColumnMetaData(final String columnName) {
     return _columns.get(columnName.toUpperCase());
   }
 
@@ -101,8 +91,7 @@ public class TableMetaDataImpl implements InternalTableMetaData
    * {@inheritDoc}
    */
   @Override
-  public void addColumn(final ColumnMetaData columnMetaData)
-  {
+  public void addColumn(final ColumnMetaData columnMetaData) {
     assert columnMetaData != null : "columnMetaData != null";
     _columns.put(columnMetaData.getColumnName().toUpperCase(), columnMetaData);
   }
@@ -111,8 +100,7 @@ public class TableMetaDataImpl implements InternalTableMetaData
    * {@inheritDoc}
    */
   @Override
-  public void removeColumn(final ColumnMetaData columnMetaData)
-  {
+  public void removeColumn(final ColumnMetaData columnMetaData) {
     assert columnMetaData != null : "columnMetaData != null";
     _columns.remove(columnMetaData.getColumnName().toUpperCase());
   }
@@ -121,51 +109,53 @@ public class TableMetaDataImpl implements InternalTableMetaData
    * {@inheritDoc}
    */
   @Override
-  public int getColumnCount()
-  {
+  public int getColumnCount() {
     return getColumnMetaData().size();
   }
 
   @Override
-  public IndexMetaData getIndexMetaData(final String indexName)
-  {
+  public IndexMetaData getIndexMetaData(final String indexName) {
     return _indexes.get(indexName.toUpperCase());
 
   }
 
   @Override
-  public List<IndexMetaData> getIndexes()
-  {
+  public List<IndexMetaData> getIndexes() {
     return new ArrayList<>(_indexes.values());
   }
 
   @Override
-  public void addIndex(final IndexMetaData indexMetaData)
-  {
+  public void addIndex(final IndexMetaData indexMetaData) {
     _indexes.put(indexMetaData.getIndexName().toUpperCase(), indexMetaData);
   }
 
   @Override
-  public List<ForeignKeyMetaData> getExportedForeignKeys()
-  {
+  public List<ForeignKeyMetaData> getExportedForeignKeys() {
     return new ArrayList<>(_exportedForeignKeys.values());
   }
 
   @Override
-  public void addExportedForeignKey(final ForeignKeyMetaData fkMetaData)
-  {
+  public void addExportedForeignKey(final ForeignKeyMetaData fkMetaData) {
     _exportedForeignKeys.put(fkMetaData.getForeignKeyName().toUpperCase(), fkMetaData);
   }
 
   @Override
-  public List<ForeignKeyMetaData> getImportedForeignKeys()
-  {
+  public ForeignKeyMetaData getExportedForeignKey(final String foreignKeyname) {
+    return _exportedForeignKeys.get(foreignKeyname.toUpperCase());
+  }
+
+  @Override
+  public ForeignKeyMetaData getImportedForeignKey(final String foreignKeyname) {
+    return _importedForeignKeys.get(foreignKeyname.toUpperCase());
+  }
+
+  @Override
+  public List<ForeignKeyMetaData> getImportedForeignKeys() {
     return new ArrayList<>(_importedForeignKeys.values());
   }
 
   @Override
-  public void addImportedForeignKey(final ForeignKeyMetaData fkMetaData)
-  {
+  public void addImportedForeignKey(final ForeignKeyMetaData fkMetaData) {
     _importedForeignKeys.put(fkMetaData.getForeignKeyName().toUpperCase(), fkMetaData);
   }
 
@@ -173,21 +163,18 @@ public class TableMetaDataImpl implements InternalTableMetaData
    * {@inheritDoc}
    */
   @Override
-  public List<ColumnMetaData> getPrimaryKeyColumns()
-  {
+  public List<ColumnMetaData> getPrimaryKeyColumns() {
 
     return getColumnMetaData().stream().filter(ColumnMetaData::isPrimaryKey).collect(Collectors.toList());
   }
 
   @Override
-  public List<IndexMetaData> getIndexesContainingColumn(final ColumnMetaData columnMetaData)
-  {
+  public List<IndexMetaData> getIndexesContainingColumn(final ColumnMetaData columnMetaData) {
     final List<IndexMetaData> result = new ArrayList<>();
 
-    for (final IndexMetaData index : getIndexes())
-    {
+    for (final IndexMetaData index : getIndexes()) {
       result.addAll(index.getColumnMetaData().stream().filter(column -> column.equals(columnMetaData))
-        .map(column -> index).collect(Collectors.toList()));
+          .map(column -> index).collect(Collectors.toList()));
     }
 
     return result;
@@ -197,8 +184,7 @@ public class TableMetaDataImpl implements InternalTableMetaData
    * {@inheritDoc}
    */
   @Override
-  public String getTableName()
-  {
+  public String getTableName() {
     return _tableName;
   }
 
@@ -214,32 +200,27 @@ public class TableMetaDataImpl implements InternalTableMetaData
    * {@inheritDoc}
    */
   @Override
-  public DatabaseMetaData getDatabaseMetaData()
-  {
+  public DatabaseMetaData getDatabaseMetaData() {
     return _databaseMetaData;
   }
 
   @Override
-  public int compareTo(final TableMetaData that)
-  {
+  public int compareTo(final TableMetaData that) {
     return this.getTableName().toUpperCase().compareTo(that.getTableName().toUpperCase());
   }
 
   @Override
-  public String toString()
-  {
+  public String toString() {
     return getTableName();
   }
 
   @Override
-  public int hashCode()
-  {
+  public int hashCode() {
     return getTableName().toUpperCase().hashCode();
   }
 
   @Override
-  public boolean equals(final Object obj)
-  {
+  public boolean equals(final Object obj) {
     final TableMetaData that = (TableMetaData) obj;
 
     return this.getTableName().equalsIgnoreCase(that.getTableName());

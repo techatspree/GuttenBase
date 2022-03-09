@@ -1,18 +1,9 @@
 package de.akquinet.jbosscc.guttenbase.repository.impl;
 
 import de.akquinet.jbosscc.guttenbase.connector.ConnectorInfo;
-import de.akquinet.jbosscc.guttenbase.meta.ColumnMetaData;
 import de.akquinet.jbosscc.guttenbase.meta.DatabaseMetaData;
-import de.akquinet.jbosscc.guttenbase.meta.InternalColumnMetaData;
-import de.akquinet.jbosscc.guttenbase.meta.InternalDatabaseMetaData;
-import de.akquinet.jbosscc.guttenbase.meta.InternalIndexMetaData;
-import de.akquinet.jbosscc.guttenbase.meta.InternalTableMetaData;
-import de.akquinet.jbosscc.guttenbase.meta.TableMetaData;
-import de.akquinet.jbosscc.guttenbase.meta.impl.ColumnMetaDataImpl;
-import de.akquinet.jbosscc.guttenbase.meta.impl.DatabaseMetaDataImpl;
-import de.akquinet.jbosscc.guttenbase.meta.impl.ForeignKeyMetaDataImpl;
-import de.akquinet.jbosscc.guttenbase.meta.impl.IndexMetaDataImpl;
-import de.akquinet.jbosscc.guttenbase.meta.impl.TableMetaDataImpl;
+import de.akquinet.jbosscc.guttenbase.meta.*;
+import de.akquinet.jbosscc.guttenbase.meta.impl.*;
 import de.akquinet.jbosscc.guttenbase.repository.ConnectorRepository;
 import de.akquinet.jbosscc.guttenbase.repository.DatabaseColumnFilter;
 import de.akquinet.jbosscc.guttenbase.repository.DatabaseTableFilter;
@@ -20,12 +11,9 @@ import de.akquinet.jbosscc.guttenbase.repository.TableRowCountFilter;
 import de.akquinet.jbosscc.guttenbase.tools.SelectWhereClause;
 import de.akquinet.jbosscc.guttenbase.utils.Util;
 import org.apache.log4j.Logger;
+
 import java.lang.reflect.Method;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.Arrays;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -64,9 +52,9 @@ public class DatabaseMetaDataInspectorTool {
     final String schemaPrefix = "".equals(Util.trim(schema)) ? "" : schema + ".";
     final java.sql.DatabaseMetaData metaData = connection.getMetaData();
     final Map<String, Object> properties = Arrays.stream(java.sql.DatabaseMetaData.class.getDeclaredMethods())
-      .filter(method -> method.getParameterCount() == 0 && isPrimitive(method.getReturnType()))
-      .map(method -> getValue(method, metaData)).filter(entry -> entry != null)
-      .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+        .filter(method -> method.getParameterCount() == 0 && isPrimitive(method.getReturnType()))
+        .map(method -> getValue(method, metaData)).filter(entry -> entry != null)
+        .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
     final DatabaseMetaDataImpl result = new DatabaseMetaDataImpl(schema, properties, connectionInfo.getDatabaseType());
 
     loadTables(result, metaData);
@@ -77,7 +65,6 @@ public class DatabaseMetaDataInspectorTool {
 
     return result;
   }
-
 
   private static Map.Entry<String, Object> getValue(final Method method, final java.sql.DatabaseMetaData data) {
     final String name = method.getName();
@@ -114,7 +101,6 @@ public class DatabaseMetaDataInspectorTool {
     return clazz != Void.class && (clazz.isPrimitive() || clazz == String.class);
   }
 
-
   private void updateTableMetaData(final Connection connection, final java.sql.DatabaseMetaData metaData,
                                    final DatabaseMetaData databaseMetaData, final String schemaPrefix) throws SQLException {
 
@@ -141,11 +127,14 @@ public class DatabaseMetaDataInspectorTool {
     }
   }
 
-  private void updateColumnsWithForeignKeyInformation(final java.sql.DatabaseMetaData metaData, final DatabaseMetaData databaseMetaData,
+  private void updateColumnsWithForeignKeyInformation(final java.sql.DatabaseMetaData metaData,
+                                                      final DatabaseMetaData databaseMetaData,
                                                       final TableMetaData table) throws SQLException {
     LOG.debug("Retrieving foreign key information for " + table.getTableName());
-    final DatabaseTableFilter tableFilter = _connectorRepository.getConnectorHint(_connectorId, DatabaseTableFilter.class).getValue();
-    final ResultSet resultSet = metaData.getExportedKeys(tableFilter.getCatalog(databaseMetaData), tableFilter.getSchemaPattern(databaseMetaData), table.getTableName());
+    final DatabaseTableFilter tableFilter = _connectorRepository.getConnectorHint(_connectorId, DatabaseTableFilter.class)
+        .getValue();
+    final ResultSet resultSet = metaData.getExportedKeys(tableFilter.getCatalog(databaseMetaData),
+        tableFilter.getSchemaPattern(databaseMetaData), table.getTableName());
 
     while (resultSet.next()) {
       final String pkTableName = resultSet.getString("PKTABLE_NAME");
@@ -163,9 +152,22 @@ public class DatabaseMetaDataInspectorTool {
       } else {
         final ColumnMetaData pkColumn = pkTableMetaData.getColumnMetaData(pkColumnName);
         final ColumnMetaData fkColumn = fkTableMetaData.getColumnMetaData(fkColumnName);
+        final InternalForeignKeyMetaData exportedForeignKey = (InternalForeignKeyMetaData) pkTableMetaData
+            .getExportedForeignKey(fkName);
+        final InternalForeignKeyMetaData importedForeignKey = (InternalForeignKeyMetaData) fkTableMetaData
+            .getImportedForeignKey(fkName);
 
-        pkTableMetaData.addExportedForeignKey(new ForeignKeyMetaDataImpl(pkTableMetaData, fkName, fkColumn, pkColumn));
-        fkTableMetaData.addImportedForeignKey(new ForeignKeyMetaDataImpl(fkTableMetaData, fkName, fkColumn, pkColumn));
+        if (exportedForeignKey == null) {
+          pkTableMetaData.addExportedForeignKey(new ForeignKeyMetaDataImpl(pkTableMetaData, fkName, fkColumn, pkColumn));
+        } else {
+          exportedForeignKey.addColumnTuple(fkColumn, pkColumn);
+        }
+
+        if (importedForeignKey == null) {
+          fkTableMetaData.addImportedForeignKey(new ForeignKeyMetaDataImpl(fkTableMetaData, fkName, fkColumn, pkColumn));
+        } else {
+          importedForeignKey.addColumnTuple(fkColumn, pkColumn);
+        }
       }
     }
 
@@ -176,9 +178,11 @@ public class DatabaseMetaDataInspectorTool {
                                                final InternalTableMetaData table) throws SQLException {
     LOG.debug("Retrieving index information for " + table.getTableName());
 
-    final DatabaseTableFilter tableFilter = _connectorRepository.getConnectorHint(_connectorId, DatabaseTableFilter.class).getValue();
-    final ResultSet resultSet = metaData.getIndexInfo(tableFilter.getCatalog(databaseMetaData), tableFilter.getSchema(databaseMetaData), table.getTableName(), false,
-      true);
+    final DatabaseTableFilter tableFilter = _connectorRepository.getConnectorHint(_connectorId, DatabaseTableFilter.class)
+        .getValue();
+    final ResultSet resultSet = metaData.getIndexInfo(tableFilter.getCatalog(databaseMetaData),
+        tableFilter.getSchema(databaseMetaData), table.getTableName(), false,
+        true);
 
     while (resultSet.next()) {
       final boolean nonUnique = resultSet.getBoolean("NON_UNIQUE");
@@ -209,12 +213,15 @@ public class DatabaseMetaDataInspectorTool {
     resultSet.close();
   }
 
-  private void updateColumnsWithPrimaryKeyInformation(final java.sql.DatabaseMetaData metaData, final DatabaseMetaData databaseMetaData,
+  private void updateColumnsWithPrimaryKeyInformation(final java.sql.DatabaseMetaData metaData,
+                                                      final DatabaseMetaData databaseMetaData,
                                                       final TableMetaData table) throws SQLException {
     LOG.debug("Retrieving primary key information for " + table.getTableName());
 
-    final DatabaseTableFilter tableFilter = _connectorRepository.getConnectorHint(_connectorId, DatabaseTableFilter.class).getValue();
-    final ResultSet resultSet = metaData.getPrimaryKeys(tableFilter.getCatalog(databaseMetaData), tableFilter.getSchema(databaseMetaData), table.getTableName());
+    final DatabaseTableFilter tableFilter = _connectorRepository.getConnectorHint(_connectorId, DatabaseTableFilter.class)
+        .getValue();
+    final ResultSet resultSet = metaData.getPrimaryKeys(tableFilter.getCatalog(databaseMetaData),
+        tableFilter.getSchema(databaseMetaData), table.getTableName());
 
     while (resultSet.next()) {
       final String pkName = resultSet.getString("PK_NAME");
@@ -237,7 +244,8 @@ public class DatabaseMetaDataInspectorTool {
   private void updateTableMetaDataWithColumnInformation(final Statement statement, final InternalTableMetaData tableMetaData,
                                                         final String schemaPrefix) throws SQLException {
     final String tableName = escapeTableName(tableMetaData, schemaPrefix);
-    final DatabaseColumnFilter columnFilter = _connectorRepository.getConnectorHint(_connectorId, DatabaseColumnFilter.class).getValue();
+    final DatabaseColumnFilter columnFilter = _connectorRepository.getConnectorHint(_connectorId, DatabaseColumnFilter.class)
+        .getValue();
     LOG.debug("Retrieving column information for " + tableName);
 
     final String selectSQL = SELECT_NOTHING_STATEMENT.replace(TABLE_PLACEHOLDER, tableName);
@@ -255,8 +263,9 @@ public class DatabaseMetaDataInspectorTool {
       final int precision = meta.getPrecision(i);
       final int scale = meta.getScale(i);
 
-      final ColumnMetaDataImpl column = new ColumnMetaDataImpl(columnType, columnName, columnTypeName, columnClassName, isNullable,
-        isAutoIncrement, precision, scale, tableMetaData);
+      final ColumnMetaDataImpl column = new ColumnMetaDataImpl(columnType, columnName, columnTypeName, columnClassName,
+          isNullable,
+          isAutoIncrement, precision, scale, tableMetaData);
 
       if (columnFilter.accept(column)) {
         tableMetaData.addColumn(column);
@@ -268,11 +277,12 @@ public class DatabaseMetaDataInspectorTool {
 
   private String createWhereClause(final TableMetaData tableMetaData) throws SQLException {
     return _connectorRepository.getConnectorHint(_connectorId, SelectWhereClause.class)
-      .getValue().getWhereClause(tableMetaData);
+        .getValue().getWhereClause(tableMetaData);
   }
 
-  private void updateTableWithRowCount(final Statement statement, final InternalTableMetaData tableMetaData, final String schemaPrefix)
-    throws SQLException {
+  private void updateTableWithRowCount(final Statement statement, final InternalTableMetaData tableMetaData,
+                                       final String schemaPrefix)
+      throws SQLException {
 
     final TableRowCountFilter filter = _connectorRepository.getConnectorHint(_connectorId, TableRowCountFilter.class).getValue();
 
@@ -303,12 +313,15 @@ public class DatabaseMetaDataInspectorTool {
     return totalCount;
   }
 
-  private void loadTables(final InternalDatabaseMetaData databaseMetaData, final java.sql.DatabaseMetaData metaData) throws SQLException {
+  private void loadTables(final InternalDatabaseMetaData databaseMetaData, final java.sql.DatabaseMetaData metaData)
+      throws SQLException {
     LOG.debug("Searching tables in schema " + databaseMetaData.getSchema());
 
-    final DatabaseTableFilter tableFilter = _connectorRepository.getConnectorHint(_connectorId, DatabaseTableFilter.class).getValue();
-    final ResultSet rs = metaData.getTables(tableFilter.getCatalog(databaseMetaData), tableFilter.getSchemaPattern(databaseMetaData),
-      tableFilter.getTableNamePattern(databaseMetaData), tableFilter.getTableTypes(databaseMetaData));
+    final DatabaseTableFilter tableFilter = _connectorRepository.getConnectorHint(_connectorId, DatabaseTableFilter.class)
+        .getValue();
+    final ResultSet rs = metaData.getTables(tableFilter.getCatalog(databaseMetaData),
+        tableFilter.getSchemaPattern(databaseMetaData),
+        tableFilter.getTableNamePattern(databaseMetaData), tableFilter.getTableTypes(databaseMetaData));
 
     while (rs.next()) {
       final String tableCatalog = rs.getString("TABLE_CAT");

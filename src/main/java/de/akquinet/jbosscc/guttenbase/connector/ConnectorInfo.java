@@ -1,17 +1,17 @@
 package de.akquinet.jbosscc.guttenbase.connector;
 
+import de.akquinet.jbosscc.guttenbase.repository.ConnectorRepository;
+
 import java.io.Serializable;
 import java.sql.Connection;
 
-import de.akquinet.jbosscc.guttenbase.repository.ConnectorRepository;
-
 /**
  * Information about connectors, in particular, parameters needed to establish a {@link Connection} to the data base.
- * 
+ *
  * <p>
- * &copy; 2012-2020 akquinet tech@spree
+ * &copy; 2012-2034 akquinet tech@spree
  * </p>
- * 
+ *
  * @author M. Dahm
  */
 public interface ConnectorInfo extends Serializable {

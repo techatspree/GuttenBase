@@ -1,18 +1,18 @@
 package de.akquinet.jbosscc.guttenbase.configuration;
 
+import de.akquinet.jbosscc.guttenbase.meta.TableMetaData;
+
 import java.sql.Connection;
 import java.sql.SQLException;
-
-import de.akquinet.jbosscc.guttenbase.meta.TableMetaData;
 
 /**
  * Configuration methods for target data base. Implementations may execute specific initialization code before and after operations are
  * executed.
- * 
+ *
  * <p>
- * &copy; 2012-2020 akquinet tech@spree
+ * &copy; 2012-2034 akquinet tech@spree
  * </p>
- * 
+ *
  * @author M. Dahm
  */
 public interface TargetDatabaseConfiguration extends DatabaseConfiguration {
@@ -24,14 +24,14 @@ public interface TargetDatabaseConfiguration extends DatabaseConfiguration {
 
   /**
    * Called before any action is performed which may alter the state of the target data base.
-   * 
+   * <p>
    * Implementing classes usually disable foreign key and other constraints temporarily.
    */
   void initializeTargetConnection(Connection connection, String connectorId) throws SQLException;
 
   /**
    * Called after actions have been performed.
-   * 
+   * <p>
    * Implementing classes usually re-enable foreign key and other constraints.
    */
   void finalizeTargetConnection(Connection connection, String connectorId) throws SQLException;

@@ -1,23 +1,11 @@
 package de.akquinet.jbosscc.guttenbase.utils;
 
-import java.awt.BorderLayout;
-import java.awt.Font;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.Insets;
-
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JProgressBar;
-import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
-import javax.swing.JTextField;
-import javax.swing.SwingConstants;
+import javax.swing.*;
 import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
+import java.awt.*;
 
-public class TableCopyProgressIndicatorPanel extends JPanel
-{
+public class TableCopyProgressIndicatorPanel extends JPanel {
   private static final long serialVersionUID = 1L;
   private final JTextField _sourceTable;
   private final JTextField _targetTable;
@@ -30,13 +18,12 @@ public class TableCopyProgressIndicatorPanel extends JPanel
   /**
    * Create the panel.
    */
-  public TableCopyProgressIndicatorPanel()
-  {
+  public TableCopyProgressIndicatorPanel() {
     final GridBagLayout gridBagLayout = new GridBagLayout();
-    gridBagLayout.columnWidths = new int[] { 0, 0, 0, 0, 0, 0, 0 };
-    gridBagLayout.rowHeights = new int[] { 0, 0, 0, 0, 0, 0, 0, 0 };
-    gridBagLayout.columnWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 0, 0.0, Double.MIN_VALUE };
-    gridBagLayout.rowWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, Double.MIN_VALUE };
+    gridBagLayout.columnWidths = new int[]{0, 0, 0, 0, 0, 0, 0};
+    gridBagLayout.rowHeights = new int[]{0, 0, 0, 0, 0, 0, 0, 0};
+    gridBagLayout.columnWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0, 0.0, Double.MIN_VALUE};
+    gridBagLayout.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, Double.MIN_VALUE};
     setLayout(gridBagLayout);
 
     final JLabel lblNewLabel = new JLabel("Source table");
@@ -185,38 +172,31 @@ public class TableCopyProgressIndicatorPanel extends JPanel
     scrollPane.setViewportView(_messages);
   }
 
-  public final JTextField getSourceTable()
-  {
+  public final JTextField getSourceTable() {
     return _sourceTable;
   }
 
-  public final JTextField getTargetTable()
-  {
+  public final JTextField getTargetTable() {
     return _targetTable;
   }
 
-  public final JTextField getTotalTime()
-  {
+  public final JTextField getTotalTime() {
     return _totalTime;
   }
 
-  public final JTextField getTableTime()
-  {
+  public final JTextField getTableTime() {
     return _tableTime;
   }
 
-  public final JProgressBar getTotalProgress()
-  {
+  public final JProgressBar getTotalProgress() {
     return _totalProgress;
   }
 
-  public final JProgressBar getTableProgress()
-  {
+  public final JProgressBar getTableProgress() {
     return _tableProgress;
   }
 
-  public final JTextArea getMessages()
-  {
+  public final JTextArea getMessages() {
     return _messages;
   }
 }

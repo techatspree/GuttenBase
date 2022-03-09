@@ -4,13 +4,14 @@ import de.akquinet.jbosscc.guttenbase.meta.TableMetaData;
 import de.akquinet.jbosscc.guttenbase.repository.TableRowCountFilter;
 import org.junit.Assert;
 import org.junit.Before;
+
 import java.sql.SQLException;
 
 /**
  * Test omitting row count statement
  * <p/>
  * <p>
- * &copy; 2012-2020 akquinet tech@spree
+ * &copy; 2012-2034 akquinet tech@spree
  * </p>
  *
  * @author M. Dahm

@@ -1,25 +1,24 @@
 package de.akquinet.jbosscc.guttenbase.defaults.impl;
 
+import de.akquinet.jbosscc.guttenbase.export.zip.ZipExporter;
+import de.akquinet.jbosscc.guttenbase.export.zip.ZipExporterClassResources;
+import de.akquinet.jbosscc.guttenbase.export.zip.ZipStartup;
+import org.apache.commons.io.IOUtils;
+import org.apache.log4j.Logger;
+
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.io.IOUtils;
-import org.apache.log4j.Logger;
-
-import de.akquinet.jbosscc.guttenbase.export.zip.ZipExporter;
-import de.akquinet.jbosscc.guttenbase.export.zip.ZipExporterClassResources;
-import de.akquinet.jbosscc.guttenbase.export.zip.ZipStartup;
-
 /**
  * Default implementation.
- * 
+ *
  * <p>
- * &copy; 2012-2020 akquinet tech@spree
+ * &copy; 2012-2034 akquinet tech@spree
  * </p>
- * 
+ *
  * @author M. Dahm
  */
 public class DefaultZipExporterClassResources implements ZipExporterClassResources {

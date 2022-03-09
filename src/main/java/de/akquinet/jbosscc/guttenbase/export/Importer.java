@@ -6,22 +6,22 @@ import de.akquinet.jbosscc.guttenbase.repository.ConnectorRepository;
 
 /**
  * Import schema information and table data from some custom format.
- * 
+ *
  * <p>
- * &copy; 2012-2020 akquinet tech@spree
+ * &copy; 2012-2034 akquinet tech@spree
  * </p>
- * 
+ *
  * @author M. Dahm
  */
 public interface Importer {
-	void initializeImport(final ConnectorRepository connectorRepository, final String connectorId,
-			final ImportDumpConnectionInfo importDumpConnectionInfo) throws Exception;
+  void initializeImport(final ConnectorRepository connectorRepository, final String connectorId,
+                        final ImportDumpConnectionInfo importDumpConnectionInfo) throws Exception;
 
-	void finishImport() throws Exception;
+  void finishImport() throws Exception;
 
-	DatabaseMetaData readDatabaseMetaData() throws Exception;
+  DatabaseMetaData readDatabaseMetaData() throws Exception;
 
-	Object readObject() throws Exception;
+  Object readObject() throws Exception;
 
-	void seekTableHeader(TableMetaData tableMetaData) throws Exception;
+  void seekTableHeader(TableMetaData tableMetaData) throws Exception;
 }

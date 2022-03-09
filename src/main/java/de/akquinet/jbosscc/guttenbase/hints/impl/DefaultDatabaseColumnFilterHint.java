@@ -7,16 +7,14 @@ import de.akquinet.jbosscc.guttenbase.repository.DatabaseColumnFilter;
 /**
  * Default implementation will accept any column.
  * <p>
- * &copy; 2012-2020 akquinet tech@spree
+ * &copy; 2012-2034 akquinet tech@spree
  * </p>
- * 
+ *
  * @author M. Dahm
  */
-public class DefaultDatabaseColumnFilterHint extends DatabaseColumnFilterHint
-{
+public class DefaultDatabaseColumnFilterHint extends DatabaseColumnFilterHint {
   @Override
-  public DatabaseColumnFilter getValue()
-  {
+  public DatabaseColumnFilter getValue() {
     return new DefaultDatabaseColumnFilter();
   }
 }

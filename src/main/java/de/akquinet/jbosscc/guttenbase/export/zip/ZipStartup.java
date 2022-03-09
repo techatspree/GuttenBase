@@ -4,6 +4,7 @@ import de.akquinet.jbosscc.guttenbase.meta.ColumnMetaData;
 import de.akquinet.jbosscc.guttenbase.meta.DatabaseMetaData;
 import de.akquinet.jbosscc.guttenbase.meta.IndexMetaData;
 import de.akquinet.jbosscc.guttenbase.meta.TableMetaData;
+
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
@@ -20,7 +21,7 @@ import java.util.Properties;
  * Default tool to start when "executing" the JAR file. It simply displays the file structure.
  * <p></p>
  * <p>
- * &copy; 2012-2020 akquinet tech@spree
+ * &copy; 2012-2034 akquinet tech@spree
  * </p>
  *
  * @author M. Dahm
@@ -62,7 +63,7 @@ public class ZipStartup extends JPanel {
     final DefaultMutableTreeNode rootNode = new DefaultMutableTreeNode(ZipConstants.GUTTEN_BASE_NAME);
 
     final Properties databaseMetaDataProperties = new ZipDatabaseMetaDataWriter().writeDatabaseMetaDataEntry(databaseMetaData)
-      .getProperties();
+        .getProperties();
     addMetaDataProperties(databaseMetaDataProperties, rootNode, ZipDatabaseMetaDataWriter.TABLE_NAME);
     return rootNode;
   }
@@ -107,8 +108,7 @@ public class ZipStartup extends JPanel {
 
   private void addMetaDataProperties(final Properties metaDataProperties, final DefaultMutableTreeNode rootNode,
                                      final String excludedProperty) throws IOException {
-    for (@SuppressWarnings("rawtypes")
-         final Enumeration keysEnum = metaDataProperties.keys(); keysEnum.hasMoreElements(); ) {
+    for (@SuppressWarnings("rawtypes") final Enumeration keysEnum = metaDataProperties.keys(); keysEnum.hasMoreElements(); ) {
       final String key = keysEnum.nextElement().toString();
       final String value = metaDataProperties.getProperty(key);
 
