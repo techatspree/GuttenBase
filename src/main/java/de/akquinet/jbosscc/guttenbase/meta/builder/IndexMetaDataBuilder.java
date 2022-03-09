@@ -1,18 +1,18 @@
 package de.akquinet.jbosscc.guttenbase.meta.builder;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import de.akquinet.jbosscc.guttenbase.meta.InternalIndexMetaData;
 import de.akquinet.jbosscc.guttenbase.meta.TableMetaData;
 import de.akquinet.jbosscc.guttenbase.meta.impl.IndexMetaDataImpl;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Builder class for IndexMetaData.
  * <p>
- * &copy; 2012-2020 akquinet tech@spree
+ * &copy; 2012-2034 akquinet tech@spree
  * </p>
- * 
+ *
  * @author M. Dahm
  */
 public class IndexMetaDataBuilder

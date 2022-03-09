@@ -1,19 +1,19 @@
 package de.akquinet.jbosscc.guttenbase.export;
 
-import java.sql.Connection;
-import java.sql.SQLException;
-
 import de.akquinet.jbosscc.guttenbase.configuration.impl.DefaultTargetDatabaseConfiguration;
 import de.akquinet.jbosscc.guttenbase.meta.TableMetaData;
 import de.akquinet.jbosscc.guttenbase.repository.ConnectorRepository;
 
+import java.sql.Connection;
+import java.sql.SQLException;
+
 /**
  * Export dump configuration forwards important events to {@link ExportDumpConnection}.
- * 
+ *
  * <p>
- * &copy; 2012-2020 akquinet tech@spree
+ * &copy; 2012-2034 akquinet tech@spree
  * </p>
- * 
+ *
  * @author M. Dahm
  */
 public class ExportDumpDatabaseConfiguration extends DefaultTargetDatabaseConfiguration {

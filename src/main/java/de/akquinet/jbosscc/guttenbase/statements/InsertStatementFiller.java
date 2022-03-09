@@ -13,6 +13,7 @@ import de.akquinet.jbosscc.guttenbase.meta.TableMetaData;
 import de.akquinet.jbosscc.guttenbase.repository.ConnectorRepository;
 import de.akquinet.jbosscc.guttenbase.tools.CommonColumnTypeResolverTool;
 import org.apache.log4j.Logger;
+
 import java.io.Closeable;
 import java.io.IOException;
 import java.sql.Connection;
@@ -25,7 +26,7 @@ import java.util.List;
 /**
  * Fill previously created INSERT statement with data from source connector.
  * <p>
- * &copy; 2012-2020 akquinet tech@spree
+ * &copy; 2012-2034 akquinet tech@spree
  * </p>
  *
  * @author M. Dahm

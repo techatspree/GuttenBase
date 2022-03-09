@@ -3,6 +3,7 @@ package de.akquinet.jbosscc.guttenbase.hints;
 import de.akquinet.jbosscc.guttenbase.connector.impl.AbstractConnector;
 import de.akquinet.jbosscc.guttenbase.repository.DatabaseTableFilter;
 import de.akquinet.jbosscc.guttenbase.repository.impl.DatabaseMetaDataInspectorTool;
+
 import java.sql.DatabaseMetaData;
 
 /**
@@ -10,11 +11,12 @@ import java.sql.DatabaseMetaData;
  * {@link DatabaseMetaDataInspectorTool} is triggered by default in {@link AbstractConnector#retrieveDatabaseMetaData()}.
  *
  * <p>
- * &copy; 2012-2020 akquinet tech@spree
+ * &copy; 2012-2034 akquinet tech@spree
  * </p>
- *
- *
+ * <p>
+ * <p>
  * Hint is used by {@link DatabaseMetaDataInspectorTool} when reading tables from {@link DatabaseMetaData}
+ *
  * @author M. Dahm
  */
 public abstract class DatabaseTableFilterHint implements ConnectorHint<DatabaseTableFilter> {

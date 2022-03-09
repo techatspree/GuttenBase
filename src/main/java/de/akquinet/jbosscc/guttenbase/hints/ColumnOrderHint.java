@@ -7,6 +7,7 @@ import de.akquinet.jbosscc.guttenbase.repository.ConnectorRepository;
 import de.akquinet.jbosscc.guttenbase.statements.AbstractStatementCreator;
 import de.akquinet.jbosscc.guttenbase.statements.InsertStatementFiller;
 import de.akquinet.jbosscc.guttenbase.tools.CheckEqualTableDataTool;
+
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -15,10 +16,10 @@ import java.util.List;
  * Determine order of columns in SELECT statement. This will of course also influence the ordering of the resulting INSERT statement.
  *
  * <p>
- * &copy; 2012-2020 akquinet tech@spree
+ * &copy; 2012-2034 akquinet tech@spree
  * </p>
- *
- *
+ * <p>
+ * <p>
  * Hint is used by {@link AbstractStatementCreator} to determine column order
  * Hint is used by {@link InsertStatementFiller} to determine column order
  * Hint is used by {@link CheckEqualTableDataTool} to determine column order

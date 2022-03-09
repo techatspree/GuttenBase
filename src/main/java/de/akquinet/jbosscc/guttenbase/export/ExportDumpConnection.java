@@ -1,36 +1,22 @@
 package de.akquinet.jbosscc.guttenbase.export;
 
-import java.sql.Array;
-import java.sql.Blob;
-import java.sql.CallableStatement;
-import java.sql.Clob;
-import java.sql.Connection;
-import java.sql.DatabaseMetaData;
-import java.sql.NClob;
-import java.sql.PreparedStatement;
-import java.sql.SQLClientInfoException;
-import java.sql.SQLException;
-import java.sql.SQLWarning;
-import java.sql.SQLXML;
-import java.sql.Savepoint;
-import java.sql.Statement;
-import java.sql.Struct;
+import de.akquinet.jbosscc.guttenbase.exceptions.ExportException;
+import de.akquinet.jbosscc.guttenbase.meta.TableMetaData;
+
+import java.sql.*;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 import java.util.concurrent.Executor;
 
-import de.akquinet.jbosscc.guttenbase.exceptions.ExportException;
-import de.akquinet.jbosscc.guttenbase.meta.TableMetaData;
-
 /**
  * Special "{@link Connection}" that supports writing data to a different storage then a data base. I.e., a file dump. Only few
  * inherited methods have a meaningful implementation, most methods will throw a {@link UnsupportedOperationException}.
  * <p>
- * &copy; 2012-2020 akquinet tech@spree
+ * &copy; 2012-2034 akquinet tech@spree
  * </p>
- * 
+ *
  * @author M. Dahm
  */
 public class ExportDumpConnection implements Connection

@@ -6,11 +6,11 @@ import de.akquinet.jbosscc.guttenbase.tools.EntityTableChecker;
 
 /**
  * By default we check if the given table has an primary key column named "ID".
- * 
+ *
  * <p>
- * &copy; 2012-2020 akquinet tech@spree
+ * &copy; 2012-2034 akquinet tech@spree
  * </p>
- * 
+ *
  * @author M. Dahm
  */
 public class DefaultEntityTableCheckerHint extends EntityTableCheckerHint {

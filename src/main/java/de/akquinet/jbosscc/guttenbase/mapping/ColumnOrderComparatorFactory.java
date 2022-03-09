@@ -1,14 +1,14 @@
 package de.akquinet.jbosscc.guttenbase.mapping;
 
-import java.util.Comparator;
-
 import de.akquinet.jbosscc.guttenbase.meta.ColumnMetaData;
+
+import java.util.Comparator;
 
 /**
  * Determine order of columns in SELECT/INSERT statement.
- * 
+ *
  * <p>
- * &copy; 2012-2020 akquinet tech@spree
+ * &copy; 2012-2034 akquinet tech@spree
  * </p>
  */
 public interface ColumnOrderComparatorFactory {

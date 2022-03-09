@@ -1,19 +1,19 @@
 package de.akquinet.jbosscc.guttenbase.configuration.impl;
 
-import java.sql.Connection;
-import java.sql.SQLException;
-
 import de.akquinet.jbosscc.guttenbase.configuration.SourceDatabaseConfiguration;
 import de.akquinet.jbosscc.guttenbase.meta.TableMetaData;
 import de.akquinet.jbosscc.guttenbase.repository.ConnectorRepository;
 
+import java.sql.Connection;
+import java.sql.SQLException;
+
 /**
  * (Almost) empty implementation
- * 
+ *
  * <p>
- * &copy; 2012-2020 akquinet tech@spree
+ * &copy; 2012-2034 akquinet tech@spree
  * </p>
- * 
+ *
  * @author M. Dahm
  */
 public class DefaultSourceDatabaseConfiguration extends AbstractDatabaseConfiguration implements SourceDatabaseConfiguration {

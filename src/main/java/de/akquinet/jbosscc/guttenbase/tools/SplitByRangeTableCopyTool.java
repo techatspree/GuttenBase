@@ -20,9 +20,8 @@ import java.sql.SQLException;
  * from one connection to the other splitting the input with the given column. If the number range is populated sparsely the
  * copying may take much longer than the {@link DefaultTableCopyTool}.
  * <p>
- * &copy; 2012-2020 akquinet tech@spree
+ * &copy; 2012-2034 akquinet tech@spree
  * </p>
- *
  */
 public class SplitByRangeTableCopyTool extends AbstractTableCopyTool
 {

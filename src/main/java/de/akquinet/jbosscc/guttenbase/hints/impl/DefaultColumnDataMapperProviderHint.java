@@ -3,8 +3,8 @@ package de.akquinet.jbosscc.guttenbase.hints.impl;
 import de.akquinet.jbosscc.guttenbase.defaults.impl.DefaultColumnDataMapperProvider;
 import de.akquinet.jbosscc.guttenbase.hints.ColumnDataMapperProviderHint;
 import de.akquinet.jbosscc.guttenbase.mapping.BigDecimalToLongColumnDataMapper;
-import de.akquinet.jbosscc.guttenbase.mapping.LongToBigDecimalColumnDataMapper;
 import de.akquinet.jbosscc.guttenbase.mapping.ColumnDataMapperProvider;
+import de.akquinet.jbosscc.guttenbase.mapping.LongToBigDecimalColumnDataMapper;
 import de.akquinet.jbosscc.guttenbase.mapping.TimestampToDateColumnDataMapper;
 import de.akquinet.jbosscc.guttenbase.meta.ColumnType;
 
@@ -12,9 +12,9 @@ import de.akquinet.jbosscc.guttenbase.meta.ColumnType;
  * Default implementation. You may inherit from this class and override {@link #addMappings(DefaultColumnDataMapperProvider)} to
  * add further mappings.
  * <p>
- * &copy; 2012-2020 akquinet tech@spree
+ * &copy; 2012-2034 akquinet tech@spree
  * </p>
- * 
+ *
  * @author M. Dahm
  */
 public class DefaultColumnDataMapperProviderHint extends ColumnDataMapperProviderHint

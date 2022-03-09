@@ -26,7 +26,7 @@ import java.util.Map;
  *
  * @author M. Dahm
  * <p>
- * &copy; 2012-2020 akquinet tech@spree
+ * &copy; 2012-2034 akquinet tech@spree
  * </p>
  */
 public class ScriptExecutorTool {

@@ -1,9 +1,5 @@
 package de.akquinet.jbosscc.guttenbase.repository;
 
-import java.io.Serializable;
-import java.sql.SQLException;
-import java.util.List;
-
 import de.akquinet.jbosscc.guttenbase.configuration.SourceDatabaseConfiguration;
 import de.akquinet.jbosscc.guttenbase.configuration.TargetDatabaseConfiguration;
 import de.akquinet.jbosscc.guttenbase.connector.Connector;
@@ -12,13 +8,17 @@ import de.akquinet.jbosscc.guttenbase.connector.DatabaseType;
 import de.akquinet.jbosscc.guttenbase.hints.ConnectorHint;
 import de.akquinet.jbosscc.guttenbase.meta.DatabaseMetaData;
 
+import java.io.Serializable;
+import java.sql.SQLException;
+import java.util.List;
+
 /**
  * The main repository containing all configured connectors.
- * 
+ *
  * <p>
- * &copy; 2012-2020 akquinet tech@spree
+ * &copy; 2012-2034 akquinet tech@spree
  * </p>
- * 
+ *
  * @author M. Dahm
  */
 public interface ConnectorRepository extends Serializable {

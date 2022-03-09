@@ -2,6 +2,7 @@ package de.akquinet.jbosscc.guttenbase.export.zip;
 
 import de.akquinet.jbosscc.guttenbase.meta.DatabaseMetaData;
 import de.akquinet.jbosscc.guttenbase.meta.TableMetaData;
+
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.Iterator;
@@ -10,7 +11,7 @@ import java.util.Iterator;
  * Write ZIP file entry containing information about data base such as schema or version.
  * <p></p>
  * <p>
- * &copy; 2012-2020 akquinet tech@spree
+ * &copy; 2012-2034 akquinet tech@spree
  * </p>
  *
  * @author M. Dahm

@@ -9,10 +9,10 @@ import de.akquinet.jbosscc.guttenbase.tools.schema.comparison.SchemaComparatorTo
  * Map tables between source and target
  *
  * <p>
- * &copy; 2012-2020 akquinet tech@spree
+ * &copy; 2012-2034 akquinet tech@spree
  * </p>
- *
- *
+ * <p>
+ * <p>
  * Hint is used by {@link CheckEqualTableDataTool} to get according table
  * Hint is used by {@link SchemaComparatorTool} to get according table
  * Hint is used by {@link AbstractTableCopyTool} to get according table

@@ -5,16 +5,18 @@ import de.akquinet.jbosscc.guttenbase.exceptions.ImportException;
 import de.akquinet.jbosscc.guttenbase.hints.ImporterFactoryHint;
 import de.akquinet.jbosscc.guttenbase.meta.DatabaseMetaData;
 import de.akquinet.jbosscc.guttenbase.repository.ConnectorRepository;
+
 import java.sql.Connection;
 import java.sql.SQLException;
 
 /**
  * Connection info for importing data from a file.
  * <p>
- * &copy; 2012-2020 akquinet tech@spree
+ * &copy; 2012-2034 akquinet tech@spree
  * </p>
- *
+ * <p>
  * Hint is used by {@link ImporterFactoryHint} to determine importer implementation
+ *
  * @author M. Dahm
  */
 public class ImportDumpConnector extends AbstractConnector

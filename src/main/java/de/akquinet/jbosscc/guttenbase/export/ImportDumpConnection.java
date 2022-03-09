@@ -14,7 +14,7 @@ import java.util.concurrent.Executor;
 /**
  * Special "{@link Connection}" that supports reading data from a stream.
  * <p>
- * &copy; 2012-2020 akquinet tech@spree
+ * &copy; 2012-2034 akquinet tech@spree
  * </p>
  *
  * @author M. Dahm

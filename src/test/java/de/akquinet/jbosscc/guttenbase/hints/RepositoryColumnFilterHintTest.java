@@ -13,9 +13,9 @@ import de.akquinet.jbosscc.guttenbase.tools.ScriptExecutorTool;
 /**
  * Filters columns when inquiring connector repository.
  * <p>
- * &copy; 2012-2020 akquinet tech@spree
+ * &copy; 2012-2034 akquinet tech@spree
  * </p>
- * 
+ *
  * @author M. Dahm
  */
 public class RepositoryColumnFilterHintTest extends AbstractGuttenBaseTest

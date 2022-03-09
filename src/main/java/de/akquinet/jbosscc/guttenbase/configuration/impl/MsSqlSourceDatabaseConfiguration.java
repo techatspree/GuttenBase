@@ -4,11 +4,11 @@ import de.akquinet.jbosscc.guttenbase.repository.ConnectorRepository;
 
 /**
  * Implementation for MS Server SQL data base.
- * 
+ *
  * <p>
- * &copy; 2012-2020 akquinet tech@spree
+ * &copy; 2012-2034 akquinet tech@spree
  * </p>
- * 
+ *
  * @author M. Dahm
  */
 public class MsSqlSourceDatabaseConfiguration extends DefaultSourceDatabaseConfiguration {

@@ -15,7 +15,7 @@ import java.sql.SQLException;
 /**
  * Copy all tables from one connection to the other with multiple VALUES-tuples per batch statement.
  * <p>
- * &copy; 2012-2020 akquinet tech@spree
+ * &copy; 2012-2034 akquinet tech@spree
  * </p>
  *
  * @author M. Dahm

@@ -18,9 +18,9 @@ import java.util.List;
  * Try to find common type mapping usable for both columns.
  *
  * <p>
- * &copy; 2012-2020 akquinet tech@spree
+ * &copy; 2012-2034 akquinet tech@spree
  * </p>
- *
+ * <p>
  * Hint is used by {@link ColumnDataMapperProviderHint} to determine mapping between different column types
  * Hint is used by {@link ColumnTypeResolverListHint} to determine mapping strategies between different column types
  *

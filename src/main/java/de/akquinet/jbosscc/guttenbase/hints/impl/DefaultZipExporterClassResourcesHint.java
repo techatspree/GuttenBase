@@ -9,11 +9,11 @@ import de.akquinet.jbosscc.guttenbase.hints.ZipExporterClassResourcesHint;
 
 /**
  * By default use the {@link ZipStartup} class as the main class of the JAR. Adds all GuttenBase and log4j classes to the JAR.
- * 
+ *
  * <p>
- * &copy; 2012-2020 akquinet tech@spree
+ * &copy; 2012-2034 akquinet tech@spree
  * </p>
- * 
+ *
  * @author M. Dahm
  */
 public class DefaultZipExporterClassResourcesHint extends ZipExporterClassResourcesHint {

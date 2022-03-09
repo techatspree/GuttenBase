@@ -12,7 +12,7 @@ import java.util.*;
  * (starting at the leaves) manner. <br>
  * If there are cycles in the dependencies, we choose the node with the fewest incoming/outgoing edges.
  * <p>
- * &copy; 2012-2020 akquinet tech@spree
+ * &copy; 2012-2034 akquinet tech@spree
  * </p>
  *
  * @author M. Dahm
@@ -74,10 +74,9 @@ public class TableOrderTool
       final List<ForeignKeyMetaData> importedForeignKeys = table.getImportedForeignKeys();
       final TableNode tableNode = getTableNode(tableNodes, table);
 
-      for (final ForeignKeyMetaData foreignKeyMetaData : importedForeignKeys)
-      {
-        final TableNode referencingTable = getTableNode(tableNodes, foreignKeyMetaData.getReferencingColumn().getTableMetaData());
-        final TableNode referencedTable = getTableNode(tableNodes, foreignKeyMetaData.getReferencedColumn().getTableMetaData());
+      for (final ForeignKeyMetaData foreignKeyMetaData : importedForeignKeys) {
+        final TableNode referencingTable = getTableNode(tableNodes, foreignKeyMetaData.getReferencingTableMetaData());
+        final TableNode referencedTable = getTableNode(tableNodes, foreignKeyMetaData.getReferencedTableMetaData());
 
         assert tableNode.equals(referencingTable);
 

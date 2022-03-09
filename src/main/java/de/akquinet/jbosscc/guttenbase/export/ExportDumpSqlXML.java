@@ -1,27 +1,21 @@
 package de.akquinet.jbosscc.guttenbase.export;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.Reader;
-import java.io.Writer;
-import java.sql.SQLException;
-import java.sql.SQLXML;
+import org.apache.commons.io.IOUtils;
 
 import javax.xml.transform.Result;
 import javax.xml.transform.Source;
-
-import org.apache.commons.io.IOUtils;
+import java.io.*;
+import java.sql.SQLException;
+import java.sql.SQLXML;
 
 /**
  * Since XML data may be quite big. we do not load them into memory completely,
  * but read them in chunks and write the data to the output stream in a loop.
- * 
+ *
  * <p>
- * &copy; 2012-2020 akquinet tech@spree
+ * &copy; 2012-2034 akquinet tech@spree
  * </p>
- * 
+ *
  * @author M. Dahm
  */
 public class ExportDumpSqlXML extends AbstractExportDumpObject implements SQLXML {

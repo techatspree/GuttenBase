@@ -8,7 +8,7 @@ import org.junit.Before;
 /**
  * Test a schema migration wheer data will be omited using a WHERE clause
  * <p>
- * &copy; 2012-2020 akquinet tech@spree
+ * &copy; 2012-2034 akquinet tech@spree
  * </p>
  *
  * @author M. Dahm

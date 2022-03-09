@@ -1,17 +1,17 @@
 package de.akquinet.jbosscc.guttenbase.connector;
 
+import de.akquinet.jbosscc.guttenbase.meta.DatabaseMetaData;
+
 import java.sql.Connection;
 import java.sql.SQLException;
 
-import de.akquinet.jbosscc.guttenbase.meta.DatabaseMetaData;
-
 /**
  * Connectors maintain informations about the data base and how open and close the SQL {@link Connection}s.
- * 
+ *
  * <p>
- * &copy; 2012-2020 akquinet tech@spree
+ * &copy; 2012-2034 akquinet tech@spree
  * </p>
- * 
+ *
  * @author M. Dahm
  */
 public interface Connector {

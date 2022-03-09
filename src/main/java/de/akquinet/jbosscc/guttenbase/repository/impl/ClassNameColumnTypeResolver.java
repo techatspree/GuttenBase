@@ -1,18 +1,18 @@
 package de.akquinet.jbosscc.guttenbase.repository.impl;
 
-import java.sql.SQLException;
-
 import de.akquinet.jbosscc.guttenbase.mapping.ColumnTypeResolver;
 import de.akquinet.jbosscc.guttenbase.meta.ColumnMetaData;
 import de.akquinet.jbosscc.guttenbase.meta.ColumnType;
 
+import java.sql.SQLException;
+
 /**
  * Try to resolve by JDBC class name.
- * 
+ *
  * <p>
- * &copy; 2012-2020 akquinet tech@spree
+ * &copy; 2012-2034 akquinet tech@spree
  * </p>
- * 
+ *
  * @author M. Dahm
  */
 public class ClassNameColumnTypeResolver implements ColumnTypeResolver {

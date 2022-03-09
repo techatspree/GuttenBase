@@ -1,16 +1,15 @@
 package de.akquinet.jbosscc.guttenbase.hints;
 
-import org.junit.Before;
-
 import de.akquinet.jbosscc.guttenbase.mapping.TableMapper;
+import org.junit.Before;
 
 /**
  * Test a schema migration where tables have been renamed, because the source tables contain umlauts which are not always supported...
- * 
+ *
  * <p>
- * &copy; 2012-2020 akquinet tech@spree
+ * &copy; 2012-2034 akquinet tech@spree
  * </p>
- * 
+ *
  * @author M. Dahm
  */
 public class TableMapperHintTest extends AbstractHintTest {

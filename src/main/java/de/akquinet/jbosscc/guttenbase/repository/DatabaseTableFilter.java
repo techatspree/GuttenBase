@@ -1,17 +1,17 @@
 package de.akquinet.jbosscc.guttenbase.repository;
 
-import java.sql.SQLException;
-
 import de.akquinet.jbosscc.guttenbase.meta.DatabaseMetaData;
 import de.akquinet.jbosscc.guttenbase.meta.TableMetaData;
 import de.akquinet.jbosscc.guttenbase.repository.impl.DatabaseMetaDataInspectorTool;
+
+import java.sql.SQLException;
 
 /**
  * Regard which tables when @see {@link DatabaseMetaDataInspectorTool} is inquiring the database for tables. The methods refer to
  * the parameters passed to JDBC data base meta data methods such as
  * {@linkplain DatabaseMetaData#getTableMetaData(String)}
  * <p>
- * &copy; 2012-2020 akquinet tech@spree
+ * &copy; 2012-2034 akquinet tech@spree
  * </p>
  *
  * @author M. Dahm

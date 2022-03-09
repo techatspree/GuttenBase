@@ -9,9 +9,9 @@ import de.akquinet.jbosscc.guttenbase.mapping.ColumnMapper;
  * Test a schema migration where ID columns have been renamed. ID in table USER became USER_ID, ID in table COMPANY became
  * COMPANY_ID and so on.
  * <p>
- * &copy; 2012-2020 akquinet tech@spree
+ * &copy; 2012-2034 akquinet tech@spree
  * </p>
- * 
+ *
  * @author M. Dahm
  */
 public class DroppingColumnMapperHintTest extends AbstractHintTest

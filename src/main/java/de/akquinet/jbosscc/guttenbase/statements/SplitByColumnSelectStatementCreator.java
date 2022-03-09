@@ -5,6 +5,7 @@ import de.akquinet.jbosscc.guttenbase.meta.ColumnMetaData;
 import de.akquinet.jbosscc.guttenbase.meta.TableMetaData;
 import de.akquinet.jbosscc.guttenbase.repository.ConnectorRepository;
 import de.akquinet.jbosscc.guttenbase.tools.SplitColumn;
+
 import java.sql.SQLException;
 
 /**
@@ -12,10 +13,11 @@ import java.sql.SQLException;
  * I.e., the data is read in chunks where these chunks are split using the ID column range of values.
  *
  * <p>
- * &copy; 2012-2020 akquinet tech@spree
+ * &copy; 2012-2034 akquinet tech@spree
  * </p>
- *
+ * <p>
  * Hint is used by {@link SplitColumnHint}
+ *
  * @author M. Dahm
  */
 public class SplitByColumnSelectStatementCreator extends AbstractSelectStatementCreator {

@@ -8,11 +8,12 @@ import de.akquinet.jbosscc.guttenbase.tools.MaxNumberOfDataItems;
  * limit the number given by {@link NumberOfRowsPerBatchHint}.
  *
  * <p>
- * &copy; 2012-2020 akquinet tech@spree
+ * &copy; 2012-2034 akquinet tech@spree
  * </p>
- *
- *
+ * <p>
+ * <p>
  * Hint is used by {@link AbstractTableCopyTool} to determine maximum number of data items in INSERT statement
+ *
  * @author M. Dahm
  */
 public abstract class MaxNumberOfDataItemsHint implements ConnectorHint<MaxNumberOfDataItems> {

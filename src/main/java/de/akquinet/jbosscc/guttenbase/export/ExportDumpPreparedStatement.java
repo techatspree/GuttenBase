@@ -1,40 +1,22 @@
 package de.akquinet.jbosscc.guttenbase.export;
 
+import de.akquinet.jbosscc.guttenbase.exceptions.ExportException;
+import org.apache.commons.io.input.ReaderInputStream;
+
 import java.io.InputStream;
 import java.io.Reader;
 import java.math.BigDecimal;
 import java.net.URL;
-import java.sql.Array;
-import java.sql.Blob;
-import java.sql.Clob;
-import java.sql.Connection;
-import java.sql.Date;
-import java.sql.NClob;
-import java.sql.ParameterMetaData;
-import java.sql.PreparedStatement;
-import java.sql.Ref;
-import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
-import java.sql.RowId;
-import java.sql.SQLException;
-import java.sql.SQLWarning;
-import java.sql.SQLXML;
-import java.sql.Time;
-import java.sql.Timestamp;
-import java.sql.Types;
+import java.sql.*;
 import java.util.Calendar;
-
-import org.apache.commons.io.input.ReaderInputStream;
-
-import de.akquinet.jbosscc.guttenbase.exceptions.ExportException;
 
 /**
  * Custom implementation of {@link PreparedStatement} dumping data to the given output stream. Only few inherited setter methods
  * have a meaningful implementation, most methods will throw a {@link UnsupportedOperationException}.
  * <p>
- * &copy; 2012-2020 akquinet tech@spree
+ * &copy; 2012-2034 akquinet tech@spree
  * </p>
- * 
+ *
  * @author M. Dahm
  */
 public class ExportDumpPreparedStatement implements PreparedStatement

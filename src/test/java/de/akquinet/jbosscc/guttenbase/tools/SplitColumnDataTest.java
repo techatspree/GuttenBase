@@ -14,6 +14,7 @@ import de.akquinet.jbosscc.guttenbase.meta.ColumnType;
 import de.akquinet.jbosscc.guttenbase.meta.TableMetaData;
 import org.junit.Before;
 import org.junit.Test;
+
 import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.List;
@@ -24,7 +25,7 @@ import static org.junit.Assert.assertEquals;
 /**
  * Split column data into multiple columns in target database.
  * <p>
- * &copy; 2012-2020 akquinet tech@spree
+ * &copy; 2012-2034 akquinet tech@spree
  * </p>
  *
  * @author M. Dahm

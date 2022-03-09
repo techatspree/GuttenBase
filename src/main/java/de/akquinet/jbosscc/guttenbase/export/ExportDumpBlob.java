@@ -8,11 +8,11 @@ import java.sql.SQLException;
 /**
  * Since BLOBs may be quite big. we do not load them into memory completely, but
  * read them in chunks and write the data to the output stream in a loop.
- * 
+ *
  * <p>
- * &copy; 2012-2020 akquinet tech@spree
+ * &copy; 2012-2034 akquinet tech@spree
  * </p>
- * 
+ *
  * @author M. Dahm
  */
 public class ExportDumpBlob extends AbstractExportDumpObject implements Blob {

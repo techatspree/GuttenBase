@@ -12,7 +12,7 @@ import java.util.List;
  * Create auto-increment sequences for table IDs.
  * <p></p>
  * <p>
- * &copy; 2012-2020 akquinet tech@spree
+ * &copy; 2012-2034 akquinet tech@spree
  * </p>
  *
  * @author M. Dahm

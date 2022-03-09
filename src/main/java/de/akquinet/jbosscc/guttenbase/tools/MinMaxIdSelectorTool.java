@@ -14,7 +14,7 @@ import java.sql.SQLException;
  * Compute MIN and MAX of given Id-Column
  * <p></p>
  * <p>
- * &copy; 2012-2020 akquinet tech@spree
+ * &copy; 2012-2034 akquinet tech@spree
  * </p>
  *
  * @author M. Dahm

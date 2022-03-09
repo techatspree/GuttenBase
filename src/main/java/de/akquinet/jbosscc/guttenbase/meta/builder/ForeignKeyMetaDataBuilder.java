@@ -5,11 +5,11 @@ import de.akquinet.jbosscc.guttenbase.meta.impl.ForeignKeyMetaDataImpl;
 
 /**
  * Builder class for ForeignKeyMetaData.
- * 
+ *
  * <p>
- * &copy; 2012-2020 akquinet tech@spree
+ * &copy; 2012-2034 akquinet tech@spree
  * </p>
- * 
+ *
  * @author M. Dahm
  */
 public class ForeignKeyMetaDataBuilder {

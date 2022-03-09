@@ -5,22 +5,20 @@ import de.akquinet.jbosscc.guttenbase.exceptions.ImportException;
 import de.akquinet.jbosscc.guttenbase.meta.ColumnMetaData;
 import de.akquinet.jbosscc.guttenbase.meta.DatabaseMetaData;
 import de.akquinet.jbosscc.guttenbase.meta.TableMetaData;
+
 import java.io.InputStream;
 import java.io.Reader;
 import java.math.BigDecimal;
 import java.net.URL;
+import java.sql.Date;
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Special {@link ResultSet} that reads data from the given stream. Only few inherited getter methods have a meaningful
  * implementation, most methods will throw a {@link UnsupportedOperationException}.
  * <p>
- * &copy; 2012-2020 akquinet tech@spree
+ * &copy; 2012-2034 akquinet tech@spree
  * </p>
  *
  * @author M. Dahm
@@ -125,7 +123,7 @@ public class ImportDumpResultSet implements ResultSet
   public boolean getBoolean(final int columnIndex) throws SQLException
   {
     final Boolean object = (Boolean) getObject(columnIndex);
-    return object == null ? false : object;
+    return object != null && object;
   }
 
   @Override

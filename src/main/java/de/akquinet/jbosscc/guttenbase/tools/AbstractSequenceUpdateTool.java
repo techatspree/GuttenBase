@@ -15,7 +15,7 @@ import java.util.List;
  * By default the sequence is updated to SELECT(MAX(ID) + 1) FROM table
  * <p></p>
  * <p>
- * &copy; 2012-2020 akquinet tech@spree
+ * &copy; 2012-2034 akquinet tech@spree
  * </p>
  *
  * @author M. Dahm

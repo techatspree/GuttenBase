@@ -1,19 +1,19 @@
 package de.akquinet.jbosscc.guttenbase.meta.builder;
 
-import java.math.BigInteger;
-import java.sql.Types;
-
 import de.akquinet.jbosscc.guttenbase.meta.ColumnMetaData;
 import de.akquinet.jbosscc.guttenbase.meta.InternalColumnMetaData;
 import de.akquinet.jbosscc.guttenbase.meta.impl.ColumnMetaDataImpl;
 
+import java.math.BigInteger;
+import java.sql.Types;
+
 /**
  * Builder class for ColumnMetaData.
- * 
+ *
  * <p>
- * &copy; 2012-2020 akquinet tech@spree
+ * &copy; 2012-2034 akquinet tech@spree
  * </p>
- * 
+ *
  * @author M. Dahm
  */
 public class ColumnMetaDataBuilder {

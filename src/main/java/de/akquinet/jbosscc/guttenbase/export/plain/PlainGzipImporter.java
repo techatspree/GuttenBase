@@ -1,11 +1,5 @@
 package de.akquinet.jbosscc.guttenbase.export.plain;
 
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.Serializable;
-import java.util.Map;
-import java.util.zip.GZIPInputStream;
-
 import de.akquinet.jbosscc.guttenbase.export.ExportTableHeader;
 import de.akquinet.jbosscc.guttenbase.export.ImportDumpConnectionInfo;
 import de.akquinet.jbosscc.guttenbase.export.ImportDumpExtraInformation;
@@ -14,13 +8,19 @@ import de.akquinet.jbosscc.guttenbase.meta.DatabaseMetaData;
 import de.akquinet.jbosscc.guttenbase.meta.TableMetaData;
 import de.akquinet.jbosscc.guttenbase.repository.ConnectorRepository;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.Serializable;
+import java.util.Map;
+import java.util.zip.GZIPInputStream;
+
 /**
  * Import schema information and data from gzipped {@link ObjectInputStream} file with serialized data.
- * 
+ *
  * <p>
- * &copy; 2012-2020 akquinet tech@spree
+ * &copy; 2012-2034 akquinet tech@spree
  * </p>
- * 
+ *
  * @author M. Dahm
  */
 public class PlainGzipImporter implements Importer {

@@ -24,7 +24,7 @@ import java.util.stream.Collectors;
 /**
  * Will check two schemas for compatibility and report found issues.
  * <p>
- * &copy; 2012-2020 akquinet tech@spree
+ * &copy; 2012-2034 akquinet tech@spree
  * </p>
  *
  * @author M. Dahm
@@ -80,9 +80,9 @@ public class SchemaComparatorTool {
       ForeignKeyMetaData matchingFK = null;
 
       for (final ForeignKeyMetaData targetFK : targetTable.getImportedForeignKeys()) {
-        if (sourceFK.getReferencedColumn().equals(targetFK.getReferencedColumn()) &&
-          sourceFK.getTableMetaData().equals(targetFK.getTableMetaData()) &&
-          sourceFK.getReferencingColumn().equals(targetFK.getReferencingColumn())) {
+        if (sourceFK.getReferencedColumns().equals(targetFK.getReferencedColumns()) &&
+                sourceFK.getTableMetaData().equals(targetFK.getTableMetaData()) &&
+                sourceFK.getReferencingColumns().equals(targetFK.getReferencingColumns())) {
           matchingFK = targetFK;
         }
       }
@@ -91,7 +91,6 @@ public class SchemaComparatorTool {
         _schemaCompatibilityIssues.addIssue(new MissingForeignKeyIssue("Missing/incompatible foreign key " + sourceFK, sourceFK));
       }
     }
-
 
     return _schemaCompatibilityIssues;
   }
@@ -142,14 +141,14 @@ public class SchemaComparatorTool {
     final Map<String, ForeignKeyMetaData> fkMetaDataMap = new LinkedHashMap<>();
 
     for (final ForeignKeyMetaData foreignKey : table.getExportedForeignKeys()) {
-      final String columNames = getFullyQualifiedColumnName(foreignKey.getReferencingColumn()) + ":" +
-        getFullyQualifiedColumnName(foreignKey.getReferencingColumn());
+      final String columNames = getFullyQualifiedColumnNames(foreignKey.getReferencingColumns()) + ":" +
+              getFullyQualifiedColumnNames(foreignKey.getReferencingColumns());
 
       if (fkMetaDataMap.containsKey(columNames)) {
         final ForeignKeyMetaData conflictingKey = fkMetaDataMap.get(columNames);
 
         _schemaCompatibilityIssues.addIssue(new DuplicateForeignKeyIssue("Duplicate foreignKey " + conflictingKey
-          + "vs." + foreignKey, foreignKey));
+                + "vs." + foreignKey, foreignKey));
       } else {
         fkMetaDataMap.put(columNames, foreignKey);
       }
@@ -158,8 +157,9 @@ public class SchemaComparatorTool {
     return _schemaCompatibilityIssues;
   }
 
-  private static String getFullyQualifiedColumnName(final ColumnMetaData columnMetaData) {
-    return columnMetaData.getTableMetaData().getTableName() + "." + columnMetaData.getColumnName();
+  private static String getFullyQualifiedColumnNames(final List<ColumnMetaData> columnMetaData) {
+    return columnMetaData.stream().map(column -> column.getTableMetaData().getTableName() + "." + column.getColumnName())
+            .collect(Collectors.joining(", ", "(", ")"));
   }
 
   public SchemaCompatibilityIssues checkEqualColumns(final String sourceConnectorId, final String targetConnectorId,

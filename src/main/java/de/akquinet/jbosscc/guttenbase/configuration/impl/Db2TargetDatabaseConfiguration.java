@@ -5,6 +5,7 @@ import de.akquinet.jbosscc.guttenbase.meta.DatabaseMetaData;
 import de.akquinet.jbosscc.guttenbase.meta.TableMetaData;
 import de.akquinet.jbosscc.guttenbase.repository.ConnectorRepository;
 import de.akquinet.jbosscc.guttenbase.tools.ScriptExecutorTool;
+
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -19,7 +20,7 @@ import java.util.Map.Entry;
  * @author M. Dahm
  * @see <a href="http://stackoverflow.com/questions/421518/is-there-a-way-to-enable-disable-constraints-in-db2-v7">http://stackoverflow.com/questions/421518/is-there-a-way-to-enable-disable-constraints-in-db2-v7</a>
  * <p>
- * &copy; 2012-2020 akquinet tech@spree
+ * &copy; 2012-2034 akquinet tech@spree
  * </p>
  */
 public class Db2TargetDatabaseConfiguration extends DefaultTargetDatabaseConfiguration {

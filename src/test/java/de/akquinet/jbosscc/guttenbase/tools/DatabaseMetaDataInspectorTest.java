@@ -7,13 +7,14 @@ import de.akquinet.jbosscc.guttenbase.meta.IndexMetaData;
 import de.akquinet.jbosscc.guttenbase.meta.TableMetaData;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.util.Collection;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import static java.util.Collections.singletonList;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 public class DatabaseMetaDataInspectorTest extends AbstractGuttenBaseTest {
 	private static final String CONNECTOR_ID = "derby";
@@ -52,10 +53,18 @@ public class DatabaseMetaDataInspectorTest extends AbstractGuttenBaseTest {
 	}
 
 	private void checkForeignKeyInformation(final ColumnMetaData idColumn) {
-		assertEquals(2, idColumn.getReferencedByColumn().size());
-		final ColumnMetaData fkColumn = idColumn.getReferencedByColumn().get(0);
-		assertEquals(idColumn, fkColumn.getReferencedColumn());
-		assertEquals("USER_ID", fkColumn.getColumnName());
+		final Map<String, List<ColumnMetaData>> referencingColumnMap = idColumn.getReferencingColumns();
+		assertEquals(2, referencingColumnMap.size());
+
+		final List<ColumnMetaData> referencingColumns = referencingColumnMap.values().stream().flatMap(Collection::stream)
+				.collect(Collectors.toList());
+		assertEquals(2, referencingColumns.size());
+
+		for (final ColumnMetaData fkColumn : referencingColumns) {
+			assertEquals(1, fkColumn.getReferencedColumns().size());
+			assertEquals(idColumn, fkColumn.getReferencedColumns().values().iterator().next().get(0));
+			assertEquals("USER_ID", fkColumn.getColumnName());
+		}
 	}
 
 	private ColumnMetaData checkIdColumnInformation(final TableMetaData userTableMetaData) {

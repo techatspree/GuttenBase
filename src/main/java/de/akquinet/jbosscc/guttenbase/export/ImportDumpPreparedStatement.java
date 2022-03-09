@@ -4,6 +4,7 @@ import de.akquinet.jbosscc.guttenbase.exceptions.MissingDataException;
 import de.akquinet.jbosscc.guttenbase.meta.DatabaseMetaData;
 import de.akquinet.jbosscc.guttenbase.meta.TableMetaData;
 import de.akquinet.jbosscc.guttenbase.utils.Util;
+
 import java.io.InputStream;
 import java.io.Reader;
 import java.math.BigDecimal;
@@ -15,7 +16,7 @@ import java.util.Calendar;
  * Custom implementation of {@link PreparedStatement} reading data from the given input stream. This done via the custom
  * {@link ImportDumpResultSet} object return by {@link #executeQuery()}.
  * <p>
- * &copy; 2012-2020 akquinet tech@spree
+ * &copy; 2012-2034 akquinet tech@spree
  * </p>
  *
  * @author M. Dahm

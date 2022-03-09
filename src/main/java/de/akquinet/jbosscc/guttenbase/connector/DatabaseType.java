@@ -4,7 +4,7 @@ package de.akquinet.jbosscc.guttenbase.connector;
  * Denote known/handled data bases. Easy to extend...
  *
  * <p>
- * &copy; 2012-2020 akquinet tech@spree
+ * &copy; 2012-2034 akquinet tech@spree
  * </p>
  *
  * @author M. Dahm

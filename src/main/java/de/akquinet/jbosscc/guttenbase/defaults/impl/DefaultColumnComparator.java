@@ -1,15 +1,15 @@
 package de.akquinet.jbosscc.guttenbase.defaults.impl;
 
-import java.util.Comparator;
-
 import de.akquinet.jbosscc.guttenbase.meta.ColumnMetaData;
+
+import java.util.Comparator;
 
 /**
  * By default order by natural order of column names.
  * <p>
- * &copy; 2012-2020 akquinet tech@spree
+ * &copy; 2012-2034 akquinet tech@spree
  * </p>
- * 
+ *
  * @author M. Dahm
  */
 public final class DefaultColumnComparator implements Comparator<ColumnMetaData>

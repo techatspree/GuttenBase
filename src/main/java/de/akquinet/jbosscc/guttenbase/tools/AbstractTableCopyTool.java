@@ -19,7 +19,7 @@ import java.util.List;
 /**
  * Copy all tables from one connection to the other.
  * <p>
- * &copy; 2012-2020 akquinet tech@spree
+ * &copy; 2012-2034 akquinet tech@spree
  * </p>
  *
  * @author M. Dahm

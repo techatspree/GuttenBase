@@ -10,15 +10,15 @@ import de.akquinet.jbosscc.guttenbase.tools.CommonColumnTypeResolverTool;
  * to resolve a column type conflict.
  *
  * <p>
- * &copy; 2012-2020 akquinet tech@spree
+ * &copy; 2012-2034 akquinet tech@spree
  * </p>
- *
- *
+ * <p>
+ * <p>
  * Hint is used by {@link CommonColumnTypeResolverTool} to determine mapping strategies between different column types
  *
+ * @author M. Dahm
  * @see ClassNameColumnTypeResolver
  * @see HeuristicColumnTypeResolver
- * @author M. Dahm
  */
 public abstract class ColumnTypeResolverListHint implements ConnectorHint<ColumnTypeResolverList> {
 	@Override

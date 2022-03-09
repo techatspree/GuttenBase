@@ -1,19 +1,18 @@
 package de.akquinet.jbosscc.guttenbase.connector.impl;
 
+import de.akquinet.jbosscc.guttenbase.repository.ConnectorRepository;
+import org.apache.log4j.Logger;
+
 import java.sql.Connection;
 import java.sql.SQLException;
 
-import org.apache.log4j.Logger;
-
-import de.akquinet.jbosscc.guttenbase.repository.ConnectorRepository;
-
 /**
  * Connection info via data source and optional user/password.
- * 
+ *
  * <p>
- * &copy; 2012-2020 akquinet tech@spree
+ * &copy; 2012-2034 akquinet tech@spree
  * </p>
- * 
+ *
  * @author M. Dahm
  */
 public class DataSourceConnector extends AbstractConnector {

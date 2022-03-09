@@ -3,9 +3,9 @@ package de.akquinet.jbosscc.guttenbase.hints;
 /**
  * Used to map table names, column names, etc.
  * <p>
- * &copy; 2012-2020 akquinet tech@spree
+ * &copy; 2012-2034 akquinet tech@spree
  * </p>
- * 
+ *
  * @author M. Dahm
  */
 public enum CaseConversionMode

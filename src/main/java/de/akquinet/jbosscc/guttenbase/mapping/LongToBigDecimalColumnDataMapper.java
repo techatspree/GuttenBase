@@ -1,17 +1,17 @@
 package de.akquinet.jbosscc.guttenbase.mapping;
 
+import de.akquinet.jbosscc.guttenbase.meta.ColumnMetaData;
+
 import java.math.BigDecimal;
 import java.sql.SQLException;
 
-import de.akquinet.jbosscc.guttenbase.meta.ColumnMetaData;
-
 /**
  * Map Long/Bigint to BigDecimal
- * 
+ *
  * <p>
- * &copy; 2012-2020 akquinet tech@spree
+ * &copy; 2012-2034 akquinet tech@spree
  * </p>
- * 
+ *
  * @author M. Dahm
  */
 public class LongToBigDecimalColumnDataMapper implements ColumnDataMapper {

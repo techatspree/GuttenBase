@@ -8,11 +8,12 @@ import de.akquinet.jbosscc.guttenbase.export.ImporterFactory;
  * Create @see {@link Importer} for reading dumped database using @see {@link ImportDumpConnector}.
  *
  * <p>
- * &copy; 2012-2020 akquinet tech@spree
+ * &copy; 2012-2034 akquinet tech@spree
  * </p>
- *
- *
+ * <p>
+ * <p>
  * Hint is used by {@link ImportDumpConnector} to determine importer implementation
+ *
  * @author M. Dahm
  */
 public abstract class ImporterFactoryHint implements ConnectorHint<ImporterFactory> {

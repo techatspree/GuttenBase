@@ -1,11 +1,7 @@
 package de.akquinet.jbosscc.guttenbase.meta.impl;
 
-import de.akquinet.jbosscc.guttenbase.meta.ColumnMetaData;
-import de.akquinet.jbosscc.guttenbase.meta.DatabaseMetaData;
-import de.akquinet.jbosscc.guttenbase.meta.ForeignKeyMetaData;
-import de.akquinet.jbosscc.guttenbase.meta.IndexMetaData;
-import de.akquinet.jbosscc.guttenbase.meta.InternalTableMetaData;
-import de.akquinet.jbosscc.guttenbase.meta.TableMetaData;
+import de.akquinet.jbosscc.guttenbase.meta.*;
+
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -15,7 +11,7 @@ import java.util.stream.Collectors;
 /**
  * Information about a table.
  * <p>
- * &copy; 2012-2020 akquinet tech@spree
+ * &copy; 2012-2034 akquinet tech@spree
  * </p>
  *
  * @author M. Dahm
@@ -146,20 +142,27 @@ public class TableMetaDataImpl implements InternalTableMetaData
   }
 
   @Override
-  public List<ForeignKeyMetaData> getExportedForeignKeys()
-  {
+  public List<ForeignKeyMetaData> getExportedForeignKeys() {
     return new ArrayList<>(_exportedForeignKeys.values());
   }
 
   @Override
-  public void addExportedForeignKey(final ForeignKeyMetaData fkMetaData)
-  {
+  public void addExportedForeignKey(final ForeignKeyMetaData fkMetaData) {
     _exportedForeignKeys.put(fkMetaData.getForeignKeyName().toUpperCase(), fkMetaData);
   }
 
   @Override
-  public List<ForeignKeyMetaData> getImportedForeignKeys()
-  {
+  public ForeignKeyMetaData getExportedForeignKey(final String foreignKeyname) {
+    return _exportedForeignKeys.get(foreignKeyname.toUpperCase());
+  }
+
+  @Override
+  public ForeignKeyMetaData getImportedForeignKey(final String foreignKeyname) {
+    return _importedForeignKeys.get(foreignKeyname.toUpperCase());
+  }
+
+  @Override
+  public List<ForeignKeyMetaData> getImportedForeignKeys() {
     return new ArrayList<>(_importedForeignKeys.values());
   }
 
@@ -184,10 +187,9 @@ public class TableMetaDataImpl implements InternalTableMetaData
   {
     final List<IndexMetaData> result = new ArrayList<>();
 
-    for (final IndexMetaData index : getIndexes())
-    {
+    for (final IndexMetaData index : getIndexes()) {
       result.addAll(index.getColumnMetaData().stream().filter(column -> column.equals(columnMetaData))
-        .map(column -> index).collect(Collectors.toList()));
+              .map(column -> index).collect(Collectors.toList()));
     }
 
     return result;

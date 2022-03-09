@@ -8,6 +8,7 @@ import de.akquinet.jbosscc.guttenbase.meta.InternalTableMetaData;
 import de.akquinet.jbosscc.guttenbase.meta.TableMetaData;
 import de.akquinet.jbosscc.guttenbase.repository.ConnectorRepository;
 import de.akquinet.jbosscc.guttenbase.utils.Util;
+
 import java.sql.Connection;
 import java.sql.SQLException;
 
@@ -15,10 +16,11 @@ import java.sql.SQLException;
  * Connection info for exporting data base contents to a file.
  *
  * <p>
- * &copy; 2012-2020 akquinet tech@spree
+ * &copy; 2012-2034 akquinet tech@spree
  * </p>
- *
+ * <p>
  * Hint is used by {@link ExporterFactoryHint} to determine exporter implementation
+ *
  * @author M. Dahm
  */
 public class ExportDumpConnector extends AbstractConnector {

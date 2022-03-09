@@ -2,6 +2,7 @@ package de.akquinet.jbosscc.guttenbase.configuration.impl;
 
 import de.akquinet.jbosscc.guttenbase.meta.DatabaseMetaData;
 import de.akquinet.jbosscc.guttenbase.repository.ConnectorRepository;
+
 import java.sql.Connection;
 import java.sql.SQLException;
 
@@ -9,7 +10,7 @@ import java.sql.SQLException;
  * Implementation for HSQLDB data base.
  *
  * <p>
- * &copy; 2012-2020 akquinet tech@spree
+ * &copy; 2012-2034 akquinet tech@spree
  * </p>
  *
  * @author M. Dahm

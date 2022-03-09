@@ -6,11 +6,12 @@ import de.akquinet.jbosscc.guttenbase.utils.TableCopyProgressIndicator;
 /**
  * Select implementation of progress indicator. May be simple logger or fancy UI.
  * <p>
- * &copy; 2012-2020 akquinet tech@spree
+ * &copy; 2012-2034 akquinet tech@spree
  * </p>
- *
- *
+ * <p>
+ * <p>
  * Hint is used by {@link AbstractTableCopyTool}
+ *
  * @author M. Dahm
  */
 public abstract class TableCopyProgressIndicatorHint implements ConnectorHint<TableCopyProgressIndicator>

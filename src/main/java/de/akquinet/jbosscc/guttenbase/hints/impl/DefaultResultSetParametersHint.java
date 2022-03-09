@@ -11,7 +11,7 @@ import java.sql.ResultSet;
  * and concurrency type is ResultSet.CONCUR_READ_ONLY.
  *
  * <p>
- * &copy; 2012-2020 akquinet tech@spree
+ * &copy; 2012-2034 akquinet tech@spree
  * </p>
  *
  * @author M. Dahm

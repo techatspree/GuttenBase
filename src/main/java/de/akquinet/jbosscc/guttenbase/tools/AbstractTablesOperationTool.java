@@ -12,7 +12,7 @@ import java.util.List;
  * Will execute given SQL scriptlet on all tables or single table of given connector. The table name can be referenced with @TABLE@
  * place holder.
  * <p>
- * &copy; 2012-2020 akquinet tech@spree
+ * &copy; 2012-2034 akquinet tech@spree
  * </p>
  *
  * @author M. Dahm

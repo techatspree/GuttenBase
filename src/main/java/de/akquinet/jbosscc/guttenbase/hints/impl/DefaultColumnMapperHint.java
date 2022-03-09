@@ -6,11 +6,11 @@ import de.akquinet.jbosscc.guttenbase.mapping.ColumnMapper;
 
 /**
  * By default return column with same name ignoring case.
- * 
+ *
  * <p>
- * &copy; 2012-2020 akquinet tech@spree
+ * &copy; 2012-2034 akquinet tech@spree
  * </p>
- * 
+ *
  * @author M. Dahm
  */
 public class DefaultColumnMapperHint extends ColumnMapperHint {

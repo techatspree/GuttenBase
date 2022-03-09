@@ -8,14 +8,14 @@ import de.akquinet.jbosscc.guttenbase.tools.CheckEqualTableDataTool;
 /**
  * Select target column(s) for given source column. Usually, there will a 1:1 relationship. However, there may be situations where you want
  * to duplicate or transform data into multiple columns.
- *
+ * <p>
  * Alternatively the list may also be empty.
  *
  * <p>
- * &copy; 2012-2020 akquinet tech@spree
+ * &copy; 2012-2034 akquinet tech@spree
  * </p>
- *
- *
+ * <p>
+ * <p>
  * Hint is used by {@link CheckEqualTableDataTool} to map columns
  * Hint is used by {@link de.akquinet.jbosscc.guttenbase.tools.schema.comparison.SchemaComparatorTool} to map columns
  * Hint is used by {@link AbstractTableCopyTool} to map columns

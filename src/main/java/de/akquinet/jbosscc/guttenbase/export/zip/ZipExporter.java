@@ -14,15 +14,8 @@ import de.akquinet.jbosscc.guttenbase.repository.ConnectorRepository;
 import de.akquinet.jbosscc.guttenbase.utils.Util;
 import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.ObjectOutputStream;
-import java.io.PrintStream;
-import java.io.Serializable;
+
+import java.io.*;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.Map;
@@ -35,7 +28,7 @@ import java.util.zip.ZipOutputStream;
  * inspected with a ZIP tool. The structure of the ZIP is based on the structure of a data base.
  * <p></p>
  * <p>
- * &copy; 2012-2020 akquinet tech@spree
+ * &copy; 2012-2034 akquinet tech@spree
  * </p>
  *
  * @author M. Dahm

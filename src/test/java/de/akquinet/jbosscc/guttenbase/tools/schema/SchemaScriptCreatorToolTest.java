@@ -14,25 +14,16 @@ import de.akquinet.jbosscc.guttenbase.mapping.ColumnMapper;
 import de.akquinet.jbosscc.guttenbase.mapping.ColumnTypeMapper;
 import de.akquinet.jbosscc.guttenbase.mapping.DefaultColumnTypeMapper;
 import de.akquinet.jbosscc.guttenbase.mapping.TableMapper;
-import de.akquinet.jbosscc.guttenbase.meta.ColumnMetaData;
-import de.akquinet.jbosscc.guttenbase.meta.DatabaseMetaData;
-import de.akquinet.jbosscc.guttenbase.meta.ForeignKeyMetaData;
-import de.akquinet.jbosscc.guttenbase.meta.IndexMetaData;
-import de.akquinet.jbosscc.guttenbase.meta.TableMetaData;
-import de.akquinet.jbosscc.guttenbase.meta.builder.ColumnMetaDataBuilder;
-import de.akquinet.jbosscc.guttenbase.meta.builder.DatabaseMetaDataBuilder;
-import de.akquinet.jbosscc.guttenbase.meta.builder.ForeignKeyMetaDataBuilder;
-import de.akquinet.jbosscc.guttenbase.meta.builder.IndexMetaDataBuilder;
-import de.akquinet.jbosscc.guttenbase.meta.builder.TableMetaDataBuilder;
+import de.akquinet.jbosscc.guttenbase.meta.*;
+import de.akquinet.jbosscc.guttenbase.meta.builder.*;
 import de.akquinet.jbosscc.guttenbase.repository.ConnectorRepository;
 import de.akquinet.jbosscc.guttenbase.repository.impl.ConnectorRepositoryImpl;
 import org.junit.Test;
+
 import java.sql.SQLException;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 public class SchemaScriptCreatorToolTest {
   public static final String SOURCE = "source";
@@ -156,7 +147,8 @@ public class SchemaScriptCreatorToolTest {
     assertEquals(1, foreignKeyStatements.size());
     final String foreignKeyStatement = foreignKeyStatements.get(0).toUpperCase();
 
-    assertTrue(foreignKeyStatement, foreignKeyStatement.startsWith("ALTER TABLE SCHEMANAME.MY_TABLE1 ADD CONSTRAINT FK_MY_TABLE1_NAME_NAME_1 FOREIGN KEY"));
+    assertTrue(foreignKeyStatement, foreignKeyStatement.startsWith("ALTER TABLE SCHEMANAME.MY_TABLE1 ADD CONSTRAINT FK_"));
+    assertTrue(foreignKeyStatement, foreignKeyStatement.endsWith("REFERENCES SCHEMANAME.MY_TABLE2(NAME);"));
   }
 
   @Test

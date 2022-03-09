@@ -11,11 +11,11 @@ import java.util.zip.ZipOutputStream;
 
 /**
  * Base implementation the gathers all properties and stores them into a file of the ZIP.
- * 
+ *
  * <p>
- * &copy; 2012-2020 akquinet tech@spree
+ * &copy; 2012-2034 akquinet tech@spree
  * </p>
- * 
+ *
  * @author M. Dahm
  */
 public abstract class ZipAbstractMetaDataWriter {

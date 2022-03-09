@@ -1,22 +1,27 @@
 package de.akquinet.jbosscc.guttenbase.meta;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * Information about a foreign key between table columns.
- * 
+ *
  * <p>
- * &copy; 2012-2020 akquinet tech@spree
+ * &copy; 2012-2034 akquinet tech@spree
  * </p>
- * 
+ *
  * @author M. Dahm
  */
 public interface ForeignKeyMetaData extends Comparable<ForeignKeyMetaData>, Serializable {
-	String getForeignKeyName();
+    String getForeignKeyName();
 
-	ColumnMetaData getReferencingColumn();
+    TableMetaData getTableMetaData();
 
-	ColumnMetaData getReferencedColumn();
+    List<ColumnMetaData> getReferencingColumns();
 
-	TableMetaData getTableMetaData();
+    List<ColumnMetaData> getReferencedColumns();
+
+    TableMetaData getReferencingTableMetaData();
+
+    TableMetaData getReferencedTableMetaData();
 }

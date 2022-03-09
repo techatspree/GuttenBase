@@ -7,6 +7,7 @@ import de.akquinet.jbosscc.guttenbase.repository.ConnectorRepository;
 import de.akquinet.jbosscc.guttenbase.tools.AbstractTableCopyTool;
 import de.akquinet.jbosscc.guttenbase.tools.CheckEqualTableDataTool;
 import de.akquinet.jbosscc.guttenbase.tools.schema.comparison.SchemaComparatorTool;
+
 import java.sql.SQLException;
 import java.util.Comparator;
 import java.util.List;
@@ -14,13 +15,14 @@ import java.util.List;
 /**
  * Determine order of tables during copying/comparison.
  * <p>
- * &copy; 2012-2020 akquinet tech@spree
+ * &copy; 2012-2034 akquinet tech@spree
  * </p>
- *
- *
+ * <p>
+ * <p>
  * Hint is used by {@link SchemaComparatorTool} to determine table order
  * Hint is used by {@link AbstractTableCopyTool} to determine table order
  * Hint is used by {@link CheckEqualTableDataTool} to determine table order
+ *
  * @author M. Dahm
  */
 @SuppressWarnings("deprecation")

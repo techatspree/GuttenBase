@@ -2,23 +2,16 @@ package de.akquinet.jbosscc.guttenbase.export;
 
 import org.apache.commons.io.IOUtils;
 
-import java.io.Externalizable;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.ObjectInput;
-import java.io.ObjectOutput;
+import java.io.*;
 import java.sql.SQLException;
 
 /**
  * Since CLOBs/BLOBs may be quite big. we do not load them into memory
  * completely, but read them in chunks and write the data to the output stream
  * in a loop.
-*
+ *
  * <p>
- * &copy; 2012-2020 akquinet tech@spree
+ * &copy; 2012-2034 akquinet tech@spree
  * </p>
  *
  * @author M. Dahm
