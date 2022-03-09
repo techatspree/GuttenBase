@@ -13,17 +13,17 @@ import org.junit.Before;
  * @author M. Dahm
  */
 public class TableMapperHintTest extends AbstractHintTest {
-	public TableMapperHintTest() {
-		super("/ddl/tables-with-umlauts.sql", "/ddl/tables.sql", "/data/test-data-with-umlauts.sql");
-	}
+  public TableMapperHintTest() {
+    super("/ddl/tables-with-umlauts.sql", "/ddl/tables.sql", "/data/test-data-with-umlauts.sql");
+  }
 
-	@Before
-	public void setup() throws Exception {
-		_connectorRepository.addConnectorHint(TARGET, new TableMapperHint() {
-			@Override
-			public TableMapper getValue() {
-				return new TestTableMapper();
-			}
-		});
-	}
+  @Before
+  public void setup() throws Exception {
+    _connectorRepository.addConnectorHint(TARGET, new TableMapperHint() {
+      @Override
+      public TableMapper getValue() {
+        return new TestTableMapper();
+      }
+    });
+  }
 }

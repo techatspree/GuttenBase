@@ -1,19 +1,18 @@
 package de.akquinet.jbosscc.guttenbase.hints;
 
-import static org.junit.Assert.assertEquals;
-
-import java.sql.SQLException;
-import java.util.List;
-import java.util.Map;
-
-import org.junit.Before;
-
 import de.akquinet.jbosscc.guttenbase.defaults.impl.DefaultColumnDataMapperProvider;
 import de.akquinet.jbosscc.guttenbase.hints.impl.DefaultColumnDataMapperProviderHint;
 import de.akquinet.jbosscc.guttenbase.mapping.ColumnDataMapper;
 import de.akquinet.jbosscc.guttenbase.meta.ColumnMetaData;
 import de.akquinet.jbosscc.guttenbase.meta.ColumnType;
 import de.akquinet.jbosscc.guttenbase.tools.ScriptExecutorTool;
+import org.junit.Before;
+
+import java.sql.SQLException;
+import java.util.List;
+import java.util.Map;
+
+import static org.junit.Assert.assertEquals;
 
 /**
  * Test a schema migration where all strings are converted.

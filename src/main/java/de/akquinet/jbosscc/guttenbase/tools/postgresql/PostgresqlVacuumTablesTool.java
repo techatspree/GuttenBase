@@ -1,9 +1,9 @@
 package de.akquinet.jbosscc.guttenbase.tools.postgresql;
 
-import java.sql.SQLException;
-
 import de.akquinet.jbosscc.guttenbase.repository.ConnectorRepository;
 import de.akquinet.jbosscc.guttenbase.tools.AbstractTablesOperationTool;
+
+import java.sql.SQLException;
 
 /**
  * Will execute VACUUM ANALYZE table;

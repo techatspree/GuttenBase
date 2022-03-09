@@ -12,7 +12,7 @@ import de.akquinet.jbosscc.guttenbase.repository.ConnectorRepository;
  * @author M. Dahm
  */
 public class GenericSourceDatabaseConfiguration extends DefaultSourceDatabaseConfiguration {
-	public GenericSourceDatabaseConfiguration(final ConnectorRepository connectorRepository) {
-		super(connectorRepository);
-	}
+  public GenericSourceDatabaseConfiguration(final ConnectorRepository connectorRepository) {
+    super(connectorRepository);
+  }
 }

@@ -27,21 +27,21 @@ import java.util.List;
  * @author M. Dahm
  */
 public abstract class ColumnOrderHint implements ConnectorHint<ColumnOrderComparatorFactory> {
-	@Override
-	public Class<ColumnOrderComparatorFactory> getConnectorHintType() {
-		return ColumnOrderComparatorFactory.class;
-	}
+  @Override
+  public Class<ColumnOrderComparatorFactory> getConnectorHintType() {
+    return ColumnOrderComparatorFactory.class;
+  }
 
-	/**
-	 * Helper method
-	 */
-	public static List<ColumnMetaData> getSortedColumns(final ConnectorRepository connectorRepository, final String connectorId,
-			final TableMetaData tableMetaData) {
-		final Comparator<ColumnMetaData> sourceColumnComparator = connectorRepository
-				.getConnectorHint(connectorId, ColumnOrderComparatorFactory.class).getValue().createComparator();
-		final List<ColumnMetaData> columns = new ArrayList<>(tableMetaData.getColumnMetaData());
-		columns.sort(sourceColumnComparator);
+  /**
+   * Helper method
+   */
+  public static List<ColumnMetaData> getSortedColumns(final ConnectorRepository connectorRepository, final String connectorId,
+                                                      final TableMetaData tableMetaData) {
+    final Comparator<ColumnMetaData> sourceColumnComparator = connectorRepository
+        .getConnectorHint(connectorId, ColumnOrderComparatorFactory.class).getValue().createComparator();
+    final List<ColumnMetaData> columns = new ArrayList<>(tableMetaData.getColumnMetaData());
+    columns.sort(sourceColumnComparator);
 
-		return columns;
-	}
+    return columns;
+  }
 }

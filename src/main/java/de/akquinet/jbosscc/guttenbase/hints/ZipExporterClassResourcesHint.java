@@ -18,8 +18,8 @@ import de.akquinet.jbosscc.guttenbase.export.zip.ZipExporterClassResources;
  * @author M. Dahm
  */
 public abstract class ZipExporterClassResourcesHint implements ConnectorHint<ZipExporterClassResources> {
-	@Override
-	public Class<ZipExporterClassResources> getConnectorHintType() {
-		return ZipExporterClassResources.class;
-	}
+  @Override
+  public Class<ZipExporterClassResources> getConnectorHintType() {
+    return ZipExporterClassResources.class;
+  }
 }

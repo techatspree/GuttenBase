@@ -24,8 +24,8 @@ import java.sql.PreparedStatement;
  * @author M. Dahm
  */
 public abstract class NumberOfRowsPerBatchHint implements ConnectorHint<NumberOfRowsPerBatch> {
-	@Override
-	public final Class<NumberOfRowsPerBatch> getConnectorHintType() {
-		return NumberOfRowsPerBatch.class;
-	}
+  @Override
+  public final Class<NumberOfRowsPerBatch> getConnectorHintType() {
+    return NumberOfRowsPerBatch.class;
+  }
 }

@@ -10,10 +10,8 @@ import de.akquinet.jbosscc.guttenbase.repository.ConnectorRepository;
  *
  * @author M. Dahm
  */
-public class Db2SourceDatabaseConfiguration extends DefaultSourceDatabaseConfiguration
-{
-  public Db2SourceDatabaseConfiguration(final ConnectorRepository connectorRepository)
-  {
+public class Db2SourceDatabaseConfiguration extends DefaultSourceDatabaseConfiguration {
+  public Db2SourceDatabaseConfiguration(final ConnectorRepository connectorRepository) {
     super(connectorRepository);
   }
 }

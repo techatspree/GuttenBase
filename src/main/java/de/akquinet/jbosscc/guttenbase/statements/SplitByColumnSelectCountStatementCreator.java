@@ -24,20 +24,20 @@ import java.util.List;
  * @author M. Dahm
  */
 public class SplitByColumnSelectCountStatementCreator extends AbstractSelectStatementCreator {
-	public SplitByColumnSelectCountStatementCreator(final ConnectorRepository connectorRepository, final String connectorId) {
-		super(connectorRepository, connectorId);
-	}
+  public SplitByColumnSelectCountStatementCreator(final ConnectorRepository connectorRepository, final String connectorId) {
+    super(connectorRepository, connectorId);
+  }
 
-	@Override
-	protected String createColumnClause(final List<ColumnMetaData> columns) throws SQLException {
-		return "COUNT(*)";
-	}
+  @Override
+  protected String createColumnClause(final List<ColumnMetaData> columns) throws SQLException {
+    return "COUNT(*)";
+  }
 
-	@Override
-	protected String createWhereClause(final TableMetaData tableMetaData) throws SQLException {
-		final ColumnMetaData splitColumn = _connectorRepository.getConnectorHint(_connectorId, SplitColumn.class).getValue()
-				.getSplitColumn(tableMetaData);
+  @Override
+  protected String createWhereClause(final TableMetaData tableMetaData) throws SQLException {
+    final ColumnMetaData splitColumn = _connectorRepository.getConnectorHint(_connectorId, SplitColumn.class).getValue()
+        .getSplitColumn(tableMetaData);
 
-		return "WHERE " + splitColumn.getColumnName() + " BETWEEN ? AND ?";
-	}
+    return "WHERE " + splitColumn.getColumnName() + " BETWEEN ? AND ?";
+  }
 }

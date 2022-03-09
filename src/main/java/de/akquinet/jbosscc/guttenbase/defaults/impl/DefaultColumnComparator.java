@@ -12,11 +12,9 @@ import java.util.Comparator;
  *
  * @author M. Dahm
  */
-public final class DefaultColumnComparator implements Comparator<ColumnMetaData>
-{
+public final class DefaultColumnComparator implements Comparator<ColumnMetaData> {
   @Override
-  public int compare(final ColumnMetaData c1, final ColumnMetaData c2)
-  {
+  public int compare(final ColumnMetaData c1, final ColumnMetaData c2) {
     return c1.compareTo(c2);
   }
 }

@@ -13,8 +13,8 @@ import de.akquinet.jbosscc.guttenbase.mapping.TableOrderComparatorFactory;
  * @author M. Dahm
  */
 public class DefaultTableOrderHint extends TableOrderHint {
-	@Override
-	public TableOrderComparatorFactory getValue() {
-		return () -> Comparable::compareTo;
-	}
+  @Override
+  public TableOrderComparatorFactory getValue() {
+    return () -> Comparable::compareTo;
+  }
 }

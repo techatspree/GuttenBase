@@ -24,17 +24,17 @@ import java.util.List;
  * @author M. Dahm
  */
 public class SplitByColumnSelectMinMaxStatementCreator extends AbstractSelectStatementCreator {
-	public SplitByColumnSelectMinMaxStatementCreator(final ConnectorRepository connectorRepository, final String connectorId) {
-		super(connectorRepository, connectorId);
-	}
+  public SplitByColumnSelectMinMaxStatementCreator(final ConnectorRepository connectorRepository, final String connectorId) {
+    super(connectorRepository, connectorId);
+  }
 
-	@Override
-	protected String createColumnClause(final List<ColumnMetaData> columns) throws SQLException {
-		assert !columns.isEmpty();
-		final TableMetaData tableMetaData = columns.get(0).getTableMetaData();
-		final ColumnMetaData splitColumn = _connectorRepository.getConnectorHint(_connectorId, SplitColumn.class).getValue()
-				.getSplitColumn(tableMetaData);
+  @Override
+  protected String createColumnClause(final List<ColumnMetaData> columns) throws SQLException {
+    assert !columns.isEmpty();
+    final TableMetaData tableMetaData = columns.get(0).getTableMetaData();
+    final ColumnMetaData splitColumn = _connectorRepository.getConnectorHint(_connectorId, SplitColumn.class).getValue()
+        .getSplitColumn(tableMetaData);
 
-		return "MIN(" + splitColumn.getColumnName() + "), MAX(" + splitColumn.getColumnName() + ")";
-	}
+    return "MIN(" + splitColumn.getColumnName() + "), MAX(" + splitColumn.getColumnName() + ")";
+  }
 }

@@ -12,7 +12,7 @@ import de.akquinet.jbosscc.guttenbase.connector.ConnectorInfo;
  * @author M. Dahm
  */
 public interface URLConnectorInfo extends ConnectorInfo {
-	String getUrl();
+  String getUrl();
 
-	String getDriver();
+  String getDriver();
 }

@@ -15,8 +15,8 @@ import java.util.HashMap;
  * @author M. Dahm
  */
 public class DefaultExportDumpExtraInformationHint extends ExportDumpExtraInformationHint {
-	@Override
-	public ExportDumpExtraInformation getValue() {
-		return (connectorRepository, connectorId, exportDumpConnectionInfo) -> new HashMap<>();
-	}
+  @Override
+  public ExportDumpExtraInformation getValue() {
+    return (connectorRepository, connectorId, exportDumpConnectionInfo) -> new HashMap<>();
+  }
 }

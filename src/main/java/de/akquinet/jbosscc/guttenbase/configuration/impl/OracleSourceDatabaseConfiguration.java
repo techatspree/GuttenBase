@@ -12,7 +12,7 @@ import de.akquinet.jbosscc.guttenbase.repository.ConnectorRepository;
  * @author M. Dahm
  */
 public class OracleSourceDatabaseConfiguration extends DefaultSourceDatabaseConfiguration {
-	public OracleSourceDatabaseConfiguration(final ConnectorRepository connectorRepository) {
-		super(connectorRepository);
-	}
+  public OracleSourceDatabaseConfiguration(final ConnectorRepository connectorRepository) {
+    super(connectorRepository);
+  }
 }

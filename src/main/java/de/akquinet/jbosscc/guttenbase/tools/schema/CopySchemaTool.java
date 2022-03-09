@@ -2,6 +2,7 @@ package de.akquinet.jbosscc.guttenbase.tools.schema;
 
 import de.akquinet.jbosscc.guttenbase.repository.ConnectorRepository;
 import de.akquinet.jbosscc.guttenbase.tools.ScriptExecutorTool;
+
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -26,7 +27,7 @@ public class CopySchemaTool {
   public List<String> createDDLScript(final String sourceConnectorId, final String targetConnectorId) throws SQLException {
     final List<String> result = new ArrayList<>();
     final SchemaScriptCreatorTool schemaScriptCreatorTool = new SchemaScriptCreatorTool(_connectorRepository, sourceConnectorId,
-      targetConnectorId);
+        targetConnectorId);
 
     result.addAll(schemaScriptCreatorTool.createTableStatements());
     result.addAll(schemaScriptCreatorTool.createPrimaryKeyStatements());

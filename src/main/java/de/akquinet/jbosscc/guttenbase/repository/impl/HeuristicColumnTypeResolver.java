@@ -42,7 +42,7 @@ public class HeuristicColumnTypeResolver implements ColumnTypeResolver {
         return ColumnType.CLASS_BLOB;
       } else if (columnType.equals("BIT") || columnType.startsWith("BOOL")) {
         return ColumnType.CLASS_BOOLEAN;
-      } else if (columnType.equals("BYTEA")|| columnType.startsWith("VARBINARY"))  {
+      } else if (columnType.equals("BYTEA") || columnType.startsWith("VARBINARY")) {
         return ColumnType.CLASS_BLOB;
       } else {
         return ColumnType.valueForClass(columnMetaData.getColumnClassName());
@@ -54,37 +54,37 @@ public class HeuristicColumnTypeResolver implements ColumnTypeResolver {
 
   private ColumnType checkDatabaseSpecificTypes(final String columnType, final DatabaseType databaseType) {
     switch (databaseType) {
-    case POSTGRESQL:
+      case POSTGRESQL:
         switch (columnType) {
-            case "BIT":
-                return ColumnType.CLASS_STRING;
-            case "INT8":
-                return ColumnType.CLASS_BIGDECIMAL;
-            case "OID":
-                return ColumnType.CLASS_BLOB;
+          case "BIT":
+            return ColumnType.CLASS_STRING;
+          case "INT8":
+            return ColumnType.CLASS_BIGDECIMAL;
+          case "OID":
+            return ColumnType.CLASS_BLOB;
         }
-      break;
+        break;
 
-    case ORACLE:
-      if (columnType.equals("CLOB")) {
-        return ColumnType.CLASS_STRING;
-      }
-      if (columnType.equals("TIMESTAMP")) {
-        return ColumnType.CLASS_TIMESTAMP;
-      }
-      if (columnType.equals("XMLTYPE")) {
-        return ColumnType.CLASS_SQLXML;
-      }
-      break;
+      case ORACLE:
+        if (columnType.equals("CLOB")) {
+          return ColumnType.CLASS_STRING;
+        }
+        if (columnType.equals("TIMESTAMP")) {
+          return ColumnType.CLASS_TIMESTAMP;
+        }
+        if (columnType.equals("XMLTYPE")) {
+          return ColumnType.CLASS_SQLXML;
+        }
+        break;
 
-    case H2DB:
-      if (columnType.equals("CLOB")) {
-        return ColumnType.CLASS_STRING;
-      }
-      break;
+      case H2DB:
+        if (columnType.equals("CLOB")) {
+          return ColumnType.CLASS_STRING;
+        }
+        break;
 
-    default:
-      break;
+      default:
+        break;
     }
 
     return null;

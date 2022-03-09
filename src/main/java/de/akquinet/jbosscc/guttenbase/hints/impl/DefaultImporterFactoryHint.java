@@ -14,8 +14,8 @@ import de.akquinet.jbosscc.guttenbase.hints.ImporterFactoryHint;
  * @author M. Dahm
  */
 public class DefaultImporterFactoryHint extends ImporterFactoryHint {
-	@Override
-	public ImporterFactory getValue() {
-		return ZipImporter::new;
-	}
+  @Override
+  public ImporterFactory getValue() {
+    return ZipImporter::new;
+  }
 }

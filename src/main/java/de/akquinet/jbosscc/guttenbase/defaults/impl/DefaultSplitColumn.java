@@ -22,28 +22,28 @@ import java.util.List;
  * @author M. Dahm
  */
 public class DefaultSplitColumn implements SplitColumn {
-	@Override
-	public ColumnMetaData getSplitColumn(final TableMetaData table) throws SQLException {
-		final List<ColumnMetaData> columns = table.getColumnMetaData();
+  @Override
+  public ColumnMetaData getSplitColumn(final TableMetaData table) throws SQLException {
+    final List<ColumnMetaData> columns = table.getColumnMetaData();
 
-		for (final ColumnMetaData columnMetaData : columns) {
-			if (columnMetaData.isPrimaryKey()) {
-				return columnMetaData;
-			}
-		}
+    for (final ColumnMetaData columnMetaData : columns) {
+      if (columnMetaData.isPrimaryKey()) {
+        return columnMetaData;
+      }
+    }
 
-		for (final ColumnMetaData columnMetaData : columns) {
-			final String columnClassName = columnMetaData.getColumnClassName();
+    for (final ColumnMetaData columnMetaData : columns) {
+      final String columnClassName = columnMetaData.getColumnClassName();
 
-			if (ColumnType.isSupportedClass(columnClassName)) {
-				final ColumnType columnType = ColumnType.valueForClass(columnClassName);
+      if (ColumnType.isSupportedClass(columnClassName)) {
+        final ColumnType columnType = ColumnType.valueForClass(columnClassName);
 
-				if (columnType.isNumber()) {
-					return columnMetaData;
-				}
-			}
-		}
+        if (columnType.isNumber()) {
+          return columnMetaData;
+        }
+      }
+    }
 
-		return columns.get(0);
-	}
+    return columns.get(0);
+  }
 }

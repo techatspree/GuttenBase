@@ -13,6 +13,7 @@ import de.akquinet.jbosscc.guttenbase.meta.TableMetaData;
 import de.akquinet.jbosscc.guttenbase.repository.ConnectorRepository;
 import de.akquinet.jbosscc.guttenbase.statements.SelectStatementCreator;
 import org.apache.log4j.Logger;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -62,7 +63,7 @@ public class ReadTableDataTool {
       final DatabaseMetaData databaseMetaData = _connectorRepository.getDatabaseMetaData(_connectorId);
       final String tableName = tableMapper.fullyQualifiedTableName(_tableMetaData, databaseMetaData);
       final PreparedStatement selectStatement = new SelectStatementCreator(_connectorRepository, _connectorId)
-        .createSelectStatement(connection, tableName, _tableMetaData);
+          .createSelectStatement(connection, tableName, _tableMetaData);
       selectStatement.setFetchSize(512);
 
       sourceConfiguration.beforeSelect(connection, _connectorId, _tableMetaData);
@@ -97,7 +98,7 @@ public class ReadTableDataTool {
     final ColumnMapper sourceColumnNameMapper = _connectorRepository.getConnectorHint(_connectorId, ColumnMapper.class).getValue();
 
     final List<ColumnMetaData> orderedSourceColumns = ColumnOrderHint.getSortedColumns(_connectorRepository, _connectorId,
-      _tableMetaData);
+        _tableMetaData);
 
     if (lines < 0) {
       lines = Integer.MAX_VALUE;
@@ -113,7 +114,7 @@ public class ReadTableDataTool {
         final String columnName = sourceColumnNameMapper.mapColumnName(sourceColumn, _tableMetaData);
         final ColumnType sourceColumnType = commonColumnTypeResolver.getColumnType(_connectorId, sourceColumn);
         final ColumnTypeMapping columnTypeMapping = commonColumnTypeResolver.getCommonColumnTypeMapping(
-          sourceColumn, _connectorId, sourceColumn);
+            sourceColumn, _connectorId, sourceColumn);
         final Object data = sourceColumnType.getValue(_resultSet, columnIndex);
         final Object mappedData = columnTypeMapping.getColumnDataMapper().map(sourceColumn, sourceColumn, data);
 

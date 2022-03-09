@@ -65,12 +65,12 @@ public class MsSqlTargetDatabaseConfiguration extends DefaultTargetDatabaseConfi
   }
 
   private void disableTableForeignKeys(final Connection connection, final String connectorId, final List<TableMetaData> tableMetaData)
-    throws SQLException {
+      throws SQLException {
     setTableForeignKeys(connection, connectorId, tableMetaData, false);
   }
 
   private void enableTableForeignKeys(final Connection connection, final String connectorId, final List<TableMetaData> tableMetaData)
-    throws SQLException {
+      throws SQLException {
     setTableForeignKeys(connection, connectorId, tableMetaData, true);
   }
 
@@ -107,6 +107,6 @@ public class MsSqlTargetDatabaseConfiguration extends DefaultTargetDatabaseConfi
 
   private boolean isIdentityColumn(ColumnMetaData columnMetaData) {
     return columnMetaData.getColumnTypeName().toUpperCase().contains("IDENTITY")
-      || (columnMetaData.isPrimaryKey() && columnMetaData.isAutoIncrement() && columnMetaData.getTableMetaData().getPrimaryKeyColumns().size() == 1);
+        || (columnMetaData.isPrimaryKey() && columnMetaData.isAutoIncrement() && columnMetaData.getTableMetaData().getPrimaryKeyColumns().size() == 1);
   }
 }

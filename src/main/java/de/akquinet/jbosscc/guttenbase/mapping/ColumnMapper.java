@@ -15,8 +15,7 @@ import java.util.List;
  *
  * @author M. Dahm
  */
-public interface ColumnMapper
-{
+public interface ColumnMapper {
   /**
    * Return matching columns in target table. Must not be NULL.
    */
@@ -29,25 +28,21 @@ public interface ColumnMapper
   String mapColumnName(ColumnMetaData source, TableMetaData targetTableMetaData) throws SQLException;
 
 
-  class ColumnMapperResult
-  {
+  class ColumnMapperResult {
     private final List<ColumnMetaData> _columns;
     private final boolean _emptyColumnListOk;
 
-    public ColumnMapperResult(final List<ColumnMetaData> columns)
-    {
+    public ColumnMapperResult(final List<ColumnMetaData> columns) {
       this(columns, false);
     }
 
-    public ColumnMapperResult(final List<ColumnMetaData> columns, final boolean emptyColumnListOk)
-    {
+    public ColumnMapperResult(final List<ColumnMetaData> columns, final boolean emptyColumnListOk) {
       assert columns != null : "columns != null";
       _columns = columns;
       _emptyColumnListOk = emptyColumnListOk;
     }
 
-    public List<ColumnMetaData> getColumns()
-    {
+    public List<ColumnMetaData> getColumns() {
       return _columns;
     }
 
@@ -55,8 +50,7 @@ public interface ColumnMapper
      * If the column cannot be found in the target table this raises an error. However, if you explicitly want to drop that
      * column and this method returns true it will just output a warning instead.
      */
-    public boolean isEmptyColumnListOk()
-    {
+    public boolean isEmptyColumnListOk() {
       return _emptyColumnListOk;
     }
   }

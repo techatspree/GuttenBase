@@ -23,7 +23,7 @@ public abstract class DefaultTargetDatabaseConfiguration extends AbstractDatabas
 
   /**
    * {@inheritDoc}
-  *
+   * <p>
    * true by default
    */
   @Override
@@ -33,7 +33,7 @@ public abstract class DefaultTargetDatabaseConfiguration extends AbstractDatabas
 
   /**
    * Connection is set autocommit false.
-  *
+   * <p>
    * {@inheritDoc}
    */
   @Override

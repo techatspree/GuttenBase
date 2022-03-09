@@ -21,7 +21,7 @@ public class DataSourceConnector extends AbstractConnector {
   private final DataSourceConnectorInfo _dataSourceConnectionInfo;
 
   public DataSourceConnector(final ConnectorRepository connectorRepository, final String connectorId,
-      final DataSourceConnectorInfo dataSourceConnectionInfo) {
+                             final DataSourceConnectorInfo dataSourceConnectionInfo) {
     super(connectorRepository, connectorId, dataSourceConnectionInfo);
 
     assert dataSourceConnectionInfo != null : "dataSourceConnectionInfo != null";

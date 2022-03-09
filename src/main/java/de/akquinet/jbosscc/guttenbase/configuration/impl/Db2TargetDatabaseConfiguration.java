@@ -90,11 +90,11 @@ public class Db2TargetDatabaseConfiguration extends DefaultTargetDatabaseConfigu
 
       for (final String constraintName : entry.getValue()) {
         executeSQL(connection, "ALTER TABLE " + _schema
-                + "."
-                + tableName
-                + " ALTER FOREIGN KEY "
-                + constraintName
-                + (enable ? " ENFORCED" : " NOT ENFORCED"));
+            + "."
+            + tableName
+            + " ALTER FOREIGN KEY "
+            + constraintName
+            + (enable ? " ENFORCED" : " NOT ENFORCED"));
       }
     }
   }
@@ -102,7 +102,7 @@ public class Db2TargetDatabaseConfiguration extends DefaultTargetDatabaseConfigu
   private void loadConstraints(final Connection connection) throws SQLException {
     final ScriptExecutorTool scriptExecutorTool = new ScriptExecutorTool(_connectorRepository);
     final List<Map<String, Object>> queryResult = scriptExecutorTool.executeQuery(connection,
-            "SELECT DISTINCT CONSTNAME, TABNAME FROM SYSCAT.TABCONST WHERE TABSCHEMA='" + _schema + "' AND TYPE='F' ORDER BY TABNAME");
+        "SELECT DISTINCT CONSTNAME, TABNAME FROM SYSCAT.TABCONST WHERE TABSCHEMA='" + _schema + "' AND TYPE='F' ORDER BY TABNAME");
 
     for (final Map<String, Object> map : queryResult) {
       final String constraintName = String.valueOf(map.get("CONSTNAME"));

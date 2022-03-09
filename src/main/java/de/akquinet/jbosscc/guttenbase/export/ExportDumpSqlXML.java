@@ -19,54 +19,54 @@ import java.sql.SQLXML;
  * @author M. Dahm
  */
 public class ExportDumpSqlXML extends AbstractExportDumpObject implements SQLXML {
-	private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
-	public ExportDumpSqlXML() {
-		this(null);
-	}
+  public ExportDumpSqlXML() {
+    this(null);
+  }
 
-	public ExportDumpSqlXML(final InputStream inputStream) {
-		super(inputStream);
-	}
+  public ExportDumpSqlXML(final InputStream inputStream) {
+    super(inputStream);
+  }
 
-	@Override
-	public Reader getCharacterStream() throws SQLException {
-		return new InputStreamReader(getBinaryStream());
-	}
+  @Override
+  public Reader getCharacterStream() throws SQLException {
+    return new InputStreamReader(getBinaryStream());
+  }
 
-	@Override
-	public OutputStream setBinaryStream() throws SQLException {
-		throw new UnsupportedOperationException();
-	}
+  @Override
+  public OutputStream setBinaryStream() throws SQLException {
+    throw new UnsupportedOperationException();
+  }
 
-	@Override
-	public Writer setCharacterStream() throws SQLException {
-		throw new UnsupportedOperationException();
+  @Override
+  public Writer setCharacterStream() throws SQLException {
+    throw new UnsupportedOperationException();
 
-	}
+  }
 
-	@Override
-	public String getString() throws SQLException {
-		try {
-			return IOUtils.toString(getBinaryStream());
-		} catch (final IOException e) {
-			throw new SQLException("getString", e);
-		}
-	}
+  @Override
+  public String getString() throws SQLException {
+    try {
+      return IOUtils.toString(getBinaryStream());
+    } catch (final IOException e) {
+      throw new SQLException("getString", e);
+    }
+  }
 
-	@Override
-	public void setString(final String value) throws SQLException {
-		throw new UnsupportedOperationException();
+  @Override
+  public void setString(final String value) throws SQLException {
+    throw new UnsupportedOperationException();
 
-	}
+  }
 
-	@Override
-	public <T extends Source> T getSource(final Class<T> sourceClass) throws SQLException {
-		throw new UnsupportedOperationException();
-	}
+  @Override
+  public <T extends Source> T getSource(final Class<T> sourceClass) throws SQLException {
+    throw new UnsupportedOperationException();
+  }
 
-	@Override
-	public <T extends Result> T setResult(final Class<T> resultClass) throws SQLException {
-		throw new UnsupportedOperationException();
-	}
+  @Override
+  public <T extends Result> T setResult(final Class<T> resultClass) throws SQLException {
+    throw new UnsupportedOperationException();
+  }
 }

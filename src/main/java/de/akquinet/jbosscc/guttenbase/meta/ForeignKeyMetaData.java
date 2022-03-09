@@ -13,15 +13,15 @@ import java.util.List;
  * @author M. Dahm
  */
 public interface ForeignKeyMetaData extends Comparable<ForeignKeyMetaData>, Serializable {
-    String getForeignKeyName();
+  String getForeignKeyName();
 
-    TableMetaData getTableMetaData();
+  TableMetaData getTableMetaData();
 
-    List<ColumnMetaData> getReferencingColumns();
+  List<ColumnMetaData> getReferencingColumns();
 
-    List<ColumnMetaData> getReferencedColumns();
+  List<ColumnMetaData> getReferencedColumns();
 
-    TableMetaData getReferencingTableMetaData();
+  TableMetaData getReferencingTableMetaData();
 
-    TableMetaData getReferencedTableMetaData();
+  TableMetaData getReferencedTableMetaData();
 }

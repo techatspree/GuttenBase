@@ -17,8 +17,8 @@ import de.akquinet.jbosscc.guttenbase.tools.MaxNumberOfDataItems;
  * @author M. Dahm
  */
 public abstract class MaxNumberOfDataItemsHint implements ConnectorHint<MaxNumberOfDataItems> {
-	@Override
-	public final Class<MaxNumberOfDataItems> getConnectorHintType() {
-		return MaxNumberOfDataItems.class;
-	}
+  @Override
+  public final Class<MaxNumberOfDataItems> getConnectorHintType() {
+    return MaxNumberOfDataItems.class;
+  }
 }

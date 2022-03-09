@@ -14,7 +14,7 @@ import de.akquinet.jbosscc.guttenbase.repository.ConnectorRepository;
  * @author M. Dahm
  */
 public class MsAccessSourceDatabaseConfiguration extends DefaultSourceDatabaseConfiguration {
-	public MsAccessSourceDatabaseConfiguration(final ConnectorRepository connectorRepository) {
-		super(connectorRepository);
-	}
+  public MsAccessSourceDatabaseConfiguration(final ConnectorRepository connectorRepository) {
+    super(connectorRepository);
+  }
 }

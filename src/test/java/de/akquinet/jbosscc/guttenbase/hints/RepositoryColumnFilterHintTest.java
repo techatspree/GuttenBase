@@ -1,14 +1,13 @@
 package de.akquinet.jbosscc.guttenbase.hints;
 
-import static org.junit.Assert.assertEquals;
-
-import org.junit.Before;
-import org.junit.Test;
-
 import de.akquinet.jbosscc.guttenbase.configuration.TestHsqlConnectionInfo;
 import de.akquinet.jbosscc.guttenbase.repository.RepositoryColumnFilter;
 import de.akquinet.jbosscc.guttenbase.tools.AbstractGuttenBaseTest;
 import de.akquinet.jbosscc.guttenbase.tools.ScriptExecutorTool;
+import org.junit.Before;
+import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
 
 /**
  * Filters columns when inquiring connector repository.
@@ -18,27 +17,22 @@ import de.akquinet.jbosscc.guttenbase.tools.ScriptExecutorTool;
  *
  * @author M. Dahm
  */
-public class RepositoryColumnFilterHintTest extends AbstractGuttenBaseTest
-{
+public class RepositoryColumnFilterHintTest extends AbstractGuttenBaseTest {
   public static final String SOURCE = "SOURCE";
 
   @Before
-  public final void setupTables() throws Exception
-  {
+  public final void setupTables() throws Exception {
     _connectorRepository.addConnectionInfo(SOURCE, new TestHsqlConnectionInfo());
     new ScriptExecutorTool(_connectorRepository).executeFileScript(SOURCE, "/ddl/tables.sql");
   }
 
   @Test
-  public void testFilter() throws Exception
-  {
+  public void testFilter() throws Exception {
     assertEquals("Before", 6, _connectorRepository.getDatabaseMetaData(SOURCE).getTableMetaData("FOO_USER").getColumnCount());
 
-    _connectorRepository.addConnectorHint(SOURCE, new RepositoryColumnFilterHint()
-    {
+    _connectorRepository.addConnectorHint(SOURCE, new RepositoryColumnFilterHint() {
       @Override
-      public RepositoryColumnFilter getValue()
-      {
+      public RepositoryColumnFilter getValue() {
         return column -> !column.getColumnName().equalsIgnoreCase("password");
       }
     });

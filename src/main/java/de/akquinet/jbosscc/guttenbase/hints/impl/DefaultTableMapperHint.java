@@ -14,8 +14,8 @@ import de.akquinet.jbosscc.guttenbase.mapping.TableMapper;
  * @author M. Dahm
  */
 public class DefaultTableMapperHint extends TableMapperHint {
-	@Override
-	public TableMapper getValue() {
-		return new DefaultTableMapper();
-	}
+  @Override
+  public TableMapper getValue() {
+    return new DefaultTableMapper();
+  }
 }

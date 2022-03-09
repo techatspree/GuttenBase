@@ -1,7 +1,6 @@
 package de.akquinet.jbosscc.guttenbase.hints.impl;
 
 
-
 import de.akquinet.jbosscc.guttenbase.defaults.impl.DefaultZipExporterClassResources;
 import de.akquinet.jbosscc.guttenbase.export.zip.ZipExporterClassResources;
 import de.akquinet.jbosscc.guttenbase.export.zip.ZipStartup;

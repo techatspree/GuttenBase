@@ -13,9 +13,9 @@ import de.akquinet.jbosscc.guttenbase.hints.ImportDumpExtraInformationHint;
  * @author M. Dahm
  */
 public class DefaultImportDumpExtraInformationHint extends ImportDumpExtraInformationHint {
-	@Override
-	public ImportDumpExtraInformation getValue() {
-		return extraInformation -> {
-        };
-	}
+  @Override
+  public ImportDumpExtraInformation getValue() {
+    return extraInformation -> {
+    };
+  }
 }

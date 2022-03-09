@@ -12,10 +12,10 @@ import java.util.UUID;
  * @author M. Dahm
  */
 public interface InternalColumnMetaData extends ColumnMetaData {
-	/**
-	 * Make columns globally uniq since the name may not be uniq within the data base.
-	 */
-	UUID getColumnId();
+  /**
+   * Make columns globally uniq since the name may not be uniq within the data base.
+   */
+  UUID getColumnId();
 
-	void setPrimaryKey(final boolean primaryKey);
+  void setPrimaryKey(final boolean primaryKey);
 }

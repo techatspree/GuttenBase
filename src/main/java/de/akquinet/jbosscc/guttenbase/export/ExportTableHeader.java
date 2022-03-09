@@ -10,7 +10,6 @@ import java.io.Serializable;
  *
  * @author M. Dahm
  */
-public interface ExportTableHeader extends Serializable
-{
+public interface ExportTableHeader extends Serializable {
   String getTableName();
 }

@@ -12,11 +12,9 @@ import de.akquinet.jbosscc.guttenbase.repository.DatabaseColumnFilter;
  *
  * @author M. Dahm
  */
-public class DefaultDatabaseColumnFilterHint extends DatabaseColumnFilterHint
-{
+public class DefaultDatabaseColumnFilterHint extends DatabaseColumnFilterHint {
   @Override
-  public DatabaseColumnFilter getValue()
-  {
+  public DatabaseColumnFilter getValue() {
     return new DefaultDatabaseColumnFilter();
   }
 }

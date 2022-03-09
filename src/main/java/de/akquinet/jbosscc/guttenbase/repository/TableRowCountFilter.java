@@ -2,6 +2,7 @@ package de.akquinet.jbosscc.guttenbase.repository;
 
 import de.akquinet.jbosscc.guttenbase.meta.TableMetaData;
 import de.akquinet.jbosscc.guttenbase.repository.impl.DatabaseMetaDataInspectorTool;
+
 import java.sql.SQLException;
 
 /**

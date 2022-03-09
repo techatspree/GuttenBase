@@ -17,17 +17,17 @@ import java.sql.SQLException;
  * @author M. Dahm
  */
 public class ImportDumpDatabaseConfiguration extends DefaultSourceDatabaseConfiguration {
-	public ImportDumpDatabaseConfiguration(final ConnectorRepository connectorRepository) {
-		super(connectorRepository);
-	}
+  public ImportDumpDatabaseConfiguration(final ConnectorRepository connectorRepository) {
+    super(connectorRepository);
+  }
 
-	@Override
-	public void beforeTableCopy(final Connection connection, final String connectorId, final TableMetaData table) throws SQLException {
-		((ImportDumpConnection) connection).initializeReadTable(table);
-	}
+  @Override
+  public void beforeTableCopy(final Connection connection, final String connectorId, final TableMetaData table) throws SQLException {
+    ((ImportDumpConnection) connection).initializeReadTable(table);
+  }
 
-	@Override
-	public void afterTableCopy(final Connection connection, final String connectorId, final TableMetaData table) throws SQLException {
-		((ImportDumpConnection) connection).finalizeReadTable(table);
-	}
+  @Override
+  public void afterTableCopy(final Connection connection, final String connectorId, final TableMetaData table) throws SQLException {
+    ((ImportDumpConnection) connection).finalizeReadTable(table);
+  }
 }

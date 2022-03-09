@@ -14,11 +14,9 @@ import de.akquinet.jbosscc.guttenbase.utils.TableCopyProgressIndicator;
  *
  * @author M. Dahm
  */
-public abstract class TableCopyProgressIndicatorHint implements ConnectorHint<TableCopyProgressIndicator>
-{
+public abstract class TableCopyProgressIndicatorHint implements ConnectorHint<TableCopyProgressIndicator> {
   @Override
-  public Class<TableCopyProgressIndicator> getConnectorHintType()
-  {
+  public Class<TableCopyProgressIndicator> getConnectorHintType() {
     return TableCopyProgressIndicator.class;
   }
 }

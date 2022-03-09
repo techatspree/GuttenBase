@@ -40,7 +40,7 @@ public class DefaultColumnMapper implements ColumnMapper {
     final String columnName = source.getColumnName();
     final ColumnMetaData columnMetaData = targetTableMetaData.getColumnMetaData(columnName);
     final List<ColumnMetaData> result = columnMetaData != null ? new ArrayList<>(Collections.singletonList(columnMetaData))
-      : new ArrayList<>();
+        : new ArrayList<>();
     return new ColumnMapperResult(result);
   }
 }

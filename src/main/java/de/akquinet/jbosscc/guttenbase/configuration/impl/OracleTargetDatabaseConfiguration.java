@@ -52,7 +52,7 @@ public class OracleTargetDatabaseConfiguration extends DefaultTargetDatabaseConf
   }
 
   private void setReferentialIntegrity(final Connection connection, final String connectorId, final List<TableMetaData> tableMetaDatas,
-      final boolean enable) throws SQLException {
+                                       final boolean enable) throws SQLException {
     final String tablesList = createTablesList(tableMetaDatas);
 
     if (!"".equals(tablesList)) {

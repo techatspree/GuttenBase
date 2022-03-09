@@ -21,8 +21,8 @@ import de.akquinet.jbosscc.guttenbase.tools.schema.comparison.SchemaComparatorTo
  */
 @SuppressWarnings("deprecation")
 public abstract class TableMapperHint implements ConnectorHint<TableMapper> {
-	@Override
-	public Class<TableMapper> getConnectorHintType() {
-		return TableMapper.class;
-	}
+  @Override
+  public Class<TableMapper> getConnectorHintType() {
+    return TableMapper.class;
+  }
 }

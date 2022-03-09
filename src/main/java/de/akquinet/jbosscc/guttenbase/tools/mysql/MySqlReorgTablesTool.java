@@ -13,15 +13,12 @@ import java.sql.SQLException;
  *
  * @author M. Dahm
  */
-public class MySqlReorgTablesTool extends AbstractTablesOperationTool
-{
-  public MySqlReorgTablesTool(final ConnectorRepository connectorRepository)
-  {
+public class MySqlReorgTablesTool extends AbstractTablesOperationTool {
+  public MySqlReorgTablesTool(final ConnectorRepository connectorRepository) {
     super(connectorRepository, "OPTIMIZE TABLE " + TABLE_PLACEHOLDER + ";");
   }
 
-  public void executeOnAllTables(final String target) throws SQLException
-  {
+  public void executeOnAllTables(final String target) throws SQLException {
     executeOnAllTables(target, false, false);
   }
 }

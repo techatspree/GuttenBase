@@ -17,27 +17,26 @@ import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 
-public class CreateSchemaWithRenameToolTest extends AbstractGuttenBaseTest
-{
+public class CreateSchemaWithRenameToolTest extends AbstractGuttenBaseTest {
   private static final String SOURCE_CONNECTOR_ID = "derby";
   private static final String TARGET_CONNECTOR_ID = "hsqldb";
 
   private final CopySchemaTool _objectUnderTest = new CopySchemaTool(_connectorRepository);
 
   @Before
-  public void setup() throws Exception
-  {
+  public void setup() throws Exception {
     _connectorRepository.addConnectionInfo(SOURCE_CONNECTOR_ID, new TestDerbyConnectionInfo());
     _connectorRepository.addConnectionInfo(TARGET_CONNECTOR_ID, new TestH2ConnectionInfo());
 
-    new ScriptExecutorTool(_connectorRepository).executeFileScript(SOURCE_CONNECTOR_ID , "/ddl/derby/script-allshop-derby-mod.sql");
+    new ScriptExecutorTool(_connectorRepository).executeFileScript(SOURCE_CONNECTOR_ID, "/ddl/derby/script-allshop-derby-mod.sql");
 
     _connectorRepository.addConnectorHint(TARGET_CONNECTOR_ID, new TableMapperHint() {
       @Override
       public TableMapper getValue() {
         return new TestTableRenameNameMapper()
-                .addReplacement("OFFICES", "TAB_OFFICES")
-                .addReplacement("ORDERS","TAB_ORDERS");}
+            .addReplacement("OFFICES", "TAB_OFFICES")
+            .addReplacement("ORDERS", "TAB_ORDERS");
+      }
     });
 
 
@@ -45,10 +44,10 @@ public class CreateSchemaWithRenameToolTest extends AbstractGuttenBaseTest
       @Override
       public ColumnMapper getValue() {
         return new TestColumnRenameNameMapper()
-                .addReplacement("OFFICECODE", "ID_OFFICECODE")
-                .addReplacement("ORDERNUMBER", "ID_ORDERNUMBER")
-                .addReplacement("PHONE", "ID_PHONE")
-                .addReplacement("CITY", "ID_CITY");
+            .addReplacement("OFFICECODE", "ID_OFFICECODE")
+            .addReplacement("ORDERNUMBER", "ID_ORDERNUMBER")
+            .addReplacement("PHONE", "ID_PHONE")
+            .addReplacement("CITY", "ID_CITY");
       }
     });
 
@@ -62,22 +61,21 @@ public class CreateSchemaWithRenameToolTest extends AbstractGuttenBaseTest
   }
 
   @Test
-  public void testScript() throws Exception
-  {
+  public void testScript() throws Exception {
 
     _objectUnderTest.copySchema(SOURCE_CONNECTOR_ID, TARGET_CONNECTOR_ID);
 
     assertEquals("After", "TAB_OFFICES", _connectorRepository.getDatabaseMetaData(TARGET_CONNECTOR_ID).
-            getTableMetaData("TAB_OFFICES").getTableName());
+        getTableMetaData("TAB_OFFICES").getTableName());
 
     assertEquals("After", "TAB_ORDERS", _connectorRepository.getDatabaseMetaData(TARGET_CONNECTOR_ID).
-            getTableMetaData("TAB_ORDERS").getTableName());
+        getTableMetaData("TAB_ORDERS").getTableName());
 
     assertEquals("After", "ID_CITY", _connectorRepository.getDatabaseMetaData(TARGET_CONNECTOR_ID)
-            .getTableMetaData("CUSTOMERS").getColumnMetaData("ID_CITY").getColumnName());
+        .getTableMetaData("CUSTOMERS").getColumnMetaData("ID_CITY").getColumnName());
 
     assertEquals("After", "ID_ORDERNUMBER", _connectorRepository.getDatabaseMetaData(TARGET_CONNECTOR_ID)
-            .getTableMetaData("ORDERDETAILS").getColumnMetaData("ID_ORDERNUMBER").getColumnName());
+        .getTableMetaData("ORDERDETAILS").getColumnMetaData("ID_ORDERNUMBER").getColumnName());
 
   }
 }

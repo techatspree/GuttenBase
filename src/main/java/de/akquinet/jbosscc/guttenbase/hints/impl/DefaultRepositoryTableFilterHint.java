@@ -13,8 +13,8 @@ import de.akquinet.jbosscc.guttenbase.repository.RepositoryTableFilter;
  * @author M. Dahm
  */
 public class DefaultRepositoryTableFilterHint extends RepositoryTableFilterHint {
-	@Override
-	public RepositoryTableFilter getValue() {
-		return table -> true;
-	}
+  @Override
+  public RepositoryTableFilter getValue() {
+    return table -> true;
+  }
 }

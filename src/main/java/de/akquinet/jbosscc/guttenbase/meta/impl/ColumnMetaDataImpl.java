@@ -35,15 +35,15 @@ public class ColumnMetaDataImpl implements InternalColumnMetaData {
   private final UUID _columnId = UUID.randomUUID();
 
   public ColumnMetaDataImpl(
-          final int columnType,
-          final String columnName,
-          final String columnTypeName,
-          final String columnClassName,
-          final boolean isNullable,
-          final boolean isAutoIncrement,
-          final int precision,
-          final int scale,
-          final TableMetaData tableMetaData) {
+      final int columnType,
+      final String columnName,
+      final String columnTypeName,
+      final String columnClassName,
+      final boolean isNullable,
+      final boolean isAutoIncrement,
+      final int precision,
+      final int scale,
+      final TableMetaData tableMetaData) {
     assert columnClassName != null : "columnClassName != null";
     assert columnTypeName != null : "columnTypeName != null";
     assert columnName != null : "columnName != null";

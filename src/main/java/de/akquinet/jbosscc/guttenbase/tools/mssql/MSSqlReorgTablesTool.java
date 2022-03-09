@@ -13,16 +13,13 @@ import java.sql.SQLException;
  *
  * @author M. Dahm
  */
-public class MSSqlReorgTablesTool extends AbstractTablesOperationTool
-{
-  public MSSqlReorgTablesTool(final ConnectorRepository connectorRepository)
-  {
+public class MSSqlReorgTablesTool extends AbstractTablesOperationTool {
+  public MSSqlReorgTablesTool(final ConnectorRepository connectorRepository) {
     super(connectorRepository, "ALTER INDEX ALL ON " + TABLE_PLACEHOLDER +
-            " REBUILD WITH (FILLFACTOR = 80, SORT_IN_TEMPDB = ON, STATISTICS_NORECOMPUTE = ON");
+        " REBUILD WITH (FILLFACTOR = 80, SORT_IN_TEMPDB = ON, STATISTICS_NORECOMPUTE = ON");
   }
 
-  public void executeOnAllTables(final String target) throws SQLException
-  {
+  public void executeOnAllTables(final String target) throws SQLException {
     executeOnAllTables(target, false, false);
   }
 }

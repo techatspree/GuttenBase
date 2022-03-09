@@ -1,8 +1,8 @@
 package de.akquinet.jbosscc.guttenbase.tools;
 
-import java.sql.PreparedStatement;
-
 import de.akquinet.jbosscc.guttenbase.meta.TableMetaData;
+
+import java.sql.PreparedStatement;
 
 /**
  * How many rows will be inserted in single transaction? This is an important performance issue.
@@ -22,10 +22,10 @@ import de.akquinet.jbosscc.guttenbase.meta.TableMetaData;
  */
 
 public interface NumberOfRowsPerBatch {
-	int getNumberOfRowsPerBatch(TableMetaData targetTableMetaData);
+  int getNumberOfRowsPerBatch(TableMetaData targetTableMetaData);
 
-	/**
-	 * Use VALUES() clauses or {@link PreparedStatement#addBatch()} as discussed above
-	 */
-	boolean useMultipleValuesClauses(TableMetaData targetTableMetaData);
+  /**
+   * Use VALUES() clauses or {@link PreparedStatement#addBatch()} as discussed above
+   */
+  boolean useMultipleValuesClauses(TableMetaData targetTableMetaData);
 }

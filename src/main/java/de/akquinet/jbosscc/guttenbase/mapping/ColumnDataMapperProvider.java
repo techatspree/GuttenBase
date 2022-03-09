@@ -14,22 +14,17 @@ import java.sql.SQLException;
  * @author M. Dahm
  */
 @SuppressWarnings("RedundantThrows")
-public interface ColumnDataMapperProvider
-{
+public interface ColumnDataMapperProvider {
   /**
    * Find mapping the given configuration.
-   * 
-   * @param sourceColumnMetaData
-   *          source column
-   * @param targetColumnMetaData
-   *          target column
-   * @param sourceColumnType
-   *          as determined by {@link ColumnTypeResolver}
-   * @param targetColumnType
-   *          as determined by {@link ColumnTypeResolver}
+   *
+   * @param sourceColumnMetaData source column
+   * @param targetColumnMetaData target column
+   * @param sourceColumnType     as determined by {@link ColumnTypeResolver}
+   * @param targetColumnType     as determined by {@link ColumnTypeResolver}
    */
   ColumnDataMapper findMapping(final ColumnMetaData sourceColumnMetaData, final ColumnMetaData targetColumnMetaData,
-      final ColumnType sourceColumnType, final ColumnType targetColumnType) throws SQLException;
+                               final ColumnType sourceColumnType, final ColumnType targetColumnType) throws SQLException;
 
   /**
    * Specify additional mapping

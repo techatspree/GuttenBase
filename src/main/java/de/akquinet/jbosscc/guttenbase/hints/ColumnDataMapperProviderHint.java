@@ -15,8 +15,8 @@ import de.akquinet.jbosscc.guttenbase.tools.CommonColumnTypeResolverTool;
  * @author M. Dahm
  */
 public abstract class ColumnDataMapperProviderHint implements ConnectorHint<ColumnDataMapperProvider> {
-	@Override
-	public Class<ColumnDataMapperProvider> getConnectorHintType() {
-		return ColumnDataMapperProvider.class;
-	}
+  @Override
+  public Class<ColumnDataMapperProvider> getConnectorHintType() {
+    return ColumnDataMapperProvider.class;
+  }
 }

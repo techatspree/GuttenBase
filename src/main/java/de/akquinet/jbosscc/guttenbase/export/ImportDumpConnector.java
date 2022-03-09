@@ -19,16 +19,14 @@ import java.sql.SQLException;
  *
  * @author M. Dahm
  */
-public class ImportDumpConnector extends AbstractConnector
-{
+public class ImportDumpConnector extends AbstractConnector {
   private final ImportDumpConnectionInfo _importDumpConnectionInfo;
   private DatabaseMetaData _databaseMetaData;
 
   public ImportDumpConnector(
       final ConnectorRepository connectorRepository,
       final String connectorId,
-      final ImportDumpConnectionInfo importDumpConnectionInfo)
-  {
+      final ImportDumpConnectionInfo importDumpConnectionInfo) {
     super(connectorRepository, connectorId, importDumpConnectionInfo);
 
     _importDumpConnectionInfo = importDumpConnectionInfo;
@@ -38,12 +36,9 @@ public class ImportDumpConnector extends AbstractConnector
    * {@inheritDoc}
    */
   @Override
-  public Connection openConnection() throws SQLException
-  {
-    if (_connection == null || _connection.isClosed())
-    {
-      try
-      {
+  public Connection openConnection() throws SQLException {
+    if (_connection == null || _connection.isClosed()) {
+      try {
         final Importer importer = _connectorRepository.getConnectorHint(_connectorId, ImporterFactory.class).getValue()
             .createImporter();
 
@@ -51,9 +46,7 @@ public class ImportDumpConnector extends AbstractConnector
 
         _databaseMetaData = importer.readDatabaseMetaData();
         _connection = new ImportDumpConnection(importer, _databaseMetaData);
-      }
-      catch (final Exception e)
-      {
+      } catch (final Exception e) {
         throw new ImportException("openConnection", e);
       }
     }
@@ -65,8 +58,7 @@ public class ImportDumpConnector extends AbstractConnector
    * {@inheritDoc}
    */
   @Override
-  public DatabaseMetaData retrieveDatabaseMetaData() throws SQLException
-  {
+  public DatabaseMetaData retrieveDatabaseMetaData() throws SQLException {
     // Make sure the information is there
     openConnection();
     closeConnection();

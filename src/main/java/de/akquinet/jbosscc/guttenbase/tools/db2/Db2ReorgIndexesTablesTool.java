@@ -14,21 +14,17 @@ import java.sql.SQLException;
  *
  * @author M. Dahm
  */
-public class Db2ReorgIndexesTablesTool extends AbstractTablesOperationTool
-{
-  public Db2ReorgIndexesTablesTool(final ConnectorRepository connectorRepository)
-  {
+public class Db2ReorgIndexesTablesTool extends AbstractTablesOperationTool {
+  public Db2ReorgIndexesTablesTool(final ConnectorRepository connectorRepository) {
     super(connectorRepository, "CALL SYSPROC.ADMIN_CMD('REORG INDEXES ALL FOR TABLE " + TABLE_PLACEHOLDER + "');");
   }
 
-  public void executeOnAllTables(final String target) throws SQLException
-  {
+  public void executeOnAllTables(final String target) throws SQLException {
     executeOnAllTables(target, false, false);
   }
 
   @Override
-  public boolean isApplicableOnTable(final TableMetaData tableMetaData)
-  {
+  public boolean isApplicableOnTable(final TableMetaData tableMetaData) {
     // Prevent DB2 SQL Error: SQLCODE=-1146, SQLSTATE=01H52
     return !tableMetaData.getIndexes().isEmpty();
   }

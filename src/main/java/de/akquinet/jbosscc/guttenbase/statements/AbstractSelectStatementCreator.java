@@ -72,11 +72,11 @@ public abstract class AbstractSelectStatementCreator extends AbstractStatementCr
   }
 
   private String createSQL(final String tableName, final TableMetaData tableMetaData, final List<ColumnMetaData> columns)
-    throws SQLException {
+      throws SQLException {
 
     return "SELECT " + createColumnClause(columns) +
-      FROM + tableName +
-      " " + createWhereClause(tableMetaData) +
-      " " + createOrderBy(tableMetaData);
+        FROM + tableName +
+        " " + createWhereClause(tableMetaData) +
+        " " + createOrderBy(tableMetaData);
   }
 }

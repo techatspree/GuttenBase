@@ -106,8 +106,8 @@ public class DatabaseMetaDataImpl implements InternalDatabaseMetaData {
 
   private java.sql.DatabaseMetaData createMetaDataProxy(final Map<String, Object> properties) {
     return (java.sql.DatabaseMetaData) Proxy.newProxyInstance(getClass().getClassLoader(),
-      new Class[]{java.sql.DatabaseMetaData.class},
-      (proxy, method, args) -> properties.get(method.getName())
+        new Class[]{java.sql.DatabaseMetaData.class},
+        (proxy, method, args) -> properties.get(method.getName())
     );
   }
 }

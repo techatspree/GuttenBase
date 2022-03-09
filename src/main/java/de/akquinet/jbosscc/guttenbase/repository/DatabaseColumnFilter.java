@@ -14,8 +14,7 @@ import java.sql.SQLException;
  * @author M. Dahm
  */
 @SuppressWarnings("RedundantThrows")
-public interface DatabaseColumnFilter
-{
+public interface DatabaseColumnFilter {
   /**
    * Perform custom check on column before adding it to table meta data
    */

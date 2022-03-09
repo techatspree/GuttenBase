@@ -1,15 +1,13 @@
 package de.akquinet.jbosscc.guttenbase.utils;
 
-import javax.swing.JDialog;
+import javax.swing.*;
 
-public class TimerDaemonThread extends Thread
-{
+public class TimerDaemonThread extends Thread {
   private boolean _active = true;
   private final JDialog _dialog;
   private final ProgressIndicator[] _progressIndicators;
 
-  public TimerDaemonThread(final JDialog dialog, final ProgressIndicator... progressIndicators)
-  {
+  public TimerDaemonThread(final JDialog dialog, final ProgressIndicator... progressIndicators) {
     super("GB-Timer-Daemon");
     setDaemon(true);
 
@@ -18,33 +16,26 @@ public class TimerDaemonThread extends Thread
   }
 
   @Override
-  public void run()
-  {
+  public void run() {
     _dialog.setVisible(true);
 
-    while (_active && _dialog.isVisible())
-    {
-      try
-      {
+    while (_active && _dialog.isVisible()) {
+      try {
         Thread.sleep(800L);
+      } catch (final InterruptedException ignored) {
       }
-      catch (final InterruptedException ignored)
-      {}
 
-      for (final ProgressIndicator progressIndicator : _progressIndicators)
-      {
+      for (final ProgressIndicator progressIndicator : _progressIndicators) {
         progressIndicator.updateTimers();
       }
     }
   }
 
-  public boolean isActive()
-  {
+  public boolean isActive() {
     return _active;
   }
 
-  public void setActive(final boolean active)
-  {
+  public void setActive(final boolean active) {
     _active = active;
   }
 }

@@ -14,5 +14,5 @@ import java.util.Map;
  */
 @SuppressWarnings("RedundantThrows")
 public interface ImportDumpExtraInformation {
-	void processExtraInformation(Map<String, Serializable> extraInformation) throws Exception;
+  void processExtraInformation(Map<String, Serializable> extraInformation) throws Exception;
 }

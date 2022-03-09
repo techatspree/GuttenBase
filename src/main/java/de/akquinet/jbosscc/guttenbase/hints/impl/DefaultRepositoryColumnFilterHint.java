@@ -13,8 +13,8 @@ import de.akquinet.jbosscc.guttenbase.repository.RepositoryColumnFilter;
  * @author M. Dahm
  */
 public class DefaultRepositoryColumnFilterHint extends RepositoryColumnFilterHint {
-	@Override
-	public RepositoryColumnFilter getValue() {
-		return column -> true;
-	}
+  @Override
+  public RepositoryColumnFilter getValue() {
+    return column -> true;
+  }
 }

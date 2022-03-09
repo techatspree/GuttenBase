@@ -10,5 +10,5 @@ package de.akquinet.jbosscc.guttenbase.meta;
  * @author M. Dahm
  */
 public interface InternalForeignKeyMetaData extends ForeignKeyMetaData {
-    void addColumnTuple(final ColumnMetaData referencingColumn, final ColumnMetaData referencedColumn);
+  void addColumnTuple(final ColumnMetaData referencingColumn, final ColumnMetaData referencedColumn);
 }

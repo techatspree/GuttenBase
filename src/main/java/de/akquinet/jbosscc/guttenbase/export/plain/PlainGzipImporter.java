@@ -32,7 +32,7 @@ public class PlainGzipImporter implements Importer {
 
   @Override
   public void initializeImport(final ConnectorRepository connectorRepository, final String connectorId,
-      final ImportDumpConnectionInfo importDumpConnectionInfo) throws IOException {
+                               final ImportDumpConnectionInfo importDumpConnectionInfo) throws IOException {
     assert importDumpConnectionInfo != null : "importDumpConnectionInfo != null";
     assert connectorId != null : "connectorId != null";
     assert connectorRepository != null : "connectorRepository != null";
@@ -87,8 +87,7 @@ public class PlainGzipImporter implements Importer {
     final ImportDumpExtraInformation importDumpExtraInformation = _connectorRepository.getConnectorHint(_connectorId,
         ImportDumpExtraInformation.class).getValue();
 
-    @SuppressWarnings("unchecked")
-    final Map<String, Serializable> extraInformation = (Map<String, Serializable>) readObject();
+    @SuppressWarnings("unchecked") final Map<String, Serializable> extraInformation = (Map<String, Serializable>) readObject();
 
     importDumpExtraInformation.processExtraInformation(extraInformation);
   }

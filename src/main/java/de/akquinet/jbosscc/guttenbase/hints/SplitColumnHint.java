@@ -25,8 +25,8 @@ import de.akquinet.jbosscc.guttenbase.tools.SplitColumn;
  * @author M. Dahm
  */
 public abstract class SplitColumnHint implements ConnectorHint<SplitColumn> {
-	@Override
-	public final Class<SplitColumn> getConnectorHintType() {
-		return SplitColumn.class;
-	}
+  @Override
+  public final Class<SplitColumn> getConnectorHintType() {
+    return SplitColumn.class;
+  }
 }

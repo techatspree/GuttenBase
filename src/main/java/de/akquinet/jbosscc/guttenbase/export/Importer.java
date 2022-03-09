@@ -14,14 +14,14 @@ import de.akquinet.jbosscc.guttenbase.repository.ConnectorRepository;
  * @author M. Dahm
  */
 public interface Importer {
-	void initializeImport(final ConnectorRepository connectorRepository, final String connectorId,
-			final ImportDumpConnectionInfo importDumpConnectionInfo) throws Exception;
+  void initializeImport(final ConnectorRepository connectorRepository, final String connectorId,
+                        final ImportDumpConnectionInfo importDumpConnectionInfo) throws Exception;
 
-	void finishImport() throws Exception;
+  void finishImport() throws Exception;
 
-	DatabaseMetaData readDatabaseMetaData() throws Exception;
+  DatabaseMetaData readDatabaseMetaData() throws Exception;
 
-	Object readObject() throws Exception;
+  Object readObject() throws Exception;
 
-	void seekTableHeader(TableMetaData tableMetaData) throws Exception;
+  void seekTableHeader(TableMetaData tableMetaData) throws Exception;
 }

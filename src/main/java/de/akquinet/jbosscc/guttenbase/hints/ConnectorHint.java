@@ -11,7 +11,7 @@ package de.akquinet.jbosscc.guttenbase.hints;
  * @author M. Dahm
  */
 public interface ConnectorHint<T> {
-    Class<T> getConnectorHintType();
+  Class<T> getConnectorHintType();
 
-    T getValue();
+  T getValue();
 }

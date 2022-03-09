@@ -5,6 +5,7 @@ import de.akquinet.jbosscc.guttenbase.meta.TableMetaData;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;

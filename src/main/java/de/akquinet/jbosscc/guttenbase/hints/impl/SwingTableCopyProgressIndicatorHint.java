@@ -12,11 +12,9 @@ import de.akquinet.jbosscc.guttenbase.utils.TableCopyProgressIndicator;
  *
  * @author M. Dahm
  */
-public final class SwingTableCopyProgressIndicatorHint extends TableCopyProgressIndicatorHint
-{
+public final class SwingTableCopyProgressIndicatorHint extends TableCopyProgressIndicatorHint {
   @Override
-  public TableCopyProgressIndicator getValue()
-  {
+  public TableCopyProgressIndicator getValue() {
     return new SwingTableCopyProgressIndicator();
   }
 }

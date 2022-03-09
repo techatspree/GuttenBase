@@ -18,8 +18,8 @@ import de.akquinet.jbosscc.guttenbase.export.zip.ZipImporter;
  * @author M. Dahm
  */
 public abstract class ImportDumpExtraInformationHint implements ConnectorHint<ImportDumpExtraInformation> {
-	@Override
-	public Class<ImportDumpExtraInformation> getConnectorHintType() {
-		return ImportDumpExtraInformation.class;
-	}
+  @Override
+  public Class<ImportDumpExtraInformation> getConnectorHintType() {
+    return ImportDumpExtraInformation.class;
+  }
 }

@@ -61,7 +61,7 @@ public abstract class AbstractStatementCreator {
                                                      final TableMetaData targetTableMetaData, final String sourceConnectorId) throws SQLException {
     // Use same order as in SELECT clause
     final List<ColumnMetaData> sourceColumns = ColumnOrderHint.getSortedColumns(_connectorRepository, sourceConnectorId,
-      sourceTableMetaData);
+        sourceTableMetaData);
     final List<ColumnMetaData> columns = new ArrayList<>();
     final ColumnMapper columnMapper = _connectorRepository.getConnectorHint(_connectorId, ColumnMapper.class).getValue();
 

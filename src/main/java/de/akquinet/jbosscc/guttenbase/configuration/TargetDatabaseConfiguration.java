@@ -24,14 +24,14 @@ public interface TargetDatabaseConfiguration extends DatabaseConfiguration {
 
   /**
    * Called before any action is performed which may alter the state of the target data base.
-   * 
+   * <p>
    * Implementing classes usually disable foreign key and other constraints temporarily.
    */
   void initializeTargetConnection(Connection connection, String connectorId) throws SQLException;
 
   /**
    * Called after actions have been performed.
-   * 
+   * <p>
    * Implementing classes usually re-enable foreign key and other constraints.
    */
   void finalizeTargetConnection(Connection connection, String connectorId) throws SQLException;

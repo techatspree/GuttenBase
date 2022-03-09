@@ -18,8 +18,8 @@ import de.akquinet.jbosscc.guttenbase.tools.EntityTableChecker;
  * @author M. Dahm
  */
 public abstract class EntityTableCheckerHint implements ConnectorHint<EntityTableChecker> {
-	@Override
-	public final Class<EntityTableChecker> getConnectorHintType() {
-		return EntityTableChecker.class;
-	}
+  @Override
+  public final Class<EntityTableChecker> getConnectorHintType() {
+    return EntityTableChecker.class;
+  }
 }

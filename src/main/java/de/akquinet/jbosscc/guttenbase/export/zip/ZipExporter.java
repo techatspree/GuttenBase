@@ -65,7 +65,7 @@ public class ZipExporter implements Exporter {
     _zipOutputStream = new ZipOutputStream(fos);
 
     final ZipExporterClassResources zipExporterClassResources = connectorRepository.getConnectorHint(connectorId,
-      ZipExporterClassResources.class).getValue();
+        ZipExporterClassResources.class).getValue();
     addClassesToJar(connectorRepository, connectorId, zipExporterClassResources);
 
     writeManifestEntry(zipExporterClassResources);
@@ -79,7 +79,7 @@ public class ZipExporter implements Exporter {
     writeExtraInformation();
 
     final ZipExporterClassResources zipExporterClassResources = _connectorRepository.getConnectorHint(_connectorId,
-      ZipExporterClassResources.class).getValue();
+        ZipExporterClassResources.class).getValue();
     addResourcesToJar(zipExporterClassResources);
     _zipOutputStream.close();
     _zipOutputStream = null;
@@ -178,7 +178,7 @@ public class ZipExporter implements Exporter {
 
   private void writeIndexEntries(final TableMetaData tableMetaData) throws IOException {
     final String indexPath = ZipConstants.PREFIX + tableMetaData.getTableName() + ZipConstants.PATH_SEPARATOR
-      + ZipConstants.INDEX_NAME + ZipConstants.PATH_SEPARATOR;
+        + ZipConstants.INDEX_NAME + ZipConstants.PATH_SEPARATOR;
 
     for (final IndexMetaData indexMetaData : tableMetaData.getIndexes()) {
       newEntry(indexPath + indexMetaData.getIndexName() + ".txt");
@@ -189,7 +189,7 @@ public class ZipExporter implements Exporter {
 
   private void writeColumnEntries(final TableMetaData tableMetaData) throws IOException {
     final String columnPath = ZipConstants.PREFIX + tableMetaData.getTableName() + ZipConstants.PATH_SEPARATOR
-      + ZipConstants.COLUMN_NAME + ZipConstants.PATH_SEPARATOR;
+        + ZipConstants.COLUMN_NAME + ZipConstants.PATH_SEPARATOR;
 
     for (final ColumnMetaData columnMetaData : tableMetaData.getColumnMetaData()) {
       newEntry(columnPath + columnMetaData.getColumnName() + ".txt");
@@ -225,7 +225,7 @@ public class ZipExporter implements Exporter {
   private void addClassesToJar(final ConnectorRepository connectorRepository, final String connectorId,
                                final ZipExporterClassResources zipExporterClassResources) throws IOException {
     final ZipClassesFromClassResourceExporter zipClassesFromClassResourceExporter = new ZipClassesFromClassResourceExporter(
-      _zipOutputStream);
+        _zipOutputStream);
 
     for (final Class<?> clazz : zipExporterClassResources.getClassResources()) {
       zipClassesFromClassResourceExporter.copyClassesToZip(clazz);
@@ -262,10 +262,10 @@ public class ZipExporter implements Exporter {
 
   private void writeExtraInformation() throws SQLException, IOException {
     final ExportDumpExtraInformation exportDumpExtraInformation = _connectorRepository.getConnectorHint(_connectorId,
-      ExportDumpExtraInformation.class).getValue();
+        ExportDumpExtraInformation.class).getValue();
 
     final Map<String, Serializable> extraInformation = exportDumpExtraInformation.getExtraInformation(_connectorRepository,
-      _connectorId, _exportDumpConnectionInfo);
+        _connectorId, _exportDumpConnectionInfo);
 
     for (final Entry<String, Serializable> entry : extraInformation.entrySet()) {
       newEntry(ZipConstants.EXTRA_INFO + ZipConstants.PATH_SEPARATOR + entry.getKey());

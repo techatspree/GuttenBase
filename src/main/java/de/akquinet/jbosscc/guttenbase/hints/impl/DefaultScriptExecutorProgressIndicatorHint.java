@@ -12,11 +12,9 @@ import de.akquinet.jbosscc.guttenbase.utils.ScriptExecutorProgressIndicator;
  *
  * @author M. Dahm
  */
-public class DefaultScriptExecutorProgressIndicatorHint extends ScriptExecutorProgressIndicatorHint
-{
+public class DefaultScriptExecutorProgressIndicatorHint extends ScriptExecutorProgressIndicatorHint {
   @Override
-  public ScriptExecutorProgressIndicator getValue()
-  {
+  public ScriptExecutorProgressIndicator getValue() {
     return new LoggingScriptExecutorProgressIndicator();
   }
 }

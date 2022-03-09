@@ -22,8 +22,7 @@ import java.util.Map;
  *
  * @author M. Dahm
  */
-public class DefaultColumnDataMapperProvider implements ColumnDataMapperProvider
-{
+public class DefaultColumnDataMapperProvider implements ColumnDataMapperProvider {
   private final Map<String, List<ColumnDataMapper>> _mappings = new HashMap<>();
 
   /**
@@ -31,14 +30,11 @@ public class DefaultColumnDataMapperProvider implements ColumnDataMapperProvider
    */
   @Override
   public ColumnDataMapper findMapping(final ColumnMetaData sourceColumnMetaData, final ColumnMetaData targetColumnMetaData,
-      final ColumnType sourceColumnType, final ColumnType targetColumnType) throws SQLException
-  {
+                                      final ColumnType sourceColumnType, final ColumnType targetColumnType) throws SQLException {
     final List<ColumnDataMapper> columnDataMappers = findMapping(sourceColumnType, targetColumnType);
 
-    for (final ColumnDataMapper columnDataMapper : columnDataMappers)
-    {
-      if (columnDataMapper.isApplicable(sourceColumnMetaData, targetColumnMetaData))
-      {
+    for (final ColumnDataMapper columnDataMapper : columnDataMappers) {
+      if (columnDataMapper.isApplicable(sourceColumnMetaData, targetColumnMetaData)) {
         return columnDataMapper;
       }
     }
@@ -51,23 +47,20 @@ public class DefaultColumnDataMapperProvider implements ColumnDataMapperProvider
    */
   @Override
   public void addMapping(final ColumnType sourceColumnType, final ColumnType targetColumnType,
-      final ColumnDataMapper columnDataMapper)
-  {
+                         final ColumnDataMapper columnDataMapper) {
     assert columnDataMapper != null : "columnDataMapper != null";
 
     findMapping(sourceColumnType, targetColumnType).add(columnDataMapper);
   }
 
-  private String createKey(final ColumnType sourceColumnType, final ColumnType targetColumnType)
-  {
+  private String createKey(final ColumnType sourceColumnType, final ColumnType targetColumnType) {
     assert sourceColumnType != null : "sourceColumnType != null";
     assert targetColumnType != null : "targetColumnType != null";
 
     return sourceColumnType.name() + ":" + targetColumnType.name();
   }
 
-  private List<ColumnDataMapper> findMapping(final ColumnType sourceColumnType, final ColumnType targetColumnType)
-  {
+  private List<ColumnDataMapper> findMapping(final ColumnType sourceColumnType, final ColumnType targetColumnType) {
     final String key = createKey(sourceColumnType, targetColumnType);
 
     return _mappings.computeIfAbsent(key, k -> new ArrayList<>());

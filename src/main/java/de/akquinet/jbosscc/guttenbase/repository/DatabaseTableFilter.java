@@ -17,8 +17,7 @@ import java.sql.SQLException;
  * @author M. Dahm
  */
 @SuppressWarnings("RedundantThrows")
-public interface DatabaseTableFilter
-{
+public interface DatabaseTableFilter {
   String getCatalog(final DatabaseMetaData databaseMetaData) throws SQLException;
 
   String getSchema(final DatabaseMetaData databaseMetaData) throws SQLException;

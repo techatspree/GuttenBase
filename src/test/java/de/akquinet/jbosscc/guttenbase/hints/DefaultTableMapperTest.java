@@ -9,14 +9,12 @@ import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 
-public class DefaultTableMapperTest
-{
+public class DefaultTableMapperTest {
   @Test
-  public void testDefaultNameMapper() throws Exception
-  {
+  public void testDefaultNameMapper() throws Exception {
     final DatabaseMetaDataBuilder databaseMetaDataBuilder = new DatabaseMetaDataBuilder().setSchema("schema");
     final TableMetaDataBuilder tableMetaDataBuilder = new TableMetaDataBuilder(databaseMetaDataBuilder)
-      .setTableName("Table");
+        .setTableName("Table");
     final InternalDatabaseMetaData databaseMetaData = databaseMetaDataBuilder.build();
     final InternalTableMetaData tableMetaData = tableMetaDataBuilder.build();
 

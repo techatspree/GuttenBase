@@ -17,8 +17,8 @@ import de.akquinet.jbosscc.guttenbase.export.ExporterFactory;
  * @author M. Dahm
  */
 public abstract class ExporterFactoryHint implements ConnectorHint<ExporterFactory> {
-	@Override
-	public Class<ExporterFactory> getConnectorHintType() {
-		return ExporterFactory.class;
-	}
+  @Override
+  public Class<ExporterFactory> getConnectorHintType() {
+    return ExporterFactory.class;
+  }
 }

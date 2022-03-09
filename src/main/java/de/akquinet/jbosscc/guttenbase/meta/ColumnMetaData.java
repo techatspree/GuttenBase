@@ -13,31 +13,32 @@ import java.util.Map;
  *
  * @author M. Dahm
  */
-public interface ColumnMetaData extends Comparable<ColumnMetaData>, Serializable {
-	int getColumnType();
+public interface ColumnMetaData extends Comparable<ColumnMetaData>, Serializable
+{
+  int getColumnType();
 
-	String getColumnName();
+  String getColumnName();
 
-	String getColumnTypeName();
+  String getColumnTypeName();
 
-	String getColumnClassName();
+  String getColumnClassName();
 
-	/**
-	 * @return containing table
-	 */
-	TableMetaData getTableMetaData();
+  /**
+   * @return containing table
+   */
+  TableMetaData getTableMetaData();
 
-	boolean isNullable();
+  boolean isNullable();
 
-	boolean isAutoIncrement();
+  boolean isAutoIncrement();
 
-	int getPrecision();
+  int getPrecision();
 
-	int getScale();
+  int getScale();
 
-	boolean isPrimaryKey();
+  boolean isPrimaryKey();
 
-	/**
+  /**
    * @return referenced columns for each foreign key constraint
    */
   Map<String, List<ColumnMetaData>> getReferencedColumns();

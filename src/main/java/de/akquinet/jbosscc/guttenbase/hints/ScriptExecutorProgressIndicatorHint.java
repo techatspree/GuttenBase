@@ -14,11 +14,9 @@ import de.akquinet.jbosscc.guttenbase.utils.ScriptExecutorProgressIndicator;
  *
  * @author M. Dahm
  */
-public abstract class ScriptExecutorProgressIndicatorHint implements ConnectorHint<ScriptExecutorProgressIndicator>
-{
+public abstract class ScriptExecutorProgressIndicatorHint implements ConnectorHint<ScriptExecutorProgressIndicator> {
   @Override
-  public Class<ScriptExecutorProgressIndicator> getConnectorHintType()
-  {
+  public Class<ScriptExecutorProgressIndicator> getConnectorHintType() {
     return ScriptExecutorProgressIndicator.class;
   }
 }

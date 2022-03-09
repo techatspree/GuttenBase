@@ -17,6 +17,6 @@ import java.util.Map;
  */
 @SuppressWarnings("RedundantThrows")
 public interface ExportDumpExtraInformation {
-	Map<String, Serializable> getExtraInformation(ConnectorRepository connectorRepository, String connectorId,
-			ExportDumpConnectorInfo exportDumpConnectionInfo) throws SQLException;
+  Map<String, Serializable> getExtraInformation(ConnectorRepository connectorRepository, String connectorId,
+                                                ExportDumpConnectorInfo exportDumpConnectionInfo) throws SQLException;
 }

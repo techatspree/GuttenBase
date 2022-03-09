@@ -27,7 +27,7 @@ public class ExportDumpConnector extends AbstractConnector {
   private final ExportDumpConnectorInfo _exportDumpConnectionInfo;
 
   public ExportDumpConnector(final ConnectorRepository connectorRepository, final String connectorId,
-      final ExportDumpConnectorInfo exportDumpConnectionInfo) {
+                             final ExportDumpConnectorInfo exportDumpConnectionInfo) {
     super(connectorRepository, connectorId, exportDumpConnectionInfo);
 
     _exportDumpConnectionInfo = exportDumpConnectionInfo;
@@ -56,7 +56,7 @@ public class ExportDumpConnector extends AbstractConnector {
   /**
    * Table meta data is the same as the meta data of the source connector. The only difference is that the row count of all tables is reset
    * to 0.
-   *
+   * <p>
    * {@inheritDoc}
    */
   @Override

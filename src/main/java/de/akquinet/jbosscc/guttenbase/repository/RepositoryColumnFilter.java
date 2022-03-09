@@ -15,5 +15,5 @@ import java.sql.SQLException;
  */
 @SuppressWarnings("RedundantThrows")
 public interface RepositoryColumnFilter {
-	boolean accept(ColumnMetaData column) throws SQLException;
+  boolean accept(ColumnMetaData column) throws SQLException;
 }

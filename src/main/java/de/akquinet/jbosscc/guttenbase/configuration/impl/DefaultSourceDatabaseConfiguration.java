@@ -23,7 +23,7 @@ public class DefaultSourceDatabaseConfiguration extends AbstractDatabaseConfigur
 
   /**
    * Connection is set read only and autocommit is false.
-   * 
+   * <p>
    * {@inheritDoc}
    */
   @Override

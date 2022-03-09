@@ -26,11 +26,9 @@ import java.util.List;
  * @author M. Dahm
  */
 @SuppressWarnings("deprecation")
-public abstract class TableOrderHint implements ConnectorHint<TableOrderComparatorFactory>
-{
+public abstract class TableOrderHint implements ConnectorHint<TableOrderComparatorFactory> {
   @Override
-  public Class<TableOrderComparatorFactory> getConnectorHintType()
-  {
+  public Class<TableOrderComparatorFactory> getConnectorHintType() {
     return TableOrderComparatorFactory.class;
   }
 
@@ -38,8 +36,7 @@ public abstract class TableOrderHint implements ConnectorHint<TableOrderComparat
    * Helper method
    */
   public static List<TableMetaData> getSortedTables(final ConnectorRepository connectorRepository, final String connectorId)
-      throws SQLException
-  {
+      throws SQLException {
     final DatabaseMetaData databaseMetaData = connectorRepository.getDatabaseMetaData(connectorId);
     final Comparator<TableMetaData> comparator = connectorRepository
         .getConnectorHint(connectorId, TableOrderComparatorFactory.class).getValue().createComparator();

@@ -17,11 +17,9 @@ import de.akquinet.jbosscc.guttenbase.meta.ColumnType;
  *
  * @author M. Dahm
  */
-public class DefaultColumnDataMapperProviderHint extends ColumnDataMapperProviderHint
-{
+public class DefaultColumnDataMapperProviderHint extends ColumnDataMapperProviderHint {
   @Override
-  public ColumnDataMapperProvider getValue()
-  {
+  public ColumnDataMapperProvider getValue() {
     final DefaultColumnDataMapperProvider result = new DefaultColumnDataMapperProvider();
 
     addMappings(result);
@@ -32,8 +30,7 @@ public class DefaultColumnDataMapperProviderHint extends ColumnDataMapperProvide
   /**
    * May be overridden to add further mappings
    */
-  protected void addMappings(final DefaultColumnDataMapperProvider columnDataMapperFactory)
-  {
+  protected void addMappings(final DefaultColumnDataMapperProvider columnDataMapperFactory) {
     columnDataMapperFactory.addMapping(ColumnType.CLASS_TIMESTAMP, ColumnType.CLASS_DATE, new TimestampToDateColumnDataMapper());
     columnDataMapperFactory.addMapping(ColumnType.CLASS_LONG, ColumnType.CLASS_BIGDECIMAL,
         new LongToBigDecimalColumnDataMapper());

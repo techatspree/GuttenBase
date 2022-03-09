@@ -18,38 +18,38 @@ import java.util.UUID;
  * @author M. Dahm
  */
 public class TestUUIDColumnDataMapper implements ColumnDataMapper {
-    @Override
-    public Object map(final ColumnMetaData sourceColumnMetaData, final ColumnMetaData targetColumnMetaData, final Object value) {
-        final Number number = (Number) value;
+  @Override
+  public Object map(final ColumnMetaData sourceColumnMetaData, final ColumnMetaData targetColumnMetaData, final Object value) {
+    final Number number = (Number) value;
 
-        if (number != null) {
-            final long id = number.longValue();
-            final Iterator<List<ColumnMetaData>> iterator = sourceColumnMetaData.getReferencedColumns().values().iterator();
-            final ColumnMetaData referencedColumn = iterator.hasNext() ? iterator.next().get(0) : sourceColumnMetaData;
+    if (number != null) {
+      final long id = number.longValue();
+      final Iterator<List<ColumnMetaData>> iterator = sourceColumnMetaData.getReferencedColumns().values().iterator();
+      final ColumnMetaData referencedColumn = iterator.hasNext() ? iterator.next().get(0) : sourceColumnMetaData;
 
-            return createKey(referencedColumn, id);
-        } else {
-            return null;
-        }
+      return createKey(referencedColumn, id);
+    } else {
+      return null;
     }
+  }
 
-    @Override
-    public boolean isApplicable(final ColumnMetaData sourceColumnMetaData, final ColumnMetaData targetColumnMetaData) throws SQLException {
-        final String sourceColumnName = sourceColumnMetaData.getColumnName().toUpperCase();
-        final String targetColumnName = targetColumnMetaData.getColumnName().toUpperCase();
+  @Override
+  public boolean isApplicable(final ColumnMetaData sourceColumnMetaData, final ColumnMetaData targetColumnMetaData) throws SQLException {
+    final String sourceColumnName = sourceColumnMetaData.getColumnName().toUpperCase();
+    final String targetColumnName = targetColumnMetaData.getColumnName().toUpperCase();
 
-        return sourceColumnName.equals(targetColumnName) && sourceColumnName.endsWith("ID");
-    }
+    return sourceColumnName.equals(targetColumnName) && sourceColumnName.endsWith("ID");
+  }
 
-    /**
-     * Very simple way to create UUID. We create it from the column's hash code and the old id. You might want to use something mor
-     * complicated.
-     */
-    private String createKey(final ColumnMetaData columnMetaData, final long id) {
-        final String key = columnMetaData.getTableMetaData().getTableName() + ":" + columnMetaData.getColumnName();
+  /**
+   * Very simple way to create UUID. We create it from the column's hash code and the old id. You might want to use something mor
+   * complicated.
+   */
+  private String createKey(final ColumnMetaData columnMetaData, final long id) {
+    final String key = columnMetaData.getTableMetaData().getTableName() + ":" + columnMetaData.getColumnName();
 
-        final UUID uuid = new UUID(key.hashCode(), id);
+    final UUID uuid = new UUID(key.hashCode(), id);
 
-        return uuid.toString();
-    }
+    return uuid.toString();
+  }
 }

@@ -15,13 +15,13 @@ import java.sql.SQLException;
  */
 @SuppressWarnings("RedundantThrows")
 public interface ColumnDataMapper {
-	/**
-	 * Mapper can be used for the given columns?
-	 */
-	boolean isApplicable(ColumnMetaData sourceColumnMetaData, ColumnMetaData targetColumnMetaData) throws SQLException;
+  /**
+   * Mapper can be used for the given columns?
+   */
+  boolean isApplicable(ColumnMetaData sourceColumnMetaData, ColumnMetaData targetColumnMetaData) throws SQLException;
 
-	/**
-	 * Map object. Must be able to handle NULL values.
-	 */
-	Object map(final ColumnMetaData sourceColumnMetaData, final ColumnMetaData targetColumnMetaData, Object value) throws SQLException;
+  /**
+   * Map object. Must be able to handle NULL values.
+   */
+  Object map(final ColumnMetaData sourceColumnMetaData, final ColumnMetaData targetColumnMetaData, Object value) throws SQLException;
 }

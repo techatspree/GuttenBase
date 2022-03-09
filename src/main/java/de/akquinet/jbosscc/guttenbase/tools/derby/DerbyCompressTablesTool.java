@@ -13,15 +13,12 @@ import java.sql.SQLException;
  *
  * @author M. Dahm
  */
-public class DerbyCompressTablesTool extends AbstractTablesOperationTool
-{
-  public DerbyCompressTablesTool(final ConnectorRepository connectorRepository)
-  {
+public class DerbyCompressTablesTool extends AbstractTablesOperationTool {
+  public DerbyCompressTablesTool(final ConnectorRepository connectorRepository) {
     super(connectorRepository, "CALL SYSCS_UTIL.SYSCS_INPLACE_COMPRESS_TABLE ('sa', '" + TABLE_PLACEHOLDER + "', 1, 1, 1);");
   }
 
-  public void executeOnAllTables(final String target) throws SQLException
-  {
+  public void executeOnAllTables(final String target) throws SQLException {
     executeOnAllTables(target, false, false);
   }
 }

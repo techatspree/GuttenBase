@@ -13,8 +13,8 @@ import de.akquinet.jbosscc.guttenbase.tools.NumberOfCheckedTableData;
  * @author M. Dahm
  */
 public class DefaultNumberOfCheckedTableDataHint extends NumberOfCheckedTableDataHint {
-	@Override
-	public NumberOfCheckedTableData getValue() {
-		return () -> 100;
-	}
+  @Override
+  public NumberOfCheckedTableData getValue() {
+    return () -> 100;
+  }
 }

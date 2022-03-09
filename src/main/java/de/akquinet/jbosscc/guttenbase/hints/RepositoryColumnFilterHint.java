@@ -16,8 +16,8 @@ import de.akquinet.jbosscc.guttenbase.repository.RepositoryColumnFilter;
  * @author M. Dahm
  */
 public abstract class RepositoryColumnFilterHint implements ConnectorHint<RepositoryColumnFilter> {
-	@Override
-	public final Class<RepositoryColumnFilter> getConnectorHintType() {
-		return RepositoryColumnFilter.class;
-	}
+  @Override
+  public final Class<RepositoryColumnFilter> getConnectorHintType() {
+    return RepositoryColumnFilter.class;
+  }
 }

@@ -16,11 +16,9 @@ import java.sql.DatabaseMetaData;
  *
  * @author M. Dahm
  */
-public abstract class DatabaseColumnFilterHint implements ConnectorHint<DatabaseColumnFilter>
-{
+public abstract class DatabaseColumnFilterHint implements ConnectorHint<DatabaseColumnFilter> {
   @Override
-  public final Class<DatabaseColumnFilter> getConnectorHintType()
-  {
+  public final Class<DatabaseColumnFilter> getConnectorHintType() {
     return DatabaseColumnFilter.class;
   }
 }

@@ -5,6 +5,7 @@ import de.akquinet.jbosscc.guttenbase.mapping.TableMapper;
 import de.akquinet.jbosscc.guttenbase.meta.TableMetaData;
 import de.akquinet.jbosscc.guttenbase.repository.ConnectorRepository;
 import de.akquinet.jbosscc.guttenbase.statements.SplitByColumnSelectMinMaxStatementCreator;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -48,7 +49,7 @@ public class MinMaxIdSelectorTool {
     final TableMapper tableMapper = _connectorRepository.getConnectorHint(connectorId, TableMapper.class).getValue();
     final String tableName = tableMapper.fullyQualifiedTableName(tableMetaData, tableMetaData.getDatabaseMetaData());
     final PreparedStatement minMaxStatement = new SplitByColumnSelectMinMaxStatementCreator(_connectorRepository, connectorId)
-      .createSelectStatement(connection, tableName, tableMetaData);
+        .createSelectStatement(connection, tableName, tableMetaData);
 
     final ResultSet rangeResultSet = minMaxStatement.executeQuery();
     rangeResultSet.next();

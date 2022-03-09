@@ -15,13 +15,13 @@ import java.sql.SQLException;
  * @author M. Dahm
  */
 public interface DatabaseConfiguration {
-	/**
-	 * Called before table is copied
-	 */
-	void beforeTableCopy(final Connection connection, String connectorId, TableMetaData table) throws SQLException;
+  /**
+   * Called before table is copied
+   */
+  void beforeTableCopy(final Connection connection, String connectorId, TableMetaData table) throws SQLException;
 
-	/**
-	 * Called after table has been copied
-	 */
-	void afterTableCopy(final Connection connection, String connectorId, TableMetaData table) throws SQLException;
+  /**
+   * Called after table has been copied
+   */
+  void afterTableCopy(final Connection connection, String connectorId, TableMetaData table) throws SQLException;
 }

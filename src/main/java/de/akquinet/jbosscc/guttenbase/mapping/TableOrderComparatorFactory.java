@@ -12,5 +12,5 @@ import java.util.Comparator;
  * </p>
  */
 public interface TableOrderComparatorFactory {
-	Comparator<TableMetaData> createComparator();
+  Comparator<TableMetaData> createComparator();
 }

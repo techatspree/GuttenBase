@@ -5,10 +5,9 @@ package de.akquinet.jbosscc.guttenbase.utils;
  * <p>
  * &copy; 2013-2020 akquinet tech@spree
  * </p>
- * 
+ *
  * @author M. Dahm
  */
-public interface TableCopyProgressIndicator extends ProgressIndicator
-{
+public interface TableCopyProgressIndicator extends ProgressIndicator {
   void startCopyTable(String sourceTableName, int rowCount, String targetTableName);
 }

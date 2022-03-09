@@ -13,15 +13,12 @@ import java.sql.SQLException;
  *
  * @author M. Dahm
  */
-public class Db2ReorgTablesTool extends AbstractTablesOperationTool
-{
-  public Db2ReorgTablesTool(final ConnectorRepository connectorRepository)
-  {
+public class Db2ReorgTablesTool extends AbstractTablesOperationTool {
+  public Db2ReorgTablesTool(final ConnectorRepository connectorRepository) {
     super(connectorRepository, "CALL SYSPROC.ADMIN_CMD('REORG TABLE " + TABLE_PLACEHOLDER + "');");
   }
 
-  public void executeOnAllTables(final String target) throws SQLException
-  {
+  public void executeOnAllTables(final String target) throws SQLException {
     executeOnAllTables(target, false, false);
   }
 }

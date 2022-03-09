@@ -17,8 +17,8 @@ import de.akquinet.jbosscc.guttenbase.tools.NumberOfCheckedTableData;
  * @author M. Dahm
  */
 public abstract class NumberOfCheckedTableDataHint implements ConnectorHint<NumberOfCheckedTableData> {
-	@Override
-	public final Class<NumberOfCheckedTableData> getConnectorHintType() {
-		return NumberOfCheckedTableData.class;
-	}
+  @Override
+  public final Class<NumberOfCheckedTableData> getConnectorHintType() {
+    return NumberOfCheckedTableData.class;
+  }
 }

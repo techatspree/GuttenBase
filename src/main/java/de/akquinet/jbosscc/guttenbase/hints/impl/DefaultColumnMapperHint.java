@@ -14,8 +14,8 @@ import de.akquinet.jbosscc.guttenbase.mapping.ColumnMapper;
  * @author M. Dahm
  */
 public class DefaultColumnMapperHint extends ColumnMapperHint {
-	@Override
-	public ColumnMapper getValue() {
-		return new DefaultColumnMapper();
-	}
+  @Override
+  public ColumnMapper getValue() {
+    return new DefaultColumnMapper();
+  }
 }

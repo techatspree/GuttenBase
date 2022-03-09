@@ -15,18 +15,18 @@ import java.sql.SQLException;
  * @author M. Dahm
  */
 public interface Connector {
-	/**
-	 * Open connection or return existing connection
-	 */
-	Connection openConnection() throws SQLException;
+  /**
+   * Open connection or return existing connection
+   */
+  Connection openConnection() throws SQLException;
 
-	/**
-	 * Close connection if it exists and is open
-	 */
-	void closeConnection() throws SQLException;
+  /**
+   * Close connection if it exists and is open
+   */
+  void closeConnection() throws SQLException;
 
-	/**
-	 * Return information about database and tables
-	 */
-	DatabaseMetaData retrieveDatabaseMetaData() throws SQLException;
+  /**
+   * Return information about database and tables
+   */
+  DatabaseMetaData retrieveDatabaseMetaData() throws SQLException;
 }

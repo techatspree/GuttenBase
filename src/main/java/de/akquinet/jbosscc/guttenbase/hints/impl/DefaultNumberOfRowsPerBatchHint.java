@@ -14,18 +14,18 @@ import de.akquinet.jbosscc.guttenbase.tools.NumberOfRowsPerBatch;
  * @author M. Dahm
  */
 public class DefaultNumberOfRowsPerBatchHint extends NumberOfRowsPerBatchHint {
-	@Override
-	public NumberOfRowsPerBatch getValue() {
-		return new NumberOfRowsPerBatch() {
-			@Override
-			public int getNumberOfRowsPerBatch(TableMetaData targetTableMetaData) {
-				return 2000;
-			}
+  @Override
+  public NumberOfRowsPerBatch getValue() {
+    return new NumberOfRowsPerBatch() {
+      @Override
+      public int getNumberOfRowsPerBatch(TableMetaData targetTableMetaData) {
+        return 2000;
+      }
 
-			@Override
-			public boolean useMultipleValuesClauses(TableMetaData targetTableMetaData) {
-				return true;
-			}
-		};
-	}
+      @Override
+      public boolean useMultipleValuesClauses(TableMetaData targetTableMetaData) {
+        return true;
+      }
+    };
+  }
 }

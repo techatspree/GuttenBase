@@ -16,8 +16,8 @@ import de.akquinet.jbosscc.guttenbase.repository.RepositoryTableFilter;
  * @author M. Dahm
  */
 public abstract class RepositoryTableFilterHint implements ConnectorHint<RepositoryTableFilter> {
-	@Override
-	public final Class<RepositoryTableFilter> getConnectorHintType() {
-		return RepositoryTableFilter.class;
-	}
+  @Override
+  public final Class<RepositoryTableFilter> getConnectorHintType() {
+    return RepositoryTableFilter.class;
+  }
 }

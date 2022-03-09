@@ -22,13 +22,13 @@ public class LoggingTableCopyProgressIndicator implements TableCopyProgressIndic
     _timingDelegate.startCopyTable(sourceTableName, rowCount, targetTableName);
 
     LOG.info("Copying of " + _timingDelegate.getSourceTableName()
-      + " -> "
-      + _timingDelegate.getTargetTableName()
-      + "("
-      + _timingDelegate.getItemCounter()
-      + "/"
-      + rowCount
-      + ") started");
+        + " -> "
+        + _timingDelegate.getTargetTableName()
+        + "("
+        + _timingDelegate.getItemCounter()
+        + "/"
+        + rowCount
+        + ") started");
   }
 
   @Override
@@ -45,11 +45,11 @@ public class LoggingTableCopyProgressIndicator implements TableCopyProgressIndic
     final String totalTime = Util.formatTime(_timingDelegate.getElapsedTotalTime());
 
     LOG.info(_timingDelegate.getSourceTableName() + ":"
-      + totalCopiedRows + "/" + _timingDelegate.getRowCount()
-      + " lines copied."
-      + " Last batch took: " + batchTime
-      + " Table time spent: " + tableTime
-      + " Total time spent: " + totalTime);
+        + totalCopiedRows + "/" + _timingDelegate.getRowCount()
+        + " lines copied."
+        + " Last batch took: " + batchTime
+        + " Table time spent: " + tableTime
+        + " Total time spent: " + totalTime);
   }
 
   @Override
@@ -57,10 +57,10 @@ public class LoggingTableCopyProgressIndicator implements TableCopyProgressIndic
     _timingDelegate.endProcess();
 
     LOG.info("Copying of " + _timingDelegate.getSourceTableName()
-      + " -> "
-      + _timingDelegate.getTargetTableName()
-      + " took "
-      + Util.formatTime(_timingDelegate.getElapsedProcessTime()));
+        + " -> "
+        + _timingDelegate.getTargetTableName()
+        + " took "
+        + Util.formatTime(_timingDelegate.getElapsedProcessTime()));
   }
 
   @Override
@@ -85,8 +85,8 @@ public class LoggingTableCopyProgressIndicator implements TableCopyProgressIndic
   public void finalizeIndicator() {
     _timingDelegate.finalizeIndicator();
     LOG.info("Copying of " + _timingDelegate.getNumberOfTables()
-      + " tables took "
-      + Util.formatTime(_timingDelegate.getElapsedTotalTime()));
+        + " tables took "
+        + Util.formatTime(_timingDelegate.getElapsedTotalTime()));
   }
 
   @Override

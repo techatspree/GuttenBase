@@ -13,9 +13,9 @@ import org.apache.log4j.Logger;
  * @author M. Dahm
  */
 public class URLConnector extends AbstractURLConnector {
-	protected static final Logger LOG = Logger.getLogger(URLConnector.class);
+  protected static final Logger LOG = Logger.getLogger(URLConnector.class);
 
-	public URLConnector(final ConnectorRepository connectorRepository, final String connectorId, final URLConnectorInfo urlConnectionInfo) {
-		super(connectorRepository, connectorId, urlConnectionInfo);
-	}
+  public URLConnector(final ConnectorRepository connectorRepository, final String connectorId, final URLConnectorInfo urlConnectionInfo) {
+    super(connectorRepository, connectorId, urlConnectionInfo);
+  }
 }

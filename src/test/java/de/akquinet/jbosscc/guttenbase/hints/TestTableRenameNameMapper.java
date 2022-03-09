@@ -18,63 +18,63 @@ import java.util.Map;
  * @author M. Dahm
  */
 public class TestTableRenameNameMapper implements TableMapper {
-    private final Map<String, String> replacementsTables = new HashMap<>();
-    private final CaseConversionMode _caseConversionMode;
-    private final boolean _addSchema;
+  private final Map<String, String> replacementsTables = new HashMap<>();
+  private final CaseConversionMode _caseConversionMode;
+  private final boolean _addSchema;
 
-    public TestTableRenameNameMapper(final CaseConversionMode caseConversionMode, final boolean addSchema) {
-        assert caseConversionMode != null : "caseConversionMode != null";
-        _caseConversionMode = caseConversionMode;
-        _addSchema = addSchema;
+  public TestTableRenameNameMapper(final CaseConversionMode caseConversionMode, final boolean addSchema) {
+    assert caseConversionMode != null : "caseConversionMode != null";
+    _caseConversionMode = caseConversionMode;
+    _addSchema = addSchema;
 
-        //addReplacement("offices", "tab_offices");
-        //addReplacement("orders", "tab_orders");
-        // addReplacement("orderdetails", "tab_ordersdetails");
+    //addReplacement("offices", "tab_offices");
+    //addReplacement("orders", "tab_orders");
+    // addReplacement("orderdetails", "tab_ordersdetails");
+  }
+
+  public TestTableRenameNameMapper() {
+    this(CaseConversionMode.NONE, true);
+  }
+
+  @Override
+  public TableMetaData map(TableMetaData source, DatabaseMetaData targetDatabaseMetaData) throws SQLException {
+
+    final String defaultTableName = _caseConversionMode.convert(source.getTableName());
+    final String tableName = replacementsTables.containsKey(defaultTableName) ?
+        replacementsTables.get(defaultTableName) : defaultTableName;
+
+    return targetDatabaseMetaData.getTableMetaData(tableName);
+  }
+
+  @Override
+  public String mapTableName(TableMetaData source, DatabaseMetaData targetDatabaseMetaData) throws SQLException {
+
+    String result = _caseConversionMode.convert(source.getTableName());
+    final String schema = targetDatabaseMetaData.getSchema();
+    final String tableName = replacementsTables.get(result);
+
+    if (tableName != null) {
+      result = _caseConversionMode.convert(tableName);
     }
 
-    public TestTableRenameNameMapper() {
-        this(CaseConversionMode.NONE, true);
+    if ("".equals(schema.trim()) || !_addSchema) {
+      return result;
+    } else {
+      return schema + "." + result;
     }
+  }
 
-    @Override
-    public TableMetaData map(TableMetaData source, DatabaseMetaData targetDatabaseMetaData) throws SQLException {
+  public TestTableRenameNameMapper addReplacement(final String sourceTable, final String targetTable) {
+    replacementsTables.put(sourceTable, targetTable);
 
-        final String defaultTableName = _caseConversionMode.convert(source.getTableName());
-        final String tableName = replacementsTables.containsKey(defaultTableName)?
-                replacementsTables.get(defaultTableName): defaultTableName;
+    return this;
+  }
 
-        return targetDatabaseMetaData.getTableMetaData(tableName);
-    }
+  @Override
+  public String fullyQualifiedTableName(TableMetaData source, DatabaseMetaData targetDatabaseMetaData) throws SQLException {
 
-    @Override
-    public String mapTableName(TableMetaData source, DatabaseMetaData targetDatabaseMetaData) throws SQLException {
-
-        String result = _caseConversionMode.convert(source.getTableName());
-        final String schema = targetDatabaseMetaData.getSchema();
-        final String tableName = replacementsTables.get(result);
-
-        if(tableName != null) {
-            result = _caseConversionMode.convert(tableName);
-        }
-
-        if ("".equals(schema.trim())|| !_addSchema)  {
-            return result;
-        } else {
-            return schema + "." + result;
-        }
-    }
-
-    public TestTableRenameNameMapper addReplacement(final String sourceTable, final String targetTable) {
-        replacementsTables.put(sourceTable, targetTable);
-
-        return this;
-    }
-
-    @Override
-    public String fullyQualifiedTableName(TableMetaData source, DatabaseMetaData targetDatabaseMetaData) throws SQLException {
-
-        //final String schema = targetDatabaseMetaData.getSchemaPrefix();
-        //return schema + mapTableName(source, targetDatabaseMetaData);
-        return mapTableName(source, targetDatabaseMetaData);
-    }
+    //final String schema = targetDatabaseMetaData.getSchemaPrefix();
+    //return schema + mapTableName(source, targetDatabaseMetaData);
+    return mapTableName(source, targetDatabaseMetaData);
+  }
 }

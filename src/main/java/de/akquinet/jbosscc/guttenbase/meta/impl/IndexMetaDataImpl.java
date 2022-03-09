@@ -27,11 +27,11 @@ public class IndexMetaDataImpl implements InternalIndexMetaData {
   private final boolean _primaryKeyIndex;
 
   public IndexMetaDataImpl(
-          final TableMetaData tableMetaData,
-          final String indexName,
-          final boolean ascending,
-          final boolean unique,
-          final boolean primaryKeyIndex) {
+      final TableMetaData tableMetaData,
+      final String indexName,
+      final boolean ascending,
+      final boolean unique,
+      final boolean primaryKeyIndex) {
     assert indexName != null : "indexName != null";
     assert tableMetaData != null : "tableMetaData != null";
 

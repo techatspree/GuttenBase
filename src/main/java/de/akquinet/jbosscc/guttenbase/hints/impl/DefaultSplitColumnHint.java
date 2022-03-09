@@ -17,8 +17,8 @@ import de.akquinet.jbosscc.guttenbase.tools.SplitColumn;
  * @author M. Dahm
  */
 public class DefaultSplitColumnHint extends SplitColumnHint {
-	@Override
-	public SplitColumn getValue() {
-		return new DefaultSplitColumn();
-	}
+  @Override
+  public SplitColumn getValue() {
+    return new DefaultSplitColumn();
+  }
 }

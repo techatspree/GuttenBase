@@ -20,8 +20,8 @@ import java.sql.DatabaseMetaData;
  * @author M. Dahm
  */
 public abstract class DatabaseTableFilterHint implements ConnectorHint<DatabaseTableFilter> {
-	@Override
-	public final Class<DatabaseTableFilter> getConnectorHintType() {
-		return DatabaseTableFilter.class;
-	}
+  @Override
+  public final Class<DatabaseTableFilter> getConnectorHintType() {
+    return DatabaseTableFilter.class;
+  }
 }

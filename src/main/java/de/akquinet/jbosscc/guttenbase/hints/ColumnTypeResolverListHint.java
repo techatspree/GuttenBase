@@ -21,8 +21,8 @@ import de.akquinet.jbosscc.guttenbase.tools.CommonColumnTypeResolverTool;
  * @see HeuristicColumnTypeResolver
  */
 public abstract class ColumnTypeResolverListHint implements ConnectorHint<ColumnTypeResolverList> {
-	@Override
-	public Class<ColumnTypeResolverList> getConnectorHintType() {
-		return ColumnTypeResolverList.class;
-	}
+  @Override
+  public Class<ColumnTypeResolverList> getConnectorHintType() {
+    return ColumnTypeResolverList.class;
+  }
 }

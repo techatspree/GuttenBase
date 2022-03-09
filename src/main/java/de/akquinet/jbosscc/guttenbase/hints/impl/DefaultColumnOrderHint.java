@@ -14,8 +14,8 @@ import de.akquinet.jbosscc.guttenbase.mapping.ColumnOrderComparatorFactory;
  * @author M. Dahm
  */
 public class DefaultColumnOrderHint extends ColumnOrderHint {
-	@Override
-	public ColumnOrderComparatorFactory getValue() {
-		return DefaultColumnComparator::new;
-	}
+  @Override
+  public ColumnOrderComparatorFactory getValue() {
+    return DefaultColumnComparator::new;
+  }
 }

@@ -8,23 +8,22 @@ package de.akquinet.jbosscc.guttenbase.meta;
  *
  * @author M. Dahm
  */
-public interface InternalTableMetaData extends TableMetaData
-{
-    void setTotalRowCount(final int rowCount);
+public interface InternalTableMetaData extends TableMetaData {
+  void setTotalRowCount(final int rowCount);
 
-    void setFilteredRowCount(final int rowCount);
+  void setFilteredRowCount(final int rowCount);
 
-    void addColumn(final ColumnMetaData column);
+  void addColumn(final ColumnMetaData column);
 
-    void removeColumn(ColumnMetaData columnMetaData);
+  void removeColumn(ColumnMetaData columnMetaData);
 
-    void addIndex(IndexMetaData indexMetaData);
+  void addIndex(IndexMetaData indexMetaData);
 
-    ForeignKeyMetaData getExportedForeignKey(String foreignKeyname);
+  ForeignKeyMetaData getExportedForeignKey(String foreignKeyname);
 
-    ForeignKeyMetaData getImportedForeignKey(String foreignKeyname);
+  ForeignKeyMetaData getImportedForeignKey(String foreignKeyname);
 
-    void addImportedForeignKey(ForeignKeyMetaData fkMetaData);
+  void addImportedForeignKey(ForeignKeyMetaData fkMetaData);
 
-    void addExportedForeignKey(ForeignKeyMetaData fkMetaData);
+  void addExportedForeignKey(ForeignKeyMetaData fkMetaData);
 }

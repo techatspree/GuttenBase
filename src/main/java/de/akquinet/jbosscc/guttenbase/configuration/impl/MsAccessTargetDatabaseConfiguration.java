@@ -14,7 +14,7 @@ import de.akquinet.jbosscc.guttenbase.repository.ConnectorRepository;
  * @author M. Dahm
  */
 public class MsAccessTargetDatabaseConfiguration extends DefaultTargetDatabaseConfiguration {
-	public MsAccessTargetDatabaseConfiguration(final ConnectorRepository connectorRepository) {
-		super(connectorRepository);
-	}
+  public MsAccessTargetDatabaseConfiguration(final ConnectorRepository connectorRepository) {
+    super(connectorRepository);
+  }
 }

@@ -1,15 +1,14 @@
 package de.akquinet.jbosscc.guttenbase.hints;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-
-import org.junit.Before;
-import org.junit.Test;
-
 import de.akquinet.jbosscc.guttenbase.configuration.TestDerbyConnectionInfo;
 import de.akquinet.jbosscc.guttenbase.tools.AbstractGuttenBaseTest;
 import de.akquinet.jbosscc.guttenbase.tools.EntityTableChecker;
 import de.akquinet.jbosscc.guttenbase.tools.ScriptExecutorTool;
+import org.junit.Before;
+import org.junit.Test;
+
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 public class EntityTableCheckerHintTest extends AbstractGuttenBaseTest {
   public static final String CONNECTOR_ID = "derby";

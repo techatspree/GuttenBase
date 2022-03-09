@@ -22,7 +22,7 @@ public abstract class ZipAbstractMetaDataWriter {
   private final Properties _properties = new Properties() {
     private static final long serialVersionUID = 1L;
 
-    @SuppressWarnings({ "unchecked", "rawtypes" })
+    @SuppressWarnings({"unchecked", "rawtypes"})
     @Override
     public Enumeration keys() {
       final Enumeration keysEnum = super.keys();

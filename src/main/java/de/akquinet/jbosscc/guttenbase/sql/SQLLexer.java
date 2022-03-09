@@ -11,8 +11,7 @@ import java.util.List;
  *
  * @author M. Dahm
  */
-public class SQLLexer
-{
+public class SQLLexer {
   private static final int EOF = -1;
 
   private final String _sql;
@@ -21,20 +20,17 @@ public class SQLLexer
   private boolean _withinString;
   private final char _delimiter;
 
-  public SQLLexer(final List<String> lines)
-  {
+  public SQLLexer(final List<String> lines) {
     this(lines, ';');
   }
 
-  public SQLLexer(final List<String> lines, final char delimiter)
-  {
+  public SQLLexer(final List<String> lines, final char delimiter) {
     assert lines != null : "lines != null";
 
     _delimiter = delimiter;
     final StringBuilder builder = new StringBuilder();
 
-    for (final String line : lines)
-    {
+    for (final String line : lines) {
       builder.append(line.trim());
 
       builder.append('\n');
@@ -43,166 +39,131 @@ public class SQLLexer
     _sql = builder.toString();
   }
 
-  public List<String> parse()
-  {
+  public List<String> parse() {
     final List<String> result = new ArrayList<>();
     final StringBuilder builder = new StringBuilder();
 
-    while (hasNext())
-    {
+    while (hasNext()) {
       final SQLTokenType nextToken = nextToken();
 
-      switch (nextToken)
-      {
-      case END_OF_LINE:
-      case WHITESPACE:
-        read();
-        builder.append(' ');
-
-        while (nextToken() == SQLTokenType.WHITESPACE)
-        {
+      switch (nextToken) {
+        case END_OF_LINE:
+        case WHITESPACE:
           read();
-        }
+          builder.append(' ');
 
-        break;
+          while (nextToken() == SQLTokenType.WHITESPACE) {
+            read();
+          }
 
-      case END_OF_STATEMENT:
-        read();
-        result.add(builder.toString().trim());
-        builder.setLength(0);
-        break;
+          break;
 
-      case SINGLE_LINE_COMMENT_START:
-        seekToken(SQLTokenType.END_OF_LINE);
-        break;
+        case END_OF_STATEMENT:
+          read();
+          result.add(builder.toString().trim());
+          builder.setLength(0);
+          break;
 
-      case MULTI_LINE_COMMENT_START:
-        seekToken(SQLTokenType.MULTI_LINE_COMMENT_END);
-        break;
+        case SINGLE_LINE_COMMENT_START:
+          seekToken(SQLTokenType.END_OF_LINE);
+          break;
 
-      case MULTI_LINE_COMMENT_END:
-        read();
-        read();
-        break;
+        case MULTI_LINE_COMMENT_START:
+          seekToken(SQLTokenType.MULTI_LINE_COMMENT_END);
+          break;
 
-      case ESCAPED_STRING_DELIMITER:
-        builder.append((char) read());
-        builder.append((char) read());
-        break;
+        case MULTI_LINE_COMMENT_END:
+          read();
+          read();
+          break;
 
-      case EOF:
-        read();
-        break;
+        case ESCAPED_STRING_DELIMITER:
+          builder.append((char) read());
+          builder.append((char) read());
+          break;
 
-      case OTHER:
-        builder.append((char) read());
-        break;
+        case EOF:
+          read();
+          break;
 
-      case STRING_DELIMITER_START:
-        builder.append((char) read());
-        _withinString = true;
-        break;
+        case OTHER:
+          builder.append((char) read());
+          break;
 
-      case STRING_DELIMITER_END:
-        builder.append((char) read());
-        _withinString = false;
-        break;
+        case STRING_DELIMITER_START:
+          builder.append((char) read());
+          _withinString = true;
+          break;
 
-      default:
-        throw new IllegalStateException("unhandled case: " + nextToken);
+        case STRING_DELIMITER_END:
+          builder.append((char) read());
+          _withinString = false;
+          break;
+
+        default:
+          throw new IllegalStateException("unhandled case: " + nextToken);
       }
     }
 
     return result;
   }
 
-  private void seekToken(final SQLTokenType tokenType)
-  {
+  private void seekToken(final SQLTokenType tokenType) {
     SQLTokenType nextToken;
 
-    do
-    {
+    do {
       read();
       nextToken = nextToken();
     }
     while (nextToken != tokenType && nextToken != SQLTokenType.EOF);
   }
 
-  private SQLTokenType nextToken()
-  {
+  private SQLTokenType nextToken() {
     final int ch1 = read();
     final int ch2 = read();
     unread(2);
 
-    if (ch1 < 0)
-    {
+    if (ch1 < 0) {
       return SQLTokenType.EOF;
-    }
-    else if (!_withinString && ch1 == '-' && ch2 == '-')
-    {
+    } else if (!_withinString && ch1 == '-' && ch2 == '-') {
       return SQLTokenType.SINGLE_LINE_COMMENT_START;
-    }
-    else if (!_withinString && ch1 == '/' && ch2 == '*')
-    {
+    } else if (!_withinString && ch1 == '/' && ch2 == '*') {
       return SQLTokenType.MULTI_LINE_COMMENT_START;
-    }
-    else if (!_withinString && ch1 == '*' && ch2 == '/')
-    {
+    } else if (!_withinString && ch1 == '*' && ch2 == '/') {
       return SQLTokenType.MULTI_LINE_COMMENT_END;
-    }
-    else if (!_withinString && ch1 == _delimiter)
-    {
+    } else if (!_withinString && ch1 == _delimiter) {
       return SQLTokenType.END_OF_STATEMENT;
-    }
-    else if (!_withinString && ch1 == '\n')
-    {
+    } else if (!_withinString && ch1 == '\n') {
       return SQLTokenType.END_OF_LINE;
-    }
-    else if (!_withinString && ch1 == '\r' || ch1 == '\t' || ch1 == ' ')
-    {
+    } else if (!_withinString && ch1 == '\r' || ch1 == '\t' || ch1 == ' ') {
       return SQLTokenType.WHITESPACE;
-    }
-    else if (ch1 == '\'' && ch2 == '\'')
-    {
+    } else if (ch1 == '\'' && ch2 == '\'') {
       return SQLTokenType.ESCAPED_STRING_DELIMITER;
-    }
-    else if (ch1 == '\'' && ch2 != '\'')
-    {
-      if (_withinString)
-      {
+    } else if (ch1 == '\'' && ch2 != '\'') {
+      if (_withinString) {
         return SQLTokenType.STRING_DELIMITER_END;
-      }
-      else
-      {
+      } else {
         return SQLTokenType.STRING_DELIMITER_START;
       }
-    }
-    else
-    {
+    } else {
       return SQLTokenType.OTHER;
     }
   }
 
-  private void unread(final int count)
-  {
+  private void unread(final int count) {
     _currentIndex -= count;
   }
 
-  private boolean hasNext()
-  {
+  private boolean hasNext() {
     return _currentIndex < _sql.length();
   }
 
-  private int read()
-  {
+  private int read() {
     final int index = _currentIndex++;
 
-    if (!hasNext())
-    {
+    if (!hasNext()) {
       return EOF;
-    }
-    else
-    {
+    } else {
       return _sql.charAt(index);
     }
   }

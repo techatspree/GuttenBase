@@ -1,16 +1,15 @@
 package de.akquinet.jbosscc.guttenbase.hints;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-
-import org.junit.Before;
-import org.junit.Test;
-
 import de.akquinet.jbosscc.guttenbase.configuration.TestHsqlConnectionInfo;
 import de.akquinet.jbosscc.guttenbase.meta.TableMetaData;
 import de.akquinet.jbosscc.guttenbase.repository.DatabaseColumnFilter;
 import de.akquinet.jbosscc.guttenbase.tools.AbstractGuttenBaseTest;
 import de.akquinet.jbosscc.guttenbase.tools.ScriptExecutorTool;
+import org.junit.Before;
+import org.junit.Test;
+
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 
 /**
  * Filters column when inquiring the data base.
@@ -20,20 +19,17 @@ import de.akquinet.jbosscc.guttenbase.tools.ScriptExecutorTool;
  *
  * @author M. Dahm
  */
-public class DatabaseColumnFilterHintTest extends AbstractGuttenBaseTest
-{
+public class DatabaseColumnFilterHintTest extends AbstractGuttenBaseTest {
   public static final String SOURCE = "SOURCE";
 
   @Before
-  public final void setupTables() throws Exception
-  {
+  public final void setupTables() throws Exception {
     _connectorRepository.addConnectionInfo(SOURCE, new TestHsqlConnectionInfo());
     new ScriptExecutorTool(_connectorRepository).executeFileScript(SOURCE, "/ddl/tables.sql");
   }
 
   @Test
-  public void testDefault() throws Exception
-  {
+  public void testDefault() throws Exception {
     final TableMetaData tableMetaData = _connectorRepository.getDatabaseMetaData(SOURCE).getTableMetaData("FOO_USER");
 
     assertNotNull(tableMetaData);
@@ -42,13 +38,10 @@ public class DatabaseColumnFilterHintTest extends AbstractGuttenBaseTest
   }
 
   @Test
-  public void testFilter() throws Exception
-  {
-    _connectorRepository.addConnectorHint(SOURCE, new DatabaseColumnFilterHint()
-    {
+  public void testFilter() throws Exception {
+    _connectorRepository.addConnectorHint(SOURCE, new DatabaseColumnFilterHint() {
       @Override
-      public DatabaseColumnFilter getValue()
-      {
+      public DatabaseColumnFilter getValue() {
         return columnMetaData -> !columnMetaData.getTableMetaData().getTableName().equals("FOO_USER") || !columnMetaData.getColumnName()
             .equals("PASSWORD");
       }

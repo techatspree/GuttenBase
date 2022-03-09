@@ -63,7 +63,7 @@ public class ZipStartup extends JPanel {
     final DefaultMutableTreeNode rootNode = new DefaultMutableTreeNode(ZipConstants.GUTTEN_BASE_NAME);
 
     final Properties databaseMetaDataProperties = new ZipDatabaseMetaDataWriter().writeDatabaseMetaDataEntry(databaseMetaData)
-      .getProperties();
+        .getProperties();
     addMetaDataProperties(databaseMetaDataProperties, rootNode, ZipDatabaseMetaDataWriter.TABLE_NAME);
     return rootNode;
   }
@@ -108,8 +108,7 @@ public class ZipStartup extends JPanel {
 
   private void addMetaDataProperties(final Properties metaDataProperties, final DefaultMutableTreeNode rootNode,
                                      final String excludedProperty) throws IOException {
-    for (@SuppressWarnings("rawtypes")
-         final Enumeration keysEnum = metaDataProperties.keys(); keysEnum.hasMoreElements(); ) {
+    for (@SuppressWarnings("rawtypes") final Enumeration keysEnum = metaDataProperties.keys(); keysEnum.hasMoreElements(); ) {
       final String key = keysEnum.nextElement().toString();
       final String value = metaDataProperties.getProperty(key);
 
