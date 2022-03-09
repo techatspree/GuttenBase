@@ -6,7 +6,6 @@ import de.akquinet.jbosscc.guttenbase.mapping.ColumnDataMapperProvider;
 import de.akquinet.jbosscc.guttenbase.meta.ColumnMetaData;
 import de.akquinet.jbosscc.guttenbase.meta.ColumnType;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -30,7 +29,7 @@ public class DefaultColumnDataMapperProvider implements ColumnDataMapperProvider
    */
   @Override
   public ColumnDataMapper findMapping(final ColumnMetaData sourceColumnMetaData, final ColumnMetaData targetColumnMetaData,
-                                      final ColumnType sourceColumnType, final ColumnType targetColumnType) throws SQLException {
+                                      final ColumnType sourceColumnType, final ColumnType targetColumnType) {
     final List<ColumnDataMapper> columnDataMappers = findMapping(sourceColumnType, targetColumnType);
 
     for (final ColumnDataMapper columnDataMapper : columnDataMappers) {

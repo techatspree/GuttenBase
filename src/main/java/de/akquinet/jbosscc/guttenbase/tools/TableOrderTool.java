@@ -3,7 +3,6 @@ package de.akquinet.jbosscc.guttenbase.tools;
 import de.akquinet.jbosscc.guttenbase.meta.ForeignKeyMetaData;
 import de.akquinet.jbosscc.guttenbase.meta.TableMetaData;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -22,13 +21,13 @@ import java.util.Map;
  */
 @SuppressWarnings("RedundantThrows")
 public class TableOrderTool {
-  public List<TableMetaData> getOrderedTables(final List<TableMetaData> tableMetaData, final boolean topDown) throws SQLException {
+  public List<TableMetaData> getOrderedTables(final List<TableMetaData> tableMetaData, final boolean topDown) {
     final Map<String, TableNode> tableNodes = createGraph(tableMetaData);
 
     return orderTables(tableNodes, topDown);
   }
 
-  private List<TableMetaData> orderTables(final Map<String, TableNode> tableNodes, final boolean topDown) throws SQLException {
+  private List<TableMetaData> orderTables(final Map<String, TableNode> tableNodes, final boolean topDown) {
     final List<TableMetaData> result = new ArrayList<>();
 
     while (!tableNodes.isEmpty()) {

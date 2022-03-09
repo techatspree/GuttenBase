@@ -4,8 +4,6 @@ import de.akquinet.jbosscc.guttenbase.meta.DatabaseMetaData;
 import de.akquinet.jbosscc.guttenbase.meta.TableMetaData;
 import de.akquinet.jbosscc.guttenbase.repository.impl.DatabaseMetaDataInspectorTool;
 
-import java.sql.SQLException;
-
 /**
  * Regard which tables when @see {@link DatabaseMetaDataInspectorTool} is inquiring the database for tables. The methods refer to
  * the parameters passed to JDBC data base meta data methods such as
@@ -18,20 +16,20 @@ import java.sql.SQLException;
  */
 @SuppressWarnings("RedundantThrows")
 public interface DatabaseTableFilter {
-  String getCatalog(final DatabaseMetaData databaseMetaData) throws SQLException;
+  String getCatalog(final DatabaseMetaData databaseMetaData);
 
-  String getSchema(final DatabaseMetaData databaseMetaData) throws SQLException;
+  String getSchema(final DatabaseMetaData databaseMetaData);
 
-  String getSchemaPattern(final DatabaseMetaData databaseMetaData) throws SQLException;
+  String getSchemaPattern(final DatabaseMetaData databaseMetaData);
 
-  String getTableNamePattern(final DatabaseMetaData databaseMetaData) throws SQLException;
+  String getTableNamePattern(final DatabaseMetaData databaseMetaData);
 
-  String[] getTableTypes(final DatabaseMetaData databaseMetaData) throws SQLException;
+  String[] getTableTypes(final DatabaseMetaData databaseMetaData);
 
   /**
    * Additionally you may add checks to the resulting meta data object
    *
    * @return true if the table should be added the database meta data
    */
-  boolean accept(TableMetaData table) throws SQLException;
+  boolean accept(TableMetaData table);
 }

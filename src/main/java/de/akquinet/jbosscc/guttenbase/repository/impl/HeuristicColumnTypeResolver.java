@@ -5,8 +5,6 @@ import de.akquinet.jbosscc.guttenbase.mapping.ColumnTypeResolver;
 import de.akquinet.jbosscc.guttenbase.meta.ColumnMetaData;
 import de.akquinet.jbosscc.guttenbase.meta.ColumnType;
 
-import java.sql.SQLException;
-
 /**
  * Will check column type names and determine what Java type is appropriate using some heuristic tests.
  *
@@ -21,7 +19,7 @@ public class HeuristicColumnTypeResolver implements ColumnTypeResolver {
    * Performs some heuristic checks on given column type.
    */
   @Override
-  public ColumnType getColumnType(final ColumnMetaData columnMetaData) throws SQLException {
+  public ColumnType getColumnType(final ColumnMetaData columnMetaData) {
     final String columnType = columnMetaData.getColumnTypeName().toUpperCase();
     final DatabaseType databaseType = columnMetaData.getTableMetaData().getDatabaseMetaData().getDatabaseType();
 

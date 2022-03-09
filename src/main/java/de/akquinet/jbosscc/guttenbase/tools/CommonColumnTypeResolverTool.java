@@ -8,7 +8,6 @@ import de.akquinet.jbosscc.guttenbase.meta.ColumnMetaData;
 import de.akquinet.jbosscc.guttenbase.meta.ColumnType;
 import de.akquinet.jbosscc.guttenbase.repository.ConnectorRepository;
 
-import java.sql.SQLException;
 import java.util.List;
 
 /**
@@ -35,7 +34,7 @@ public class CommonColumnTypeResolverTool {
    * Returns column type usable for both columns or null if none can be found.
    */
   public ColumnTypeMapping getCommonColumnTypeMapping(final ColumnMetaData sourceColumnMetaData,
-                                                      final String targetConnectorId, final ColumnMetaData targetColumnMetaData) throws SQLException {
+                                                      final String targetConnectorId, final ColumnMetaData targetColumnMetaData) {
     final List<ColumnTypeResolver> columnTypeResolvers = _connectorRepository
         .getConnectorHint(targetConnectorId, ColumnTypeResolverList.class).getValue().getColumnTypeResolvers();
 
@@ -50,7 +49,7 @@ public class CommonColumnTypeResolverTool {
     return null;
   }
 
-  public ColumnType getColumnType(final String connectorId, final ColumnMetaData columnMetaData) throws SQLException {
+  public ColumnType getColumnType(final String connectorId, final ColumnMetaData columnMetaData) {
     final List<ColumnTypeResolver> columnTypeResolvers = _connectorRepository.getConnectorHint(connectorId, ColumnTypeResolverList.class)
         .getValue().getColumnTypeResolvers();
 
@@ -66,7 +65,7 @@ public class CommonColumnTypeResolverTool {
   }
 
   private ColumnTypeMapping findMapping(final ColumnTypeResolver columnTypeResolver, final ColumnMetaData sourceColumnMetaData,
-                                        final ColumnMetaData targetColumnMetaData, final String targetConnectorId) throws SQLException {
+                                        final ColumnMetaData targetColumnMetaData, final String targetConnectorId) {
     final ColumnType sourceColumnType = columnTypeResolver.getColumnType(sourceColumnMetaData);
     final ColumnType targetColumnType = columnTypeResolver.getColumnType(targetColumnMetaData);
 

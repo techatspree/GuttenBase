@@ -46,8 +46,7 @@ public class InsertStatementFiller {
   public void fillInsertStatementFromResultSet(final String sourceConnectorId, final TableMetaData sourceTableMetaData,
                                                final String targetConnectorId, final TableMetaData targetTableMetaData,
                                                final TargetDatabaseConfiguration targetDatabaseConfiguration, final Connection targetConnection, final ResultSet rs,
-                                               final PreparedStatement insertStatement, final int numberOfRowsPerBatch, final boolean useMultipleValuesClauses)
-      throws SQLException {
+                                               final PreparedStatement insertStatement, final int numberOfRowsPerBatch, final boolean useMultipleValuesClauses) throws SQLException {
     final CommonColumnTypeResolverTool commonColumnTypeResolver = new CommonColumnTypeResolverTool(_connectorRepository);
     final List<ColumnMetaData> sourceColumns = ColumnOrderHint.getSortedColumns(_connectorRepository, sourceConnectorId,
         sourceTableMetaData);
@@ -118,7 +117,7 @@ public class InsertStatementFiller {
 
   private ColumnTypeMapping findMapping(final String targetConnectorId,
                                         final CommonColumnTypeResolverTool commonColumnTypeResolver, final ColumnMetaData columnMetaData1,
-                                        final ColumnMetaData columnMetaData2) throws SQLException {
+                                        final ColumnMetaData columnMetaData2) {
     final ColumnTypeMapping columnTypeMapping = commonColumnTypeResolver.getCommonColumnTypeMapping(
         columnMetaData1, targetConnectorId, columnMetaData2);
 

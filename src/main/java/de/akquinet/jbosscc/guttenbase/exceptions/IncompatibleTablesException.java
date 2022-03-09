@@ -1,6 +1,6 @@
 package de.akquinet.jbosscc.guttenbase.exceptions;
 
-import java.sql.SQLException;
+import de.akquinet.jbosscc.guttenbase.connector.GuttenBaseException;
 
 /**
  * Thrown when tables do not match.
@@ -12,7 +12,7 @@ import java.sql.SQLException;
  * @author M. Dahm
  */
 @SuppressWarnings("deprecation")
-public class IncompatibleTablesException extends SQLException {
+public class IncompatibleTablesException extends GuttenBaseException {
   private static final long serialVersionUID = 1L;
 
   public IncompatibleTablesException(final String reason) {

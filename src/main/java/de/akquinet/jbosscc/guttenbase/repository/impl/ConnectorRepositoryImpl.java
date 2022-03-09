@@ -6,6 +6,7 @@ import de.akquinet.jbosscc.guttenbase.configuration.impl.*;
 import de.akquinet.jbosscc.guttenbase.connector.Connector;
 import de.akquinet.jbosscc.guttenbase.connector.ConnectorInfo;
 import de.akquinet.jbosscc.guttenbase.connector.DatabaseType;
+import de.akquinet.jbosscc.guttenbase.connector.GuttenBaseException;
 import de.akquinet.jbosscc.guttenbase.export.ExportDumpDatabaseConfiguration;
 import de.akquinet.jbosscc.guttenbase.export.ImportDumpDatabaseConfiguration;
 import de.akquinet.jbosscc.guttenbase.hints.ConnectorHint;
@@ -27,7 +28,7 @@ import java.util.*;
  * </p>
  *
  * @author M. Dahm
- * Hint is used by {@link RepositoryTableFilterHint} when returning table meta data
+ * Hint is used by {@link RepositoryTableFilterHint} when returning table metadata
  */
 public class ConnectorRepositoryImpl implements ConnectorRepository {
   private static final long serialVersionUID = 1L;
@@ -37,7 +38,7 @@ public class ConnectorRepositoryImpl implements ConnectorRepository {
   private final Map<DatabaseType, TargetDatabaseConfiguration> _targetDatabaseConfigurationMap = new HashMap<>();
 
   /**
-   * Hash meta data since some data base are very slow on retrieving it.
+   * Hash metadata since some databases are very slow on retrieving it.
    */
   private final Map<String, DatabaseMetaData> _databaseMetaDataMap = new HashMap<>();
   private final Map<String, Map<Class<?>, ConnectorHint<?>>> _connectionHintMap = new HashMap<>();
@@ -139,18 +140,22 @@ public class ConnectorRepositoryImpl implements ConnectorRepository {
    * {@inheritDoc}
    */
   @Override
-  public DatabaseMetaData getDatabaseMetaData(final String connectorId) throws SQLException {
+  public DatabaseMetaData getDatabaseMetaData(final String connectorId) {
     assert connectorId != null : "connectorId != null";
 
-    DatabaseMetaData databaseMetaData = _databaseMetaDataMap.get(connectorId);
+    try {
+      DatabaseMetaData databaseMetaData = _databaseMetaDataMap.get(connectorId);
 
-    if (databaseMetaData == null) {
-      final Connector connector = createConnector(connectorId);
-      databaseMetaData = connector.retrieveDatabaseMetaData();
-      _databaseMetaDataMap.put(connectorId, databaseMetaData);
+      if (databaseMetaData == null) {
+        final Connector connector = createConnector(connectorId);
+        databaseMetaData = connector.retrieveDatabaseMetaData();
+        _databaseMetaDataMap.put(connectorId, databaseMetaData);
+      }
+
+      return createResultWithFilteredTables(connectorId, databaseMetaData);
+    } catch (final SQLException e) {
+      throw new GuttenBaseException("getDatabaseMetaData", e);
     }
-
-    return createResultWithFilteredTables(connectorId, databaseMetaData);
   }
 
   /**
@@ -243,7 +248,7 @@ public class ConnectorRepositoryImpl implements ConnectorRepository {
   }
 
   private DatabaseMetaData createResultWithFilteredTables(final String connectorId, final DatabaseMetaData databaseMetaData)
-      throws SQLException {
+      {
     final InternalDatabaseMetaData resultDatabaseMetaData = Util.copyObject(InternalDatabaseMetaData.class,
         (InternalDatabaseMetaData) databaseMetaData);
     final RepositoryTableFilter tableFilter = getConnectorHint(connectorId, RepositoryTableFilter.class).getValue();

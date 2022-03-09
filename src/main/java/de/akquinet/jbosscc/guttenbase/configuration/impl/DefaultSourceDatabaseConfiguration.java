@@ -48,13 +48,13 @@ public class DefaultSourceDatabaseConfiguration extends AbstractDatabaseConfigur
    * {@inheritDoc}
    */
   @Override
-  public void beforeSelect(final Connection connection, final String connectorId, final TableMetaData table) throws SQLException {
+  public void beforeSelect(final Connection connection, final String connectorId, final TableMetaData table) {
   }
 
   /**
    * {@inheritDoc}
    */
   @Override
-  public void afterSelect(final Connection connection, final String connectorId, final TableMetaData table) throws SQLException {
+  public void afterSelect(final Connection connection, final String connectorId, final TableMetaData table) {
   }
 }

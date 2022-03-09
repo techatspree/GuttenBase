@@ -8,7 +8,6 @@ import de.akquinet.jbosscc.guttenbase.tools.AbstractTableCopyTool;
 import de.akquinet.jbosscc.guttenbase.tools.CheckEqualTableDataTool;
 import de.akquinet.jbosscc.guttenbase.tools.schema.comparison.SchemaComparatorTool;
 
-import java.sql.SQLException;
 import java.util.Comparator;
 import java.util.List;
 
@@ -35,8 +34,7 @@ public abstract class TableOrderHint implements ConnectorHint<TableOrderComparat
   /**
    * Helper method
    */
-  public static List<TableMetaData> getSortedTables(final ConnectorRepository connectorRepository, final String connectorId)
-      throws SQLException {
+  public static List<TableMetaData> getSortedTables(final ConnectorRepository connectorRepository, final String connectorId) {
     final DatabaseMetaData databaseMetaData = connectorRepository.getDatabaseMetaData(connectorId);
     final Comparator<TableMetaData> comparator = connectorRepository
         .getConnectorHint(connectorId, TableOrderComparatorFactory.class).getValue().createComparator();

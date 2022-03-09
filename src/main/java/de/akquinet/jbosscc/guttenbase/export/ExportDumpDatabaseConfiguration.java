@@ -5,7 +5,6 @@ import de.akquinet.jbosscc.guttenbase.meta.TableMetaData;
 import de.akquinet.jbosscc.guttenbase.repository.ConnectorRepository;
 
 import java.sql.Connection;
-import java.sql.SQLException;
 
 /**
  * Export dump configuration forwards important events to {@link ExportDumpConnection}.
@@ -22,27 +21,27 @@ public class ExportDumpDatabaseConfiguration extends DefaultTargetDatabaseConfig
   }
 
   @Override
-  public void afterInsert(final Connection connection, final String connectorId, final TableMetaData table) throws SQLException {
+  public void afterInsert(final Connection connection, final String connectorId, final TableMetaData table) {
     System.gc();
   }
 
   @Override
-  public void beforeTableCopy(final Connection connection, final String connectorId, final TableMetaData table) throws SQLException {
+  public void beforeTableCopy(final Connection connection, final String connectorId, final TableMetaData table) {
     ((ExportDumpConnection) connection).initializeWriteTableData(table);
   }
 
   @Override
-  public void afterTableCopy(final Connection connection, final String connectorId, final TableMetaData table) throws SQLException {
+  public void afterTableCopy(final Connection connection, final String connectorId, final TableMetaData table) {
     ((ExportDumpConnection) connection).finalizeWriteTableData(table);
   }
 
   @Override
-  public void beforeNewRow(final Connection connection, final String connectorId, final TableMetaData table) throws SQLException {
+  public void beforeNewRow(final Connection connection, final String connectorId, final TableMetaData table) {
     ((ExportDumpConnection) connection).initializeWriteRowData(table);
   }
 
   @Override
-  public void afterNewRow(final Connection connection, final String connectorId, final TableMetaData table) throws SQLException {
+  public void afterNewRow(final Connection connection, final String connectorId, final TableMetaData table) {
     ((ExportDumpConnection) connection).finalizeWriteRowData(table);
   }
 }

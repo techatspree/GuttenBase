@@ -10,7 +10,6 @@ import de.akquinet.jbosscc.guttenbase.meta.*;
 import de.akquinet.jbosscc.guttenbase.repository.ConnectorRepository;
 import de.akquinet.jbosscc.guttenbase.tools.CommonColumnTypeResolverTool;
 
-import java.sql.SQLException;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -39,11 +38,10 @@ public class SchemaComparatorTool {
    * @param sourceConnectorId
    * @param targetConnectorId
    * @return List of found issues. If empty the schemas are completely compatible
-   * @throws SQLException
    */
 
   @SuppressWarnings("JavaDoc")
-  public SchemaCompatibilityIssues check(final String sourceConnectorId, final String targetConnectorId) throws SQLException {
+  public SchemaCompatibilityIssues check(final String sourceConnectorId, final String targetConnectorId) {
     final List<TableMetaData> sourceTables = TableOrderHint.getSortedTables(_connectorRepository, sourceConnectorId);
     final TableMapper tableMapper = _connectorRepository.getConnectorHint(targetConnectorId, TableMapper.class).getValue();
     final DatabaseMetaData targetDatabase = _connectorRepository.getDatabaseMetaData(targetConnectorId);
@@ -68,7 +66,7 @@ public class SchemaComparatorTool {
   }
 
 
-  public SchemaCompatibilityIssues checkEqualForeignKeys(final TableMetaData sourceTable, final TableMetaData targetTable) throws SQLException {
+  public SchemaCompatibilityIssues checkEqualForeignKeys(final TableMetaData sourceTable, final TableMetaData targetTable) {
     for (final ForeignKeyMetaData sourceFK : sourceTable.getImportedForeignKeys()) {
       ForeignKeyMetaData matchingFK = null;
 
@@ -88,7 +86,7 @@ public class SchemaComparatorTool {
     return _schemaCompatibilityIssues;
   }
 
-  public SchemaCompatibilityIssues checkEqualIndexes(final TableMetaData sourceTable, final TableMetaData targetTable) throws SQLException {
+  public SchemaCompatibilityIssues checkEqualIndexes(final TableMetaData sourceTable, final TableMetaData targetTable) {
     for (final IndexMetaData sourceIndex : sourceTable.getIndexes()) {
       IndexMetaData matchingIndex = null;
 
@@ -156,7 +154,7 @@ public class SchemaComparatorTool {
   }
 
   public SchemaCompatibilityIssues checkEqualColumns(final String sourceConnectorId, final String targetConnectorId,
-                                                     final TableMetaData tableMetaData1, final TableMetaData tableMetaData2) throws SQLException {
+                                                     final TableMetaData tableMetaData1, final TableMetaData tableMetaData2) {
     final ColumnMapper columnMapper = _connectorRepository.getConnectorHint(targetConnectorId, ColumnMapper.class).getValue();
     final CommonColumnTypeResolverTool commonColumnTypeResolver = new CommonColumnTypeResolverTool(_connectorRepository);
     final ColumnMapper sourceColumnNameMapper = _connectorRepository.getConnectorHint(sourceConnectorId, ColumnMapper.class).getValue();
@@ -222,7 +220,7 @@ public class SchemaComparatorTool {
   }
 
   private void checkEqualTables(final List<TableMetaData> sourceTableMetaData, final DatabaseMetaData targetDatabaseMetaData,
-                                final TableMapper tableMapper) throws SQLException {
+                                final TableMapper tableMapper) {
     for (final TableMetaData tableMetaData : sourceTableMetaData) {
       final TableMetaData targetTableMetaData = tableMapper.map(tableMetaData, targetDatabaseMetaData);
 

@@ -2,8 +2,6 @@ package de.akquinet.jbosscc.guttenbase.repository;
 
 import de.akquinet.jbosscc.guttenbase.meta.TableMetaData;
 
-import java.sql.SQLException;
-
 /**
  * This filter is applied when @see {@link ConnectorRepository#getDatabaseMetaData(String)} is called.
  *
@@ -15,5 +13,5 @@ import java.sql.SQLException;
  */
 @SuppressWarnings("RedundantThrows")
 public interface RepositoryTableFilter {
-  boolean accept(TableMetaData table) throws SQLException;
+  boolean accept(TableMetaData table);
 }

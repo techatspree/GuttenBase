@@ -13,7 +13,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 
 /**
- * Connection info for exporting data base contents to a file.
+ * Connection info for exporting database contents to a file.
  *
  * <p>
  * &copy; 2012-2034 akquinet tech@spree
@@ -54,7 +54,7 @@ public class ExportDumpConnector extends AbstractConnector {
   }
 
   /**
-   * Table meta data is the same as the meta data of the source connector. The only difference is that the row count of all tables is reset
+   * Table metadata is the same as the metadata of the source connector. The only difference is that the row count of all tables is reset
    * to 0.
    * <p>
    * {@inheritDoc}

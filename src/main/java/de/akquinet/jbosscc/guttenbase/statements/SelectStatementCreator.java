@@ -5,7 +5,6 @@ import de.akquinet.jbosscc.guttenbase.meta.ColumnMetaData;
 import de.akquinet.jbosscc.guttenbase.meta.TableMetaData;
 import de.akquinet.jbosscc.guttenbase.repository.ConnectorRepository;
 
-import java.sql.SQLException;
 import java.sql.Types;
 
 /**
@@ -26,7 +25,7 @@ public class SelectStatementCreator extends AbstractSelectStatementCreator {
    * Try to retrieve data in some deterministic order
    */
   @Override
-  protected String createOrderBy(final TableMetaData tableMetaData) throws SQLException {
+  protected String createOrderBy(final TableMetaData tableMetaData) {
     final StringBuilder buf = new StringBuilder("ORDER BY ");
     int columnsAdded = 0;
 

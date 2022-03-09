@@ -20,7 +20,6 @@ import de.akquinet.jbosscc.guttenbase.repository.ConnectorRepository;
 import de.akquinet.jbosscc.guttenbase.repository.impl.ConnectorRepositoryImpl;
 import org.junit.Test;
 
-import java.sql.SQLException;
 import java.util.List;
 
 import static org.junit.Assert.*;
@@ -36,7 +35,7 @@ public class SchemaScriptCreatorToolTest {
   private ConnectorRepository createRepository() {
     final ConnectorRepository repository = new ConnectorRepositoryImpl() {
       @Override
-      public DatabaseMetaData getDatabaseMetaData(final String connectorId) throws SQLException {
+      public DatabaseMetaData getDatabaseMetaData(final String connectorId) {
         return _databaseMetaData;
       }
     };
@@ -108,7 +107,7 @@ public class SchemaScriptCreatorToolTest {
   }
 
   @Test(expected = IncompatibleTablesException.class)
-  public void testTableNameLength() throws Exception {
+  public void testTableNameLength() {
     final DatabaseMetaDataBuilder metaDataBuilder = createDatabaseMetaData();
     final TableMetaData table = createTable(3, metaDataBuilder)
         .setTableName("SomeTableNameThatIsMuchLongerThanFortyTwoCharactersSupportedByDB").build();
@@ -117,7 +116,7 @@ public class SchemaScriptCreatorToolTest {
   }
 
   @Test(expected = IncompatibleColumnsException.class)
-  public void testColumnNameLength() throws Exception {
+  public void testColumnNameLength() {
     final DatabaseMetaDataBuilder metaDataBuilder = createDatabaseMetaData();
     final TableMetaDataBuilder tableBuilder = createTable(3, metaDataBuilder);
     final ColumnMetaData columnMetaData = new ColumnMetaDataBuilder(tableBuilder)
@@ -127,7 +126,7 @@ public class SchemaScriptCreatorToolTest {
   }
 
   @Test
-  public void testDDL() throws Exception {
+  public void testDDL() {
     final List<String> tableStatements = _objectUnderTest.createTableStatements();
     assertEquals(2, tableStatements.size());
 
@@ -152,7 +151,7 @@ public class SchemaScriptCreatorToolTest {
   }
 
   @Test
-  public void testSchemaColumnTypeMapper() throws Exception {
+  public void testSchemaColumnTypeMapper() {
     _connectorRepository.addConnectorHint(TARGET, new ColumnTypeMapperHint() {
       @Override
       public ColumnTypeMapper getValue() {
@@ -181,7 +180,7 @@ public class SchemaScriptCreatorToolTest {
   }
 
   @Test
-  public void testCreateConstraintName() throws Exception {
+  public void testCreateConstraintName() {
     assertEquals("FK_NAME_1", _objectUnderTest.createConstraintName("FK_", "NAME_", 1));
     final String constraintName = _objectUnderTest.createConstraintName("FK_", "AUFTRAG_STELLUNGNAHME_HALTUNGSTELLUNGNAHME_ZU_HALTUNG_ID_PARENT_ID__ID_", 1);
 
@@ -191,7 +190,7 @@ public class SchemaScriptCreatorToolTest {
   }
 
   @Test
-  public void testForeignKey() throws Exception {
+  public void testForeignKey() {
     final ForeignKeyMetaData foreignKeyMetaData = _databaseMetaData.getTableMetaData().get(0).getImportedForeignKeys().get(0);
     final String sql = _objectUnderTest.createForeignKey(foreignKeyMetaData);
 
@@ -199,7 +198,7 @@ public class SchemaScriptCreatorToolTest {
   }
 
   @Test
-  public void createColumn() throws SQLException {
+  public void createColumn() {
     final String sql = _objectUnderTest.createTableColumn(_databaseMetaData.getTableMetaData().get(0).getColumnMetaData().get(1));
 
     assertEquals("ALTER TABLE schemaName.MY_TABLE1 ADD NAME VARCHAR(100) NOT NULL;", sql);

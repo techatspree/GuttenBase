@@ -5,7 +5,6 @@ import de.akquinet.jbosscc.guttenbase.meta.ColumnType;
 import de.akquinet.jbosscc.guttenbase.meta.TableMetaData;
 import de.akquinet.jbosscc.guttenbase.tools.SplitColumn;
 
-import java.sql.SQLException;
 import java.util.List;
 
 /**
@@ -23,7 +22,7 @@ import java.util.List;
  */
 public class DefaultSplitColumn implements SplitColumn {
   @Override
-  public ColumnMetaData getSplitColumn(final TableMetaData table) throws SQLException {
+  public ColumnMetaData getSplitColumn(final TableMetaData table) {
     final List<ColumnMetaData> columns = table.getColumnMetaData();
 
     for (final ColumnMetaData columnMetaData : columns) {

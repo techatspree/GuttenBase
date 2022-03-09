@@ -33,7 +33,7 @@ public class DropTablesTool {
     _connectorRepository = connectorRepository;
   }
 
-  public List<String> createDropForeignKeyStatements(final String connectorId) throws SQLException {
+  public List<String> createDropForeignKeyStatements(final String connectorId) {
     final List<TableMetaData> tableMetaData = new TableOrderTool().getOrderedTables(
         TableOrderHint.getSortedTables(_connectorRepository, connectorId), false);
     final TableMapper tableMapper = _connectorRepository.getConnectorHint(connectorId, TableMapper.class).getValue();
@@ -63,7 +63,7 @@ public class DropTablesTool {
     return statements;
   }
 
-  public List<String> createDropIndexesStatements(final String connectorId) throws SQLException {
+  public List<String> createDropIndexesStatements(final String connectorId) {
     final List<TableMetaData> tableMetaData = new TableOrderTool().getOrderedTables(
         TableOrderHint.getSortedTables(_connectorRepository, connectorId), false);
     final List<String> statements = new ArrayList<>();
@@ -96,11 +96,11 @@ public class DropTablesTool {
     return statements;
   }
 
-  public List<String> createDropTableStatements(final String connectorId) throws SQLException {
+  public List<String> createDropTableStatements(final String connectorId) {
     return createTableStatements(connectorId, "DROP TABLE");
   }
 
-  public List<String> createDeleteTableStatements(final String connectorId) throws SQLException {
+  public List<String> createDeleteTableStatements(final String connectorId) {
     return createTableStatements(connectorId, "DELETE FROM");
   }
 
@@ -120,7 +120,7 @@ public class DropTablesTool {
     new ScriptExecutorTool(_connectorRepository).executeScript(targetId, true, false, createDropForeignKeyStatements(targetId));
   }
 
-  private List<String> createTableStatements(final String connectorId, final String clausePrefix) throws SQLException {
+  private List<String> createTableStatements(final String connectorId, final String clausePrefix) {
     final List<TableMetaData> tableMetaData = new TableOrderTool().getOrderedTables(
         TableOrderHint.getSortedTables(_connectorRepository, connectorId), false);
     final List<String> statements = new ArrayList<>();

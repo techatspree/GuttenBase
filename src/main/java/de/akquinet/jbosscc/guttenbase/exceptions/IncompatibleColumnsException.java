@@ -1,10 +1,9 @@
 package de.akquinet.jbosscc.guttenbase.exceptions;
 
+import de.akquinet.jbosscc.guttenbase.connector.GuttenBaseException;
 import de.akquinet.jbosscc.guttenbase.statements.InsertStatementFiller;
 import de.akquinet.jbosscc.guttenbase.tools.CheckEqualTableDataTool;
 import de.akquinet.jbosscc.guttenbase.tools.schema.comparison.SchemaComparatorTool;
-
-import java.sql.SQLException;
 
 /**
  * Thrown when tables have mismatching columns.
@@ -19,7 +18,7 @@ import java.sql.SQLException;
  * @see CheckEqualTableDataTool
  */
 @SuppressWarnings("deprecation")
-public class IncompatibleColumnsException extends SQLException {
+public class IncompatibleColumnsException extends GuttenBaseException {
   private static final long serialVersionUID = 1L;
 
   public IncompatibleColumnsException(final String reason) {

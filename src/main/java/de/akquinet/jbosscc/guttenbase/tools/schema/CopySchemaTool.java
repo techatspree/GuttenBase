@@ -24,7 +24,7 @@ public class CopySchemaTool {
     _connectorRepository = connectorRepository;
   }
 
-  public List<String> createDDLScript(final String sourceConnectorId, final String targetConnectorId) throws SQLException {
+  public List<String> createDDLScript(final String sourceConnectorId, final String targetConnectorId) {
     final List<String> result = new ArrayList<>();
     final SchemaScriptCreatorTool schemaScriptCreatorTool = new SchemaScriptCreatorTool(_connectorRepository, sourceConnectorId,
         targetConnectorId);

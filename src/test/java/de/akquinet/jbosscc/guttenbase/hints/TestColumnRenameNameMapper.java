@@ -5,8 +5,7 @@ import de.akquinet.jbosscc.guttenbase.mapping.ColumnMapper;
 import de.akquinet.jbosscc.guttenbase.meta.ColumnMetaData;
 import de.akquinet.jbosscc.guttenbase.meta.TableMetaData;
 
-import java.sql.SQLException;
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -20,28 +19,25 @@ public class TestColumnRenameNameMapper implements ColumnMapper {
   private final Map<String, String> replacementsColumns = new HashMap<>();
 
   @Override
-  public ColumnMapperResult map(ColumnMetaData source, TableMetaData targetTableMetaData) throws SQLException {
-
+  public ColumnMapperResult map(ColumnMetaData source, TableMetaData targetTableMetaData) {
     final String defaultColumnName = source.getColumnName();
-
-    final String columnName = replacementsColumns.containsKey(defaultColumnName) ?
-        replacementsColumns.get(defaultColumnName) : defaultColumnName;
-
+    final String columnName = replacementsColumns.getOrDefault(defaultColumnName, defaultColumnName);
     final ColumnMetaData columnMetaData2 = targetTableMetaData.getColumnMetaData(columnName);
-    return new ColumnMapperResult(Arrays.asList(columnMetaData2));
 
+    return new ColumnMapperResult(Collections.singletonList(columnMetaData2));
   }
 
   @Override
-  public String mapColumnName(ColumnMetaData source, TableMetaData targetTableMetaData) throws SQLException {
-
-    String result = source.getColumnName();
+  public String mapColumnName(ColumnMetaData source, TableMetaData targetTableMetaData) {
+    final String result = source.getColumnName();
     final String columnName = replacementsColumns.get(result);
 
-    if (columnName == null)
+    if (columnName == null){
       return result;
-    else
+    }
+    else{
       return columnName;
+    }
   }
 
   public TestColumnRenameNameMapper addReplacement(final String sourceComn, final String targetColumn) {

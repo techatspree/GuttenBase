@@ -44,13 +44,13 @@ public abstract class AbstractDatabaseConfiguration implements DatabaseConfigura
    * {@inheritDoc}
    */
   @Override
-  public void beforeTableCopy(final Connection connection, final String connectorId, final TableMetaData table) throws SQLException {
+  public void beforeTableCopy(final Connection connection, final String connectorId, final TableMetaData table) {
   }
 
   /**
    * {@inheritDoc}
    */
   @Override
-  public void afterTableCopy(final Connection connection, final String connectorId, final TableMetaData table) throws SQLException {
+  public void afterTableCopy(final Connection connection, final String connectorId, final TableMetaData table) {
   }
 }

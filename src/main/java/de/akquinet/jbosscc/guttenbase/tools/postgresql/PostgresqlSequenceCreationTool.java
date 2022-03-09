@@ -4,7 +4,6 @@ import de.akquinet.jbosscc.guttenbase.meta.TableMetaData;
 import de.akquinet.jbosscc.guttenbase.repository.ConnectorRepository;
 import de.akquinet.jbosscc.guttenbase.tools.AbstractSequenceCreationTool;
 
-import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.List;
 
@@ -38,7 +37,7 @@ public class PostgresqlSequenceCreationTool extends AbstractSequenceCreationTool
   }
 
   @Override
-  public String getSequenceName(final String tableName) throws SQLException {
+  public String getSequenceName(final String tableName) {
     return tableName + "_id_seq";
   }
 }

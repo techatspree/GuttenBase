@@ -3,7 +3,6 @@ package de.akquinet.jbosscc.guttenbase.hints;
 import de.akquinet.jbosscc.guttenbase.mapping.ColumnDataMapper;
 import de.akquinet.jbosscc.guttenbase.meta.ColumnMetaData;
 
-import java.sql.SQLException;
 import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
@@ -34,7 +33,7 @@ public class TestUUIDColumnDataMapper implements ColumnDataMapper {
   }
 
   @Override
-  public boolean isApplicable(final ColumnMetaData sourceColumnMetaData, final ColumnMetaData targetColumnMetaData) throws SQLException {
+  public boolean isApplicable(final ColumnMetaData sourceColumnMetaData, final ColumnMetaData targetColumnMetaData) {
     final String sourceColumnName = sourceColumnMetaData.getColumnName().toUpperCase();
     final String targetColumnName = targetColumnMetaData.getColumnName().toUpperCase();
 

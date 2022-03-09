@@ -32,7 +32,7 @@ public class Db2TargetDatabaseConfiguration extends DefaultTargetDatabaseConfigu
   }
 
   //  @Override
-  //  public void beforeInsert(final Connection connection, final String connectorId, final TableMetaData table) throws SQLException
+  //  public void beforeInsert(final Connection connection, final String connectorId, final TableMetaData table)
   //  {
   //    final TableNameMapper tableNameMapper = _connectorRepository.getConnectorHint(connectorId, TableNameMapper.class).getValue();
   //
@@ -43,7 +43,7 @@ public class Db2TargetDatabaseConfiguration extends DefaultTargetDatabaseConfigu
   //  }
   //
   //  @Override
-  //  public void afterInsert(final Connection connection, final String connectorId, final TableMetaData table) throws SQLException
+  //  public void afterInsert(final Connection connection, final String connectorId, final TableMetaData table)
   //  {
   //    final TableNameMapper tableNameMapper = _connectorRepository.getConnectorHint(connectorId, TableNameMapper.class).getValue();
   //

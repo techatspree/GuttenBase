@@ -1,11 +1,11 @@
 package de.akquinet.jbosscc.guttenbase.utils;
 
+import de.akquinet.jbosscc.guttenbase.connector.GuttenBaseException;
 import org.apache.log4j.Logger;
 
 import java.io.*;
 import java.net.URL;
 import java.net.URLClassLoader;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
@@ -241,12 +241,12 @@ public abstract class Util {
   /**
    * @return uppercased list of columns in SELECT statement
    */
-  public static List<String> parseSelectedColumns(final String sql) throws SQLException {
+  public static List<String> parseSelectedColumns(final String sql) {
     final List<String> result = new ArrayList<>();
     final StringTokenizer stringTokenizer = new StringTokenizer(sql, " ,\n\r\t");
 
     if (!"SELECT".equalsIgnoreCase(stringTokenizer.nextToken())) {
-      throw new SQLException("Cannot parse statement: No SELECT clause " + sql);
+      throw new GuttenBaseException("Cannot parse statement: No SELECT clause " + sql);
     }
 
     for (String column = stringTokenizer.nextToken(); stringTokenizer.hasMoreTokens(); column = stringTokenizer.nextToken()) {
@@ -257,7 +257,6 @@ public abstract class Util {
       }
     }
 
-    throw new SQLException("Cannot parse statement No FROM clause: " + sql);
+    throw new GuttenBaseException("Cannot parse statement No FROM clause: " + sql);
   }
-
 }

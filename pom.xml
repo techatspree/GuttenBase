@@ -118,8 +118,8 @@
                     <configuration>
                         <debug>true</debug>
                         <debuglevel>lines,vars,source</debuglevel>
-                        <source>1.8</source>
-                        <target>1.8</target>
+                        <source>11</source>
+                        <target>11</target>
                         <encoding>UTF-8</encoding>
                     </configuration>
                 </plugin>

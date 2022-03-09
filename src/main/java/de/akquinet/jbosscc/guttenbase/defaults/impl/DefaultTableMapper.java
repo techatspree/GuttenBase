@@ -5,8 +5,6 @@ import de.akquinet.jbosscc.guttenbase.mapping.TableMapper;
 import de.akquinet.jbosscc.guttenbase.meta.DatabaseMetaData;
 import de.akquinet.jbosscc.guttenbase.meta.TableMetaData;
 
-import java.sql.SQLException;
-
 /**
  * By default prepend schema name.
  * <p>
@@ -28,21 +26,21 @@ public class DefaultTableMapper implements TableMapper {
   }
 
   @Override
-  public TableMetaData map(final TableMetaData source, final DatabaseMetaData targetDatabaseMetaData) throws SQLException {
+  public TableMetaData map(final TableMetaData source, final DatabaseMetaData targetDatabaseMetaData) {
     final String tableName = mapTableName(source, targetDatabaseMetaData);
     return targetDatabaseMetaData.getTableMetaData(tableName);
   }
 
   @Override
   public String fullyQualifiedTableName(final TableMetaData source, final DatabaseMetaData targetDatabaseMetaData)
-      throws SQLException {
+      {
     final String schemaPrefix = targetDatabaseMetaData.getSchemaPrefix();
 
     return schemaPrefix + mapTableName(source, targetDatabaseMetaData);
   }
 
   @Override
-  public String mapTableName(final TableMetaData source, final DatabaseMetaData targetDatabaseMetaData) throws SQLException {
+  public String mapTableName(final TableMetaData source, final DatabaseMetaData targetDatabaseMetaData) {
     return _caseConversionMode.convert(source.getTableName());
   }
 }

@@ -9,7 +9,6 @@ import de.akquinet.jbosscc.guttenbase.meta.TableMetaData;
 import de.akquinet.jbosscc.guttenbase.repository.ConnectorRepository;
 import org.apache.log4j.Logger;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,7 +37,7 @@ public abstract class AbstractStatementCreator {
     _columnMapper = _connectorRepository.getConnectorHint(connectorId, ColumnMapper.class).getValue();
   }
 
-  protected String createColumnClause(final List<ColumnMetaData> columns) throws SQLException {
+  protected String createColumnClause(final List<ColumnMetaData> columns) {
     final StringBuilder columnBuf = new StringBuilder();
 
     for (final ColumnMetaData columnMetaData : columns) {
@@ -50,7 +49,7 @@ public abstract class AbstractStatementCreator {
     return columnBuf.toString();
   }
 
-  protected String createWhereClause(final TableMetaData tableMetaData) throws SQLException {
+  protected String createWhereClause(final TableMetaData tableMetaData) {
     return "";
   }
 
@@ -58,7 +57,7 @@ public abstract class AbstractStatementCreator {
    * Get the list of target columns with appropriate mappings as defined by {@link ColumnMapperHint}
    */
   public List<ColumnMetaData> getMappedTargetColumns(final TableMetaData sourceTableMetaData,
-                                                     final TableMetaData targetTableMetaData, final String sourceConnectorId) throws SQLException {
+                                                     final TableMetaData targetTableMetaData, final String sourceConnectorId) {
     // Use same order as in SELECT clause
     final List<ColumnMetaData> sourceColumns = ColumnOrderHint.getSortedColumns(_connectorRepository, sourceConnectorId,
         sourceTableMetaData);

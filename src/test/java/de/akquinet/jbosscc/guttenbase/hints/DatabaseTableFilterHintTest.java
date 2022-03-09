@@ -9,7 +9,6 @@ import de.akquinet.jbosscc.guttenbase.tools.ScriptExecutorTool;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.sql.SQLException;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
@@ -36,7 +35,7 @@ public class DatabaseTableFilterHintTest extends AbstractGuttenBaseTest {
       public DatabaseTableFilter getValue() {
         return new DefaultDatabaseTableFilter() {
           @Override
-          public boolean accept(final TableMetaData table) throws SQLException {
+          public boolean accept(final TableMetaData table) {
             return table.getTableName().toUpperCase().contains("USER");
           }
         };
@@ -45,7 +44,7 @@ public class DatabaseTableFilterHintTest extends AbstractGuttenBaseTest {
   }
 
   @Test
-  public void testFilter() throws Exception {
+  public void testFilter() {
     final List<TableMetaData> tableMetaData = _connectorRepository.getDatabaseMetaData(SOURCE).getTableMetaData();
 
     assertEquals(3, tableMetaData.size());

@@ -55,7 +55,7 @@ public abstract class AbstractSequenceUpdateTool {
     _scriptExecutor.executeScript(connectorId, false, false, updateClauses);
   }
 
-  public abstract String getUpdateSequenceClause(String sequenceName, final long sequenceValue) throws SQLException;
+  public abstract String getUpdateSequenceClause(String sequenceName, final long sequenceValue);
 
-  public abstract String getSequenceName(final String tableName) throws SQLException;
+  public abstract String getSequenceName(final String tableName);
 }

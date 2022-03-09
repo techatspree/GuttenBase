@@ -1,8 +1,7 @@
 package de.akquinet.jbosscc.guttenbase.exceptions;
 
+import de.akquinet.jbosscc.guttenbase.connector.GuttenBaseException;
 import de.akquinet.jbosscc.guttenbase.tools.CheckEqualTableDataTool;
-
-import java.sql.SQLException;
 
 /**
  * Thrown when table data is checked for equality.
@@ -14,7 +13,7 @@ import java.sql.SQLException;
  * @author M. Dahm
  * @see CheckEqualTableDataTool
  */
-public class UnequalNumberOfRowsException extends SQLException {
+public class UnequalNumberOfRowsException extends GuttenBaseException {
   private static final long serialVersionUID = 1L;
 
   public UnequalNumberOfRowsException(final String reason) {

@@ -95,7 +95,7 @@ public class PlainGzipExporter implements Exporter {
     _objectOutputStream.writeObject(obj);
   }
 
-  private void writeExtraInformation() throws SQLException, IOException {
+  private void writeExtraInformation() throws IOException, SQLException {
     final ExportDumpExtraInformation exportDumpExtraInformation = _connectorRepository.getConnectorHint(_connectorId,
         ExportDumpExtraInformation.class).getValue();
 
