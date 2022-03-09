@@ -5,7 +5,6 @@ import de.akquinet.jbosscc.guttenbase.meta.TableMetaData;
 import de.akquinet.jbosscc.guttenbase.repository.ConnectorRepository;
 
 import java.sql.Connection;
-import java.sql.SQLException;
 
 /**
  * Import dump configuration forwards important events to {@link ImportDumpConnection}.
@@ -22,12 +21,12 @@ public class ImportDumpDatabaseConfiguration extends DefaultSourceDatabaseConfig
   }
 
   @Override
-  public void beforeTableCopy(final Connection connection, final String connectorId, final TableMetaData table) throws SQLException {
+  public void beforeTableCopy(final Connection connection, final String connectorId, final TableMetaData table) {
     ((ImportDumpConnection) connection).initializeReadTable(table);
   }
 
   @Override
-  public void afterTableCopy(final Connection connection, final String connectorId, final TableMetaData table) throws SQLException {
+  public void afterTableCopy(final Connection connection, final String connectorId, final TableMetaData table) {
     ((ImportDumpConnection) connection).finalizeReadTable(table);
   }
 }

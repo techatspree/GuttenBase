@@ -3,7 +3,6 @@ package de.akquinet.jbosscc.guttenbase.mapping;
 import de.akquinet.jbosscc.guttenbase.meta.ColumnMetaData;
 import de.akquinet.jbosscc.guttenbase.meta.TableMetaData;
 
-import java.sql.SQLException;
 import java.util.List;
 
 /**
@@ -19,13 +18,13 @@ public interface ColumnMapper {
   /**
    * Return matching columns in target table. Must not be NULL.
    */
-  ColumnMapperResult map(ColumnMetaData source, TableMetaData targetTableMetaData) throws SQLException;
+  ColumnMapperResult map(ColumnMetaData source, TableMetaData targetTableMetaData);
 
   /**
    * Map the way column names are used in statements. Usually you won't need that, but sometimes you want to map the names, e.g. to add `name`
    * backticks, in order to escape special characters such as white space.
    */
-  String mapColumnName(ColumnMetaData source, TableMetaData targetTableMetaData) throws SQLException;
+  String mapColumnName(ColumnMetaData source, TableMetaData targetTableMetaData);
 
 
   class ColumnMapperResult {

@@ -9,7 +9,6 @@ import de.akquinet.jbosscc.guttenbase.hints.ConnectorHint;
 import de.akquinet.jbosscc.guttenbase.meta.DatabaseMetaData;
 
 import java.io.Serializable;
-import java.sql.SQLException;
 import java.util.List;
 
 /**
@@ -41,7 +40,7 @@ public interface ConnectorRepository extends Serializable {
   /**
    * Get all meta data from data base.
    */
-  DatabaseMetaData getDatabaseMetaData(final String connectorId) throws SQLException;
+  DatabaseMetaData getDatabaseMetaData(final String connectorId);
 
   /**
    * Reset table data, i.e. it will be reread from the data base.

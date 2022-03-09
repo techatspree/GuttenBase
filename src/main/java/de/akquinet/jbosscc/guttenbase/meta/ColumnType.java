@@ -1,6 +1,7 @@
 package de.akquinet.jbosscc.guttenbase.meta;
 
 import de.akquinet.jbosscc.guttenbase.connector.DatabaseType;
+import de.akquinet.jbosscc.guttenbase.connector.GuttenBaseException;
 import de.akquinet.jbosscc.guttenbase.exceptions.UnhandledColumnTypeException;
 import de.akquinet.jbosscc.guttenbase.utils.Util;
 
@@ -60,8 +61,7 @@ public enum ColumnType {
     }
   }
 
-  private Object getValueFromResultset(final ResultSet resultSet, final int columnIndex)
-      throws SQLException {
+  private Object getValueFromResultset(final ResultSet resultSet, final int columnIndex) throws SQLException {
     switch (this) {
       case CLASS_STRING:
         return resultSet.getString(columnIndex);
@@ -206,7 +206,7 @@ public enum ColumnType {
   /**
    * Map class to {@link ColumnType}.
    */
-  public static ColumnType valueOf(final Class<?> columnClass) throws SQLException {
+  public static ColumnType valueOf(final Class<?> columnClass) {
     init();
 
     final ColumnType result = COLUMN_TYPES.get(columnClass);
@@ -234,7 +234,7 @@ public enum ColumnType {
   /**
    * Check if class can be mapped to {@link ColumnType}.
    */
-  public static boolean isSupportedClass(final String className) throws SQLException {
+  public static boolean isSupportedClass(final String className) {
     final Class<?> clazz = forName(className);
     return isSupportedClass(clazz);
   }
@@ -249,19 +249,19 @@ public enum ColumnType {
     }
   }
 
-  public static ColumnType valueForClass(final String className) throws SQLException {
+  public static ColumnType valueForClass(final String className) {
     final Class<?> clazz = forName(className);
     return valueOf(clazz);
   }
 
-  private static Class<?> forName(final String className) throws SQLException {
+  private static Class<?> forName(final String className) {
     if ("byte[]".equals(className)) { // Oracle-Bug
       return Util.ByteArrayClass;
     } else {
       try {
         return Class.forName(className);
       } catch (final ClassNotFoundException e) {
-        throw new SQLException("Class not found: " + className, e);
+        throw new GuttenBaseException("Class not found: " + className, e);
       }
     }
   }
@@ -300,7 +300,7 @@ public enum ColumnType {
     }
   }
 
-  private class ClosableSqlXmlWrapper implements Closeable {
+  private static class ClosableSqlXmlWrapper implements Closeable {
     private final SQLXML _blob;
 
     public ClosableSqlXmlWrapper(final SQLXML blob) {

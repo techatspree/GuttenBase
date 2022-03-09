@@ -1,9 +1,9 @@
 package de.akquinet.jbosscc.guttenbase.export;
 
+import de.akquinet.jbosscc.guttenbase.connector.GuttenBaseException;
 import org.apache.commons.io.IOUtils;
 
 import java.io.*;
-import java.sql.SQLException;
 
 /**
  * Since CLOBs/BLOBs may be quite big. we do not load them into memory
@@ -79,7 +79,7 @@ public abstract class AbstractExportDumpObject implements Externalizable {
     return _tempFile.length();
   }
 
-  public byte[] getBytes(final long pos, final int length) throws SQLException {
+  public byte[] getBytes(final long pos, final int length) {
     try {
       final InputStream inputStream = getBinaryStream(pos, length);
       final byte[] bytes = new byte[length];
@@ -88,21 +88,21 @@ public abstract class AbstractExportDumpObject implements Externalizable {
 
       return bytes;
     } catch (final IOException e) {
-      throw new SQLException("getBytes", e);
+      throw new GuttenBaseException("getBytes", e);
     }
   }
 
-  public InputStream getBinaryStream() throws SQLException {
+  public InputStream getBinaryStream() {
     return getBinaryStream(0, length());
   }
 
-  public InputStream getBinaryStream(final long pos, @SuppressWarnings("unused") final long length) throws SQLException {
+  public InputStream getBinaryStream(final long pos, @SuppressWarnings("unused") final long length) {
     try {
       _fileInputStream = new FileInputStream(_tempFile);
       _fileInputStream.skip(pos);
       return _fileInputStream;
     } catch (final IOException e) {
-      throw new SQLException("getBinaryStream", e);
+      throw new GuttenBaseException("getBinaryStream", e);
     }
   }
 

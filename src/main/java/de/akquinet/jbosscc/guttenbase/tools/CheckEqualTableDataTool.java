@@ -4,6 +4,7 @@ import de.akquinet.jbosscc.guttenbase.configuration.SourceDatabaseConfiguration;
 import de.akquinet.jbosscc.guttenbase.connector.Connector;
 import de.akquinet.jbosscc.guttenbase.connector.ConnectorInfo;
 import de.akquinet.jbosscc.guttenbase.connector.DatabaseType;
+import de.akquinet.jbosscc.guttenbase.connector.GuttenBaseException;
 import de.akquinet.jbosscc.guttenbase.exceptions.IncompatibleColumnsException;
 import de.akquinet.jbosscc.guttenbase.exceptions.TableConfigurationException;
 import de.akquinet.jbosscc.guttenbase.exceptions.UnequalDataException;
@@ -241,8 +242,8 @@ public class CheckEqualTableDataTool {
     return data == null ? null : data.trim();
   }
 
-  private static SQLException createIncompatibleDataException(final String tableName, final int index,
-                                                              final ColumnType columnType, final String columnName, final Object data1, final Object data2) {
+  private static GuttenBaseException createIncompatibleDataException(final String tableName, final int index,
+                                                                     final ColumnType columnType, final String columnName, final Object data1, final Object data2) {
     return new UnequalDataException(tableName + ": Row "
         + index
         + ": Data not equal on column "

@@ -1,6 +1,7 @@
 package de.akquinet.jbosscc.guttenbase.tools.schema;
 
 import de.akquinet.jbosscc.guttenbase.connector.DatabaseType;
+import de.akquinet.jbosscc.guttenbase.connector.GuttenBaseException;
 import de.akquinet.jbosscc.guttenbase.exceptions.IncompatibleColumnsException;
 import de.akquinet.jbosscc.guttenbase.exceptions.IncompatibleTablesException;
 import de.akquinet.jbosscc.guttenbase.hints.CaseConversionMode;
@@ -48,13 +49,13 @@ public class SchemaScriptCreatorTool {
     _targetConnectorId = targetConnectorId;
   }
 
-  public List<String> createTableStatements() throws SQLException {
+  public List<String> createTableStatements() {
     final List<TableMetaData> tables = new TableOrderTool().getOrderedTables(getDatabaseMetaData().getTableMetaData(), true);
 
     return createTableStatements(tables);
   }
 
-  public List<String> createTableStatements(final List<TableMetaData> tables) throws SQLException {
+  public List<String> createTableStatements(final List<TableMetaData> tables) {
     final List<String> result = new ArrayList<>();
 
     for (final TableMetaData tableMetaData : tables) {
@@ -64,17 +65,17 @@ public class SchemaScriptCreatorTool {
     return result;
   }
 
-  public List<String> createPrimaryKeyStatements() throws SQLException {
+  public List<String> createPrimaryKeyStatements() {
     final List<TableMetaData> tables = new TableOrderTool().getOrderedTables(getDatabaseMetaData().getTableMetaData(), true);
 
     return createPrimaryKeyStatements(tables);
   }
 
-  private DatabaseMetaData getDatabaseMetaData() throws SQLException {
+  private DatabaseMetaData getDatabaseMetaData() {
     return _connectorRepository.getDatabaseMetaData(getSourceConnectorId());
   }
 
-  public List<String> createPrimaryKeyStatements(final List<TableMetaData> tables) throws SQLException {
+  public List<String> createPrimaryKeyStatements(final List<TableMetaData> tables) {
     final List<String> result = new ArrayList<>();
 
     for (final TableMetaData tableMetaData : tables) {
@@ -88,13 +89,13 @@ public class SchemaScriptCreatorTool {
     return result;
   }
 
-  public List<String> createIndexStatements() throws SQLException {
+  public List<String> createIndexStatements() {
     final List<TableMetaData> tables = new TableOrderTool().getOrderedTables(getDatabaseMetaData().getTableMetaData(), true);
 
     return createIndexStatements(tables);
   }
 
-  public List<String> createIndexStatements(final List<TableMetaData> tables) throws SQLException {
+  public List<String> createIndexStatements(final List<TableMetaData> tables) {
     final List<String> result = new ArrayList<>();
 
     for (final TableMetaData tableMetaData : tables) {
@@ -121,13 +122,13 @@ public class SchemaScriptCreatorTool {
     return result;
   }
 
-  public List<String> createForeignKeyStatements() throws SQLException {
+  public List<String> createForeignKeyStatements() {
     final List<TableMetaData> tables = new TableOrderTool().getOrderedTables(getDatabaseMetaData().getTableMetaData(), true);
 
     return createForeignKeyStatements(tables);
   }
 
-  public List<String> createForeignKeyStatements(final List<TableMetaData> tables) throws SQLException {
+  public List<String> createForeignKeyStatements(final List<TableMetaData> tables) {
     final List<String> result = new ArrayList<>();
 
     for (final TableMetaData tableMetaData : tables) {
@@ -139,40 +140,31 @@ public class SchemaScriptCreatorTool {
     return result;
   }
 
-  public String createTable(final TableMetaData tableMetaData) throws SQLException {
+  public String createTable(final TableMetaData tableMetaData) {
     final String tableName = getTableName(tableMetaData);
-    final StringBuilder builder = new StringBuilder("CREATE TABLE " + tableName + "\n(\n");
 
-    for (final Iterator<ColumnMetaData> iterator = tableMetaData.getColumnMetaData().iterator(); iterator.hasNext(); ) {
-      final ColumnMetaData columnMetaData = iterator.next();
-
-      builder.append("  ").append(createColumn(columnMetaData));
-
-      if (iterator.hasNext()) {
-        builder.append(", \n");
-      }
-    }
-
-    return builder.append("\n);").toString();
+    return "CREATE TABLE " + tableName + "\n(\n"
+        + tableMetaData.getColumnMetaData().stream()
+        .map(columnMetaData -> "  " + getColumn(columnMetaData)).collect(Collectors.joining(",\n"))
+        + "\n);";
   }
 
-  private String getTableName(final TableMetaData tableMetaData) throws SQLException {
+  private String getTableName(final TableMetaData tableMetaData) {
     final DatabaseMetaData targetDatabaseMetaData = _connectorRepository.getDatabaseMetaData(getTargetConnectorId());
     final TableMapper tableMapper = _connectorRepository.getConnectorHint(getTargetConnectorId(), TableMapper.class).getValue();
     final String rawTableName = tableMapper.mapTableName(tableMetaData, targetDatabaseMetaData);
     final String tableName = tableMapper.fullyQualifiedTableName(tableMetaData, targetDatabaseMetaData);
-
     final int maxNameLength = getTargetMaxNameLength();
 
     if (rawTableName.length() > maxNameLength) {
       throw new IncompatibleTablesException("Table name " + rawTableName + " is too long for the targeted data base (Max. "
           + maxNameLength + "). You will have to provide an appropriate " + TableMapper.class.getName() + " hint");
     }
+
     return tableName;
   }
 
-  private String createPrimaryKeyStatement(final TableMetaData tableMetaData, final List<ColumnMetaData> primaryKeyColumns)
-      throws SQLException {
+  private String createPrimaryKeyStatement(final TableMetaData tableMetaData, final List<ColumnMetaData> primaryKeyColumns) {
     final TableMapper tableMapper = _connectorRepository.getConnectorHint(getTargetConnectorId(), TableMapper.class).getValue();
     final ColumnMapper columnMapper = _connectorRepository.getConnectorHint(getTargetConnectorId(), ColumnMapper.class)
         .getValue();
@@ -197,7 +189,7 @@ public class SchemaScriptCreatorTool {
     return builder.toString();
   }
 
-  private String createIndex(final IndexMetaData indexMetaData, final int counter) throws SQLException {
+  private String createIndex(final IndexMetaData indexMetaData, final int counter) {
     final TableMetaData tableMetaData = indexMetaData.getTableMetaData();
     final TableMapper tableMapper = _connectorRepository.getConnectorHint(getTargetConnectorId(), TableMapper.class).getValue();
     final DatabaseMetaData targetDatabaseMetaData = _connectorRepository.getDatabaseMetaData(getTargetConnectorId());
@@ -208,11 +200,11 @@ public class SchemaScriptCreatorTool {
     return createIndex(indexMetaData, indexName);
   }
 
-  public String createIndex(final IndexMetaData indexMetaData) throws SQLException {
+  public String createIndex(final IndexMetaData indexMetaData) {
     return createIndex(indexMetaData, indexMetaData.getIndexName());
   }
 
-  private String createIndex(final IndexMetaData indexMetaData, final String indexName) throws SQLException {
+  private String createIndex(final IndexMetaData indexMetaData, final String indexName) {
     final DatabaseMetaData targetDatabaseMetaData = _connectorRepository.getDatabaseMetaData(getTargetConnectorId());
     final TableMapper tableMapper = _connectorRepository.getConnectorHint(getTargetConnectorId(), TableMapper.class).getValue();
     final ColumnMapper columnMapper = _connectorRepository.getConnectorHint(getTargetConnectorId(), ColumnMapper.class)
@@ -239,29 +231,8 @@ public class SchemaScriptCreatorTool {
 
     return builder.append(");").toString();
   }
-  //
-  //  private String createForeignKeys(final ColumnMetaData referencingColumn, final int counter) throws SQLException
-  //  {
-  //    final TableMapper tableMapper = _connectorRepository.getConnectorHint(getTargetConnectorId(), TableMapper.class).getValue();
-  //    final ColumnMapper columnMapper = _connectorRepository.getConnectorHint(getTargetConnectorId(), ColumnMapper.class)
-  //        .getValue();
-  //    final DatabaseMetaData targetDatabaseMetaData = _connectorRepository.getDatabaseMetaData(getTargetConnectorId());
-  //    final TableMetaData tableMetaData = referencingColumn.getTableMetaData();
-  //    final Map<String, List<ColumnMetaData>> referencedColumns = referencingColumn.getReferencedColumns();
-  //    final String tablename = tableMapper.mapTableName(tableMetaData, targetDatabaseMetaData);
-  //
-  //    for (Map.Entry<String, List<ColumnMetaData>> entry : referencedColumns.entrySet())
-  //    {
-  //      //      final String fkName = createConstraintName("FK_", tablename + "_"
-  //      //          + columnMapper.mapColumnName(referencingColumn, referencedColumns.getTableMetaData())
-  //      //          + "_"
-  //      //          + columnMapper.mapColumnName(referencedColumns, referencedColumns.getTableMetaData()) + "_", counter);
-  //
-  //      return createForeignKey(referencingColumn, entry.getKey());
-  //    }
-  //  }
 
-  public String createForeignKey(final ForeignKeyMetaData foreignKeyMetaData) throws SQLException {
+  public String createForeignKey(final ForeignKeyMetaData foreignKeyMetaData) {
     final TableMapper tableMapper = _connectorRepository.getConnectorHint(getTargetConnectorId(), TableMapper.class).getValue();
     final DatabaseMetaData targetDatabaseMetaData = _connectorRepository.getDatabaseMetaData(getTargetConnectorId());
     final TableMetaData tableMetaData = foreignKeyMetaData.getReferencingTableMetaData();
@@ -275,18 +246,18 @@ public class SchemaScriptCreatorTool {
         + ";";
   }
 
+  private String getColumn(ColumnMetaData columnMetaData) {
+    return createColumn(columnMetaData);
+  }
+
   private String getColumnName(final ColumnMetaData referencingColumn) {
     final ColumnMapper columnMapper = _connectorRepository.getConnectorHint(getTargetConnectorId(), ColumnMapper.class)
         .getValue();
 
-    try {
-      return columnMapper.mapColumnName(referencingColumn, referencingColumn.getTableMetaData());
-    } catch (final SQLException e) {
-      throw new RuntimeException("mapColumnName: " + referencingColumn);
-    }
+    return columnMapper.mapColumnName(referencingColumn, referencingColumn.getTableMetaData());
   }
 
-  public String createColumn(final ColumnMetaData columnMetaData) throws SQLException {
+  public String createColumn(final ColumnMetaData columnMetaData) {
     final TableMapper tableMapper = _connectorRepository.getConnectorHint(getTargetConnectorId(), TableMapper.class).getValue();
     final DatabaseMetaData targetDatabaseMetaData = _connectorRepository.getDatabaseMetaData(getTargetConnectorId());
     final ColumnMapper columnMapper = _connectorRepository.getConnectorHint(getTargetConnectorId(), ColumnMapper.class)
@@ -309,14 +280,10 @@ public class SchemaScriptCreatorTool {
 
     builder.append(columnName + " " + columnType);
 
-    if (!columnMetaData.isNullable()) {
-      builder.append(" NOT NULL");
-    }
-
     return builder.toString();
   }
 
-  public String createConstraintName(final String prefix, final String preferredName, final Object uniqueId) throws SQLException {
+  public String createConstraintName(final String prefix, final String preferredName, final Object uniqueId) {
     final StringBuilder name = new StringBuilder(preferredName);
     final int maxLength = getTargetMaxNameLength() - prefix.length() - String.valueOf(uniqueId).length();
 
@@ -328,18 +295,26 @@ public class SchemaScriptCreatorTool {
     return prefix + name + uniqueId;
   }
 
-  public int getTargetMaxNameLength() throws SQLException {
+  public int getTargetMaxNameLength() {
     final java.sql.DatabaseMetaData metaData = _connectorRepository.getDatabaseMetaData(getTargetConnectorId())
         .getDatabaseMetaData();
 
     // Since there is no getMaxConstraintNameLength() ...
-    final int nameLength = metaData.getMaxColumnNameLength();
+    final int nameLength = getMaxColumnNameLength(metaData);
 
     // Return reasonable default if value is not known or unlimited
     return nameLength <= 0 ? 64 : nameLength;
   }
 
-  public String createTableColumn(final ColumnMetaData columnMetaData) throws SQLException {
+  private int getMaxColumnNameLength(java.sql.DatabaseMetaData metaData) {
+    try {
+      return metaData.getMaxColumnNameLength();
+    } catch (final SQLException e) {
+      throw new GuttenBaseException("getMaxColumnNameLength", e);
+    }
+  }
+
+  public String createTableColumn(final ColumnMetaData columnMetaData) {
     return "ALTER TABLE " + getTableName(columnMetaData.getTableMetaData()) + " ADD " + createColumn(columnMetaData) + ";";
   }
 

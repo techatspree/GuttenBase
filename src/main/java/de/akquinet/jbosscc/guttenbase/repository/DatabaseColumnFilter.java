@@ -3,8 +3,6 @@ package de.akquinet.jbosscc.guttenbase.repository;
 import de.akquinet.jbosscc.guttenbase.meta.ColumnMetaData;
 import de.akquinet.jbosscc.guttenbase.repository.impl.DatabaseMetaDataInspectorTool;
 
-import java.sql.SQLException;
-
 /**
  * Regard which columns when @see {@link DatabaseMetaDataInspectorTool} is inquiring the database for columns?
  * <p>
@@ -18,5 +16,5 @@ public interface DatabaseColumnFilter {
   /**
    * Perform custom check on column before adding it to table meta data
    */
-  boolean accept(ColumnMetaData columnMetaData) throws SQLException;
+  boolean accept(ColumnMetaData columnMetaData);
 }

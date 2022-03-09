@@ -4,8 +4,6 @@ import de.akquinet.jbosscc.guttenbase.mapping.ColumnTypeResolver;
 import de.akquinet.jbosscc.guttenbase.meta.ColumnMetaData;
 import de.akquinet.jbosscc.guttenbase.meta.ColumnType;
 
-import java.sql.SQLException;
-
 /**
  * Try to resolve by JDBC class name.
  *
@@ -20,7 +18,7 @@ public class ClassNameColumnTypeResolver implements ColumnTypeResolver {
    * Try to resolve by JDBC class name.
    */
   @Override
-  public ColumnType getColumnType(final ColumnMetaData columnMetaData) throws SQLException {
+  public ColumnType getColumnType(final ColumnMetaData columnMetaData) {
     final String columnClassName = columnMetaData.getColumnClassName();
 
     return ColumnType.isSupportedClass(columnClassName) ? ColumnType.valueForClass(columnClassName) : ColumnType.CLASS_UNKNOWN;

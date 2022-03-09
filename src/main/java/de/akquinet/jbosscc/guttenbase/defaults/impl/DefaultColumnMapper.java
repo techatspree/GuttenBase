@@ -5,7 +5,6 @@ import de.akquinet.jbosscc.guttenbase.mapping.ColumnMapper;
 import de.akquinet.jbosscc.guttenbase.meta.ColumnMetaData;
 import de.akquinet.jbosscc.guttenbase.meta.TableMetaData;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -31,12 +30,12 @@ public class DefaultColumnMapper implements ColumnMapper {
   }
 
   @Override
-  public String mapColumnName(final ColumnMetaData columnMetaData, final TableMetaData targetTableMetaData) throws SQLException {
+  public String mapColumnName(final ColumnMetaData columnMetaData, final TableMetaData targetTableMetaData) {
     return _caseConversionMode.convert(columnMetaData.getColumnName());
   }
 
   @Override
-  public ColumnMapperResult map(final ColumnMetaData source, final TableMetaData targetTableMetaData) throws SQLException {
+  public ColumnMapperResult map(final ColumnMetaData source, final TableMetaData targetTableMetaData) {
     final String columnName = source.getColumnName();
     final ColumnMetaData columnMetaData = targetTableMetaData.getColumnMetaData(columnName);
     final List<ColumnMetaData> result = columnMetaData != null ? new ArrayList<>(Collections.singletonList(columnMetaData))

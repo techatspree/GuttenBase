@@ -1,5 +1,6 @@
 package de.akquinet.jbosscc.guttenbase.export;
 
+import de.akquinet.jbosscc.guttenbase.connector.GuttenBaseException;
 import de.akquinet.jbosscc.guttenbase.exceptions.ExportException;
 import org.apache.commons.io.input.ReaderInputStream;
 
@@ -34,7 +35,7 @@ public class ExportDumpPreparedStatement implements PreparedStatement {
   }
 
   @Override
-  public void setObject(final int parameterIndex, final Object x) throws SQLException {
+  public void setObject(final int parameterIndex, final Object x) {
     try {
       _exporter.writeObject(x);
     } catch (final Exception e) {
@@ -43,72 +44,72 @@ public class ExportDumpPreparedStatement implements PreparedStatement {
   }
 
   @Override
-  public void setBoolean(final int parameterIndex, final boolean x) throws SQLException {
+  public void setBoolean(final int parameterIndex, final boolean x) {
     setObject(parameterIndex, x);
   }
 
   @Override
-  public void setByte(final int parameterIndex, final byte x) throws SQLException {
+  public void setByte(final int parameterIndex, final byte x) {
     setObject(parameterIndex, x);
   }
 
   @Override
-  public void setShort(final int parameterIndex, final short x) throws SQLException {
+  public void setShort(final int parameterIndex, final short x) {
     setObject(parameterIndex, x);
   }
 
   @Override
-  public void setInt(final int parameterIndex, final int x) throws SQLException {
+  public void setInt(final int parameterIndex, final int x) {
     setObject(parameterIndex, x);
   }
 
   @Override
-  public void setLong(final int parameterIndex, final long x) throws SQLException {
+  public void setLong(final int parameterIndex, final long x) {
     setObject(parameterIndex, x);
   }
 
   @Override
-  public void setFloat(final int parameterIndex, final float x) throws SQLException {
+  public void setFloat(final int parameterIndex, final float x) {
     setObject(parameterIndex, x);
   }
 
   @Override
-  public void setDouble(final int parameterIndex, final double x) throws SQLException {
+  public void setDouble(final int parameterIndex, final double x) {
     setObject(parameterIndex, x);
   }
 
   @Override
-  public void setBigDecimal(final int parameterIndex, final BigDecimal x) throws SQLException {
+  public void setBigDecimal(final int parameterIndex, final BigDecimal x) {
     setObject(parameterIndex, x);
   }
 
   @Override
-  public void setString(final int parameterIndex, final String x) throws SQLException {
+  public void setString(final int parameterIndex, final String x) {
     setObject(parameterIndex, x);
   }
 
   @Override
-  public void setBytes(final int parameterIndex, final byte[] x) throws SQLException {
+  public void setBytes(final int parameterIndex, final byte[] x) {
     setObject(parameterIndex, x);
   }
 
   @Override
-  public void setDate(final int parameterIndex, final Date x) throws SQLException {
+  public void setDate(final int parameterIndex, final Date x) {
     setObject(parameterIndex, x);
   }
 
   @Override
-  public void setTime(final int parameterIndex, final Time x) throws SQLException {
+  public void setTime(final int parameterIndex, final Time x) {
     setObject(parameterIndex, x);
   }
 
   @Override
-  public void setTimestamp(final int parameterIndex, final Timestamp x) throws SQLException {
+  public void setTimestamp(final int parameterIndex, final Timestamp x) {
     setObject(parameterIndex, x);
   }
 
   @Override
-  public void setNull(final int parameterIndex, final int sqlType) throws SQLException {
+  public void setNull(final int parameterIndex, final int sqlType) {
     setObject(parameterIndex, null);
   }
 
@@ -124,7 +125,7 @@ public class ExportDumpPreparedStatement implements PreparedStatement {
   }
 
   @Override
-  public void setClob(final int parameterIndex, final Reader reader) throws SQLException {
+  public void setClob(final int parameterIndex, final Reader reader) {
     assert reader != null : "reader != null";
 
     setObject(parameterIndex, new ExportDumpClob(new ReaderInputStream(reader)));
@@ -143,7 +144,7 @@ public class ExportDumpPreparedStatement implements PreparedStatement {
   }
 
   @Override
-  public void setBlob(final int parameterIndex, final InputStream inputStream) throws SQLException {
+  public void setBlob(final int parameterIndex, final InputStream inputStream) {
     assert inputStream != null : "inputStream != null";
 
     setObject(parameterIndex, new ExportDumpBlob(inputStream));
@@ -162,401 +163,401 @@ public class ExportDumpPreparedStatement implements PreparedStatement {
   }
 
   @Override
-  public ResultSet executeQuery(final String sql) throws SQLException {
+  public ResultSet executeQuery(final String sql) {
     throw new UnsupportedOperationException();
   }
 
   @Override
-  public int executeUpdate(final String sql) throws SQLException {
+  public int executeUpdate(final String sql) {
     throw new UnsupportedOperationException();
   }
 
   @Override
-  public void close() throws SQLException {
+  public void close() {
     // Ignored
   }
 
   @Override
-  public int getMaxFieldSize() throws SQLException {
+  public int getMaxFieldSize() {
     throw new UnsupportedOperationException();
   }
 
   @Override
-  public void setMaxFieldSize(final int max) throws SQLException {
+  public void setMaxFieldSize(final int max) {
     throw new UnsupportedOperationException();
   }
 
   @Override
-  public int getMaxRows() throws SQLException {
+  public int getMaxRows() {
     throw new UnsupportedOperationException();
   }
 
   @Override
-  public void setMaxRows(final int max) throws SQLException {
+  public void setMaxRows(final int max) {
     throw new UnsupportedOperationException();
   }
 
   @Override
-  public void setEscapeProcessing(final boolean enable) throws SQLException {
+  public void setEscapeProcessing(final boolean enable) {
     throw new UnsupportedOperationException();
   }
 
   @Override
-  public int getQueryTimeout() throws SQLException {
+  public int getQueryTimeout() {
     throw new UnsupportedOperationException();
   }
 
   @Override
-  public void setQueryTimeout(final int seconds) throws SQLException {
+  public void setQueryTimeout(final int seconds) {
     throw new UnsupportedOperationException();
   }
 
   @Override
-  public void cancel() throws SQLException {
+  public void cancel() {
     throw new UnsupportedOperationException();
   }
 
   @Override
-  public SQLWarning getWarnings() throws SQLException {
+  public SQLWarning getWarnings() {
     throw new UnsupportedOperationException();
   }
 
   @Override
-  public void clearWarnings() throws SQLException {
+  public void clearWarnings() {
     throw new UnsupportedOperationException();
   }
 
   @Override
-  public void setCursorName(final String name) throws SQLException {
+  public void setCursorName(final String name) {
     throw new UnsupportedOperationException();
   }
 
   @Override
-  public boolean execute(final String sql) throws SQLException {
+  public boolean execute(final String sql) {
     return false;
   }
 
   @Override
-  public int executeUpdate() throws SQLException {
+  public int executeUpdate() {
     return 0;
   }
 
   @Override
-  public ResultSet getResultSet() throws SQLException {
+  public ResultSet getResultSet() {
     throw new UnsupportedOperationException();
   }
 
   @Override
-  public int getUpdateCount() throws SQLException {
+  public int getUpdateCount() {
     throw new UnsupportedOperationException();
   }
 
   @Override
-  public boolean getMoreResults() throws SQLException {
+  public boolean getMoreResults() {
     return false;
   }
 
   @Override
-  public void setFetchDirection(final int direction) throws SQLException {
+  public void setFetchDirection(final int direction) {
     throw new UnsupportedOperationException();
   }
 
   @Override
-  public int getFetchDirection() throws SQLException {
+  public int getFetchDirection() {
     throw new UnsupportedOperationException();
   }
 
   @Override
-  public void setFetchSize(final int rows) throws SQLException {
+  public void setFetchSize(final int rows) {
     throw new UnsupportedOperationException();
   }
 
   @Override
-  public int getFetchSize() throws SQLException {
+  public int getFetchSize() {
     throw new UnsupportedOperationException();
   }
 
   @Override
-  public int getResultSetConcurrency() throws SQLException {
+  public int getResultSetConcurrency() {
     throw new UnsupportedOperationException();
   }
 
   @Override
-  public int getResultSetType() throws SQLException {
+  public int getResultSetType() {
     throw new UnsupportedOperationException();
   }
 
   @Override
-  public void addBatch(final String sql) throws SQLException {
+  public void addBatch(final String sql) {
     throw new UnsupportedOperationException();
   }
 
   @Override
-  public void clearBatch() throws SQLException {
+  public void clearBatch() {
     // Ignored
   }
 
   @Override
-  public int[] executeBatch() throws SQLException {
+  public int[] executeBatch() {
     return new int[0];
   }
 
   @Override
-  public Connection getConnection() throws SQLException {
+  public Connection getConnection() {
     throw new UnsupportedOperationException();
   }
 
   @Override
-  public boolean getMoreResults(final int current) throws SQLException {
+  public boolean getMoreResults(final int current) {
     return false;
   }
 
   @Override
-  public ResultSet getGeneratedKeys() throws SQLException {
+  public ResultSet getGeneratedKeys() {
     throw new UnsupportedOperationException();
   }
 
   @Override
-  public int executeUpdate(final String sql, final int autoGeneratedKeys) throws SQLException {
+  public int executeUpdate(final String sql, final int autoGeneratedKeys) {
     throw new UnsupportedOperationException();
   }
 
   @Override
-  public int executeUpdate(final String sql, final int[] columnIndexes) throws SQLException {
+  public int executeUpdate(final String sql, final int[] columnIndexes) {
     throw new UnsupportedOperationException();
   }
 
   @Override
-  public int executeUpdate(final String sql, final String[] columnNames) throws SQLException {
+  public int executeUpdate(final String sql, final String[] columnNames) {
     throw new UnsupportedOperationException();
   }
 
   @Override
-  public boolean execute(final String sql, final int autoGeneratedKeys) throws SQLException {
+  public boolean execute(final String sql, final int autoGeneratedKeys) {
     return false;
   }
 
   @Override
-  public boolean execute(final String sql, final int[] columnIndexes) throws SQLException {
+  public boolean execute(final String sql, final int[] columnIndexes) {
     return false;
   }
 
   @Override
-  public boolean execute(final String sql, final String[] columnNames) throws SQLException {
+  public boolean execute(final String sql, final String[] columnNames) {
     return false;
   }
 
   @Override
-  public int getResultSetHoldability() throws SQLException {
+  public int getResultSetHoldability() {
     throw new UnsupportedOperationException();
   }
 
   @Override
-  public boolean isClosed() throws SQLException {
+  public boolean isClosed() {
     return false;
   }
 
   @Override
-  public void setPoolable(final boolean poolable) throws SQLException {
+  public void setPoolable(final boolean poolable) {
     throw new UnsupportedOperationException();
   }
 
   @Override
-  public boolean isPoolable() throws SQLException {
+  public boolean isPoolable() {
     return false;
   }
 
   @Override
-  public <T> T unwrap(final Class<T> iface) throws SQLException {
+  public <T> T unwrap(final Class<T> iface) {
     throw new UnsupportedOperationException();
   }
 
   @Override
-  public boolean isWrapperFor(final Class<?> iface) throws SQLException {
+  public boolean isWrapperFor(final Class<?> iface) {
     return false;
   }
 
   @Override
-  public ResultSet executeQuery() throws SQLException {
+  public ResultSet executeQuery() {
     throw new UnsupportedOperationException();
   }
 
   @Override
-  public void setAsciiStream(final int parameterIndex, final InputStream x, final int length) throws SQLException {
+  public void setAsciiStream(final int parameterIndex, final InputStream x, final int length) {
     throw new UnsupportedOperationException();
   }
 
   @Override
-  public void setUnicodeStream(final int parameterIndex, final InputStream x, final int length) throws SQLException {
+  public void setUnicodeStream(final int parameterIndex, final InputStream x, final int length) {
     throw new UnsupportedOperationException();
   }
 
   @Override
-  public void setBinaryStream(final int parameterIndex, final InputStream x, final int length) throws SQLException {
+  public void setBinaryStream(final int parameterIndex, final InputStream x, final int length) {
     throw new UnsupportedOperationException();
   }
 
   @Override
-  public void clearParameters() throws SQLException {
+  public void clearParameters() {
     throw new UnsupportedOperationException();
   }
 
   @Override
-  public void setObject(final int parameterIndex, final Object x, final int targetSqlType) throws SQLException {
+  public void setObject(final int parameterIndex, final Object x, final int targetSqlType) {
     throw new UnsupportedOperationException();
   }
 
   @Override
-  public void addBatch() throws SQLException {
+  public void addBatch() {
     // Ignored
   }
 
   @Override
-  public void setCharacterStream(final int parameterIndex, final Reader reader, final int length) throws SQLException {
+  public void setCharacterStream(final int parameterIndex, final Reader reader, final int length) {
     throw new UnsupportedOperationException();
   }
 
   @Override
-  public void setRef(final int parameterIndex, final Ref x) throws SQLException {
+  public void setRef(final int parameterIndex, final Ref x) {
     throw new UnsupportedOperationException();
   }
 
   @Override
-  public void setArray(final int parameterIndex, final Array x) throws SQLException {
+  public void setArray(final int parameterIndex, final Array x) {
     throw new UnsupportedOperationException();
   }
 
   @Override
-  public ResultSetMetaData getMetaData() throws SQLException {
+  public ResultSetMetaData getMetaData() {
     throw new UnsupportedOperationException();
   }
 
   @Override
-  public void setDate(final int parameterIndex, final Date x, final Calendar cal) throws SQLException {
+  public void setDate(final int parameterIndex, final Date x, final Calendar cal) {
     throw new UnsupportedOperationException();
   }
 
   @Override
-  public void setTime(final int parameterIndex, final Time x, final Calendar cal) throws SQLException {
+  public void setTime(final int parameterIndex, final Time x, final Calendar cal) {
     throw new UnsupportedOperationException();
   }
 
   @Override
-  public void setTimestamp(final int parameterIndex, final Timestamp x, final Calendar cal) throws SQLException {
+  public void setTimestamp(final int parameterIndex, final Timestamp x, final Calendar cal) {
     throw new UnsupportedOperationException();
   }
 
   @Override
-  public void setNull(final int parameterIndex, final int sqlType, final String typeName) throws SQLException {
+  public void setNull(final int parameterIndex, final int sqlType, final String typeName) {
     setNull(parameterIndex, Types.JAVA_OBJECT);
   }
 
   @Override
-  public void setURL(final int parameterIndex, final URL x) throws SQLException {
+  public void setURL(final int parameterIndex, final URL x) {
     throw new UnsupportedOperationException();
   }
 
   @Override
-  public ParameterMetaData getParameterMetaData() throws SQLException {
+  public ParameterMetaData getParameterMetaData() {
     throw new UnsupportedOperationException();
   }
 
   @Override
-  public void setRowId(final int parameterIndex, final RowId x) throws SQLException {
+  public void setRowId(final int parameterIndex, final RowId x) {
     throw new UnsupportedOperationException();
   }
 
   @Override
-  public void setNString(final int parameterIndex, final String value) throws SQLException {
+  public void setNString(final int parameterIndex, final String value) {
     throw new UnsupportedOperationException();
   }
 
   @Override
-  public void setNCharacterStream(final int parameterIndex, final Reader value, final long length) throws SQLException {
+  public void setNCharacterStream(final int parameterIndex, final Reader value, final long length) {
     throw new UnsupportedOperationException();
   }
 
   @Override
-  public void setNClob(final int parameterIndex, final NClob value) throws SQLException {
+  public void setNClob(final int parameterIndex, final NClob value) {
     throw new UnsupportedOperationException();
   }
 
   @Override
-  public void setClob(final int parameterIndex, final Reader reader, final long length) throws SQLException {
+  public void setClob(final int parameterIndex, final Reader reader, final long length) {
     throw new UnsupportedOperationException();
   }
 
   @Override
-  public void setBlob(final int parameterIndex, final InputStream inputStream, final long length) throws SQLException {
+  public void setBlob(final int parameterIndex, final InputStream inputStream, final long length) {
     throw new UnsupportedOperationException();
   }
 
   @Override
-  public void setNClob(final int parameterIndex, final Reader reader, final long length) throws SQLException {
+  public void setNClob(final int parameterIndex, final Reader reader, final long length) {
     throw new UnsupportedOperationException();
   }
 
   @Override
   public void setObject(final int parameterIndex, final Object x, final int targetSqlType, final int scaleOrLength)
-      throws SQLException {
+      {
     throw new UnsupportedOperationException();
   }
 
   @Override
-  public void setAsciiStream(final int parameterIndex, final InputStream x, final long length) throws SQLException {
+  public void setAsciiStream(final int parameterIndex, final InputStream x, final long length) {
     throw new UnsupportedOperationException();
   }
 
   @Override
-  public void setBinaryStream(final int parameterIndex, final InputStream x, final long length) throws SQLException {
+  public void setBinaryStream(final int parameterIndex, final InputStream x, final long length) {
     throw new UnsupportedOperationException();
   }
 
   @Override
-  public void setCharacterStream(final int parameterIndex, final Reader reader, final long length) throws SQLException {
+  public void setCharacterStream(final int parameterIndex, final Reader reader, final long length) {
     throw new UnsupportedOperationException();
   }
 
   @Override
-  public void setAsciiStream(final int parameterIndex, final InputStream x) throws SQLException {
+  public void setAsciiStream(final int parameterIndex, final InputStream x) {
     throw new UnsupportedOperationException();
   }
 
   @Override
-  public void setBinaryStream(final int parameterIndex, final InputStream x) throws SQLException {
+  public void setBinaryStream(final int parameterIndex, final InputStream x) {
     throw new UnsupportedOperationException();
   }
 
   @Override
-  public void setCharacterStream(final int parameterIndex, final Reader reader) throws SQLException {
+  public void setCharacterStream(final int parameterIndex, final Reader reader) {
     throw new UnsupportedOperationException();
   }
 
   @Override
-  public void setNCharacterStream(final int parameterIndex, final Reader value) throws SQLException {
+  public void setNCharacterStream(final int parameterIndex, final Reader value) {
     throw new UnsupportedOperationException();
   }
 
   @Override
-  public void setNClob(final int parameterIndex, final Reader reader) throws SQLException {
+  public void setNClob(final int parameterIndex, final Reader reader) {
     throw new UnsupportedOperationException();
   }
 
-  private void flush() throws SQLException {
+  private void flush() {
     try {
       _exporter.flush();
     } catch (final Exception e) {
-      throw new SQLException("flush", e);
+      throw new GuttenBaseException("flush", e);
     }
   }
 
   // JRE 1.7
 
-  public void closeOnCompletion() throws SQLException {
+  public void closeOnCompletion() {
     throw new UnsupportedOperationException();
   }
 
-  public boolean isCloseOnCompletion() throws SQLException {
+  public boolean isCloseOnCompletion() {
     throw new UnsupportedOperationException();
   }
 }

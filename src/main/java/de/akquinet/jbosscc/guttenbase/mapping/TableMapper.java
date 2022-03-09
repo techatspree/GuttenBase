@@ -3,8 +3,6 @@ package de.akquinet.jbosscc.guttenbase.mapping;
 import de.akquinet.jbosscc.guttenbase.meta.DatabaseMetaData;
 import de.akquinet.jbosscc.guttenbase.meta.TableMetaData;
 
-import java.sql.SQLException;
-
 /**
  * Select target table for given source table.
  * <p></p>
@@ -19,15 +17,15 @@ public interface TableMapper {
   /**
    * @return matching table in target data base or null
    */
-  TableMetaData map(TableMetaData source, DatabaseMetaData targetDatabaseMetaData) throws SQLException;
+  TableMetaData map(TableMetaData source, DatabaseMetaData targetDatabaseMetaData);
 
   /**
    * @return plain table name in target data base
    */
-  String mapTableName(TableMetaData source, DatabaseMetaData targetDatabaseMetaData) throws SQLException;
+  String mapTableName(TableMetaData source, DatabaseMetaData targetDatabaseMetaData);
 
   /**
    * @return fully qualifed table name in target data base, i.e. including schema prefix and escape characters
    */
-  String fullyQualifiedTableName(TableMetaData source, DatabaseMetaData targetDatabaseMetaData) throws SQLException;
+  String fullyQualifiedTableName(TableMetaData source, DatabaseMetaData targetDatabaseMetaData);
 }

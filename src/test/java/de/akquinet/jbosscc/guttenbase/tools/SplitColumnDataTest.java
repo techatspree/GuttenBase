@@ -15,7 +15,6 @@ import de.akquinet.jbosscc.guttenbase.meta.TableMetaData;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -37,20 +36,20 @@ public class SplitColumnDataTest extends AbstractGuttenBaseTest {
   @Before
   public final void setup() throws Exception {
     _connectorRepository.addConnectionInfo(CONNECTOR_ID1,
-            new TestHsqlConnectionInfo());
+        new TestHsqlConnectionInfo());
     _connectorRepository.addConnectionInfo(CONNECTOR_ID2,
-            new TestDerbyConnectionInfo());
+        new TestDerbyConnectionInfo());
 
     new ScriptExecutorTool(_connectorRepository)
-            .executeScript(CONNECTOR_ID1,
-                    "CREATE TABLE FOO(ID bigint PRIMARY KEY, STUPID varchar(255));");
+        .executeScript(CONNECTOR_ID1,
+            "CREATE TABLE FOO(ID bigint PRIMARY KEY, STUPID varchar(255));");
     new ScriptExecutorTool(_connectorRepository)
-            .executeScript(CONNECTOR_ID2,
-                    "CREATE TABLE FOO(ID bigint PRIMARY KEY, SMART1 varchar(100), SMART2 varchar(100));");
+        .executeScript(CONNECTOR_ID2,
+            "CREATE TABLE FOO(ID bigint PRIMARY KEY, SMART1 varchar(100), SMART2 varchar(100));");
 
     new ScriptExecutorTool(_connectorRepository).executeScript(
-            CONNECTOR_ID1, false, false,
-            "INSERT INTO FOO(ID, STUPID) VALUES(1, 'A|B');");
+        CONNECTOR_ID1, false, false,
+        "INSERT INTO FOO(ID, STUPID) VALUES(1, 'A|B');");
   }
 
   @Test
@@ -61,8 +60,7 @@ public class SplitColumnDataTest extends AbstractGuttenBaseTest {
         return new DefaultColumnMapper() {
           @Override
           public ColumnMapperResult map(ColumnMetaData source,
-                                        TableMetaData targetTableMetaData)
-                  throws SQLException {
+                                        TableMetaData targetTableMetaData) {
             if (source.getColumnName().equalsIgnoreCase("STUPID")) {
               return new ColumnMapperResult(Arrays.asList(targetTableMetaData.getColumnMetaData("SMART1"), targetTableMetaData.getColumnMetaData("SMART2")));
             } else {
@@ -79,12 +77,12 @@ public class SplitColumnDataTest extends AbstractGuttenBaseTest {
         super.addMappings(columnDataMapperFactory);
         columnDataMapperFactory.addMapping(ColumnType.CLASS_STRING, ColumnType.CLASS_STRING, new ColumnDataMapper() {
           @Override
-          public boolean isApplicable(ColumnMetaData sourceColumnMetaData, ColumnMetaData targetColumnMetaData) throws SQLException {
+          public boolean isApplicable(ColumnMetaData sourceColumnMetaData, ColumnMetaData targetColumnMetaData) {
             return true;
           }
 
           @Override
-          public Object map(ColumnMetaData sourceColumnMetaData, ColumnMetaData targetColumnMetaData, Object value) throws SQLException {
+          public Object map(ColumnMetaData sourceColumnMetaData, ColumnMetaData targetColumnMetaData, Object value) {
             if (value != null) {
               final String columnName = targetColumnMetaData.getColumnName();
               final String text = value.toString();
@@ -110,7 +108,7 @@ public class SplitColumnDataTest extends AbstractGuttenBaseTest {
     new DefaultTableCopyTool(_connectorRepository).copyTables(CONNECTOR_ID1, CONNECTOR_ID2);
 
     final TableMetaData tableMetaData = _connectorRepository
-            .getDatabaseMetaData(CONNECTOR_ID2).getTableMetaData("FOO");
+        .getDatabaseMetaData(CONNECTOR_ID2).getTableMetaData("FOO");
 
     assertEquals(1, tableMetaData.getTotalRowCount());
 

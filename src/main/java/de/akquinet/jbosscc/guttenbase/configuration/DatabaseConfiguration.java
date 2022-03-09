@@ -3,7 +3,6 @@ package de.akquinet.jbosscc.guttenbase.configuration;
 import de.akquinet.jbosscc.guttenbase.meta.TableMetaData;
 
 import java.sql.Connection;
-import java.sql.SQLException;
 
 /**
  * Implementations may execute specific initialization code before and after operations are executed.
@@ -18,10 +17,10 @@ public interface DatabaseConfiguration {
   /**
    * Called before table is copied
    */
-  void beforeTableCopy(final Connection connection, String connectorId, TableMetaData table) throws SQLException;
+  void beforeTableCopy(final Connection connection, String connectorId, TableMetaData table);
 
   /**
    * Called after table has been copied
    */
-  void afterTableCopy(final Connection connection, String connectorId, TableMetaData table) throws SQLException;
+  void afterTableCopy(final Connection connection, String connectorId, TableMetaData table);
 }

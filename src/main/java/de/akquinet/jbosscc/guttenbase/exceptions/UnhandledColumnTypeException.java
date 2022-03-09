@@ -1,6 +1,6 @@
 package de.akquinet.jbosscc.guttenbase.exceptions;
 
-import java.sql.SQLException;
+import de.akquinet.jbosscc.guttenbase.connector.GuttenBaseException;
 
 /**
  * Thrown when we find a column type we cannot handle (yet).
@@ -11,7 +11,7 @@ import java.sql.SQLException;
  *
  * @author M. Dahm
  */
-public class UnhandledColumnTypeException extends SQLException {
+public class UnhandledColumnTypeException extends GuttenBaseException {
   private static final long serialVersionUID = 1L;
 
   public UnhandledColumnTypeException(final String reason) {

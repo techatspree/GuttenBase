@@ -16,6 +16,7 @@ import java.lang.reflect.Method;
 import java.sql.*;
 import java.util.Arrays;
 import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
@@ -53,7 +54,7 @@ public class DatabaseMetaDataInspectorTool {
     final java.sql.DatabaseMetaData metaData = connection.getMetaData();
     final Map<String, Object> properties = Arrays.stream(java.sql.DatabaseMetaData.class.getDeclaredMethods())
         .filter(method -> method.getParameterCount() == 0 && isPrimitive(method.getReturnType()))
-        .map(method -> getValue(method, metaData)).filter(entry -> entry != null)
+        .map(method -> getValue(method, metaData)).filter(Objects::nonNull)
         .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
     final DatabaseMetaDataImpl result = new DatabaseMetaDataImpl(schema, properties, connectionInfo.getDatabaseType());
 
@@ -275,14 +276,13 @@ public class DatabaseMetaDataInspectorTool {
     resultSet.close();
   }
 
-  private String createWhereClause(final TableMetaData tableMetaData) throws SQLException {
+  private String createWhereClause(final TableMetaData tableMetaData) {
     return _connectorRepository.getConnectorHint(_connectorId, SelectWhereClause.class)
         .getValue().getWhereClause(tableMetaData);
   }
 
   private void updateTableWithRowCount(final Statement statement, final InternalTableMetaData tableMetaData,
-                                       final String schemaPrefix)
-      throws SQLException {
+                                       final String schemaPrefix) throws SQLException {
 
     final TableRowCountFilter filter = _connectorRepository.getConnectorHint(_connectorId, TableRowCountFilter.class).getValue();
 
@@ -313,8 +313,7 @@ public class DatabaseMetaDataInspectorTool {
     return totalCount;
   }
 
-  private void loadTables(final InternalDatabaseMetaData databaseMetaData, final java.sql.DatabaseMetaData metaData)
-      throws SQLException {
+  private void loadTables(final InternalDatabaseMetaData databaseMetaData, final java.sql.DatabaseMetaData metaData) throws SQLException {
     LOG.debug("Searching tables in schema " + databaseMetaData.getSchema());
 
     final DatabaseTableFilter tableFilter = _connectorRepository.getConnectorHint(_connectorId, DatabaseTableFilter.class)

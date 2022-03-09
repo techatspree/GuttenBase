@@ -1,11 +1,11 @@
 package de.akquinet.jbosscc.guttenbase.export;
 
+import de.akquinet.jbosscc.guttenbase.connector.GuttenBaseException;
 import org.apache.commons.io.IOUtils;
 
 import javax.xml.transform.Result;
 import javax.xml.transform.Source;
 import java.io.*;
-import java.sql.SQLException;
 import java.sql.SQLXML;
 
 /**
@@ -30,43 +30,42 @@ public class ExportDumpSqlXML extends AbstractExportDumpObject implements SQLXML
   }
 
   @Override
-  public Reader getCharacterStream() throws SQLException {
+  public Reader getCharacterStream() {
     return new InputStreamReader(getBinaryStream());
   }
 
   @Override
-  public OutputStream setBinaryStream() throws SQLException {
+  public OutputStream setBinaryStream() {
     throw new UnsupportedOperationException();
   }
 
   @Override
-  public Writer setCharacterStream() throws SQLException {
+  public Writer setCharacterStream() {
     throw new UnsupportedOperationException();
 
   }
 
   @Override
-  public String getString() throws SQLException {
+  public String getString() {
     try {
       return IOUtils.toString(getBinaryStream());
     } catch (final IOException e) {
-      throw new SQLException("getString", e);
+      throw new GuttenBaseException("getString", e);
     }
   }
 
   @Override
-  public void setString(final String value) throws SQLException {
-    throw new UnsupportedOperationException();
-
-  }
-
-  @Override
-  public <T extends Source> T getSource(final Class<T> sourceClass) throws SQLException {
+  public void setString(final String value) {
     throw new UnsupportedOperationException();
   }
 
   @Override
-  public <T extends Result> T setResult(final Class<T> resultClass) throws SQLException {
+  public <T extends Source> T getSource(final Class<T> sourceClass) {
+    throw new UnsupportedOperationException();
+  }
+
+  @Override
+  public <T extends Result> T setResult(final Class<T> resultClass) {
     throw new UnsupportedOperationException();
   }
 }

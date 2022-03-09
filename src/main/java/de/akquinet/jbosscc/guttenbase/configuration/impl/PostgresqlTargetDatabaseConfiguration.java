@@ -46,7 +46,7 @@ public class PostgresqlTargetDatabaseConfiguration extends DefaultTargetDatabase
     setReferentialIntegrity(connection, connectorId, getTableMetaData(connectorId), true);
   }
 
-  private List<TableMetaData> getTableMetaData(final String connectorId) throws SQLException {
+  private List<TableMetaData> getTableMetaData(final String connectorId) {
     return TableOrderHint.getSortedTables(_connectorRepository, connectorId);
   }
 

@@ -3,8 +3,6 @@ package de.akquinet.jbosscc.guttenbase.mapping;
 import de.akquinet.jbosscc.guttenbase.meta.ColumnMetaData;
 import de.akquinet.jbosscc.guttenbase.meta.ColumnType;
 
-import java.sql.SQLException;
-
 /**
  * Used to find mappings for column data. E.g., when converting a number to a String or casting a LONG to a BIGINT.
  * <p>
@@ -24,11 +22,11 @@ public interface ColumnDataMapperProvider {
    * @param targetColumnType     as determined by {@link ColumnTypeResolver}
    */
   ColumnDataMapper findMapping(final ColumnMetaData sourceColumnMetaData, final ColumnMetaData targetColumnMetaData,
-                               final ColumnType sourceColumnType, final ColumnType targetColumnType) throws SQLException;
+                               final ColumnType sourceColumnType, final ColumnType targetColumnType);
 
   /**
    * Specify additional mapping
    */
   void addMapping(final ColumnType sourceColumnType, final ColumnType targetColumnType, final ColumnDataMapper columnDataMapper)
-      throws SQLException;
+     ;
 }

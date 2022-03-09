@@ -6,7 +6,6 @@ import de.akquinet.jbosscc.guttenbase.meta.TableMetaData;
 import de.akquinet.jbosscc.guttenbase.repository.ConnectorRepository;
 import de.akquinet.jbosscc.guttenbase.tools.SplitColumn;
 
-import java.sql.SQLException;
 import java.util.List;
 
 /**
@@ -29,12 +28,12 @@ public class SplitByColumnSelectCountStatementCreator extends AbstractSelectStat
   }
 
   @Override
-  protected String createColumnClause(final List<ColumnMetaData> columns) throws SQLException {
+  protected String createColumnClause(final List<ColumnMetaData> columns) {
     return "COUNT(*)";
   }
 
   @Override
-  protected String createWhereClause(final TableMetaData tableMetaData) throws SQLException {
+  protected String createWhereClause(final TableMetaData tableMetaData) {
     final ColumnMetaData splitColumn = _connectorRepository.getConnectorHint(_connectorId, SplitColumn.class).getValue()
         .getSplitColumn(tableMetaData);
 

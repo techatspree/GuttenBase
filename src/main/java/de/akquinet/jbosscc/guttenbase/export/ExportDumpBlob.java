@@ -3,7 +3,6 @@ package de.akquinet.jbosscc.guttenbase.export;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.sql.Blob;
-import java.sql.SQLException;
 
 /**
  * Since BLOBs may be quite big. we do not load them into memory completely, but
@@ -27,32 +26,32 @@ public class ExportDumpBlob extends AbstractExportDumpObject implements Blob {
   }
 
   @Override
-  public long position(final byte[] pattern, final long start) throws SQLException {
+  public long position(final byte[] pattern, final long start) {
     throw new UnsupportedOperationException();
   }
 
   @Override
-  public long position(final Blob pattern, final long start) throws SQLException {
+  public long position(final Blob pattern, final long start) {
     throw new UnsupportedOperationException();
   }
 
   @Override
-  public int setBytes(final long pos, final byte[] bytes) throws SQLException {
+  public int setBytes(final long pos, final byte[] bytes) {
     throw new UnsupportedOperationException();
   }
 
   @Override
-  public int setBytes(final long pos, final byte[] bytes, final int offset, final int len) throws SQLException {
+  public int setBytes(final long pos, final byte[] bytes, final int offset, final int len) {
     throw new UnsupportedOperationException();
   }
 
   @Override
-  public OutputStream setBinaryStream(final long pos) throws SQLException {
+  public OutputStream setBinaryStream(final long pos) {
     throw new UnsupportedOperationException();
   }
 
   @Override
-  public void truncate(final long len) throws SQLException {
+  public void truncate(final long len) {
     throw new UnsupportedOperationException();
   }
 }

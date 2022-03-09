@@ -6,7 +6,6 @@ import de.akquinet.jbosscc.guttenbase.meta.TableMetaData;
 import de.akquinet.jbosscc.guttenbase.repository.ConnectorRepository;
 import de.akquinet.jbosscc.guttenbase.tools.SplitColumn;
 
-import java.sql.SQLException;
 import java.util.List;
 
 /**
@@ -29,7 +28,7 @@ public class SplitByColumnSelectMinMaxStatementCreator extends AbstractSelectSta
   }
 
   @Override
-  protected String createColumnClause(final List<ColumnMetaData> columns) throws SQLException {
+  protected String createColumnClause(final List<ColumnMetaData> columns) {
     assert !columns.isEmpty();
     final TableMetaData tableMetaData = columns.get(0).getTableMetaData();
     final ColumnMetaData splitColumn = _connectorRepository.getConnectorHint(_connectorId, SplitColumn.class).getValue()

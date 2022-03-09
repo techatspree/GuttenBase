@@ -66,15 +66,4 @@ public class MySqlTargetDatabaseConfiguration extends DefaultTargetDatabaseConfi
   private void setUniqueChecks(final Connection connection, final boolean enable) throws SQLException {
     executeSQL(connection, "SET UNIQUE_CHECKS = " + (enable ? "1" : "0") + ";");
   }
-
-  //  private void setCaseSensitivityMode(final Connection connection) throws SQLException
-  //  {
-  //    executeSQL(connection,
-  //        "SET @OLD_LOWER_CASE_TABLE_NAMES=@@LOWER_CASE_TABLE_NAMES, LOWER_CASE_TABLE_NAMES = " + _caseSensitivityMode + ";");
-  //  }
-  //
-  //  private void resetCaseSensitivityMode(final Connection connection) throws SQLException
-  //  {
-  //    executeSQL(connection, "SET LOWER_CASE_TABLE_NAMES=@OLD_LOWER_CASE_TABLE_NAMES;");
-  //  }
 }

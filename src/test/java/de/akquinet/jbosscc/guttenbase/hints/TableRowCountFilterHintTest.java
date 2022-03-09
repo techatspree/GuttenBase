@@ -5,8 +5,6 @@ import de.akquinet.jbosscc.guttenbase.repository.TableRowCountFilter;
 import org.junit.Assert;
 import org.junit.Before;
 
-import java.sql.SQLException;
-
 /**
  * Test omitting row count statement
  * <p/>
@@ -28,12 +26,12 @@ public class TableRowCountFilterHintTest extends AbstractHintTest {
       public TableRowCountFilter getValue() {
         return new TableRowCountFilter() {
           @Override
-          public boolean accept(final TableMetaData tableMetaData) throws SQLException {
+          public boolean accept(final TableMetaData tableMetaData) {
             return false;
           }
 
           @Override
-          public int defaultRowCount(final TableMetaData tableMetaData) throws SQLException {
+          public int defaultRowCount(final TableMetaData tableMetaData) {
             return tableMetaData.getTableName().equalsIgnoreCase("FOO_DATA") ? 0 : 1;
           }
         };

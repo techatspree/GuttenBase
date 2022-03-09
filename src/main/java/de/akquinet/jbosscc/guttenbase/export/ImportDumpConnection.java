@@ -45,7 +45,7 @@ public class ImportDumpConnection implements Connection {
    * Returns custom PreparedStatement statement. {@inheritDoc}
    */
   @Override
-  public PreparedStatement prepareStatement(final String sql) throws SQLException {
+  public PreparedStatement prepareStatement(final String sql) {
     // Read header only once
     if (_importedTables.add(_currentTableMetaData)) {
       seekTableHeader(_currentTableMetaData);
@@ -66,7 +66,7 @@ public class ImportDumpConnection implements Connection {
    * {@inheritDoc}
    */
   @Override
-  public void close() throws SQLException {
+  public void close() {
     try {
       _importer.finishImport();
     } catch (final Exception e) {
@@ -83,221 +83,221 @@ public class ImportDumpConnection implements Connection {
   }
 
   @Override
-  public void commit() throws SQLException {
+  public void commit() {
   }
 
   @Override
-  public void setAutoCommit(final boolean autoCommit) throws SQLException {
+  public void setAutoCommit(final boolean autoCommit) {
   }
 
   @Override
-  public boolean getAutoCommit() throws SQLException {
+  public boolean getAutoCommit() {
     return false;
   }
 
   @Override
-  public void rollback() throws SQLException {
+  public void rollback() {
   }
 
   @Override
-  public void setReadOnly(final boolean readOnly) throws SQLException {
+  public void setReadOnly(final boolean readOnly) {
   }
 
   @Override
-  public boolean isReadOnly() throws SQLException {
+  public boolean isReadOnly() {
     return true;
   }
 
   @Override
-  public Statement createStatement() throws SQLException {
+  public Statement createStatement() {
     return prepareStatement("");
   }
 
   @Override
-  public <T> T unwrap(final Class<T> iface) throws SQLException {
+  public <T> T unwrap(final Class<T> iface) {
     throw new UnsupportedOperationException();
   }
 
   @Override
-  public boolean isWrapperFor(final Class<?> iface) throws SQLException {
+  public boolean isWrapperFor(final Class<?> iface) {
     throw new UnsupportedOperationException();
   }
 
   @Override
-  public CallableStatement prepareCall(final String sql) throws SQLException {
-
-    throw new UnsupportedOperationException();
-  }
-
-  @Override
-  public String nativeSQL(final String sql) throws SQLException {
-    throw new UnsupportedOperationException();
-  }
-
-  @Override
-  public java.sql.DatabaseMetaData getMetaData() throws SQLException {
-    throw new UnsupportedOperationException();
-  }
-
-  @Override
-  public void setCatalog(final String catalog) throws SQLException {
-    throw new UnsupportedOperationException();
-  }
-
-  @Override
-  public String getCatalog() throws SQLException {
+  public CallableStatement prepareCall(final String sql) {
 
     throw new UnsupportedOperationException();
   }
 
   @Override
-  public void setTransactionIsolation(final int level) throws SQLException {
+  public String nativeSQL(final String sql) {
     throw new UnsupportedOperationException();
   }
 
   @Override
-  public int getTransactionIsolation() throws SQLException {
+  public java.sql.DatabaseMetaData getMetaData() {
+    throw new UnsupportedOperationException();
+  }
+
+  @Override
+  public void setCatalog(final String catalog) {
+    throw new UnsupportedOperationException();
+  }
+
+  @Override
+  public String getCatalog() {
+
+    throw new UnsupportedOperationException();
+  }
+
+  @Override
+  public void setTransactionIsolation(final int level) {
+    throw new UnsupportedOperationException();
+  }
+
+  @Override
+  public int getTransactionIsolation() {
 
     return Connection.TRANSACTION_NONE;
   }
 
   @Override
-  public SQLWarning getWarnings() throws SQLException {
+  public SQLWarning getWarnings() {
     throw new UnsupportedOperationException();
   }
 
   @Override
-  public void clearWarnings() throws SQLException {
+  public void clearWarnings() {
     throw new UnsupportedOperationException();
   }
 
   @Override
-  public Statement createStatement(final int resultSetType, final int resultSetConcurrency) throws SQLException {
+  public Statement createStatement(final int resultSetType, final int resultSetConcurrency) {
     return createStatement();
   }
 
   @Override
   public PreparedStatement prepareStatement(final String sql, final int resultSetType, final int resultSetConcurrency)
-      throws SQLException {
+      {
     return prepareStatement(sql);
   }
 
   @Override
   public CallableStatement prepareCall(final String sql, final int resultSetType, final int resultSetConcurrency)
-      throws SQLException {
+      {
 
     throw new UnsupportedOperationException();
   }
 
   @Override
-  public Map<String, Class<?>> getTypeMap() throws SQLException {
+  public Map<String, Class<?>> getTypeMap() {
 
     throw new UnsupportedOperationException();
   }
 
   @Override
-  public void setTypeMap(final Map<String, Class<?>> map) throws SQLException {
+  public void setTypeMap(final Map<String, Class<?>> map) {
     throw new UnsupportedOperationException();
   }
 
   @Override
-  public void setHoldability(final int holdability) throws SQLException {
+  public void setHoldability(final int holdability) {
     throw new UnsupportedOperationException();
   }
 
   @Override
-  public int getHoldability() throws SQLException {
+  public int getHoldability() {
 
     return 0;
   }
 
   @Override
-  public Savepoint setSavepoint() throws SQLException {
+  public Savepoint setSavepoint() {
 
     throw new UnsupportedOperationException();
   }
 
   @Override
-  public Savepoint setSavepoint(final String name) throws SQLException {
+  public Savepoint setSavepoint(final String name) {
 
     throw new UnsupportedOperationException();
   }
 
   @Override
-  public void rollback(final Savepoint savepoint) throws SQLException {
+  public void rollback(final Savepoint savepoint) {
     throw new UnsupportedOperationException();
   }
 
   @Override
-  public void releaseSavepoint(final Savepoint savepoint) throws SQLException {
+  public void releaseSavepoint(final Savepoint savepoint) {
     throw new UnsupportedOperationException();
   }
 
   @Override
   public Statement createStatement(final int resultSetType, final int resultSetConcurrency, final int resultSetHoldability)
-      throws SQLException {
+      {
 
     throw new UnsupportedOperationException();
   }
 
   @Override
   public PreparedStatement prepareStatement(final String sql, final int resultSetType, final int resultSetConcurrency,
-                                            final int resultSetHoldability) throws SQLException {
+                                            final int resultSetHoldability) {
 
     throw new UnsupportedOperationException();
   }
 
   @Override
   public CallableStatement prepareCall(final String sql, final int resultSetType, final int resultSetConcurrency,
-                                       final int resultSetHoldability) throws SQLException {
+                                       final int resultSetHoldability) {
 
     throw new UnsupportedOperationException();
   }
 
   @Override
-  public PreparedStatement prepareStatement(final String sql, final int autoGeneratedKeys) throws SQLException {
+  public PreparedStatement prepareStatement(final String sql, final int autoGeneratedKeys) {
 
     throw new UnsupportedOperationException();
   }
 
   @Override
-  public PreparedStatement prepareStatement(final String sql, final int[] columnIndexes) throws SQLException {
+  public PreparedStatement prepareStatement(final String sql, final int[] columnIndexes) {
 
     throw new UnsupportedOperationException();
   }
 
   @Override
-  public PreparedStatement prepareStatement(final String sql, final String[] columnNames) throws SQLException {
+  public PreparedStatement prepareStatement(final String sql, final String[] columnNames) {
 
     throw new UnsupportedOperationException();
   }
 
   @Override
-  public Clob createClob() throws SQLException {
+  public Clob createClob() {
 
     throw new UnsupportedOperationException();
   }
 
   @Override
-  public Blob createBlob() throws SQLException {
+  public Blob createBlob() {
 
     throw new UnsupportedOperationException();
   }
 
   @Override
-  public NClob createNClob() throws SQLException {
+  public NClob createNClob() {
 
     throw new UnsupportedOperationException();
   }
 
   @Override
-  public SQLXML createSQLXML() throws SQLException {
+  public SQLXML createSQLXML() {
 
     throw new UnsupportedOperationException();
   }
 
   @Override
-  public boolean isValid(final int timeout) throws SQLException {
+  public boolean isValid(final int timeout) {
 
     throw new UnsupportedOperationException();
   }
@@ -313,46 +313,46 @@ public class ImportDumpConnection implements Connection {
   }
 
   @Override
-  public String getClientInfo(final String name) throws SQLException {
+  public String getClientInfo(final String name) {
 
     throw new UnsupportedOperationException();
   }
 
   @Override
-  public Properties getClientInfo() throws SQLException {
+  public Properties getClientInfo() {
 
     throw new UnsupportedOperationException();
   }
 
   @Override
-  public Array createArrayOf(final String typeName, final Object[] elements) throws SQLException {
+  public Array createArrayOf(final String typeName, final Object[] elements) {
     throw new UnsupportedOperationException();
   }
 
   @Override
-  public Struct createStruct(final String typeName, final Object[] attributes) throws SQLException {
+  public Struct createStruct(final String typeName, final Object[] attributes) {
     throw new UnsupportedOperationException();
   }
 
   // JRE 1.7
 
-  public void setSchema(final String schema) throws SQLException {
+  public void setSchema(final String schema) {
     throw new UnsupportedOperationException();
   }
 
-  public String getSchema() throws SQLException {
+  public String getSchema() {
     throw new UnsupportedOperationException();
   }
 
-  public void abort(final Executor executor) throws SQLException {
+  public void abort(final Executor executor) {
     throw new UnsupportedOperationException();
   }
 
-  public void setNetworkTimeout(final Executor executor, final int milliseconds) throws SQLException {
+  public void setNetworkTimeout(final Executor executor, final int milliseconds) {
     throw new UnsupportedOperationException();
   }
 
-  public int getNetworkTimeout() throws SQLException {
+  public int getNetworkTimeout() {
     throw new UnsupportedOperationException();
   }
 }

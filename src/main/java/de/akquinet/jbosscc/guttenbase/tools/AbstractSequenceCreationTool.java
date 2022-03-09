@@ -54,5 +54,5 @@ public abstract class AbstractSequenceCreationTool {
 
   protected abstract List<String> getCreateSequenceClauses(final String tableName, String idColumn, final String sequenceName, final long start, final long incrementBy);
 
-  protected abstract String getSequenceName(final String tableName) throws SQLException;
+  protected abstract String getSequenceName(final String tableName);
 }

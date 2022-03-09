@@ -1,6 +1,6 @@
 package de.akquinet.jbosscc.guttenbase.exceptions;
 
-import java.sql.SQLException;
+import de.akquinet.jbosscc.guttenbase.connector.GuttenBaseException;
 
 /**
  * Thrown when there is an error while reading the data from source data base.
@@ -11,7 +11,7 @@ import java.sql.SQLException;
  *
  * @author M. Dahm
  */
-public class MissingDataException extends SQLException {
+public class MissingDataException extends GuttenBaseException {
   private static final long serialVersionUID = 1L;
 
   public MissingDataException(final String reason) {

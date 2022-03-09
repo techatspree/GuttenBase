@@ -3,8 +3,6 @@ package de.akquinet.jbosscc.guttenbase.mapping;
 import de.akquinet.jbosscc.guttenbase.meta.ColumnMetaData;
 import de.akquinet.jbosscc.guttenbase.meta.ColumnType;
 
-import java.sql.SQLException;
-
 /**
  * Map column types to Java types. Every data base has its own special types which have to be mapped to standard types somehow.
  *
@@ -18,5 +16,5 @@ public interface ColumnTypeResolver {
   /**
    * Tries to map column to a known type.
    */
-  ColumnType getColumnType(ColumnMetaData columnMetaData) throws SQLException;
+  ColumnType getColumnType(ColumnMetaData columnMetaData);
 }

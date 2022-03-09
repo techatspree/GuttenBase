@@ -3,7 +3,6 @@ package de.akquinet.jbosscc.guttenbase.mapping;
 import de.akquinet.jbosscc.guttenbase.meta.ColumnMetaData;
 
 import java.math.BigDecimal;
-import java.sql.SQLException;
 
 /**
  * Map BigDecimal to Long/Bigint
@@ -16,13 +15,13 @@ import java.sql.SQLException;
 public class BigDecimalToLongColumnDataMapper implements ColumnDataMapper {
   @Override
   public boolean isApplicable(final ColumnMetaData sourceColumnMetaData, final ColumnMetaData targetColumnMetaData)
-      throws SQLException {
+      {
     return true;
   }
 
   @Override
   public Object map(final ColumnMetaData sourceColumnMetaData, final ColumnMetaData targetColumnMetaData, final Object value)
-      throws SQLException {
+      {
     if (value != null) {
       final BigDecimal bigDecimal = (BigDecimal) value;
 

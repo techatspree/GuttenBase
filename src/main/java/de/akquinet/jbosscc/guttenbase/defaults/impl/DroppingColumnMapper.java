@@ -3,7 +3,6 @@ package de.akquinet.jbosscc.guttenbase.defaults.impl;
 import de.akquinet.jbosscc.guttenbase.meta.ColumnMetaData;
 import de.akquinet.jbosscc.guttenbase.meta.TableMetaData;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -31,7 +30,7 @@ public class DroppingColumnMapper extends DefaultColumnMapper {
   }
 
   @Override
-  public ColumnMapperResult map(final ColumnMetaData source, final TableMetaData targetTableMetaData) throws SQLException {
+  public ColumnMapperResult map(final ColumnMetaData source, final TableMetaData targetTableMetaData) {
     final List<String> columns = _droppedColumns.get(targetTableMetaData.getTableName().toUpperCase());
 
     if (columns != null && columns.contains(source.getColumnName().toUpperCase())) {

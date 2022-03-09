@@ -11,7 +11,7 @@ import java.util.List;
 
 /**
  * Will execute given SQL scriptlet on all tables or single table of given connector. The table name can be referenced with @TABLE@
- * place holder.
+ * placeholder.
  * <p>
  * &copy; 2012-2034 akquinet tech@spree
  * </p>
@@ -34,8 +34,7 @@ public abstract class AbstractTablesOperationTool {
     _scriptExecutor = new ScriptExecutorTool(connectorRepository);
   }
 
-  public void executeOnAllTables(final String connectorId, final boolean updateSchema, final boolean prepareTargetConnection)
-      throws SQLException {
+  public void executeOnAllTables(final String connectorId, final boolean updateSchema, final boolean prepareTargetConnection) throws SQLException {
     final List<TableMetaData> tables = TableOrderHint.getSortedTables(_connectorRepository, connectorId);
     final List<String> statements = new ArrayList<>();
 
@@ -52,11 +51,12 @@ public abstract class AbstractTablesOperationTool {
                              final TableMetaData tableMetaData) throws SQLException {
     if (isApplicableOnTable(tableMetaData)) {
       final String sql = createSql(connectorId, tableMetaData);
+
       _scriptExecutor.executeScript(connectorId, updateSchema, prepareTargetConnection, sql);
     }
   }
 
-  private String createSql(final String connectorId, final TableMetaData tableMetaData) throws SQLException {
+  private String createSql(final String connectorId, final TableMetaData tableMetaData) {
     final TableMapper tableMapper = _connectorRepository.getConnectorHint(connectorId, TableMapper.class).getValue();
     final String tableName = tableMapper.fullyQualifiedTableName(tableMetaData, tableMetaData.getDatabaseMetaData());
 

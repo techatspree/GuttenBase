@@ -60,17 +60,15 @@ public class MsSqlTargetDatabaseConfiguration extends DefaultTargetDatabaseConfi
     setIdentityInsert(connection, connectorId, false, table);
   }
 
-  private List<TableMetaData> getTableMetaData(final String connectorId) throws SQLException {
+  private List<TableMetaData> getTableMetaData(final String connectorId) {
     return _connectorRepository.getDatabaseMetaData(connectorId).getTableMetaData();
   }
 
-  private void disableTableForeignKeys(final Connection connection, final String connectorId, final List<TableMetaData> tableMetaData)
-      throws SQLException {
+  private void disableTableForeignKeys(final Connection connection, final String connectorId, final List<TableMetaData> tableMetaData) throws SQLException {
     setTableForeignKeys(connection, connectorId, tableMetaData, false);
   }
 
-  private void enableTableForeignKeys(final Connection connection, final String connectorId, final List<TableMetaData> tableMetaData)
-      throws SQLException {
+  private void enableTableForeignKeys(final Connection connection, final String connectorId, final List<TableMetaData> tableMetaData) throws SQLException {
     setTableForeignKeys(connection, connectorId, tableMetaData, true);
   }
 

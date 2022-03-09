@@ -4,7 +4,6 @@ import de.akquinet.jbosscc.guttenbase.mapping.TableMapper;
 import de.akquinet.jbosscc.guttenbase.meta.DatabaseMetaData;
 import de.akquinet.jbosscc.guttenbase.meta.TableMetaData;
 
-import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -37,7 +36,7 @@ public class TestTableRenameNameMapper implements TableMapper {
   }
 
   @Override
-  public TableMetaData map(TableMetaData source, DatabaseMetaData targetDatabaseMetaData) throws SQLException {
+  public TableMetaData map(TableMetaData source, DatabaseMetaData targetDatabaseMetaData) {
 
     final String defaultTableName = _caseConversionMode.convert(source.getTableName());
     final String tableName = replacementsTables.containsKey(defaultTableName) ?
@@ -47,7 +46,7 @@ public class TestTableRenameNameMapper implements TableMapper {
   }
 
   @Override
-  public String mapTableName(TableMetaData source, DatabaseMetaData targetDatabaseMetaData) throws SQLException {
+  public String mapTableName(TableMetaData source, DatabaseMetaData targetDatabaseMetaData) {
 
     String result = _caseConversionMode.convert(source.getTableName());
     final String schema = targetDatabaseMetaData.getSchema();
@@ -71,7 +70,7 @@ public class TestTableRenameNameMapper implements TableMapper {
   }
 
   @Override
-  public String fullyQualifiedTableName(TableMetaData source, DatabaseMetaData targetDatabaseMetaData) throws SQLException {
+  public String fullyQualifiedTableName(TableMetaData source, DatabaseMetaData targetDatabaseMetaData) {
 
     //final String schema = targetDatabaseMetaData.getSchemaPrefix();
     //return schema + mapTableName(source, targetDatabaseMetaData);

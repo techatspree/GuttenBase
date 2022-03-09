@@ -40,12 +40,11 @@ public class HsqldbTargetDatabaseConfiguration extends DefaultTargetDatabaseConf
     setReferentialIntegrity(connection, true, _connectorRepository.getDatabaseMetaData(connectorId));
   }
 
-  private void setReferentialIntegrity(final Connection connection, final boolean enable, final DatabaseMetaData databaseMetaData)
-      throws SQLException {
+  private void setReferentialIntegrity(final Connection connection, final boolean enable, final DatabaseMetaData databaseMetaData) throws SQLException {
     final int databaseMajorVersion = databaseMetaData.getDatabaseMetaData().getDatabaseMajorVersion();
     final String referentialIntegrity = enable ? "TRUE" : "FALSE";
-
     final String command = databaseMajorVersion < 2 ? "SET REFERENTIAL_INTEGRITY " : "SET DATABASE REFERENTIAL INTEGRITY ";
+
     executeSQL(connection, command + referentialIntegrity);
   }
 }

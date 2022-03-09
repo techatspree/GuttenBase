@@ -12,7 +12,6 @@ import de.akquinet.jbosscc.guttenbase.meta.DatabaseMetaData;
 import de.akquinet.jbosscc.guttenbase.meta.TableMetaData;
 import de.akquinet.jbosscc.guttenbase.repository.ConnectorRepository;
 import de.akquinet.jbosscc.guttenbase.statements.SelectStatementCreator;
-import org.apache.log4j.Logger;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -34,7 +33,6 @@ import java.util.Map;
  * @author M. Dahm
  */
 public class ReadTableDataTool {
-  private static final Logger LOG = Logger.getLogger(ReadTableDataTool.class);
   private final ConnectorRepository _connectorRepository;
   private final String _connectorId;
   private final TableMetaData _tableMetaData;

@@ -42,27 +42,27 @@ public class ConfigurationLifeCycleTest extends AbstractHintTest {
       }
 
       @Override
-      public void finalizeSourceConnection(final Connection connection, final String connectorId) throws SQLException {
+      public void finalizeSourceConnection(final Connection connection, final String connectorId) {
         _finalizeSourceConnection++;
       }
 
       @Override
-      public void beforeSelect(final Connection connection, final String connectorId, final TableMetaData table) throws SQLException {
+      public void beforeSelect(final Connection connection, final String connectorId, final TableMetaData table) {
         _beforeSelect++;
       }
 
       @Override
-      public void afterSelect(final Connection connection, final String connectorId, final TableMetaData table) throws SQLException {
+      public void afterSelect(final Connection connection, final String connectorId, final TableMetaData table) {
         _afterSelect++;
       }
 
       @Override
-      public void beforeTableCopy(final Connection connection, final String connectorId, final TableMetaData table) throws SQLException {
+      public void beforeTableCopy(final Connection connection, final String connectorId, final TableMetaData table) {
         _beforeTableCopy++;
       }
 
       @Override
-      public void afterTableCopy(final Connection connection, final String connectorId, final TableMetaData table) throws SQLException {
+      public void afterTableCopy(final Connection connection, final String connectorId, final TableMetaData table) {
         _afterTableCopy++;
       }
     });

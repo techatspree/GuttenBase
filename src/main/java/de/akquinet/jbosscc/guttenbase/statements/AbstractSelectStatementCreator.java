@@ -46,7 +46,7 @@ public abstract class AbstractSelectStatementCreator extends AbstractStatementCr
     return preparedStatement;
   }
 
-  protected String createWhereClause(final TableMetaData tableMetaData) throws SQLException {
+  protected String createWhereClause(final TableMetaData tableMetaData) {
     final SelectWhereClause selectWhereClause = _connectorRepository.getConnectorHint(_connectorId, SelectWhereClause.class).getValue();
     return selectWhereClause.getWhereClause(tableMetaData);
   }
@@ -67,12 +67,12 @@ public abstract class AbstractSelectStatementCreator extends AbstractStatementCr
   /**
    * Try to retrieve data in some deterministic order
    */
-  protected String createOrderBy(final TableMetaData tableMetaData) throws SQLException {
+  protected String createOrderBy(final TableMetaData tableMetaData) {
     return "";
   }
 
   private String createSQL(final String tableName, final TableMetaData tableMetaData, final List<ColumnMetaData> columns)
-      throws SQLException {
+      {
 
     return "SELECT " + createColumnClause(columns) +
         FROM + tableName +

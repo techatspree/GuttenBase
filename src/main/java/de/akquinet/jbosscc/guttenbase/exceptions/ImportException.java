@@ -1,5 +1,6 @@
 package de.akquinet.jbosscc.guttenbase.exceptions;
 
+import de.akquinet.jbosscc.guttenbase.connector.GuttenBaseException;
 import de.akquinet.jbosscc.guttenbase.export.ImportDumpConnector;
 
 import java.io.IOException;
@@ -15,7 +16,7 @@ import java.sql.SQLException;
  *
  * @author M. Dahm
  */
-public class ImportException extends SQLException {
+public class ImportException extends GuttenBaseException {
   private static final long serialVersionUID = 1L;
 
   public ImportException(final String reason, final Exception e) {

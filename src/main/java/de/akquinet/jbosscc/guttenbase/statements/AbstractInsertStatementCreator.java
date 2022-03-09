@@ -65,7 +65,7 @@ public abstract class AbstractInsertStatementCreator extends AbstractStatementCr
   }
 
   private String createSQL(final String sourceConnectorId, final TableMetaData sourceTableMetaData, final String targetTableName,
-                           final TableMetaData targetTableMetaData, final int numberOfValueClauses) throws SQLException {
+                           final TableMetaData targetTableMetaData, final int numberOfValueClauses) {
     final List<ColumnMetaData> columns = getMappedTargetColumns(sourceTableMetaData, targetTableMetaData, sourceConnectorId);
 
     return INSERT_INTO + targetTableName + " (" + createColumnClause(columns) +
