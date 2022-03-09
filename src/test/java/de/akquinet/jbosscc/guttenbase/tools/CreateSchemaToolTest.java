@@ -1,13 +1,15 @@
 package de.akquinet.jbosscc.guttenbase.tools;
 
+import static org.junit.Assert.assertTrue;
+
+import java.util.List;
+
+import org.junit.Before;
+import org.junit.Test;
+
 import de.akquinet.jbosscc.guttenbase.configuration.TestH2ConnectionInfo;
 import de.akquinet.jbosscc.guttenbase.sql.SQLLexer;
 import de.akquinet.jbosscc.guttenbase.tools.schema.CopySchemaTool;
-import org.junit.Before;
-import org.junit.Test;
-import java.util.List;
-
-import static org.junit.Assert.assertTrue;
 
 public class CreateSchemaToolTest extends AbstractGuttenBaseTest {
   private static final String CONNECTOR_ID = "hsqldb";
@@ -28,7 +30,7 @@ public class CreateSchemaToolTest extends AbstractGuttenBaseTest {
     final List<String> parsedScript = new SQLLexer(script).parse();
 
     assertTrue(parsedScript
-      .contains("CREATE TABLE BLA.FOO_COMPANY ( ID BIGINT NOT NULL,  SUPPLIER CHAR(1),  NAME VARCHAR(100) )"));
+        .contains("CREATE TABLE BLA.FOO_COMPANY ( ID BIGINT NOT NULL,  SUPPLIER CHAR(1),  NAME VARCHAR(100) NOT NULL )"));
     assertTrue(parsedScript.contains("ALTER TABLE BLA.FOO_COMPANY ADD CONSTRAINT PK_FOO_COMPANY_1 PRIMARY KEY (ID)"));
     assertTrue(parsedScript
       .contains("ALTER TABLE BLA.FOO_USER_ROLES ADD CONSTRAINT FK_FOO_USER_ROLES_USER_ID_ID_1 FOREIGN KEY (USER_ID) REFERENCES BLA.FOO_USER(ID)"));
