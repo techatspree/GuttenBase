@@ -39,17 +39,17 @@ public class DefaultColumnTypeMapper implements ColumnTypeMapper {
     createPostgresToOracleMapping();
   }
 
-
   @Override
   public String mapColumnType(final ColumnMetaData columnMetaData,
                               final DatabaseType sourceDatabaseType, final DatabaseType targetDatabaseType) {
     final String columnType = columnMetaData.getColumnTypeName().toUpperCase();
     final String targetColumnType = getMapping(sourceDatabaseType, targetDatabaseType, columnType);
+    final String notNull = columnMetaData.isNullable() ? "" : " NOT NULL";
 
     if (targetColumnType != null) {
-      return targetColumnType;
+      return targetColumnType + notNull;
     } else {
-      return getColumnType(columnMetaData);
+      return getColumnType(columnMetaData) + notNull;
     }
   }
 

@@ -156,8 +156,17 @@ public class SchemaScriptCreatorToolTest {
     _connectorRepository.addConnectorHint(TARGET, new ColumnTypeMapperHint() {
       @Override
       public ColumnTypeMapper getValue() {
-        return new DefaultColumnTypeMapper()
-            .addMapping(DatabaseType.GENERIC, DatabaseType.GENERIC, "BIGINT", "INTEGER");
+        return new DefaultColumnTypeMapper() {
+          @Override
+          public String mapColumnType(ColumnMetaData columnMetaData, DatabaseType sourceDatabaseType, DatabaseType targetDatabaseType) {
+            final String columnType = super.mapColumnType(columnMetaData, sourceDatabaseType, targetDatabaseType);
+            if (columnMetaData.getColumnName().equalsIgnoreCase("ID")) {
+              return columnType + " auto_increment";
+            } else {
+              return columnType;
+            }
+          }
+        }.addMapping(DatabaseType.GENERIC, DatabaseType.GENERIC, "BIGINT", "INTEGER");
       }
     });
 
@@ -167,7 +176,7 @@ public class SchemaScriptCreatorToolTest {
     final String createStatement = tableStatements.get(0);
 
     assertTrue(createStatement, createStatement.startsWith("CREATE TABLE schemaName.MY_TABLE"));
-    assertTrue(createStatement, createStatement.contains("ID INTEGER NOT NULL"));
+    assertTrue(createStatement, createStatement.contains("ID INTEGER NOT NULL auto_increment"));
     assertTrue(createStatement, createStatement.contains("NAME VARCHAR(100) NOT NULL"));
   }
 

@@ -141,19 +141,11 @@ public class SchemaScriptCreatorTool {
 
   public String createTable(final TableMetaData tableMetaData) throws SQLException {
     final String tableName = getTableName(tableMetaData);
-    final StringBuilder builder = new StringBuilder("CREATE TABLE " + tableName + "\n(\n");
 
-    for (final Iterator<ColumnMetaData> iterator = tableMetaData.getColumnMetaData().iterator(); iterator.hasNext(); ) {
-      final ColumnMetaData columnMetaData = iterator.next();
-
-      builder.append("  ").append(createColumn(columnMetaData));
-
-      if (iterator.hasNext()) {
-        builder.append(", \n");
-      }
-    }
-
-    return builder.append("\n);").toString();
+    return "CREATE TABLE " + tableName + "\n(\n"
+        + tableMetaData.getColumnMetaData().stream()
+        .map(columnMetaData -> "  " + getColumn(columnMetaData)).collect(Collectors.joining(",\n"))
+        + "\n);";
   }
 
   private String getTableName(final TableMetaData tableMetaData) throws SQLException {
@@ -161,13 +153,13 @@ public class SchemaScriptCreatorTool {
     final TableMapper tableMapper = _connectorRepository.getConnectorHint(getTargetConnectorId(), TableMapper.class).getValue();
     final String rawTableName = tableMapper.mapTableName(tableMetaData, targetDatabaseMetaData);
     final String tableName = tableMapper.fullyQualifiedTableName(tableMetaData, targetDatabaseMetaData);
-
     final int maxNameLength = getTargetMaxNameLength();
 
     if (rawTableName.length() > maxNameLength) {
       throw new IncompatibleTablesException("Table name " + rawTableName + " is too long for the targeted data base (Max. "
           + maxNameLength + "). You will have to provide an appropriate " + TableMapper.class.getName() + " hint");
     }
+
     return tableName;
   }
 
@@ -275,6 +267,14 @@ public class SchemaScriptCreatorTool {
         + ";";
   }
 
+  private String getColumn(ColumnMetaData columnMetaData) {
+    try {
+      return createColumn(columnMetaData);
+    } catch (final SQLException e) {
+      throw new RuntimeException("createColumn: " + columnMetaData);
+    }
+  }
+
   private String getColumnName(final ColumnMetaData referencingColumn) {
     final ColumnMapper columnMapper = _connectorRepository.getConnectorHint(getTargetConnectorId(), ColumnMapper.class)
         .getValue();
@@ -308,10 +308,6 @@ public class SchemaScriptCreatorTool {
     }
 
     builder.append(columnName + " " + columnType);
-
-    if (!columnMetaData.isNullable()) {
-      builder.append(" NOT NULL");
-    }
 
     return builder.toString();
   }
