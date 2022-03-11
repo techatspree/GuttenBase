@@ -38,6 +38,8 @@ public enum ColumnType {
   CLASS_LONG(Long.class, BigInteger.class), //
   CLASS_DOUBLE(Double.class), //
   CLASS_FLOAT(Float.class), //
+  CLASS_BYTE(byte.class), //
+  CLASS_BYTES(byte[].class), //
   CLASS_SHORT(Short.class);//
 
   private final List<Class<?>> _columnClasses;
@@ -93,6 +95,10 @@ public enum ColumnType {
         return resultSet.getTime(columnIndex);
       case CLASS_OBJECT:
         return resultSet.getObject(columnIndex);
+      case CLASS_BYTE:
+        return resultSet.getByte(columnIndex);
+      case CLASS_BYTES:
+        return resultSet.getBytes(columnIndex);
       default:
         throw new UnhandledColumnTypeException("Unhandled column type (" + this + ")");
     }
@@ -184,6 +190,12 @@ public enum ColumnType {
         break;
       case CLASS_OBJECT:
         insertStatement.setObject(columnIndex, data);
+        break;
+      case CLASS_BYTE:
+        insertStatement.setByte(columnIndex, (Byte) data);
+        break;
+      case CLASS_BYTES:
+        insertStatement.setBytes(columnIndex, (byte[]) data);
         break;
       default:
         throw new UnhandledColumnTypeException("Unhandled column type (" + this + ")");
