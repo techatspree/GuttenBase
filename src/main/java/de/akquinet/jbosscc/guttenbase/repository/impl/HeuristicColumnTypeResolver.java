@@ -60,24 +60,26 @@ public class HeuristicColumnTypeResolver implements ColumnTypeResolver {
             return ColumnType.CLASS_BIGDECIMAL;
           case "OID":
             return ColumnType.CLASS_BLOB;
+          case "BYTEA":
+            return ColumnType.CLASS_STRING;
         }
         break;
 
       case ORACLE:
-        if (columnType.equals("CLOB")) {
-          return ColumnType.CLASS_STRING;
-        }
-        if (columnType.equals("TIMESTAMP")) {
-          return ColumnType.CLASS_TIMESTAMP;
-        }
-        if (columnType.equals("XMLTYPE")) {
-          return ColumnType.CLASS_SQLXML;
+        switch (columnType) {
+          case "CLOB":
+            return ColumnType.CLASS_STRING;
+          case "TIMESTAMP":
+            return ColumnType.CLASS_TIMESTAMP;
+          case "XMLTYPE":
+            return ColumnType.CLASS_SQLXML;
         }
         break;
 
       case H2DB:
-        if (columnType.equals("CLOB")) {
-          return ColumnType.CLASS_STRING;
+        switch (columnType) {
+          case "CLOB":
+            return ColumnType.CLASS_STRING;
         }
         break;
 

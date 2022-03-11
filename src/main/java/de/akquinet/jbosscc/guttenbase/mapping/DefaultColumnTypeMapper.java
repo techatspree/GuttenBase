@@ -53,14 +53,14 @@ public class DefaultColumnTypeMapper implements ColumnTypeMapper {
     }
   }
 
-  private String getColumnType(final ColumnMetaData columnMetaData) {
+  protected String getColumnType(final ColumnMetaData columnMetaData) {
     final String precision = createPrecisionClause(columnMetaData);
     final String defaultColumnType = columnMetaData.getColumnTypeName();
 
     return defaultColumnType + precision;
   }
 
-  private String createPrecisionClause(final ColumnMetaData columnMetaData) {
+  protected String createPrecisionClause(final ColumnMetaData columnMetaData) {
     switch (columnMetaData.getColumnType()) {
       case Types.CHAR:
       case Types.VARCHAR:
