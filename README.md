@@ -1,3 +1,8 @@
+The repo now moved to 
+https://github.com/guttenbase/guttenbase
+
+-----------------------------------------------------
+
 GuttenBase - Copying done right...
 ==================================
 
